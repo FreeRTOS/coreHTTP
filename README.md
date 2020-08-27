@@ -1,11 +1,6 @@
-## My Project
+## HTTP Client Library
 
-TODO: Fill this README out!
-
-Be sure to:
-
-* Change the title in this README
-* Edit your repository description on GitHub
+A C implementation of an HTTP Client that utilizes [http-parser](https://github.com/nodejs/http-parser).
 
 ## Security
 
@@ -14,4 +9,3 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 ## License
 
 This library is licensed under the MIT-0 License. See the LICENSE file.
-
