@@ -18,12 +18,10 @@ COMPILE_FLAGS += -std=gnu90
 # LINK_FLAGS =
 
 # Preprocessor include paths -I...
-INCLUDES += -I$(SRCDIR)/libraries/standard/http/cbmc/include
-INCLUDES += -I$(SRCDIR)/libraries/standard/http/include
-INCLUDES += -I$(SRCDIR)/libraries/standard/http/src
-INCLUDES += -I$(SRCDIR)/libraries/standard/http/third_party/http_parser
-INCLUDES += -I$(SRCDIR)/demos/logging-stack
-INCLUDES += -I$(SRCDIR)/platform/include
+INCLUDES += -I$(SRCDIR)/cbmc/include
+INCLUDES += -I$(SRCDIR)/source/include
+INCLUDES += -I$(SRCDIR)/source
+INCLUDES += -I$(SRCDIR)/third_party/http_parser
 
 # Preprocessor definitions -D...
 DEFINES += -Dhttp_EXPORTS

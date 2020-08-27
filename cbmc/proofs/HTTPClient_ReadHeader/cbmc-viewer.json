@@ -3,5 +3,5 @@
 
   ],
   "proof-name": "HTTPClient_ReadHeader",
-  "proof-root": "libraries/standard/http/cbmc/proofs"
+  "proof-root": "cbmc/proofs"
 }

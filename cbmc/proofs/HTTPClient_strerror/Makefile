@@ -30,6 +30,6 @@ UNWINDSET +=
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 
-PROJECT_SOURCES += $(SRCDIR)/libraries/standard/http/src/http_client.c
+PROJECT_SOURCES += $(SRCDIR)/source/http_client.c
 
 include ../Makefile.common
