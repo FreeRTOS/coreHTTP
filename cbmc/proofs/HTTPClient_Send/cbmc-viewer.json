@@ -3,5 +3,5 @@
 
   ],
   "proof-name": "HTTPClient_Send",
-  "proof-root": "libraries/standard/http/cbmc/proofs"
+  "proof-root": "cbmc/proofs"
 }
