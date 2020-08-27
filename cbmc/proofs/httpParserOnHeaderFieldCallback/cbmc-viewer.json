@@ -3,5 +3,5 @@
 
   ],
   "proof-name": "httpParserOnHeaderFieldCallback",
-  "proof-root": "libraries/standard/http/cbmc/proofs"
+  "proof-root": "cbmc/proofs"
 }
