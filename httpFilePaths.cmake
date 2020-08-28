@@ -7,18 +7,18 @@
 
 # HTTP library source files.
 set( HTTP_SOURCES
-     ${MODULES_DIR}/source/http_client.c )
+     ${MODULE_ROOT_DIR}/source/http_client.c )
 
 # HTTP library Public Include directories.
 set( HTTP_INCLUDE_PUBLIC_DIRS
-     ${MODULES_DIR}/source/include
-     ${MODULES_DIR}/source/portable )
+     ${MODULE_ROOT_DIR}/source/include
+     ${MODULE_ROOT_DIR}/source/portable )
 
 # HTTP library Private Include directories.
 set( HTTP_INCLUDE_PRIVATE_DIRS
-     ${MODULES_DIR}/source
-     ${MODULES_DIR}/source/third_party/http_parser )
+     ${MODULE_ROOT_DIR}/source
+     ${MODULE_ROOT_DIR}/source/third_party/http_parser )
 
 # HTTP library Include directories for Tests.
 set( HTTP_TEST_INCLUDE_DIRS
-     ${MODULES_DIR}/source/third_party/http_parser )
+     ${MODULE_ROOT_DIR}/source/third_party/http_parser )

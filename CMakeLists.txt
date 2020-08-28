@@ -3,7 +3,7 @@
 # Project information.
 cmake_minimum_required( VERSION 3.13.0 )
 project( coreHTTP
-         VERSION 1.0.0
+         VERSION 4.0.2
          LANGUAGES C )
 
 # Allow the project to be organized into folders.
@@ -19,24 +19,17 @@ if( ${PROJECT_SOURCE_DIR} STREQUAL ${PROJECT_BINARY_DIR} )
 endif()
 
 # Set global path variables.
-get_filename_component(__root_dir "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
-set(ROOT_DIR ${__root_dir} CACHE INTERNAL "Source root.")
-
-# We set the MODULES_DIR as the ROOT_DIR because the hub will include 
-# httpFilePaths.cmake and will expect MODULES_DIR to be defined in that file.
-set(MODULES_DIR "${ROOT_DIR}" CACHE INTERNAL "Modules root.")
+get_filename_component(__MODULE_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
+set(MODULE_ROOT_DIR ${__MODULE_ROOT_DIR} CACHE INTERNAL "MQTT source root.")
 
 # Configure options to always show in CMake GUI.
-option( BUILD_TESTS
-        "Set this to ON to build both demo and test executables. When OFF, only demo executables are built."
-        OFF )
 option( BUILD_CLONE_SUBMODULES
         "Set this to ON to automatically clone any required Git submodules. When OFF, submodules must be manually cloned."
         ON )
 
 include( CMakeDependentOption )
 CMAKE_DEPENDENT_OPTION( BUILD_SHARED_LIBS
-                        "Set this to ON to build MQTT as a shared library. When OFF, MQTT builds as a static library."
+                        "Set this to ON to build HTTP as a shared library. When OFF, HTTP builds as a static library."
                         ON "${ALLOW_SHARED_LIBRARIES}"
                         OFF )
 
@@ -44,11 +37,6 @@ CMAKE_DEPENDENT_OPTION( BUILD_SHARED_LIBS
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
-
-
-if( ${BUILD_TESTS} )
-    include( test/dependencies.cmake )
-endif()
 
 # ====================== coreHTTP library configurations =======================
 
@@ -76,3 +64,41 @@ set_target_properties( http PROPERTIES FOLDER libraries/standard )
 source_group( include FILES source/include/http_client.h )
 source_group( source FILES ${HTTP_SOURCES} )
 source_group( source\\private FILES source/private/http_internal.h )
+
+# Include CMock build configuration.
+include( test/cmock_build.cmake )
+
+# Check if the CMock source directory exists, and if not present, clone the submodule
+# if BUILD_CLONE_SUBMODULES configuration is enabled. 
+if( NOT EXISTS ${MODULE_ROOT_DIR}/test/CMock/src )
+    # Attempt to clone CMock.
+    if( ${BUILD_CLONE_SUBMODULES} )
+        clone_cmock()
+    else()
+        message( FATAL_ERROR "The required submodule CMock does not exist. Either clone it manually, or set BUILD_CLONE_SUBMODULES to 1 to automatically clone it during build." )
+    endif()
+endif()
+
+# Add unit test and coverage configuration only if CMock directory exists.
+if( EXISTS ${MODULE_ROOT_DIR}/test/CMock/src )
+
+    # Use CTest utility for managing test runs. This has to be added BEFORE
+    # defining test targets with add_test()
+    enable_testing()
+
+    # Add build targets for CMock and Unit, required for unit testing.
+    add_cmock_targets()
+
+    # Add function to enable CMOck based tests and coverage.
+    include("${MODULE_ROOT_DIR}/tools/cmock/create_test.cmake")
+
+    # Include build configuration for unit tests of MQTT.
+    add_subdirectory( test )
+    
+    # Add a target for running coverage on tests.
+    add_custom_target(coverage
+        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/tools/cmock/coverage.cmake
+        DEPENDS cmock unity http_utest http_send_utest
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+endif()

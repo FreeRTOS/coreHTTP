@@ -1,12 +1,6 @@
-include("${ROOT_DIR}/httpFilePaths.cmake")
+include("../httpFilePaths.cmake")
 project ("http unit test")
 cmake_minimum_required (VERSION 3.13)
-
-# ============= Build Configuration for CMock and Unity libraries. =============
-
-include( ${ROOT_DIR}/test/CMock.cmake )
-
-# ========================= Unit test configurations ===========================
 
 # ====================  Define your project name (edit) ========================
 set(project_name "http")
@@ -15,11 +9,11 @@ set(project_name "http")
 
 # list the files to mock here
 list(APPEND mock_list
-            ${MODULES_DIR}/source/third_party/http_parser/http_parser.h
+            ${MODULES_ROOT_DIR}/source/third_party/http_parser/http_parser.h
         )
 # list the directories your mocks need
 list(APPEND mock_include_list
-             ${MODULES_DIR}/source/third_party/http_parser
+             ${MODULES_ROOT_DIR}/source/third_party/http_parser
         )
 #list the definitions of your mocks to control what to be included
 list(APPEND mock_define_list
@@ -56,7 +50,7 @@ set(real_name "${project_name}_real")
 
 create_mock_list(${mock_name}
                 "${mock_list}"
-                "${ROOT_DIR}/test/project.yml"
+                "${MODULE_ROOT_DIR}/tools/cmock/project.yml"
                 "${mock_include_list}"
                 "${mock_define_list}"
         )
@@ -68,8 +62,8 @@ create_real_library(${real_name}
         )
 
 list(APPEND utest_link_list
-            lib${real_name}.a
             -l${mock_name}
+            lib${real_name}.a
         )
 
 list(APPEND utest_dep_list
