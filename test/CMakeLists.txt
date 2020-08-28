@@ -1,3 +1,7 @@
+include("${ROOT_DIR}/httpFilePaths.cmake")
+project ("http unit test")
+cmake_minimum_required (VERSION 3.13)
+
 # ============= Build Configuration for CMock and Unity libraries. =============
 
 add_library(cmock STATIC
@@ -30,10 +34,6 @@ target_link_libraries(cmock unity)
 
 # ========================= Unit test configurations ===========================
 
-include("${ROOT_DIR}/httpFilePaths.cmake")
-project ("http unit test")
-cmake_minimum_required (VERSION 3.13)
-
 # ====================  Define your project name (edit) ========================
 set(project_name "http")
 
@@ -63,7 +63,6 @@ list(APPEND real_include_directories
             .
             ${HTTP_INCLUDE_PUBLIC_DIRS}
             ${HTTP_INCLUDE_PRIVATE_DIRS}
-            ${LOGGING_INCLUDE_DIRS}
         )
 
 # =====================  Create UnitTest Code here (edit)  =====================
@@ -74,7 +73,6 @@ list(APPEND test_include_directories
             ${HTTP_INCLUDE_PUBLIC_DIRS}
             ${HTTP_INCLUDE_PRIVATE_DIRS}
             ${HTTP_TEST_INCLUDE_DIRS}
-            ${LOGGING_INCLUDE_DIRS}
         )
 
 # =============================  (end edit)  ===================================

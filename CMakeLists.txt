@@ -36,7 +36,7 @@ option( BUILD_CLONE_SUBMODULES
 
 include( CMakeDependentOption )
 CMAKE_DEPENDENT_OPTION( BUILD_SHARED_LIBS
-                        "Set this to ON to build all libraries as shared libraries. When OFF, libraries build as static libraries."
+                        "Set this to ON to build MQTT as a shared library. When OFF, MQTT builds as a static library."
                         ON "${ALLOW_SHARED_LIBRARIES}"
                         OFF )
 
@@ -63,8 +63,7 @@ add_library( http
              ${HTTP_SOURCES} )
 
 # HTTP public include path.
-target_include_directories( http PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS}
-                                        ${LOGGING_INCLUDE_DIRS} )
+target_include_directories( http PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
 
 # HTTP private include path.
 target_include_directories( http PRIVATE ${HTTP_INCLUDE_PRIVATE_DIRS} )
@@ -74,6 +73,6 @@ target_link_libraries( http PRIVATE http_parser )
 
 # Organization of HTTP in IDE projects.
 set_target_properties( http PROPERTIES FOLDER libraries/standard )
-source_group( include FILES include/http_client.h )
-source_group( src FILES ${HTTP_SOURCES} )
-source_group( src\\private FILES src/private/http_internal.h )
+source_group( include FILES source/include/http_client.h )
+source_group( source FILES ${HTTP_SOURCES} )
+source_group( source\\private FILES source/private/http_internal.h )
