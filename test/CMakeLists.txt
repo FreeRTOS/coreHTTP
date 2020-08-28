@@ -1,4 +1,36 @@
-include("../httpFilePaths.cmake")
+# ============= Build Configuration for CMock and Unity libraries. =============
+
+add_library(cmock STATIC
+        "${ROOT_DIR}/test/CMock/src/cmock.c"
+        )
+
+set_target_properties(cmock PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+        POSITION_INDEPENDENT_CODE ON
+        COMPILE_FLAGS "-Og"
+        )
+
+add_library(unity STATIC
+        "${ROOT_DIR}/test/CMock/vendor/unity/src/unity.c"
+        "${ROOT_DIR}/test/CMock/vendor/unity/extras/fixture/src/unity_fixture.c"
+        "${ROOT_DIR}/test/CMock/vendor/unity/extras/memory/src/unity_memory.c"
+        )
+set_target_properties(unity PROPERTIES
+        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+        POSITION_INDEPENDENT_CODE ON
+        )
+
+target_include_directories(cmock PUBLIC
+        ${ROOT_DIR}/test/CMock/src
+        ${ROOT_DIR}/test/CMock/vendor/unity/src/
+        ${ROOT_DIR}/test/CMock/examples
+        )
+
+target_link_libraries(cmock unity)
+
+# ========================= Unit test configurations ===========================
+
+include("${ROOT_DIR}/httpFilePaths.cmake")
 project ("http unit test")
 cmake_minimum_required (VERSION 3.13)
 
@@ -9,11 +41,11 @@ set(project_name "http")
 
 # list the files to mock here
 list(APPEND mock_list
-            ${MODULES_DIR}/standard/http/third_party/http_parser/http_parser.h
+            ${MODULES_DIR}/source/third_party/http_parser/http_parser.h
         )
 # list the directories your mocks need
 list(APPEND mock_include_list
-             ${MODULES_DIR}/standard/http/third_party/http_parser
+             ${MODULES_DIR}/source/third_party/http_parser
         )
 #list the definitions of your mocks to control what to be included
 list(APPEND mock_define_list
@@ -52,7 +84,7 @@ set(real_name "${project_name}_real")
 
 create_mock_list(${mock_name}
                 "${mock_list}"
-                "${ROOT_DIR}/tools/cmock/project.yml"
+                "${ROOT_DIR}/test/project.yml"
                 "${mock_include_list}"
                 "${mock_define_list}"
         )
