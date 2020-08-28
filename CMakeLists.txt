@@ -20,7 +20,7 @@ endif()
 
 # Set global path variables.
 get_filename_component(__MODULE_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
-set(MODULE_ROOT_DIR ${__MODULE_ROOT_DIR} CACHE INTERNAL "MQTT source root.")
+set(MODULE_ROOT_DIR ${__MODULE_ROOT_DIR} CACHE INTERNAL "HTTP source root.")
 
 # Configure options to always show in CMake GUI.
 option( BUILD_CLONE_SUBMODULES
@@ -92,7 +92,7 @@ if( EXISTS ${MODULE_ROOT_DIR}/test/CMock/src )
     # Add function to enable CMOck based tests and coverage.
     include("${MODULE_ROOT_DIR}/tools/cmock/create_test.cmake")
 
-    # Include build configuration for unit tests of MQTT.
+    # Include build configuration for unit tests.
     add_subdirectory( test )
     
     # Add a target for running coverage on tests.
