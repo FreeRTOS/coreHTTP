@@ -1,6 +1,3 @@
-# Unity test framework does not export the correct symbols for DLLs.
-set( ALLOW_SHARED_LIBRARIES ON )
-
 # Configuration for CMock if testing is enabled.
 # Check if the CMock source directory exists.
 if( NOT EXISTS ${ROOT_DIR}/test/CMock/src )
@@ -33,7 +30,7 @@ link_directories("${CMAKE_BINARY_DIR}/lib"
 
 # Add a target for running coverage on tests.
 add_custom_target(coverage
-    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/tools/cmock/coverage.cmake
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/tools/coverage/coverage.cmake
     DEPENDS cmock unity http_utest http_send_utest
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
