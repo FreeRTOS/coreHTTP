@@ -24,6 +24,3 @@ add_library( http_parser
 # http_parser public include path.
 target_include_directories( http_parser PUBLIC 
                                         ${CMAKE_CURRENT_LIST_DIR}/http_parser )
-
-# Suppress warnings in this third-party library code.
-set_target_properties( http_parser PROPERTIES COMPILE_FLAGS "-w" )
