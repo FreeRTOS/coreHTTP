@@ -53,17 +53,21 @@ add_library( http
 # HTTP public include path.
 target_include_directories( http PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
 
-# HTTP private include path.
-target_include_directories( http PRIVATE ${HTTP_INCLUDE_PRIVATE_DIRS} )
+# HTTP private include path. The unit test is default build so we include the test
+# configuration for now.
+target_include_directories( http PRIVATE ${HTTP_INCLUDE_PRIVATE_DIRS}
+                            ${MODULE_ROOT_DIR}/test )
 
 # Link http_parser to http target.
 target_link_libraries( http PRIVATE http_parser )
 
 # Organization of HTTP in IDE projects.
 set_target_properties( http PROPERTIES FOLDER libraries/standard )
-source_group( include FILES source/include/http_client.h )
+source_group( include FILES source/include/http_client.h source/portable/transport_interface.h )
 source_group( source FILES ${HTTP_SOURCES} )
 source_group( source\\private FILES source/private/http_internal.h )
+
+# ============================ Test configurations =============================
 
 # Include CMock build configuration.
 include( test/cmock_build.cmake )
