@@ -1,4 +1,4 @@
-include("../httpFilePaths.cmake")
+include("${MODULE_ROOT_DIR}/httpFilePaths.cmake")
 project ("http unit test")
 cmake_minimum_required (VERSION 3.13)
 
