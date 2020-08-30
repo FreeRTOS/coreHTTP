@@ -46,6 +46,16 @@ include(httpFilePaths.cmake)
 # Add http_parser submodule to HTTP client library.
 add_subdirectory( source/third_party )
 
+# Check if the http_parser source directory exists.
+if( NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/source/third_party/http_parser/http_parser.c )
+    # Attempt to clone http_parser.
+    if( ${BUILD_CLONE_SUBMODULES} )
+        clone_http_parser()
+    else()
+        message( FATAL_ERROR "The required submodule http_parser does not exist. Either clone it manually, or set BUILD_CLONE_SUBMODULES to 1 to automatically clone it during build." )
+    endif()
+endif()
+
 # HTTP library target.
 add_library( http
              ${HTTP_SOURCES} )

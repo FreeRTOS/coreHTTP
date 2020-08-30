@@ -40,7 +40,7 @@ list(APPEND test_include_directories
             .
             ${HTTP_INCLUDE_PUBLIC_DIRS}
             ${HTTP_INCLUDE_PRIVATE_DIRS}
-            ${HTTP_TEST_INCLUDE_DIRS}
+            ${HTTP_INCLUDE_THIRD_PARTY_DIRS}
         )
 
 # =============================  (end edit)  ===================================

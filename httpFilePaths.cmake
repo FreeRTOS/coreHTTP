@@ -20,5 +20,5 @@ set( HTTP_INCLUDE_PRIVATE_DIRS
      ${MODULE_ROOT_DIR}/source/third_party/http_parser )
 
 # HTTP library Include directories for Tests.
-set( HTTP_TEST_INCLUDE_DIRS
+set( HTTP_INCLUDE_THIRD_PARTY_DIRS
      ${MODULE_ROOT_DIR}/source/third_party/http_parser )
