@@ -9,11 +9,11 @@ set(project_name "http")
 
 # list the files to mock here
 list(APPEND mock_list
-            ${MODULES_DIR}/standard/http/third_party/http_parser/http_parser.h
+            ${MODULE_ROOT_DIR}/source/third_party/http_parser/http_parser.h
         )
 # list the directories your mocks need
 list(APPEND mock_include_list
-             ${MODULES_DIR}/standard/http/third_party/http_parser
+             ${MODULE_ROOT_DIR}/source/third_party/http_parser
         )
 #list the definitions of your mocks to control what to be included
 list(APPEND mock_define_list
@@ -31,7 +31,6 @@ list(APPEND real_include_directories
             .
             ${HTTP_INCLUDE_PUBLIC_DIRS}
             ${HTTP_INCLUDE_PRIVATE_DIRS}
-            ${LOGGING_INCLUDE_DIRS}
         )
 
 # =====================  Create UnitTest Code here (edit)  =====================
@@ -41,8 +40,7 @@ list(APPEND test_include_directories
             .
             ${HTTP_INCLUDE_PUBLIC_DIRS}
             ${HTTP_INCLUDE_PRIVATE_DIRS}
-            ${HTTP_TEST_INCLUDE_DIRS}
-            ${LOGGING_INCLUDE_DIRS}
+            ${HTTP_INCLUDE_THIRD_PARTY_DIRS}
         )
 
 # =============================  (end edit)  ===================================
@@ -52,7 +50,7 @@ set(real_name "${project_name}_real")
 
 create_mock_list(${mock_name}
                 "${mock_list}"
-                "${ROOT_DIR}/tools/cmock/project.yml"
+                "${MODULE_ROOT_DIR}/tools/cmock/project.yml"
                 "${mock_include_list}"
                 "${mock_define_list}"
         )
@@ -64,8 +62,8 @@ create_real_library(${real_name}
         )
 
 list(APPEND utest_link_list
-            lib${real_name}.a
             -l${mock_name}
+            lib${real_name}.a
         )
 
 list(APPEND utest_dep_list
