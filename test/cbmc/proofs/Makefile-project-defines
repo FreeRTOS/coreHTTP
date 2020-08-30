@@ -18,7 +18,7 @@ COMPILE_FLAGS += -std=gnu90
 # LINK_FLAGS =
 
 # Preprocessor include paths -I...
-INCLUDES += -I$(SRCDIR)/cbmc/include
+INCLUDES += -I$(SRCDIR)/test/cbmc/include
 INCLUDES += -I$(SRCDIR)/source/include
 INCLUDES += -I$(SRCDIR)/source/portable
 INCLUDES += -I$(SRCDIR)/source
