@@ -2,8 +2,8 @@
 macro( clone_cmock )
         find_package( Git REQUIRED )
         message( "Cloning submodule CMock." )
-        execute_process( COMMAND rm -rf ${MODULE_ROOT_DIR}/test/utest/CMock
-                         COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive ${MODULE_ROOT_DIR}/test/utest/CMock
+        execute_process( COMMAND rm -rf ${MODULE_ROOT_DIR}/test/unit-test/CMock
+                         COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive ${MODULE_ROOT_DIR}/test/unit-test/CMock
                         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                         RESULT_VARIABLE CMOCK_CLONE_RESULT )
 
@@ -16,14 +16,14 @@ endmacro()
 macro( add_cmock_targets )
         # Build Configuration for CMock and Unity libraries.
         list( APPEND CMOCK_INCLUDE_DIRS
-                "${MODULE_ROOT_DIR}/test/utest/CMock/vendor/unity/src/"
-                "${MODULE_ROOT_DIR}/test/utest/CMock/vendor/unity/extras/fixture/src"
-                "${MODULE_ROOT_DIR}/test/utest/CMock/vendor/unity/extras/memory/src"
-                "${MODULE_ROOT_DIR}/test/utest/CMock/src"
+                "${MODULE_ROOT_DIR}/test/unit-test/CMock/vendor/unity/src/"
+                "${MODULE_ROOT_DIR}/test/unit-test/CMock/vendor/unity/extras/fixture/src"
+                "${MODULE_ROOT_DIR}/test/unit-test/CMock/vendor/unity/extras/memory/src"
+                "${MODULE_ROOT_DIR}/test/unit-test/CMock/src"
         )
 
         add_library(cmock STATIC
-        "${MODULE_ROOT_DIR}/test/utest/CMock/src/cmock.c"
+        "${MODULE_ROOT_DIR}/test/unit-test/CMock/src/cmock.c"
         )
 
         set_target_properties(cmock PROPERTIES
@@ -33,16 +33,16 @@ macro( add_cmock_targets )
                 )
 
         target_include_directories(cmock PUBLIC
-                ${MODULE_ROOT_DIR}/test/utest/CMock/src
-                ${MODULE_ROOT_DIR}/test/utest/CMock/vendor/unity/src/
-                ${MODULE_ROOT_DIR}/test/utest/CMock/examples
+                ${MODULE_ROOT_DIR}/test/unit-test/CMock/src
+                ${MODULE_ROOT_DIR}/test/unit-test/CMock/vendor/unity/src/
+                ${MODULE_ROOT_DIR}/test/unit-test/CMock/examples
                 ${CMOCK_INCLUDE_DIRS}
                 )
 
         add_library(unity STATIC
-                "${MODULE_ROOT_DIR}/test/utest/CMock/vendor/unity/src/unity.c"
-                "${MODULE_ROOT_DIR}/test/utest/CMock/vendor/unity/extras/fixture/src/unity_fixture.c"
-                "${MODULE_ROOT_DIR}/test/utest/CMock/vendor/unity/extras/memory/src/unity_memory.c"
+                "${MODULE_ROOT_DIR}/test/unit-test/CMock/vendor/unity/src/unity.c"
+                "${MODULE_ROOT_DIR}/test/unit-test/CMock/vendor/unity/extras/fixture/src/unity_fixture.c"
+                "${MODULE_ROOT_DIR}/test/unit-test/CMock/vendor/unity/extras/memory/src/unity_memory.c"
                 )
 
         set_target_properties(unity PROPERTIES

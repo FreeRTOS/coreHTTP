@@ -66,7 +66,7 @@ target_include_directories( http PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
 # HTTP private include path. The unit test is default build so we include the test
 # configuration for now.
 target_include_directories( http PRIVATE ${HTTP_INCLUDE_PRIVATE_DIRS}
-                            ${MODULE_ROOT_DIR}/test/utest )
+                            ${MODULE_ROOT_DIR}/test/unit-test )
 
 # Link http_parser to http target.
 target_link_libraries( http PRIVATE http_parser )
@@ -80,11 +80,11 @@ source_group( source\\private FILES source/private/http_internal.h )
 # ============================ Test configurations =============================
 
 # Include CMock build configuration.
-include( test/utest/cmock_build.cmake )
+include( test/unit-test/cmock_build.cmake )
 
 # Check if the CMock source directory exists, and if not present, clone the submodule
 # if BUILD_CLONE_SUBMODULES configuration is enabled. 
-if( NOT EXISTS ${MODULE_ROOT_DIR}/test/utest/CMock/src )
+if( NOT EXISTS ${MODULE_ROOT_DIR}/test/unit-test/CMock/src )
     # Attempt to clone CMock.
     if( ${BUILD_CLONE_SUBMODULES} )
         clone_cmock()
@@ -94,7 +94,7 @@ if( NOT EXISTS ${MODULE_ROOT_DIR}/test/utest/CMock/src )
 endif()
 
 # Add unit test and coverage configuration only if CMock directory exists.
-if( EXISTS ${MODULE_ROOT_DIR}/test/utest/CMock/src )
+if( EXISTS ${MODULE_ROOT_DIR}/test/unit-test/CMock/src )
 
     # Use CTest utility for managing test runs. This has to be added BEFORE
     # defining test targets with add_test()
@@ -107,7 +107,7 @@ if( EXISTS ${MODULE_ROOT_DIR}/test/utest/CMock/src )
     include("${MODULE_ROOT_DIR}/tools/cmock/create_test.cmake")
 
     # Include build configuration for unit tests.
-    add_subdirectory( test/utest )
+    add_subdirectory( test/unit-test )
     
     # Add a target for running coverage on tests.
     add_custom_target(coverage
