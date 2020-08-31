@@ -14,11 +14,11 @@ set( HTTP_INCLUDE_PUBLIC_DIRS
      ${CMAKE_CURRENT_LIST_DIR}/source/include
      ${CMAKE_CURRENT_LIST_DIR}/source/portable )
 
+# HTTP library Include directories for Tests.
+set( HTTP_INCLUDE_THIRD_PARTY_DIRS
+     ${CMAKE_CURRENT_LIST_DIR}/source/third-party/http_parser )
+
 # HTTP library Private Include directories.
 set( HTTP_INCLUDE_PRIVATE_DIRS
      ${CMAKE_CURRENT_LIST_DIR}/source
-     ${HTTP_PARSER_DIR} )
-
-# HTTP library Include directories for Tests.
-set( HTTP_INCLUDE_THIRD_PARTY_DIRS
-     ${HTTP_PARSER_DIR} )
+     ${HTTP_INCLUDE_THIRD_PARTY_DIRS} )
