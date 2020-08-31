@@ -1,8 +1,8 @@
 [submodule "test/cbmc/aws-templates-for-cbmc-proofs"]
 	path = test/cbmc/aws-templates-for-cbmc-proofs
 	url = https://github.com/awslabs/aws-templates-for-cbmc-proofs.git
-[submodule "test/utest/CMock"]
-	path = test/utest/CMock
+[submodule "test/unit-test/CMock"]
+	path = test/unit-test/CMock
 	url = https://github.com/ThrowTheSwitch/CMock.git
 [submodule "source/third_party/http_parser"]
 	path = source/third_party/http_parser
