@@ -22,7 +22,7 @@ INCLUDES += -I$(SRCDIR)/test/cbmc/include
 INCLUDES += -I$(SRCDIR)/source/include
 INCLUDES += -I$(SRCDIR)/source/portable
 INCLUDES += -I$(SRCDIR)/source
-INCLUDES += -I$(SRCDIR)/source/third_party/http_parser
+INCLUDES += -I$(SRCDIR)/source/third-party/http_parser
 
 # Preprocessor definitions -D...
 DEFINES += -Dhttp_EXPORTS
