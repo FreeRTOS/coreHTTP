@@ -9,11 +9,11 @@ set(project_name "http")
 
 # list the files to mock here
 list(APPEND mock_list
-            ${MODULE_ROOT_DIR}/source/third-party/http_parser/http_parser.h
+            ${HTTP_PARSER_DIR}/http_parser.h
         )
 # list the directories your mocks need
 list(APPEND mock_include_list
-             ${MODULE_ROOT_DIR}/source/third-party/http_parser
+            ${HTTP_PARSER_DIR}
         )
 #list the definitions of your mocks to control what to be included
 list(APPEND mock_define_list

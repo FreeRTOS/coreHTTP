@@ -43,11 +43,14 @@ set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 # Include filepaths for source and include.
 include(httpFilePaths.cmake)
 
-# Add http_parser submodule to HTTP client library.
+# Define a http_parser resource path.
+set( HTTP_PARSER_DIR ${MODULE_ROOT_DIR}/source/third-party/http_parser CACHE INTERNAL "http-parser library source directory." )
+
+# Add the http_parser submodule to HTTP client library.
 add_subdirectory( source/third-party )
 
 # Check if the http_parser source directory exists.
-if( NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/source/third-party/http_parser/http_parser.c )
+if( NOT EXISTS ${HTTP_PARSER_DIR}/http_parser.c )
     # Attempt to clone http_parser.
     if( ${BUILD_CLONE_SUBMODULES} )
         clone_http_parser()

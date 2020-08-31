@@ -17,8 +17,8 @@ set( HTTP_INCLUDE_PUBLIC_DIRS
 # HTTP library Private Include directories.
 set( HTTP_INCLUDE_PRIVATE_DIRS
      ${MODULE_ROOT_DIR}/source
-     ${MODULE_ROOT_DIR}/source/third-party/http_parser )
+     ${HTTP_PARSER_DIR} )
 
 # HTTP library Include directories for Tests.
 set( HTTP_INCLUDE_THIRD_PARTY_DIRS
-     ${MODULE_ROOT_DIR}/source/third-party/http_parser )
+     ${HTTP_PARSER_DIR} )
