@@ -26,7 +26,7 @@
 
 #include "http_client.h"
 
-void harness()
+void HTTPClient_strerror_harness()
 {
     HTTPStatus_t status;
 

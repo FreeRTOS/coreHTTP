@@ -28,7 +28,7 @@
 
 #include "http_cbmc_state.h"
 
-void harness()
+void HTTPClient_ReadHeader_harness()
 {
     HTTPResponse_t * pResponse;
     char * pField;

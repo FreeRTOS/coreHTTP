@@ -28,7 +28,7 @@
 
 #include "http_cbmc_state.h"
 
-void harness()
+void HTTPClient_AddRangeHeader_harness()
 {
     HTTPRequestHeaders_t * pRequestHeaders;
     int32_t rangeStartOrlastNbytes;

@@ -19,8 +19,8 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-HARNESS_ENTRY=harness
-HARNESS_FILE=HTTPClient_InitializeRequestHeaders_harness
+HARNESS_ENTRY=HTTPClient_InitializeRequestHeaders_harness
+HARNESS_FILE=$(HARNESS_ENTRY)
 
 DEFINES +=
 INCLUDES +=
@@ -42,8 +42,8 @@ REMOVE_FUNCTION_BODY += memcpy
 UNWINDSET += strncmp.0:5
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
-PROOF_SOURCES += $(SRCDIR)/cbmc/sources/http_cbmc_state.c
-PROOF_SOURCES += $(SRCDIR)/cbmc/stubs/memcpy.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/memcpy.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/http_client.c
 

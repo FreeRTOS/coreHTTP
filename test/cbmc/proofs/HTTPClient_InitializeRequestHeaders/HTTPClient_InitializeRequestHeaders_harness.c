@@ -28,7 +28,7 @@
 
 #include "http_cbmc_state.h"
 
-void harness()
+void HTTPClient_InitializeRequestHeaders_harness()
 {
     HTTPRequestHeaders_t * pRequestHeaders;
     HTTPRequestInfo_t * pRequestInfo;

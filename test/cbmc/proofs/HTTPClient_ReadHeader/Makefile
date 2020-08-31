@@ -19,8 +19,8 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-HARNESS_ENTRY=harness
-HARNESS_FILE=HTTPClient_ReadHeader_harness
+HARNESS_ENTRY=HTTPClient_ReadHeader_harness
+HARNESS_FILE=$(HARNESS_ENTRY)
 
 DEFINES +=
 INCLUDES +=
@@ -38,8 +38,8 @@ REMOVE_FUNCTION_BODY += http_parser_settings_init
 UNWINDSET +=
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
-PROOF_SOURCES += $(SRCDIR)/cbmc/sources/http_cbmc_state.c
-PROOF_SOURCES += $(SRCDIR)/cbmc/stubs/HTTPClient_ReadHeader_http_parser_execute.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_ReadHeader_http_parser_execute.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/http_client.c
 
