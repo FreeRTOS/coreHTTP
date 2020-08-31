@@ -43,11 +43,14 @@ set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 # Include filepaths for source and include.
 include(httpFilePaths.cmake)
 
-# Add http_parser submodule to HTTP client library.
-add_subdirectory( source/third_party )
+# Define a http_parser resource path.
+set( HTTP_PARSER_DIR ${MODULE_ROOT_DIR}/source/third-party/http_parser CACHE INTERNAL "http-parser library source directory." )
+
+# Add the http_parser submodule to HTTP client library.
+add_subdirectory( source/third-party )
 
 # Check if the http_parser source directory exists.
-if( NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/source/third_party/http_parser/http_parser.c )
+if( NOT EXISTS ${HTTP_PARSER_DIR}/http_parser.c )
     # Attempt to clone http_parser.
     if( ${BUILD_CLONE_SUBMODULES} )
         clone_http_parser()
@@ -66,7 +69,7 @@ target_include_directories( http PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
 # HTTP private include path. The unit test is default build so we include the test
 # configuration for now.
 target_include_directories( http PRIVATE ${HTTP_INCLUDE_PRIVATE_DIRS}
-                            ${MODULE_ROOT_DIR}/test )
+                            ${MODULE_ROOT_DIR}/test/unit-test )
 
 # Link http_parser to http target.
 target_link_libraries( http PRIVATE http_parser )
@@ -79,12 +82,15 @@ source_group( source\\private FILES source/private/http_internal.h )
 
 # ============================ Test configurations =============================
 
+# Define a CMock resource path.
+set( CMOCK_DIR ${MODULE_ROOT_DIR}/test/unit-test/CMock CACHE INTERNAL "CMock library source directory." )
+
 # Include CMock build configuration.
-include( test/cmock_build.cmake )
+include( test/unit-test/cmock_build.cmake )
 
 # Check if the CMock source directory exists, and if not present, clone the submodule
 # if BUILD_CLONE_SUBMODULES configuration is enabled. 
-if( NOT EXISTS ${MODULE_ROOT_DIR}/test/CMock/src )
+if( NOT EXISTS ${CMOCK_DIR}/src )
     # Attempt to clone CMock.
     if( ${BUILD_CLONE_SUBMODULES} )
         clone_cmock()
@@ -94,7 +100,7 @@ if( NOT EXISTS ${MODULE_ROOT_DIR}/test/CMock/src )
 endif()
 
 # Add unit test and coverage configuration only if CMock directory exists.
-if( EXISTS ${MODULE_ROOT_DIR}/test/CMock/src )
+if( EXISTS ${CMOCK_DIR}/src )
 
     # Use CTest utility for managing test runs. This has to be added BEFORE
     # defining test targets with add_test()
@@ -107,7 +113,7 @@ if( EXISTS ${MODULE_ROOT_DIR}/test/CMock/src )
     include("${MODULE_ROOT_DIR}/tools/cmock/create_test.cmake")
 
     # Include build configuration for unit tests.
-    add_subdirectory( test )
+    add_subdirectory( test/unit-test )
     
     # Add a target for running coverage on tests.
     add_custom_target(coverage
