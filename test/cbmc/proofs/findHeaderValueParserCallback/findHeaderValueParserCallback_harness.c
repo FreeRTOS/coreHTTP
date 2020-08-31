@@ -29,7 +29,7 @@
 #include "http_client.h"
 
 
-void harness()
+void findHeaderValueParserCallback_harness()
 {
     http_parser * pHttpParser;
     HTTPResponse_t * pResponse;

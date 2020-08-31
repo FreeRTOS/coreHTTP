@@ -28,7 +28,7 @@
 #include "http_cbmc_state.h"
 #include "transport_interface_stubs.h"
 
-void harness()
+void HTTPClient_Send_harness()
 {
     HTTPRequestHeaders_t * pRequestHeaders;
     HTTPResponse_t * pResponse;

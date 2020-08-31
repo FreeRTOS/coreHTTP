@@ -29,7 +29,7 @@
 #include "callback_stubs.h"
 
 
-void harness()
+void httpParserOnHeadersCompleteCallback_harness()
 {
     http_parser * pHttpParser;
     HTTPParsingContext_t * pParsingContext;

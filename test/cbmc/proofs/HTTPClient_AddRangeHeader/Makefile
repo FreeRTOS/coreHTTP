@@ -19,8 +19,8 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-HARNESS_ENTRY=harness
-HARNESS_FILE=HTTPClient_AddRangeHeader_harness
+HARNESS_ENTRY=HTTPClient_AddRangeHeader_harness
+HARNESS_FILE=$(HARNESS_ENTRY)
 
 DEFINES +=
 INCLUDES +=
@@ -32,7 +32,7 @@ UNWINDSET += __CPROVER_file_local_http_client_c_convertInt32ToAscii.0:11
 UNWINDSET += __CPROVER_file_local_http_client_c_convertInt32ToAscii.1:11
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
-PROOF_SOURCES += $(SRCDIR)/cbmc/sources/http_cbmc_state.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/http_client.c
 

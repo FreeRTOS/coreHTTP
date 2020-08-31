@@ -28,7 +28,7 @@
 #include "http_parser.h"
 #include "http_client.h"
 
-void harness()
+void httpParserOnStatusCallback_harness()
 {
     http_parser * pHttpParser;
     HTTPParsingContext_t * pParsingContext;
