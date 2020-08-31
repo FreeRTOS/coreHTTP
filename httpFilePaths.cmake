@@ -7,16 +7,16 @@
 
 # HTTP library source files.
 set( HTTP_SOURCES
-     ${MODULE_ROOT_DIR}/source/http_client.c )
+     ${CMAKE_CURRENT_LIST_DIR}/source/http_client.c )
 
 # HTTP library Public Include directories.
 set( HTTP_INCLUDE_PUBLIC_DIRS
-     ${MODULE_ROOT_DIR}/source/include
-     ${MODULE_ROOT_DIR}/source/portable )
+     ${CMAKE_CURRENT_LIST_DIR}/source/include
+     ${CMAKE_CURRENT_LIST_DIR}/source/portable )
 
 # HTTP library Private Include directories.
 set( HTTP_INCLUDE_PRIVATE_DIRS
-     ${MODULE_ROOT_DIR}/source
+     ${CMAKE_CURRENT_LIST_DIR}/source
      ${HTTP_PARSER_DIR} )
 
 # HTTP library Include directories for Tests.
