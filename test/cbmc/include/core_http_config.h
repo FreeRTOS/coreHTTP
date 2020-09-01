@@ -19,9 +19,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef HTTP_CONFIG_H
-#define HTTP_CONFIG_H
+#ifndef CORE_HTTP_CONFIG_H
+#define CORE_HTTP_CONFIG_H
 
 /* Empty configuration header simply for compilation. */
 
-#endif /* ifndef HTTP_CONFIG_H */
+#endif /* ifndef CORE_HTTP_CONFIG_H */
