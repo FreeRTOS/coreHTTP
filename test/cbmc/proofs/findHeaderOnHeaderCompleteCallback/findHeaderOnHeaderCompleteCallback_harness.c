@@ -35,5 +35,5 @@ void findHeaderOnHeaderCompleteCallback_harness()
 
     pHttpParser = allocateHttpReadHeaderParser( NULL );
 
-    __CPROVER_file_local_http_client_c_findHeaderOnHeaderCompleteCallback( pHttpParser );
+    __CPROVER_file_local_core_http_client_c_findHeaderOnHeaderCompleteCallback( pHttpParser );
 }

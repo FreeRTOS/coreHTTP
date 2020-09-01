@@ -59,5 +59,5 @@ void findHeaderValueParserCallback_harness()
     pFindHeaderContext->valueFound = 0;
     pHttpParser->data = ( void * ) pFindHeaderContext;
 
-    __CPROVER_file_local_http_client_c_findHeaderValueParserCallback( pHttpParser, pValueLoc, valueLen );
+    __CPROVER_file_local_core_http_client_c_findHeaderValueParserCallback( pHttpParser, pValueLoc, valueLen );
 }

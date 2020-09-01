@@ -26,9 +26,9 @@ DEFINES +=
 INCLUDES +=
 
 # The memory safety of the http-parser callbacks are proven separately.
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_findHeaderFieldParserCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_findHeaderValueParserCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_findHeaderOnHeaderCompleteCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderFieldParserCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderValueParserCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderOnHeaderCompleteCallback
 
 # Remove any unused functions for http parser
 REMOVE_FUNCTION_BODY += http_parser_init

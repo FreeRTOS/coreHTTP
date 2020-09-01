@@ -34,5 +34,5 @@ void httpParserOnMessageBeginCallback_harness()
 
     pHttpParser = allocateHttpSendParser( NULL );
 
-    __CPROVER_file_local_http_client_c_httpParserOnMessageBeginCallback( pHttpParser );
+    __CPROVER_file_local_core_http_client_c_httpParserOnMessageBeginCallback( pHttpParser );
 }

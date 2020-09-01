@@ -46,5 +46,5 @@ void httpParserOnHeaderValueCallback_harness()
     __CPROVER_assume( locOffset < length );
     pLoc = pResponse->pBuffer + locOffset;
 
-    __CPROVER_file_local_http_client_c_httpParserOnHeaderValueCallback( pHttpParser, pLoc, length );
+    __CPROVER_file_local_core_http_client_c_httpParserOnHeaderValueCallback( pHttpParser, pLoc, length );
 }
