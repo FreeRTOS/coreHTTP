@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <string.h>
 
-#include "http_client.h"
-#include "private/http_client_internal.h"
+#include "core_http_client.h"
+#include "private/core_http_client_internal.h"
 
 /*-----------------------------------------------------------*/
 

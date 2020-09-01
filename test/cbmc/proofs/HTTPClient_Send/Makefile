@@ -58,6 +58,6 @@ PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_Send_http_parser_execute.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/transport_interface_stubs.c
 
-PROJECT_SOURCES += $(SRCDIR)/source/http_client.c
+PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
 include ../Makefile.common

@@ -24,7 +24,7 @@
 
 #include <stdint.h>
 
-#include "http_client.h"
+#include "core_http_client.h"
 
 #ifndef MAX_TRIES
     #define MAX_TRIES    5

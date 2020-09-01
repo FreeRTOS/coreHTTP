@@ -26,7 +26,7 @@
 
 #include "http_cbmc_state.h"
 #include "http_parser.h"
-#include "http_client.h"
+#include "core_http_client.h"
 
 
 void findHeaderOnHeaderCompleteCallback_harness()

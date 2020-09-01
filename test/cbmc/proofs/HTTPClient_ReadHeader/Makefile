@@ -41,7 +41,7 @@ PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_ReadHeader_http_parser_execute.c
 
-PROJECT_SOURCES += $(SRCDIR)/source/http_client.c
+PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
 
 include ../Makefile.common

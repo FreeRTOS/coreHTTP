@@ -17,6 +17,6 @@ UNWINDSET += strncmp.0:$(MAX_HEADER_FIELD_LENGTH)
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 
-PROJECT_SOURCES += $(SRCDIR)/source/http_client.c
+PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
 include ../Makefile.common

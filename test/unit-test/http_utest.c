@@ -3,10 +3,10 @@
 #include "unity.h"
 
 /* Include paths for public enums, structures, and macros. */
-#include "http_client.h"
+#include "core_http_client.h"
 
 /* Private includes for internal macros. */
-#include "private/http_client_internal.h"
+#include "private/core_http_client_internal.h"
 
 /* Include mock implementation of http-parser dependency. */
 #include "mock_http_parser.h"

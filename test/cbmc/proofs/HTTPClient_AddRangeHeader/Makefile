@@ -34,6 +34,6 @@ UNWINDSET += __CPROVER_file_local_http_client_c_convertInt32ToAscii.1:11
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 
-PROJECT_SOURCES += $(SRCDIR)/source/http_client.c
+PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
 include ../Makefile.common
