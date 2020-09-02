@@ -58,7 +58,7 @@ endif()
 set( CMOCK_DIR ${MODULE_ROOT_DIR}/test/unit-test/CMock CACHE INTERNAL "CMock library source directory." )
 
 # Include CMock build configuration.
-include( ${MODULE_ROOT_DIR}/test/unit-test/cmock_build.cmake )
+include( cmock_build.cmake )
 
 # Check if the CMock source directory exists, and if not present, clone the submodule
 # if BUILD_CLONE_SUBMODULES configuration is enabled. 
@@ -84,11 +84,11 @@ add_cmock_targets()
 include( ${MODULE_ROOT_DIR}/tools/cmock/create_test.cmake )
 
 # Include build configuration for unit tests.
-include( ${MODULE_ROOT_DIR}/test/unit-test/unit_test_build.cmake )
+include( unit_test_build.cmake )
 
 # Add a target for running coverage on tests.
 add_custom_target( coverage
-        COMMAND ${CMAKE_COMMAND} -P ${MODULE_ROOT_DIR}/tools/cmock/coverage.cmake
-        DEPENDS cmock unity core_http_utest core_http_send_utest
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    COMMAND ${CMAKE_COMMAND} -P ${MODULE_ROOT_DIR}/tools/cmock/coverage.cmake
+    DEPENDS cmock unity core_http_utest core_http_send_utest
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
