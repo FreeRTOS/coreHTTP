@@ -71,26 +71,24 @@ if( NOT EXISTS ${CMOCK_DIR}/src )
     endif()
 endif()
 
-# Add unit test and coverage configuration only if CMock directory exists.
-if( EXISTS ${CMOCK_DIR}/src )
+# Add unit test and coverage configuration.
 
-    # Use CTest utility for managing test runs. This has to be added BEFORE
-    # defining test targets with add_test()
-    enable_testing()
+# Use CTest utility for managing test runs. This has to be added BEFORE
+# defining test targets with add_test()
+enable_testing()
 
-    # Add build targets for CMock and Unit, required for unit testing.
-    add_cmock_targets()
+# Add build targets for CMock and Unit, required for unit testing.
+add_cmock_targets()
 
-    # Add function to enable CMock based tests and coverage.
-    include( ${MODULE_ROOT_DIR}/tools/cmock/create_test.cmake )
+# Add function to enable CMock based tests and coverage.
+include( ${MODULE_ROOT_DIR}/tools/cmock/create_test.cmake )
 
-    # Include build configuration for unit tests.
-    include( ${MODULE_ROOT_DIR}/test/unit-test/unit_test_build.cmake )
-    
-    # Add a target for running coverage on tests.
-    add_custom_target( coverage
+# Include build configuration for unit tests.
+include( ${MODULE_ROOT_DIR}/test/unit-test/unit_test_build.cmake )
+
+# Add a target for running coverage on tests.
+add_custom_target( coverage
         COMMAND ${CMAKE_COMMAND} -P ${MODULE_ROOT_DIR}/tools/cmock/coverage.cmake
         DEPENDS cmock unity core_http_utest core_http_send_utest
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    )
-endif()
+)
