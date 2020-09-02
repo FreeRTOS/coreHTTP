@@ -3,6 +3,7 @@ addrangerequest
 api
 bufferlen
 chunked
+com
 doesn
 endif
 enums
@@ -16,9 +17,11 @@ headerslen
 hostlen
 http
 ifndef
+inc
 init
 methodlen
 networkcontext
+noninfringement
 ok
 onheadercallback
 param
@@ -42,4 +45,5 @@ senderrorcall
 sendpartialcall
 snprintf
 strchr
+sublicense
 valuelen
