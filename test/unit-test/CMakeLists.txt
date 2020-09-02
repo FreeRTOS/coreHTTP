@@ -3,7 +3,7 @@ project ("http unit test")
 cmake_minimum_required (VERSION 3.13)
 
 # ====================  Define your project name (edit) ========================
-set(project_name "http")
+set(project_name "core_http")
 
 # =====================  Create your mock here  (edit)  ========================
 
