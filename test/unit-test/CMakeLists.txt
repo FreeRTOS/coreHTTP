@@ -18,7 +18,7 @@ endif()
 
 # Set global path variables.
 get_filename_component(__MODULE_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
-set(MODULE_ROOT_DIR ${__MODULE_ROOT_DIR} CACHE INTERNAL "HTTP source root.")
+set(MODULE_ROOT_DIR ${__MODULE_ROOT_DIR} CACHE INTERNAL "coreHTTP source root.")
 
 # Configure options to always show in CMake GUI.
 option( BUILD_CLONE_SUBMODULES
@@ -35,15 +35,12 @@ set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 # Include filepaths for source and include.
 include( ${MODULE_ROOT_DIR}/httpFilePaths.cmake )
 
-# Define a http_parser resource path.
-set( HTTP_PARSER_DIR ${MODULE_ROOT_DIR}/source/third-party/http_parser CACHE INTERNAL "http-parser library source directory." )
-
 # Add the http_parser submodule to HTTP client library. It is out of the
 # unit-test tree and therefor needs it's own binary directory.
 add_subdirectory( ${MODULE_ROOT_DIR}/source/third-party ./build-http-parser )
 
 # Check if the http_parser source directory exists.
-if( NOT EXISTS ${HTTP_PARSER_DIR}/http_parser.c )
+if( NOT EXISTS ${HTTP_INCLUDE_THIRD_PARTY_DIRS}/http_parser.c )
     # Attempt to clone http_parser.
     if( ${BUILD_CLONE_SUBMODULES} )
         clone_http_parser()
