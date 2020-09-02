@@ -1,8 +1,8 @@
-#ifndef HTTP_CLIENT_INTERNAL_H_
-#define HTTP_CLIENT_INTERNAL_H_
+#ifndef CORE_HTTP_CLIENT_INTERNAL_H_
+#define CORE_HTTP_CLIENT_INTERNAL_H_
 
 /* Include config file before other headers. */
-#include "http_config.h"
+#include "core_http_config.h"
 #include "http_parser.h"
 
 #ifndef LogError
@@ -248,4 +248,4 @@ typedef struct HTTPParsingContext
     size_t lastHeaderValueLen;     /**< The length of the last value field parsed. */
 } HTTPParsingContext_t;
 
-#endif /* ifndef HTTP_CLIENT_INTERNAL_H_ */
+#endif /* ifndef CORE_HTTP_CLIENT_INTERNAL_H_ */

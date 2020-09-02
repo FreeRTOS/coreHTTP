@@ -26,9 +26,9 @@ DEFINES +=
 INCLUDES +=
 
 # The memory safety of the http-parser callbacks are proven separately.
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_findHeaderFieldParserCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_findHeaderValueParserCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_findHeaderOnHeaderCompleteCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderFieldParserCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderValueParserCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderOnHeaderCompleteCallback
 
 # Remove any unused functions for http parser
 REMOVE_FUNCTION_BODY += http_parser_init
@@ -41,7 +41,7 @@ PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_ReadHeader_http_parser_execute.c
 
-PROJECT_SOURCES += $(SRCDIR)/source/http_client.c
+PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
 
 include ../Makefile.common

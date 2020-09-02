@@ -24,7 +24,7 @@
  * @brief Implements the proof harness for HTTPClient_strerror function.
  */
 
-#include "http_client.h"
+#include "core_http_client.h"
 
 void HTTPClient_strerror_harness()
 {

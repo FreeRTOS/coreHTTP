@@ -26,7 +26,7 @@
 
 #include "http_cbmc_state.h"
 #include "http_parser.h"
-#include "http_client.h"
+#include "core_http_client.h"
 
 
 void findHeaderValueParserCallback_harness()
@@ -59,5 +59,5 @@ void findHeaderValueParserCallback_harness()
     pFindHeaderContext->valueFound = 0;
     pHttpParser->data = ( void * ) pFindHeaderContext;
 
-    __CPROVER_file_local_http_client_c_findHeaderValueParserCallback( pHttpParser, pValueLoc, valueLen );
+    __CPROVER_file_local_core_http_client_c_findHeaderValueParserCallback( pHttpParser, pValueLoc, valueLen );
 }

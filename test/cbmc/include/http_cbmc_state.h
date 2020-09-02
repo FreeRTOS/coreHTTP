@@ -25,8 +25,8 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "http_client.h"
-#include "private/http_client_internal.h"
+#include "core_http_client.h"
+#include "private/core_http_client_internal.h"
 #include "http_parser.h"
 #include "transport_interface_stubs.h"
 

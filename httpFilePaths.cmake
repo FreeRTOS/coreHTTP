@@ -7,7 +7,7 @@
 
 # HTTP library source files.
 set( HTTP_SOURCES
-     ${CMAKE_CURRENT_LIST_DIR}/source/http_client.c )
+     ${CMAKE_CURRENT_LIST_DIR}/source/core_http_client.c )
 
 # HTTP library Public Include directories.
 set( HTTP_INCLUDE_PUBLIC_DIRS

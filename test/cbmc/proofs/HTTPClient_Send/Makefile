@@ -27,18 +27,18 @@ INCLUDES +=
 
 # We remove these function bodies so that they aren't categorized as possible
 # function pointer targets, leading to faster execution time.
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_findHeaderFieldParserCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_findHeaderValueParserCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderFieldParserCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderValueParserCallback
 # The memory safety of the http-parser callbacks are proven separately. The
 # proofs for the functions below must have assumptions that are satisfied by the
 # calling context in HTTPClient_Send.
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_httpParserOnBodyCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_httpParserOnHeaderFieldCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_httpParserOnHeaderValueCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_httpParserOnStatusCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_httpParserOnHeadersCompleteCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_httpParserOnMessageBeginCallback
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_http_client_c_httpParserOnMessageCompleteCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnBodyCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnHeaderFieldCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnHeaderValueCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnStatusCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnHeadersCompleteCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMessageBeginCallback
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMessageCompleteCallback
 
 # Remove any unused functions for http parser
 REMOVE_FUNCTION_BODY += http_parser_init
@@ -47,10 +47,10 @@ REMOVE_FUNCTION_BODY += http_parser_settings_init
 
 # There is a total of 10 digits in INT32_MAX. These loops are unwound once more
 # than the total possible iterations in the int32_t to ASCII converation.
-UNWINDSET += __CPROVER_file_local_http_client_c_convertInt32ToAscii.0:11
-UNWINDSET += __CPROVER_file_local_http_client_c_convertInt32ToAscii.1:11
-UNWINDSET += __CPROVER_file_local_http_client_c_receiveAndParseHttpResponse.0:10
-UNWINDSET += __CPROVER_file_local_http_client_c_sendHttpData.0:10
+UNWINDSET += __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0:11
+UNWINDSET += __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1:11
+UNWINDSET += __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0:10
+UNWINDSET += __CPROVER_file_local_core_http_client_c_sendHttpData.0:10
 UNWINDSET += strncmp.0:5
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
@@ -58,6 +58,6 @@ PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_Send_http_parser_execute.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/transport_interface_stubs.c
 
-PROJECT_SOURCES += $(SRCDIR)/source/http_client.c
+PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
 include ../Makefile.common

@@ -1,10 +1,10 @@
-#ifndef HTTP_CLIENT_H_
-#define HTTP_CLIENT_H_
+#ifndef CORE_HTTP_CLIENT_H_
+#define CORE_HTTP_CLIENT_H_
 
 #include <stdint.h>
 #include <stddef.h>
 /* Include config file before other headers. */
-#include "http_config.h"
+#include "core_http_config.h"
 /* Transport interface include. */
 #include "transport_interface.h"
 
@@ -684,4 +684,4 @@ HTTPStatus_t HTTPClient_ReadHeader( const HTTPResponse_t * pResponse,
  */
 const char * HTTPClient_strerror( HTTPStatus_t status );
 
-#endif /* ifndef HTTP_CLIENT_H_ */
+#endif /* ifndef CORE_HTTP_CLIENT_H_ */

@@ -24,7 +24,7 @@
  * @brief Implements the proof harness for HTTPClient_ReadHeader function.
  */
 
-#include "http_client.h"
+#include "core_http_client.h"
 
 #include "http_cbmc_state.h"
 

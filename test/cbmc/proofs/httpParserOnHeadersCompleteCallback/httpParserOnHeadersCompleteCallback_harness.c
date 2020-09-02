@@ -52,5 +52,5 @@ void httpParserOnHeadersCompleteCallback_harness()
     /* This assumption suppresses an overflow error when incrementing pResponse->headerCount. */
     __CPROVER_assume( pResponse->headerCount < SIZE_MAX );
 
-    __CPROVER_file_local_http_client_c_httpParserOnHeadersCompleteCallback( pHttpParser );
+    __CPROVER_file_local_core_http_client_c_httpParserOnHeadersCompleteCallback( pHttpParser );
 }

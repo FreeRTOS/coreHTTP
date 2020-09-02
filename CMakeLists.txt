@@ -76,7 +76,7 @@ target_link_libraries( http PRIVATE http_parser )
 
 # Organization of HTTP in IDE projects.
 set_target_properties( http PROPERTIES FOLDER libraries/standard )
-source_group( include FILES source/include/http_client.h source/portable/transport_interface.h )
+source_group( include FILES source/include/core_http_client.h source/portable/transport_interface.h )
 source_group( source FILES ${HTTP_SOURCES} )
 source_group( source\\private FILES source/private/http_internal.h )
 
