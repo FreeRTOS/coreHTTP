@@ -2,7 +2,7 @@
 macro( clone_http_parser )
         find_package( Git REQUIRED )
         message( "Cloning submodule http_parser." )
-        execute_process( COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive ${HTTP_PARSER_DIR}
+        execute_process( COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive ${HTTP_INCLUDE_THIRD_PARTY_DIRS}
                         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
                         RESULT_VARIABLE HTTP_PARSER_CLONE_RESULT )
 
