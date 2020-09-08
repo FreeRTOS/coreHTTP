@@ -126,6 +126,7 @@ statuscode
 struct
 sublicense
 tcp
+tcpsocketcontext
 tls
 tlscontext
 tlsrecv
