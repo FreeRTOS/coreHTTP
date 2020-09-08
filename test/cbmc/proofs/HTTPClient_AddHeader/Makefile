@@ -42,7 +42,7 @@ REMOVE_FUNCTION_BODY += memcpy
 
 UNWINDSET += strncmp.0:5
 
-PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c 
+PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/memcpy.c
 
