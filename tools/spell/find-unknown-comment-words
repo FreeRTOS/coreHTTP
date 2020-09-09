@@ -105,6 +105,7 @@ do
 
     for file in `find $DIRNAME -name \*.[ch]`
     do
+        # Each of the submodules in this repo are ignored.
         if [[ $file == *"CMock"* ]]
         then
             continue
