@@ -190,7 +190,10 @@ toascii
 totalreceived
 transportcallback
 transportinterface
+transportpage
 transportrecv
+transportsectionimplementation
+transportsectionoverview
 transportsend
 transportstatus
 transportstruct
