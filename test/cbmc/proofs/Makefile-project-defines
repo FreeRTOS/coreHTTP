@@ -10,6 +10,9 @@
 # Makefile.common.
 ################################################################
 
+PROJECT_NAME = "FreeRTOS coreHTTP"
+LITANI = $(SRCDIR)/test/cbmc/litani/litani
+
 # Flags to pass to goto-cc for compilation (typically those passed to gcc -c)
 COMPILE_FLAGS += -fPIC
 COMPILE_FLAGS += -std=gnu90

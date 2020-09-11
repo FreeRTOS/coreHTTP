@@ -1,6 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+PROOF_UID=httpParserOnBodyCallback
 HARNESS_ENTRY=httpParserOnBodyCallback_harness
 HARNESS_FILE=$(HARNESS_ENTRY)
 
