@@ -24,6 +24,7 @@ const
 contentlength
 convertint
 copybrief
+corehttp
 coverity
 cprover
 datalen
