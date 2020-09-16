@@ -58,11 +58,9 @@ HTTP Client Library Design
 Configuration settings are C pre-processor constants. They can be set with a \#define in the config file (core_http_config.h) or by using a compiler option such as -D in gcc.
 
 @section HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
-<br>
 @copydoc HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
 
 @section HTTP_USER_AGENT_VALUE
-<br>
 @copydoc HTTP_USER_AGENT_VALUE
 
 @section http_logerror LogError
