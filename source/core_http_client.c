@@ -20,6 +20,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file core_http_client.c
+ * @brief Implements the user-facing functions in core_http_client.h.
+ */
+
 #include <assert.h>
 #include <string.h>
 

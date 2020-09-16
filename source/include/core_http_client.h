@@ -20,6 +20,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file core_http_client.h
+ * @brief User facing functions of the HTTP Client library.
+ */
+
 #ifndef CORE_HTTP_CLIENT_H_
 #define CORE_HTTP_CLIENT_H_
 
@@ -59,15 +64,14 @@
     #define HTTP_USER_AGENT_VALUE    "my-platform-name"
 #endif
 
-/**
- * @brief Supported HTTP request methods.
- */
-#define HTTP_METHOD_GET                          "GET"  /**< HTTP Method GET. */
-#define HTTP_METHOD_PUT                          "PUT"  /**< HTTP Method PUT. */
-#define HTTP_METHOD_POST                         "POST" /**< HTTP Method POST. */
-#define HTTP_METHOD_HEAD                         "HEAD" /**< HTTP Method HEAD. */
+/* Convenience macros for some HTTP request methods. */
+#define HTTP_METHOD_GET                          "GET"  /**< @ingroup http_constants @brief HTTP Method GET string. */
+#define HTTP_METHOD_PUT                          "PUT"  /**< @ingroup http_constants @brief HTTP Method PUT string. */
+#define HTTP_METHOD_POST                         "POST" /**< @ingroup http_constants @brief HTTP Method POST string. */
+#define HTTP_METHOD_HEAD                         "HEAD" /**< @ingroup http_constants @brief HTTP Method HEAD string. */
 
 /**
+ * @ingroup http_constants
  * @brief The maximum Content-Length header field and value that could be
  * written to the request header buffer.
  */
@@ -87,6 +91,7 @@
  */
 
 /**
+ * @ingroup http_constants
  * @brief Set this flag to disable automatically writing the Content-Length
  * header to send to the server.
  *
@@ -95,6 +100,7 @@
 #define HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG    0x1U
 
 /**
+ * @ingroup http_constants
  * @section http_request_flags
  * @brief Flags for #HTTPRequestInfo_t.reqFlags.
  * These flags control what headers are written or not to the
@@ -108,6 +114,7 @@
  */
 
 /**
+ * @ingroup http_constants
  * @brief Set this flag to indicate that the request is for a persistent
  * connection.
  *
@@ -131,6 +138,7 @@
  */
 
 /**
+ * @ingroup http_constants
  * @brief This will be set to true if header "Connection: close" is found.
  *
  * If a "Connection: close" header is present the application should always
@@ -141,6 +149,7 @@
 #define HTTP_RESPONSE_CONNECTION_CLOSE_FLAG         0x1U
 
 /**
+ * @ingroup http_constants
  * @brief This will be set to true if header "Connection: Keep-Alive" is found.
  *
  * This flag is valid only for #HTTPResponse_t.respFlags.
@@ -148,6 +157,7 @@
 #define HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG    0x2U
 
 /**
+ * @ingroup http_constants
  * @brief Flag that represents End of File byte in the range specification of
  * a Range Request.
  * This flag should be used ONLY for 2 kinds of range specifications when
@@ -161,6 +171,7 @@
 #define HTTP_RANGE_REQUEST_END_OF_FILE              -1
 
 /**
+ * @ingroup http_enum_types
  * @brief The HTTP Client library return status.
  */
 typedef enum HTTPStatus
@@ -318,6 +329,7 @@ typedef enum HTTPStatus
 } HTTPStatus_t;
 
 /**
+ * @ingroup http_struct_types
  * @brief Represents header data that will be sent in an HTTP request.
  *
  * The memory for the header data buffer is supplied by the user. Information in
@@ -355,6 +367,7 @@ typedef struct HTTPRequestHeaders
 } HTTPRequestHeaders_t;
 
 /**
+ * @ingroup http_struct_types
  * @brief Configurations of the initial request headers.
  */
 typedef struct HTTPRequestInfo
@@ -388,6 +401,7 @@ typedef struct HTTPRequestInfo
 
 
 /**
+ * @ingroup http_struct_types
  * @brief Callback to intercept headers during the first parse through of the
  * response as it is received from the network.
  */
@@ -414,6 +428,7 @@ typedef struct HTTPClient_ResponseHeaderParsingCallback
 } HTTPClient_ResponseHeaderParsingCallback_t;
 
 /**
+ * @ingroup http_struct_types
  * @brief Represents an HTTP response.
  */
 typedef struct HTTPResponse
@@ -526,8 +541,10 @@ typedef struct HTTPResponse
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If provided buffer size is not large enough to hold headers.)
  */
+/* @[declare_httpclient_initializerequestheaders] */
 HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pRequestHeaders,
                                                   const HTTPRequestInfo_t * pRequestInfo );
+/* @[declare_httpclient_initializerequestheaders] */
 
 /**
  * @brief Add a header to the request headers stored in
@@ -556,11 +573,13 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If application-provided buffer is not large enough to hold headers.)
  */
+/* @[declare_httpclient_addheader] */
 HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                    const char * pField,
                                    size_t fieldLen,
                                    const char * pValue,
                                    size_t valueLen );
+/* @[declare_httpclient_addheader] */
 
 /**
  * @brief Add the byte range request header to the request headers store in
@@ -605,9 +624,11 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * #HTTP_INSUFFICIENT_MEMORY, if the passed #HTTPRequestHeaders_t.pBuffer
  * contains insufficient remaining memory for storing the range request.
  */
+/* @[declare_httpclient_addrangeheader] */
 HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                         int32_t rangeStartOrlastNbytes,
                                         int32_t rangeEnd );
+/* @[declare_httpclient_addrangeheader] */
 
 /**
  * @brief Send the request headers in #HTTPRequestHeaders_t.pBuffer and request
@@ -664,12 +685,14 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
  */
+/* @[declare_httpclient_send] */
 HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                               HTTPRequestHeaders_t * pRequestHeaders,
                               const uint8_t * pRequestBodyBuf,
                               size_t reqBodyBufLen,
                               HTTPResponse_t * pResponse,
                               uint32_t sendFlags );
+/* @[declare_httpclient_send] */
 
 /**
  * @brief Read a header from a buffer containing a complete HTTP response.
@@ -695,11 +718,13 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * - #HTTP_INVALID_RESPONSE (Provided response is not a valid HTTP response for parsing.)
  * - #HTTP_PARSER_INTERNAL_ERROR(If an error in the response parser.)
  */
+/* @[declare_httpclient_readheader] */
 HTTPStatus_t HTTPClient_ReadHeader( const HTTPResponse_t * pResponse,
                                     const char * pField,
                                     size_t fieldLen,
                                     const char ** pValueLoc,
                                     size_t * pValueLen );
+/* @[declare_httpclient_readheader] */
 
 /**
  * @brief Error code to string conversion utility for HTTP Client library.
@@ -710,6 +735,8 @@ HTTPStatus_t HTTPClient_ReadHeader( const HTTPResponse_t * pResponse,
  *
  * @return The string representation of the status code.
  */
+/* @[declare_httpclient_strerror] */
 const char * HTTPClient_strerror( HTTPStatus_t status );
+/* @[declare_httpclient_strerror] */
 
 #endif /* ifndef CORE_HTTP_CLIENT_H_ */

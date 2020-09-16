@@ -20,6 +20,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file core_http_client_internal.c
+ * @brief Internal definitions to the HTTP Client library.
+ */
+
 #ifndef CORE_HTTP_CLIENT_INTERNAL_H_
 #define CORE_HTTP_CLIENT_INTERNAL_H_
 

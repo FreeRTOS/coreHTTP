@@ -69,21 +69,36 @@ Configuration settings are C pre-processor constants. They can be set with a \#d
 /**
 @page http_functions Functions
 @brief Primary functions of the HTTP Client library:<br><br>
-@subpage [<FIXME: Lowercase function name>]_function <br>
-@subpage [<FIXME: Lowercase function name>]_function <br>
-@subpage [<FIXME: Lowercase function name>]_function <br>
+@subpage httpclient_initializerequestheaders_function <br>
+@subpage httpclient_addheader_function <br>
+@subpage httpclient_addrangeheader_function <br>
+@subpage httpclient_send_function <br>
+@subpage httpclient_readheader_function <br>
+@subpage httpclient_strerror_function <br>
 
-@page [<FIXME: Lowercase function name>]_function [<FIXME: Function name>]
-@snippet [<FIXME: library header file>] declare_[<FIXME: Lowercase function name>]
-@copydoc [<FIXME: Function name>]
+@page httpclient_initializerequestheaders_function HTTPClient_InitializeRequestHeaders
+@snippet core_http_client.h declare_httpclient_initializerequestheaders
+@copydoc HTTPClient_InitializeRequestHeaders
 
-@page [<FIXME: Lowercase function name>]_function [<FIXME: Function name>]
-@snippet [<FIXME: library header file>] declare_[<FIXME: Lowercase function name>]
-@copydoc [<FIXME: Function name>]
+@page httpclient_addheader_function HTTPClient_AddHeader
+@snippet core_http_client.h declare_httpclient_addheader
+@copydoc HTTPClient_AddHeader
 
-@page [<FIXME: Lowercase function name>]_function [<FIXME: Function name>]
-@snippet [<FIXME: library header file>] declare_[<FIXME: Lowercase function name>]
-@copydoc [<FIXME: Function name>]
+@page httpclient_addrangeheader_function HTTPClient_AddRangeHeader
+@snippet core_http_client.h declare_httpclient_addrangeheader
+@copydoc HTTPClient_AddRangeHeader
+
+@page httpclient_send_function HTTPClient_Send
+@snippet core_http_client.h declare_httpclient_send
+@copydoc HTTPClient_Send
+
+@page httpclient_readheader_function HTTPClient_ReadHeader
+@snippet core_http_client.h declare_httpclient_readheader
+@copydoc HTTPClient_ReadHeader
+
+@page httpclient_strerror_function HTTPClient_strerror
+@snippet core_http_client.h declare_httpclient_strerror
+@copydoc HTTPClient_strerror
 */
 
 <!-- We do not use doxygen ALIASes here because there have been issues in the past versions with "^^" newlines within the alias definition. -->
@@ -99,7 +114,7 @@ Configuration settings are C pre-processor constants. They can be set with a \#d
 
 /**
 @defgroup http_struct_types Parameter Structures
-@brief Structures passed as parameters to [<[FIXME: Library name>] library functions](@ref http_functions)
+@brief Structures passed as parameters to [HTTP Client library functions](@ref http_functions)
 
 These structures are passed as parameters to library functions. Documentation for these structures will state the functions associated with each parameter structure and the purpose of each member.
 */
