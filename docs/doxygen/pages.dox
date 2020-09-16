@@ -64,6 +64,18 @@ Configuration settings are C pre-processor constants. They can be set with a \#d
 @section HTTP_USER_AGENT_VALUE
 <br>
 @copydoc HTTP_USER_AGENT_VALUE
+
+@section http_logerror LogError
+@copydoc LogError
+
+@section http_logwarn LogWarn
+@copydoc LogWarn
+
+@section http_loginfo LogInfo
+@copydoc LogInfo
+
+@section http_logdebug LogDebug
+@copydoc LogDebug
 */
 
 /**

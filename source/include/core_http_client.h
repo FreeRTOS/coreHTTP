@@ -95,7 +95,7 @@
  * @brief Set this flag to disable automatically writing the Content-Length
  * header to send to the server.
  *
- * This flag is valid only for #HTTPClient_Send.sendFlags.
+ * This flag is valid only for #HTTPClient_Send sendFlags parameter.
  */
 #define HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG    0x1U
 
@@ -104,7 +104,7 @@
  * @section http_request_flags
  * @brief Flags for #HTTPRequestInfo_t.reqFlags.
  * These flags control what headers are written or not to the
- * #HttpRequestHeaders_t.pBuffer by #HTTPClient_InitializeRequestHeaders.
+ * #HTTPRequestHeaders_t.pBuffer by #HTTPClient_InitializeRequestHeaders.
  *
  * - #HTTP_REQUEST_KEEP_ALIVE_FLAG <br>
  *   @copybrief HTTP_REQUEST_KEEP_ALIVE_FLAG
@@ -121,7 +121,7 @@
  * Setting this will cause a "Connection: Keep-Alive" to be written to the
  * request headers.
  *
- * This flag is valid only for #HTTPRequestInfo.reqFlags.
+ * This flag is valid only for #HTTPRequestInfo_t reqFlags parameter.
  */
 #define HTTP_REQUEST_KEEP_ALIVE_FLAG    0x1U
 
@@ -423,7 +423,9 @@ typedef struct HTTPClient_ResponseHeaderParsingCallback
                                  size_t valueLen,
                                  uint16_t statusCode );
 
-    /* Private context for the application. */
+    /**
+     * @brief Private context for the application. 
+     */
     void * pContext;
 } HTTPClient_ResponseHeaderParsingCallback_t;
 
@@ -527,8 +529,8 @@ typedef struct HTTPResponse
  * of bytes written.
  *
  * Each line in the header is listed below and written in this order:
- *     <#HTTPRequestInfo_t.method> <#HTTPRequestInfo_t.pPath> <HTTP_PROTOCOL_VERSION>
- *     User-Agent: <HTTP_USER_AGENT_VALUE>
+ *     <#HTTPRequestInfo_t.method> <#HTTPRequestInfo_t.pPath> <#HTTP_PROTOCOL_VERSION>
+ *     User-Agent: <#HTTP_USER_AGENT_VALUE>
  *     Host: <#HTTPRequestInfo_t.pHost>
  *
  * Note that "Connection" header can be added and set to "keep-alive" by
@@ -554,8 +556,12 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * bytes written.
  *
  * Headers are written in the following format:
- *     <pName>: <pField>\r\n\r\n
- * The trailing \r\n that denotes the end of the header lines is overwritten,
+ * 
+ * @code
+ *     <field>: <value>\r\n\r\n
+ * @endcode
+ * 
+ * The trailing \\r\\n that denotes the end of the header lines is overwritten,
  * if it already exists in the buffer.
  *
  * @param[in] pRequestHeaders Request header buffer information.

@@ -21,7 +21,7 @@
  */
 
 /**
- * @file core_http_client_internal.c
+ * @file core_http_client_internal.h
  * @brief Internal definitions to the HTTP Client library.
  */
 
@@ -32,18 +32,82 @@
 #include "core_http_config.h"
 #include "http_parser.h"
 
+/**
+ * @brief Macro that is called in the HTTP Client library for logging "Error" level
+ * messages.
+ *
+ * To enable error level logging in the HTTP Client library, this macro should be mapped to the
+ * application-specific logging implementation that supports error logging.
+ *
+ * @note This logging macro is called in the HTTP Client library with parameters wrapped in
+ * double parentheses to be ISO C89/C90 standard compliant. For a reference
+ * POSIX implementation of the logging macros, refer to core_http_config.h files, and the
+ * logging-stack in demos folder of the
+ * [AWS IoT Embedded C SDK repository](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/master).
+ *
+ * <b>Default value</b>: Error logging is turned off, and no code is generated for calls
+ * to the macro in the HTTP Client library on compilation.
+ */
 #ifndef LogError
     #define LogError( message )
 #endif
 
+/**
+ * @brief Macro that is called in the HTTP Client library for logging "Warning" level
+ * messages.
+ *
+ * To enable warning level logging in the HTTP Client library, this macro should be mapped to the
+ * application-specific logging implementation that supports warning logging.
+ *
+ * @note This logging macro is called in the HTTP Client library with parameters wrapped in
+ * double parentheses to be ISO C89/C90 standard compliant. For a reference
+ * POSIX implementation of the logging macros, refer to core_http_config.h files, and the
+ * logging-stack in demos folder of the
+ * [AWS IoT Embedded C SDK repository](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/master).
+ *
+ * <b>Default value</b>: Warning logs are turned off, and no code is generated for calls
+ * to the macro in the HTTP Client library on compilation.
+ */
 #ifndef LogWarn
     #define LogWarn( message )
 #endif
 
+/**
+ * @brief Macro that is called in the HTTP Client library for logging "Info" level
+ * messages.
+ *
+ * To enable info level logging in the HTTP Client library, this macro should be mapped to the
+ * application-specific logging implementation that supports info logging.
+ *
+ * @note This logging macro is called in the HTTP Client library with parameters wrapped in
+ * double parentheses to be ISO C89/C90 standard compliant. For a reference
+ * POSIX implementation of the logging macros, refer to core_http_config.h files, and the
+ * logging-stack in demos folder of the
+ * [AWS IoT Embedded C SDK repository](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/master).
+ *
+ * <b>Default value</b>: Info logging is turned off, and no code is generated for calls
+ * to the macro in the HTTP Client library on compilation.
+ */
 #ifndef LogInfo
     #define LogInfo( message )
 #endif
 
+/**
+ * @brief Macro that is called in the HTTP Client library for logging "Debug" level
+ * messages.
+ *
+ * To enable debug level logging from HTTP Client library, this macro should be mapped to the
+ * application-specific logging implementation that supports debug logging.
+ *
+ * @note This logging macro is called in the HTTP Client library with parameters wrapped in
+ * double parentheses to be ISO C89/C90 standard compliant. For a reference
+ * POSIX implementation of the logging macros, refer to core_http_config.h files, and the
+ * logging-stack in demos folder of the
+ * [AWS IoT Embedded C SDK repository](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/master).
+ *
+ * <b>Default value</b>: Debug logging is turned off, and no code is generated for calls
+ * to the macro in the HTTP Client library on compilation.
+ */
 #ifndef LogDebug
     #define LogDebug( message )
 #endif
@@ -52,89 +116,79 @@
  * @brief The HTTP protocol version of this library is HTTP/1.1.
  */
 #define HTTP_PROTOCOL_VERSION              "HTTP/1.1"
-#define HTTP_PROTOCOL_VERSION_LEN          ( sizeof( HTTP_PROTOCOL_VERSION ) - 1u )
+#define HTTP_PROTOCOL_VERSION_LEN          ( sizeof( HTTP_PROTOCOL_VERSION ) - 1u ) /**< The length of #HTTP_PROTOCOL_VERSION. */
 
 /**
  * @brief Default value when pRequestInfo->pPath == NULL.
  */
 #define HTTP_EMPTY_PATH                    "/"
-#define HTTP_EMPTY_PATH_LEN                ( sizeof( HTTP_EMPTY_PATH ) - 1u )
+#define HTTP_EMPTY_PATH_LEN                ( sizeof( HTTP_EMPTY_PATH ) - 1u ) /**< The length of #HTTP_EMPTY_PATH. */
 
-/**
- * @brief Constants for HTTP header formatting
- */
-#define HTTP_HEADER_LINE_SEPARATOR         "\r\n"
-#define HTTP_HEADER_LINE_SEPARATOR_LEN     ( sizeof( HTTP_HEADER_LINE_SEPARATOR ) - 1u )
-#define HTTP_HEADER_END_INDICATOR          "\r\n\r\n"
-#define HTTP_HEADER_END_INDICATOR_LEN      ( sizeof( HTTP_HEADER_END_INDICATOR ) - 1u )
-#define HTTP_HEADER_FIELD_SEPARATOR        ": "
-#define HTTP_HEADER_FIELD_SEPARATOR_LEN    ( sizeof( HTTP_HEADER_FIELD_SEPARATOR ) - 1u )
-#define SPACE_CHARACTER                    ' '
-#define SPACE_CHARACTER_LEN                ( 1u )
-#define DASH_CHARACTER                     '-'
-#define DASH_CHARACTER_LEN                 ( 1u )
+/* Constants for HTTP header formatting. */
+#define HTTP_HEADER_LINE_SEPARATOR         "\r\n" /**< HTTP header field lines are separated by "\\r\\n". */
+#define HTTP_HEADER_LINE_SEPARATOR_LEN     ( sizeof( HTTP_HEADER_LINE_SEPARATOR ) - 1u ) /**< The length of #HTTP_HEADER_LINE_SEPARATOR. */
+#define HTTP_HEADER_END_INDICATOR          "\r\n\r\n" /**< The HTTP header is complete when "\\r\\n\\r\\n" is found. */
+#define HTTP_HEADER_END_INDICATOR_LEN      ( sizeof( HTTP_HEADER_END_INDICATOR ) - 1u ) /**< The length of #HTTP_HEADER_END_INDICATOR. */
+#define HTTP_HEADER_FIELD_SEPARATOR        ": " /**< HTTP header field and values are separated by ": ". */
+#define HTTP_HEADER_FIELD_SEPARATOR_LEN    ( sizeof( HTTP_HEADER_FIELD_SEPARATOR ) - 1u ) /**< The length of #HTTP_HEADER_FIELD_SEPARATOR. */
+#define SPACE_CHARACTER                    ' ' /**< A space character macro to help with serializing a request. */
+#define SPACE_CHARACTER_LEN                ( 1u ) /**< The length of #SPACE_CHARACTER. */
+#define DASH_CHARACTER                     '-' /**< A dash character macro to help with serializing a request. */
+#define DASH_CHARACTER_LEN                 ( 1u ) /**< The length of #DASH_CHARACTER. */
 
-/**
- * @brief Constants for header fields added automatically during the request
- * initialization.
- */
-#define HTTP_USER_AGENT_FIELD              "User-Agent"
-#define HTTP_USER_AGENT_FIELD_LEN          ( sizeof( HTTP_USER_AGENT_FIELD ) - 1u )
-#define HTTP_HOST_FIELD                    "Host"
-#define HTTP_HOST_FIELD_LEN                ( sizeof( HTTP_HOST_FIELD ) - 1u )
-#define HTTP_USER_AGENT_VALUE_LEN          ( sizeof( HTTP_USER_AGENT_VALUE ) - 1u )
+/* Constants for header fields added automatically during the request
+ * initialization. */
+#define HTTP_USER_AGENT_FIELD              "User-Agent" /**< HTTP header field "User-Agent". */
+#define HTTP_USER_AGENT_FIELD_LEN          ( sizeof( HTTP_USER_AGENT_FIELD ) - 1u ) /**< The length of #HTTP_USER_AGENT_FIELD. */
+#define HTTP_HOST_FIELD                    "Host" /**< HTTP header field "Host". */
+#define HTTP_HOST_FIELD_LEN                ( sizeof( HTTP_HOST_FIELD ) - 1u ) /**< The length of #HTTP_HOST_FIELD. */
+#define HTTP_USER_AGENT_VALUE_LEN          ( sizeof( HTTP_USER_AGENT_VALUE ) - 1u ) /**< The length of #HTTP_USER_AGENT_VALUE. */
 
-/**
- * @brief Constants for header fields added based on flags.
- */
-#define HTTP_CONNECTION_FIELD              "Connection"
-#define HTTP_CONNECTION_FIELD_LEN          ( sizeof( HTTP_CONNECTION_FIELD ) - 1u )
-#define HTTP_CONTENT_LENGTH_FIELD          "Content-Length"
-#define HTTP_CONTENT_LENGTH_FIELD_LEN      ( sizeof( HTTP_CONTENT_LENGTH_FIELD ) - 1u )
+/* Constants for header fields added based on flags. */
+#define HTTP_CONNECTION_FIELD              "Connection" /**< HTTP header field "Connection". */
+#define HTTP_CONNECTION_FIELD_LEN          ( sizeof( HTTP_CONNECTION_FIELD ) - 1u ) /**< The length of #HTTP_CONNECTION_FIELD. */
+#define HTTP_CONTENT_LENGTH_FIELD          "Content-Length" /**< HTTP header field "Content-Length". */
+#define HTTP_CONTENT_LENGTH_FIELD_LEN      ( sizeof( HTTP_CONTENT_LENGTH_FIELD ) - 1u ) /**< The length of #HTTP_CONTENT_LENGTH_FIELD. */
 
-/**
- * @brief Constants for header values added based on flags.
- */
+/* Constants for header values added based on flags. */
 
 /* MISRA Rule 5.4 flags the following macro's name as ambiguous from the
  * one postfixed with _LEN. This rule is suppressed for naming consistency with
  * other HTTP header field and value string and length macros in this file.*/
 /* coverity[other_declaration] */
-#define HTTP_CONNECTION_KEEP_ALIVE_VALUE    "keep-alive"
+#define HTTP_CONNECTION_KEEP_ALIVE_VALUE    "keep-alive" /**< HTTP header value "keep-alive" for the "Connection" header field. */
 
 /* MISRA Rule 5.4 flags the following macro's name as ambiguous from the one
  * above it. This rule is suppressed for naming consistency with other HTTP
  * header field and value string and length macros in this file.*/
 /* coverity[misra_c_2012_rule_5_4_violation] */
-#define HTTP_CONNECTION_KEEP_ALIVE_VALUE_LEN    ( sizeof( HTTP_CONNECTION_KEEP_ALIVE_VALUE ) - 1u )
+#define HTTP_CONNECTION_KEEP_ALIVE_VALUE_LEN    ( sizeof( HTTP_CONNECTION_KEEP_ALIVE_VALUE ) - 1u ) /**< The length of #HTTP_CONNECTION_KEEP_ALIVE_VALUE. */
 
-/**
- * @brief Constants relating to Range Requests.
- */
+/* Constants relating to Range Requests. */
 
 /* MISRA Rule 5.4 flags the following macro's name as ambiguous from the
  * one postfixed with _LEN. This rule is suppressed for naming consistency with
  * other HTTP header field and value string and length macros in this file.*/
 /* coverity[other_declaration] */
-#define HTTP_RANGE_REQUEST_HEADER_FIELD    "Range"
+#define HTTP_RANGE_REQUEST_HEADER_FIELD    "Range" /**< HTTP header field "Range". */
 
 /* MISRA Rule 5.4 flags the following macro's name as ambiguous from the one
  * above it. This rule is suppressed for naming consistency with other HTTP
  * header field and value string and length macros in this file.*/
 /* coverity[misra_c_2012_rule_5_4_violation] */
-#define HTTP_RANGE_REQUEST_HEADER_FIELD_LEN    ( sizeof( HTTP_RANGE_REQUEST_HEADER_FIELD ) - 1u )
+#define HTTP_RANGE_REQUEST_HEADER_FIELD_LEN    ( sizeof( HTTP_RANGE_REQUEST_HEADER_FIELD ) - 1u ) /**< The length of #HTTP_RANGE_REQUEST_HEADER_FIELD. */
 
 /* MISRA Rule 5.4 flags the following macro's name as ambiguous from the
  * one postfixed with _LEN. This rule is suppressed for naming consistency with
  * other HTTP header field and value string and length macros in this file.*/
 /* coverity[other_declaration] */
-#define HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX    "bytes="
+#define HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX    "bytes=" /**< HTTP required header value prefix when specifying a byte range for partial content. */
 
 /* MISRA Rule 5.4 flags the following macro's name as ambiguous from the one
  * above it. This rule is suppressed for naming consistency with other HTTP
  * header field and value string and length macros in this file.*/
 /* coverity[misra_c_2012_rule_5_4_violation] */
-#define HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN    ( sizeof( HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX ) - 1u )
+#define HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN    ( sizeof( HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX ) - 1u ) /**< The length of #HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX. */
 
 /**
  * @brief Maximum value of a 32 bit signed integer is 2,147,483,647.
@@ -169,7 +223,9 @@
  * @brief The minimum request-line in the headers has a possible one character
  * custom method and a single forward / or asterisk * for the path:
  *
+ * @code
  * <1 character custom method> <1 character / or *> HTTP/1.x\r\n\r\n
+ * @endcode
  *
  * Therefore the minimum length is 16. If this minimum request-line is not
  * satisfied, then the request headers to send are invalid.

@@ -847,7 +847,7 @@ WARN_LOGFILE           =
 INPUT                  = ./docs/doxygen \
                          ./source \
                          ./source/include \
-                         ./source/platform \
+                         ./source/portable \
                          ./source/private
 
 # This tag can be used to specify the character encoding of the source files
@@ -2566,3 +2566,11 @@ GENERATE_LEGEND        = YES
 # This tag requires that the tag HAVE_DOT is set to YES.
 
 DOT_CLEANUP            = YES
+
+# Aliases
+
+ALIASES += transportcallback="@ingroup http_callback_types"
+ALIASES += transportstruct="@ingroup http_struct_types"
+ALIASES += transportpage="@page http_transport_interface Transport Interface"
+ALIASES += transportsectionimplementation="@section http_transport_interface_implementation Implementing the Transport Interface"
+ALIASES += transportsectionoverview="@section http_transport_interface_overview Transport Interface Overview"

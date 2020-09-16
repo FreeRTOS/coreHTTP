@@ -190,6 +190,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
  * @param[in] value The value to convert to ASCII.
  * @param[out] pBuffer The buffer to store the ASCII representation of the
  * integer.
+ * @param[in] bufferLength The length of pBuffer.
  *
  * @return Returns the number of bytes written to @p pBuffer.
  */
@@ -269,7 +270,7 @@ static int findHeaderFieldParserCallback( http_parser * pHttpParser,
  * @param[in] valueLen The length of the header value.
  *
  * @return Returns #HTTP_PARSER_STOP_PARSING, if the header field/value pair are
- * found, otherwise #HTTP_PARSING_CONTINUE_PARSING is returned.
+ * found, otherwise #HTTP_PARSER_CONTINUE_PARSING is returned.
  */
 static int findHeaderValueParserCallback( http_parser * pHttpParser,
                                           const char * pValueLoc,
@@ -304,12 +305,12 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
  *
  * This function may be invoked multiple times for different parts of the the
  * HTTP response. The state of what was last parsed in the response is kept in
- * @p pParsingContext.
+ * @p pParsingContext .
  *
- * @param[in,out] pParsingState The response parsing state.
+ * @param[in,out] pParsingContext The response parsing state.
  * @param[in,out] pResponse The response information to be updated.
  * @param[in] parseLen The next length to parse in pResponse->pBuffer.
- * @param[in] isHeaderResponse If the response is to a HEAD request this is set
+ * @param[in] isHeadResponse If the response is to a HEAD request this is set
  * to 1, otherwise this is set to 0.
  *
  * @return One of the following:
@@ -414,7 +415,8 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser );
  * chunk header.
  *
  * The follow is an example of a Transfer-Encoding chunked response:
- *
+ * 
+ * @code
  * HTTP/1.1 200 OK\r\n
  * Content-Type: text/plain\r\n
  * Transfer-Encoding: chunked\r\n
@@ -427,6 +429,7 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser );
  * developer.\r\n
  * 0\r\n
  * \r\n
+ * @endcode
  *
  * The first invocation of this callback will contain @p pLoc = "Hello World!"
  * and @p length = 13.
