@@ -37,6 +37,9 @@
  * this configuration, then the status code
  * #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED is returned from
  * #HTTPClient_Send.
+ *
+ * <b>Possible values:</b> Any positive 32 bit integer. <br>
+ * <b>Default value:</b> `2048`
  */
 #ifndef HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
     #define HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES    2048U
@@ -48,6 +51,9 @@
  * The following header line is automatically written to
  * #HTTPRequestHeaders_t.pBuffer:
  * "User-Agent: my-platform-name\r\n"
+ * 
+ * <b>Possible values:</b> Any string. <br>
+ * <b>Default value:</b> `my-platform-name`
  */
 #ifndef HTTP_USER_AGENT_VALUE
     #define HTTP_USER_AGENT_VALUE    "my-platform-name"
