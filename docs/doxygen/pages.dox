@@ -1,0 +1,119 @@
+/**
+@mainpage Overview
+@anchor http
+@brief HTTP Client library
+
+This HTTP Client library implements a subset of the HTTP/1.1 protocol. Features
+of this library include:
+- Fully synchronous API, to allow applications to completely manage their concurrency and multi-threading method.
+- Operations on fixed buffers, so that applications may control their memory allocation strategy.
+- Integration with [http-parser](https://github.com/nodejs/http-parser) to handle chunked encoding.
+
+Feature of HTTP/1.1 not supported in this library:
+- Streaming uploads and downloads. Range requests for partial content responses are highly encourage with this API.
+- Pipelining requests. There may be only one request outgoing and one response incoming, at a time, on a connection.
+- Automatic redirection. The application owns their connection and must handle redirection status codes.
+
+@section http_memory_requirements Memory Requirements
+@brief Memory requirements of the HTTP Client library.
+
+<table>
+    <tr>
+        <td colspan="3"><b>Code Size of [<FIXME: Library name and version>](example generated with GCC for ARM Cortex-M)</b></td>
+    </tr>
+    <tr>
+        <td><b>File</b></td>
+        <td><b>No Optimization (asserts enabled)</b></td>
+        <td><b>With -O1 Optimisation</b></td>
+        <td><b>With -Os Optimisation</b></td>
+    </tr>
+    <tr>
+        <td>[<FIXME: library source, add more rows for more source>]</td>
+        <td>[<FIXME: Code size>]</td>
+        <td>[<FIXME: Code size>]</td>
+        <td>[<FIXME: Code size>]</td>
+    </tr>
+    <tr>
+        <td><b>Total estimates</b></td>
+        <td>[<FIXME: Total code size>]</td>
+        <td>[<FIXME: Total code size>]</td>
+        <td>[<FIXME: Total code size>]</td>
+    </tr>
+</table>
+ */
+
+/**
+@page [<FIXME: Lowercase library name>]_design Design
+[<FIXME: Library name>] Library Design
+
+[<FIXME: Some useful design information.>]
+*/
+
+/**
+@page [<FIXME: Lowercase library name>]_config Configurations
+@brief Configurations of the [<FIXME: Library name>] library.
+<!-- @par configpagestyle allows the @section titles to be styled according to style.css -->
+@par configpagestyle
+
+Configuration settings are C pre-processor constants. They can be set with a \#define in the config file ([<FIXME: Lowercase library name>]_config.h) or by using a compiler option such as -D in gcc.
+
+@section [<FIXME: Library compile time configuration macro>]
+<br>
+@copydoc [<FIXME: Library compile time configuration macro>]
+
+@section [<FIXME: Library compile time configuration macro>]
+<br>
+@copydoc [<FIXME: Library compile time configuration macro>]
+
+@section [<FIXME: Library compile time configuration macro>]
+<br>
+@copydoc [<FIXME: Library compile time configuration macro>]
+*/
+
+/**
+@page [<FIXME: Lowercase library name>]_functions Functions
+@brief Primary functions of the [<FIXME: Library name>] library:<br><br>
+@subpage [<FIXME: Lowercase function name>]_function <br>
+@subpage [<FIXME: Lowercase function name>]_function <br>
+@subpage [<FIXME: Lowercase function name>]_function <br>
+
+@page [<FIXME: Lowercase function name>]_function [<FIXME: Function name>]
+@snippet [<FIXME: library header file>] declare_[<FIXME: Lowercase function name>]
+@copydoc [<FIXME: Function name>]
+
+@page [<FIXME: Lowercase function name>]_function [<FIXME: Function name>]
+@snippet [<FIXME: library header file>] declare_[<FIXME: Lowercase function name>]
+@copydoc [<FIXME: Function name>]
+
+@page [<FIXME: Lowercase function name>]_function [<FIXME: Function name>]
+@snippet [<FIXME: library header file>] declare_[<FIXME: Lowercase function name>]
+@copydoc [<FIXME: Function name>]
+*/
+
+<!-- We do not use doxygen ALIASes here because there have been issues in the past versions with "^^" newlines within the alias definition. -->
+/**
+@defgroup [<FIXME: Lowercase library name>]_enum_types Enumerated Types
+@brief Enumerated types of the [<FIXME: Library name>] library
+*/
+
+/**
+@defgroup [<FIXME: Lowercase library name>]_callback_types Callback Types
+@brief Callback function pointer types of the [<FIXME: Library name>] library
+*/
+
+/**
+@defgroup [<FIXME: Lowercase library name>]_struct_types Parameter Structures
+@brief Structures passed as parameters to [<[FIXME: Library name>] library functions](@ref [<FIXME: Lowercase library name>]_functions)
+
+These structures are passed as parameters to library functions. Documentation for these structures will state the functions associated with each parameter structure and the purpose of each member.
+*/
+
+/**
+@defgroup [<FIXME: Lowercase library name>]_basic_types Basic Types
+@brief Primitive types of the [<FIXME: Library name>] library.
+*/
+
+/**
+@defgroup [<FIXME: Lowercase library name>]_constants Constants
+@brief Constants defined in the [<FIXME: Library name>] library
+*/
