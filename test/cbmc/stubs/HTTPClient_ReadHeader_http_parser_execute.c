@@ -30,7 +30,7 @@
 #include <stdint.h>
 
 #include "core_http_client.h"
-#include "core_http_client_internal.h"
+#include "core_http_client_private.h"
 #include "http_parser.h"
 
 /**

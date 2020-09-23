@@ -29,7 +29,7 @@
 /* Include paths for public enums, structures, and macros. */
 #include "core_http_client.h"
 /* Private includes for internal macros. */
-#include "core_http_client_internal.h"
+#include "core_http_client_private.h"
 
 #include "mock_http_parser.h"
 
