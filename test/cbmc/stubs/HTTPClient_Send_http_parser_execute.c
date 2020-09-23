@@ -22,7 +22,7 @@
 
 /**
  * @file HTTPClient_Send_http_parser_execute.c
- * @brief A stub function for http_parser_execute for coverage of 
+ * @brief A stub function for http_parser_execute for coverage of
  * #HTTPClient_Send.
  */
 

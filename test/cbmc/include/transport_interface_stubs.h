@@ -22,7 +22,7 @@
 
 /**
  * @file transport_interface_stubs.h
- * @brief Functions, for CBMC proofs, to mock transport sending and receiving 
+ * @brief Functions, for CBMC proofs, to mock transport sending and receiving
  * implementations.
  */
 
