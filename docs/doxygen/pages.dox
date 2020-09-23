@@ -19,13 +19,13 @@ Feature of HTTP/1.1 not supported in this library:
 
 <table>
     <tr>
-        <td colspan="3"><b>Code Size of [<FIXME: Library name and version>](example generated with GCC for ARM Cortex-M)</b></td>
+        <td colspan="4"><center><b>Code size of HTTP Client library files (sizes generated with [GCC for ARM Cortex-M toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads/9-2020-q2-update))</b></center></td>
     </tr>
     <tr>
         <td><b>File</b></td>
         <td><b>No Optimization (asserts enabled)</b></td>
-        <td><b>With -O1 Optimisation</b></td>
-        <td><b>With -Os Optimisation</b></td>
+        <td><b>With -O1 Optimization</b></td>
+        <td><b>With -Os Optimization</b></td>
     </tr>
     <tr>
         <td>[<FIXME: library source, add more rows for more source>]</td>
