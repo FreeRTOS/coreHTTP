@@ -1,4 +1,5 @@
 /*
+ * coreHTTP v1.0.0
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,7 +22,8 @@
 
 /**
  * @file HTTPClient_Send_http_parser_execute.c
- * @brief Creates a stub for http_parser_execute for coverage of HTTPClient_Send.
+ * @brief A stub function for http_parser_execute for coverage of
+ * #HTTPClient_Send.
  */
 
 #include <stdbool.h>

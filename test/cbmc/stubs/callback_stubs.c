@@ -1,4 +1,5 @@
 /*
+ * coreHTTP v1.0.0
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,7 +22,8 @@
 
 /**
  * @file callback_stubs.c
- * @brief Creates a stub for onHeaderCallback.
+ * @brief A stub function for
+ * #HTTPClient_ResponseHeaderParsingCallback_t.onHeaderCallback
  */
 
 #include "callback_stubs.h"
