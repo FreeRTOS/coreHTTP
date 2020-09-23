@@ -561,7 +561,7 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  *     <field>: <value>\r\n\r\n
  * @endcode
  *
- * The trailing \\r\\n that denotes the end of the header lines is overwritten,
+ * The trailing `\r\n` that denotes the end of the header lines is overwritten,
  * if it already exists in the buffer.
  *
  * @param[in] pRequestHeaders Request header buffer information.

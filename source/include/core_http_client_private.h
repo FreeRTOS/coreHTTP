@@ -125,9 +125,9 @@
 #define HTTP_EMPTY_PATH_LEN                ( sizeof( HTTP_EMPTY_PATH ) - 1u ) /**< The length of #HTTP_EMPTY_PATH. */
 
 /* Constants for HTTP header formatting. */
-#define HTTP_HEADER_LINE_SEPARATOR         "\r\n"                                         /**< HTTP header field lines are separated by "\\r\\n". */
+#define HTTP_HEADER_LINE_SEPARATOR         "\r\n"                                         /**< HTTP header field lines are separated by `\r\n`. */
 #define HTTP_HEADER_LINE_SEPARATOR_LEN     ( sizeof( HTTP_HEADER_LINE_SEPARATOR ) - 1u )  /**< The length of #HTTP_HEADER_LINE_SEPARATOR. */
-#define HTTP_HEADER_END_INDICATOR          "\r\n\r\n"                                     /**< The HTTP header is complete when "\\r\\n\\r\\n" is found. */
+#define HTTP_HEADER_END_INDICATOR          "\r\n\r\n"                                     /**< The HTTP header is complete when `\r\n\r\n` is found. */
 #define HTTP_HEADER_END_INDICATOR_LEN      ( sizeof( HTTP_HEADER_END_INDICATOR ) - 1u )   /**< The length of #HTTP_HEADER_END_INDICATOR. */
 #define HTTP_HEADER_FIELD_SEPARATOR        ": "                                           /**< HTTP header field and values are separated by ": ". */
 #define HTTP_HEADER_FIELD_SEPARATOR_LEN    ( sizeof( HTTP_HEADER_FIELD_SEPARATOR ) - 1u ) /**< The length of #HTTP_HEADER_FIELD_SEPARATOR. */

@@ -305,7 +305,7 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
  *
  * This function may be invoked multiple times for different parts of the the
  * HTTP response. The state of what was last parsed in the response is kept in
- * @p pParsingContext .
+ * @p pParsingContext.
  *
  * @param[in,out] pParsingContext The response parsing state.
  * @param[in,out] pResponse The response information to be updated.
@@ -1289,7 +1289,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
         *( rangeValueBuffer + rangeValueLength ) = DASH_CHARACTER;
         rangeValueLength += DASH_CHARACTER_LEN;
 
-        /* Write the rangeEnd value of the request range to the buffer .*/
+        /* Write the rangeEnd value of the request range to the buffer. */
         rangeValueLength += convertInt32ToAscii( rangeEnd,
                                                  rangeValueBuffer + rangeValueLength,
                                                  sizeof( rangeValueBuffer ) - rangeValueLength );
