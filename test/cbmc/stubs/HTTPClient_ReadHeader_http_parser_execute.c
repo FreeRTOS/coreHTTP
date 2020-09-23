@@ -21,8 +21,9 @@
  */
 
 /**
- * @file HTTPClient_Send_http_parser_execute.c
- * @brief Creates a stub for http_parser_execute for coverage of HTTPClient_Send.
+ * @file HTTPClient_ReadHeader_http_parser_execute.c
+ * @brief A stub function for http_parser_execute for coverage of
+ * #HTTPClient_ReadHeader.
  */
 
 #include <stdbool.h>

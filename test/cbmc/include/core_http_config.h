@@ -20,6 +20,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file core_http_config.h
+ * @brief Custom configurations for the coreHTTP library.
+ */
+
 #ifndef CORE_HTTP_CONFIG_H
 #define CORE_HTTP_CONFIG_H
 

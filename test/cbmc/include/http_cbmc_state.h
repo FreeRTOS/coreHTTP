@@ -20,6 +20,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file http_cbmc_state.h
+ * @brief Functions to allocate memory and validate data types for proofs.
+ */
+
 #ifndef HTTP_CBMC_STATE_H_
 #define HTTP_CBMC_STATE_H_
 

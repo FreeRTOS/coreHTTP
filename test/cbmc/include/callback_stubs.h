@@ -20,6 +20,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file callback_stubs.h
+ * @brief Defines a stub function for
+ * #HTTPClient_ResponseHeaderParsingCallback_t.onHeaderCallback
+ */
+
 #ifndef CALLBACK_STUBS_H_
 #define CALLBACK_STUBS_H_
 

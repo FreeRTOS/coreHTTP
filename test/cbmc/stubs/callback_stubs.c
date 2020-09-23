@@ -22,7 +22,8 @@
 
 /**
  * @file callback_stubs.c
- * @brief Creates a stub for onHeaderCallback.
+ * @brief A stub function for
+ * #HTTPClient_ResponseHeaderParsingCallback_t.onHeaderCallback
  */
 
 #include "callback_stubs.h"

@@ -20,6 +20,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+/**
+ * @file transport_interface_stubs.h
+ * @brief Functions, for CBMC proofs, to mock transport sending and receiving 
+ * implementations.
+ */
+
 #ifndef TRANSPORT_INTERFACE_STUBS_H_
 #define TRANSPORT_INTERFACE_STUBS_H_
 
