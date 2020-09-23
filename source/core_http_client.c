@@ -24,7 +24,7 @@
 #include <string.h>
 
 #include "core_http_client.h"
-#include "private/core_http_client_internal.h"
+#include "core_http_client_internal.h"
 
 /*-----------------------------------------------------------*/
 
