@@ -1,3 +1,4 @@
+aws
 absolutevalue
 addheader
 addrangeheader
@@ -9,6 +10,7 @@ apis
 ascii
 br
 bufferlen
+bufferlength
 bytesreceived
 bytesremaining
 bytessent
@@ -75,9 +77,11 @@ httpstatus
 ietf
 ifndef
 inc
+ingroup
 init
 initializerequestheaders
 int
+iot
 isheaderresponse
 isheadresponse
 iso
@@ -140,6 +144,7 @@ pnetworkcontext
 pnetworkdata
 pnext
 pnextwriteloc
+posix
 pparsingcontext
 pparsingstate
 ppath
@@ -172,9 +177,11 @@ requestinfo
 respflags
 responsebufferlen
 rfc
+sdk
 senderrorcall
 sendflags
 sendpartialcall
+sizeof
 snprintf
 statuscode
 strchr
