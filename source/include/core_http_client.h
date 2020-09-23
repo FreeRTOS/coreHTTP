@@ -56,7 +56,7 @@
  * The following header line is automatically written to
  * #HTTPRequestHeaders_t.pBuffer:
  * "User-Agent: my-platform-name\r\n"
- * 
+ *
  * <b>Possible values:</b> Any string. <br>
  * <b>Default value:</b> `my-platform-name`
  */
@@ -424,7 +424,7 @@ typedef struct HTTPClient_ResponseHeaderParsingCallback
                                  uint16_t statusCode );
 
     /**
-     * @brief Private context for the application. 
+     * @brief Private context for the application.
      */
     void * pContext;
 } HTTPClient_ResponseHeaderParsingCallback_t;
@@ -556,11 +556,11 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * bytes written.
  *
  * Headers are written in the following format:
- * 
+ *
  * @code
  *     <field>: <value>\r\n\r\n
  * @endcode
- * 
+ *
  * The trailing \\r\\n that denotes the end of the header lines is overwritten,
  * if it already exists in the buffer.
  *

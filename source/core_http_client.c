@@ -415,7 +415,7 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser );
  * chunk header.
  *
  * The follow is an example of a Transfer-Encoding chunked response:
- * 
+ *
  * @code
  * HTTP/1.1 200 OK\r\n
  * Content-Type: text/plain\r\n

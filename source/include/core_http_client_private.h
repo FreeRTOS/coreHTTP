@@ -125,29 +125,29 @@
 #define HTTP_EMPTY_PATH_LEN                ( sizeof( HTTP_EMPTY_PATH ) - 1u ) /**< The length of #HTTP_EMPTY_PATH. */
 
 /* Constants for HTTP header formatting. */
-#define HTTP_HEADER_LINE_SEPARATOR         "\r\n" /**< HTTP header field lines are separated by "\\r\\n". */
-#define HTTP_HEADER_LINE_SEPARATOR_LEN     ( sizeof( HTTP_HEADER_LINE_SEPARATOR ) - 1u ) /**< The length of #HTTP_HEADER_LINE_SEPARATOR. */
-#define HTTP_HEADER_END_INDICATOR          "\r\n\r\n" /**< The HTTP header is complete when "\\r\\n\\r\\n" is found. */
-#define HTTP_HEADER_END_INDICATOR_LEN      ( sizeof( HTTP_HEADER_END_INDICATOR ) - 1u ) /**< The length of #HTTP_HEADER_END_INDICATOR. */
-#define HTTP_HEADER_FIELD_SEPARATOR        ": " /**< HTTP header field and values are separated by ": ". */
+#define HTTP_HEADER_LINE_SEPARATOR         "\r\n"                                         /**< HTTP header field lines are separated by "\\r\\n". */
+#define HTTP_HEADER_LINE_SEPARATOR_LEN     ( sizeof( HTTP_HEADER_LINE_SEPARATOR ) - 1u )  /**< The length of #HTTP_HEADER_LINE_SEPARATOR. */
+#define HTTP_HEADER_END_INDICATOR          "\r\n\r\n"                                     /**< The HTTP header is complete when "\\r\\n\\r\\n" is found. */
+#define HTTP_HEADER_END_INDICATOR_LEN      ( sizeof( HTTP_HEADER_END_INDICATOR ) - 1u )   /**< The length of #HTTP_HEADER_END_INDICATOR. */
+#define HTTP_HEADER_FIELD_SEPARATOR        ": "                                           /**< HTTP header field and values are separated by ": ". */
 #define HTTP_HEADER_FIELD_SEPARATOR_LEN    ( sizeof( HTTP_HEADER_FIELD_SEPARATOR ) - 1u ) /**< The length of #HTTP_HEADER_FIELD_SEPARATOR. */
-#define SPACE_CHARACTER                    ' ' /**< A space character macro to help with serializing a request. */
-#define SPACE_CHARACTER_LEN                ( 1u ) /**< The length of #SPACE_CHARACTER. */
-#define DASH_CHARACTER                     '-' /**< A dash character macro to help with serializing a request. */
-#define DASH_CHARACTER_LEN                 ( 1u ) /**< The length of #DASH_CHARACTER. */
+#define SPACE_CHARACTER                    ' '                                            /**< A space character macro to help with serializing a request. */
+#define SPACE_CHARACTER_LEN                ( 1u )                                         /**< The length of #SPACE_CHARACTER. */
+#define DASH_CHARACTER                     '-'                                            /**< A dash character macro to help with serializing a request. */
+#define DASH_CHARACTER_LEN                 ( 1u )                                         /**< The length of #DASH_CHARACTER. */
 
 /* Constants for header fields added automatically during the request
  * initialization. */
-#define HTTP_USER_AGENT_FIELD              "User-Agent" /**< HTTP header field "User-Agent". */
+#define HTTP_USER_AGENT_FIELD              "User-Agent"                             /**< HTTP header field "User-Agent". */
 #define HTTP_USER_AGENT_FIELD_LEN          ( sizeof( HTTP_USER_AGENT_FIELD ) - 1u ) /**< The length of #HTTP_USER_AGENT_FIELD. */
-#define HTTP_HOST_FIELD                    "Host" /**< HTTP header field "Host". */
-#define HTTP_HOST_FIELD_LEN                ( sizeof( HTTP_HOST_FIELD ) - 1u ) /**< The length of #HTTP_HOST_FIELD. */
+#define HTTP_HOST_FIELD                    "Host"                                   /**< HTTP header field "Host". */
+#define HTTP_HOST_FIELD_LEN                ( sizeof( HTTP_HOST_FIELD ) - 1u )       /**< The length of #HTTP_HOST_FIELD. */
 #define HTTP_USER_AGENT_VALUE_LEN          ( sizeof( HTTP_USER_AGENT_VALUE ) - 1u ) /**< The length of #HTTP_USER_AGENT_VALUE. */
 
 /* Constants for header fields added based on flags. */
-#define HTTP_CONNECTION_FIELD              "Connection" /**< HTTP header field "Connection". */
-#define HTTP_CONNECTION_FIELD_LEN          ( sizeof( HTTP_CONNECTION_FIELD ) - 1u ) /**< The length of #HTTP_CONNECTION_FIELD. */
-#define HTTP_CONTENT_LENGTH_FIELD          "Content-Length" /**< HTTP header field "Content-Length". */
+#define HTTP_CONNECTION_FIELD              "Connection"                                 /**< HTTP header field "Connection". */
+#define HTTP_CONNECTION_FIELD_LEN          ( sizeof( HTTP_CONNECTION_FIELD ) - 1u )     /**< The length of #HTTP_CONNECTION_FIELD. */
+#define HTTP_CONTENT_LENGTH_FIELD          "Content-Length"                             /**< HTTP header field "Content-Length". */
 #define HTTP_CONTENT_LENGTH_FIELD_LEN      ( sizeof( HTTP_CONTENT_LENGTH_FIELD ) - 1u ) /**< The length of #HTTP_CONTENT_LENGTH_FIELD. */
 
 /* Constants for header values added based on flags. */
