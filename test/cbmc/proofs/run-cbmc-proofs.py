@@ -37,7 +37,7 @@ The tool is roughly equivalent to doing this:
 
         litani init --project "FreeRTOS coreHTTP";
 
-        for proof in $(find . -name cbmc-marker.txt); do
+        for proof in $(find . -name cbmc-batch.yaml); do
             pushd $(dirname ${proof});
             make report;
             popd;
@@ -126,7 +126,7 @@ def get_proof_dirs(proof_root, proof_list):
             continue
         if proof_list and proof_name in proofs_remaining:
             proofs_remaining.remove(proof_name)
-        if "cbmc-marker.txt" in fyles:
+        if "cbmc-batch.yaml" in fyles:
             yield root
 
     if proofs_remaining:
