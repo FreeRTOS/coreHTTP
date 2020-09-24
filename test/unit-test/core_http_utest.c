@@ -28,7 +28,7 @@
 #include "core_http_client.h"
 
 /* Private includes for internal macros. */
-#include "private/core_http_client_internal.h"
+#include "core_http_client_private.h"
 
 /* Include mock implementation of http-parser dependency. */
 #include "mock_http_parser.h"
