@@ -32,7 +32,7 @@
 #include <stddef.h>
 
 /* HTTP_DO_NOT_USE_CUSTOM_CONFIG allows building the HTTP Client library
- * without a config file. If a config file is provided, the 
+ * without a config file. If a config file is provided, the
  * HTTP_DO_NOT_USE_CUSTOM_CONFIG macro must not be defined.
  */
 #ifndef HTTP_DO_NOT_USE_CUSTOM_CONFIG

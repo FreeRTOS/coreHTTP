@@ -144,4 +144,4 @@
     #define LogDebug( message )
 #endif
 
-#endif
+#endif /* ifndef CORE_HTTP_CONFIG_DEFAULTS_ */
