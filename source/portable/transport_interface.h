@@ -143,6 +143,8 @@
  * @endcode
  */
 
+/* A different line! */
+
 /**
  * @transportstruct
  * @typedef NetworkContext_t
