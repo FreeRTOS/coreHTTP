@@ -28,8 +28,7 @@
 #ifndef CORE_HTTP_CLIENT_PRIVATE_H_
 #define CORE_HTTP_CLIENT_PRIVATE_H_
 
-/* Include config file before other headers. */
-#include "core_http_config.h"
+/* Third-party http-parser include. */
 #include "http_parser.h"
 
 /**
