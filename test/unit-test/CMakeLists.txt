@@ -29,7 +29,7 @@ list(APPEND real_source_files
 list(APPEND real_include_directories
             .
             ${HTTP_INCLUDE_PUBLIC_DIRS}
-            ${HTTP_INCLUDE_PRIVATE_DIRS}
+            ${HTTP_INCLUDE_THIRD_PARTY_DIRS}
         )
 
 # =====================  Create UnitTest Code here (edit)  =====================
@@ -38,7 +38,6 @@ list(APPEND real_include_directories
 list(APPEND test_include_directories
             .
             ${HTTP_INCLUDE_PUBLIC_DIRS}
-            ${HTTP_INCLUDE_PRIVATE_DIRS}
             ${HTTP_INCLUDE_THIRD_PARTY_DIRS}
         )
 

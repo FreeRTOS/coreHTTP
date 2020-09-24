@@ -18,10 +18,5 @@ set( HTTP_INCLUDE_PUBLIC_DIRS
 set( HTTP_INCLUDE_THIRD_PARTY_DIRS
      ${CMAKE_CURRENT_LIST_DIR}/source/third-party/http_parser )
 
-# HTTP library Private Include directories.
-set( HTTP_INCLUDE_PRIVATE_DIRS
-     ${CMAKE_CURRENT_LIST_DIR}/source
-     ${HTTP_INCLUDE_THIRD_PARTY_DIRS} )
-
 set( HTTP_THIRD_PARTY_SOURCES
      ${HTTP_INCLUDE_THIRD_PARTY_DIRS}/http_parser.c )

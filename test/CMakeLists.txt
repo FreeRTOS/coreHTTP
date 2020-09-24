@@ -47,7 +47,7 @@ target_compile_definitions( coverity_analysis PUBLIC HTTP_DO_NOT_USE_CUSTOM_CONF
 target_include_directories( coverity_analysis PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
 
 # HTTP private include path.
-target_include_directories( coverity_analysis PRIVATE ${HTTP_INCLUDE_PRIVATE_DIRS} )
+target_include_directories( coverity_analysis PRIVATE ${HTTP_INCLUDE_THIRD_PARTY_DIRS} )
 
 # ===================== Clone needed third-party libraries ======================
 
