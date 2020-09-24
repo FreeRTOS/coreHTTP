@@ -1,6 +1,6 @@
 # Project information.
 cmake_minimum_required ( VERSION 3.13.0 )
-project ( "CoreHTTP unit test"
+project ( "coreHTTP unit test"
           VERSION 1.0.0
           LANGUAGES C )
 
@@ -52,7 +52,7 @@ target_include_directories( coverity_analysis PRIVATE ${HTTP_INCLUDE_PRIVATE_DIR
 # ===================== Clone needed third-party libraries ======================
 
 # Add the http_parser submodule to HTTP client library. It is out of the
-# unit-test tree and therefor needs it's own binary directory.
+# unit-test tree and therefore needs its own binary directory.
 add_subdirectory( ${MODULE_ROOT_DIR}/source/third-party ./build-http-parser )
 
 # Check if the http_parser source directory exists.
