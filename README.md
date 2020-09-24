@@ -1,7 +1,7 @@
 # coreHTTP Client Library
 
 This repository contains a C language HTTP client library designed for embedded
-platforms It has no dependencies on any additional libraries other than the
+platforms. It has no dependencies on any additional libraries other than the
 standard C library and [http-parser](https://github.com/nodejs/http-parser), and
 a customer-implemented network transport interface. This library is distributed
 under the [MIT Open Source License](LICENSE).
@@ -10,16 +10,16 @@ This library has gone through code quality checks including verification that no
 function has a [GNU Complexity](https://www.gnu.org/software/complexity/manual/complexity.html)
 score over 8. This library has also undergone both static code analysis from
 [Coverity static analysis](https://scan.coverity.com/), and validation of memory
-safety and proof of functional correctness through the
+safety and data structure invariance through the
 [CBMC automated reasoning tool](https://www.cprover.org/cbmc/).
 
 ## coreHTTP Config File
 
-The HTTP client library exposes build configuration macros that are required for
+The HTTP client library exposes configuration macros that are required for
 building the library. A list of all the configurations and their default values
 are defined in [core_http_config_defaults.h](source/include/core_http_config_defaults.h).
 To provide custom values for the configuration macros, a custom config file
-named `core_http_config.h` can be provided by the application to the library.
+named `core_http_config.h` can be provided by the user application to the library.
 
 By default, a `core_http_config.h` custom config is required to build the
 library. To disable this requirement and build the library with default
@@ -39,9 +39,9 @@ The [httpFilePaths.cmake](httFilePaths.cmake) file contains the information of
 all source files and header include paths required to build the HTTP client
 library.
 
-As mentioned in the previous section, either a custom config file (i.e.
-`core_http_config.h`) OR `HTTP_DO_NOT_USE_CUSTOM_CONFIG` macro needs to be
-provided to build the HTTP client library.
+As mentioned in the [previous section](#coreHTTP-Config-File), either a custom
+config file (i.e. `core_http_config.h`) OR `HTTP_DO_NOT_USE_CUSTOM_CONFIG` macro
+needs to be provided to build the HTTP client library.
 
 For a CMake example of building the HTTP library with the `httpFilePaths.cmake`
 file, refer to the `coverity_analysis` library target in
@@ -54,7 +54,8 @@ file, refer to the `coverity_analysis` library target in
 - For running unit tests, the following are required:
     - **C90 compiler** like gcc
     - **CMake 3.13.0 or later**
-    - **Ruby 2.0.0 or later** is required for this repository's CMock test framework.
+    - **Ruby 2.0.0 or later** is required for this repository's
+      [CMock test framework](https://github.com/ThrowTheSwitch/CMock).
 - For running the coverage target, the following are required:
     - **gcov**
     - **lcov**
@@ -73,7 +74,7 @@ file, refer to the `coverity_analysis` library target in
 
 ## Reference examples
 
-The AWS IoT Embedded C-SDK repository contains demos of using the HTTP client
+The AWS IoT Device SDK for Embedded C repository contains demos of using the HTTP client
 library [here](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/master/demos/http)
 on a POSIX platform. These can be used as reference examples for the library API.
 
