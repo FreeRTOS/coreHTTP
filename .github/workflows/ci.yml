@@ -93,3 +93,27 @@ jobs:
           else
             exit 0
           fi
+  ssot-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v2
+        with:
+          path: current
+      - name: Checkout coreMQTT
+        uses: actions/checkout@v2
+        with:
+          ref: master
+          repository: FreeRTOS/coreMQTT
+          path: ssot
+      - name: Check transport_interface.h
+        run: |
+          SSOT_FILE="ssot/source/portable/transport_interface.h"
+          CURRENT_FILE="current/source/portable/transport_interface.h"
+          diff <(tail -n +3 $SSOT_FILE) <(tail -n +3 $CURRENT_FILE)
+          if [ "$?" -ne "0" ]; then
+            echo "transport_interface.h differs from coreMQTT."
+            exit 1
+          else
+            exit 0
+          fi
