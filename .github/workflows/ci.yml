@@ -110,8 +110,7 @@ jobs:
         run: |
           SSOT_FILE="ssot/source/portable/transport_interface.h"
           CURRENT_FILE="current/source/portable/transport_interface.h"
-          TAIL_LINES=`expr $(< $SSOT_FILE wc -l) - 2`
-          diff <(tail -n $TAIL_LINES $SSOT_FILE) <(tail -n $TAIL_LINES $CURRENT_FILE)
+          diff <(tail -n +3 $SSOT_FILE) <(tail -n +3 $CURRENT_FILE)
           if [ "$?" -ne "0" ]; then
             echo "transport_interface.h differs from coreMQTT."
             exit 1
