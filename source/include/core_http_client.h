@@ -30,39 +30,21 @@
 
 #include <stdint.h>
 #include <stddef.h>
-/* Include config file before other headers. */
-#include "core_http_config.h"
+
+/* HTTP_DO_NOT_USE_CUSTOM_CONFIG allows building the HTTP Client library
+ * without a config file. If a config file is provided, the 
+ * HTTP_DO_NOT_USE_CUSTOM_CONFIG macro must not be defined.
+ */
+#ifndef HTTP_DO_NOT_USE_CUSTOM_CONFIG
+    #include "core_http_config.h"
+#endif
+
+/* Include config defaults header to get default values of configurations not
+ * defined in core_http_config.h file. */
+#include "core_http_config_defaults.h"
+
 /* Transport interface include. */
 #include "transport_interface.h"
-
-/**
- * @brief Maximum size, in bytes, of headers allowed from the server.
- *
- * If the total size in bytes of the headers received from the server exceeds
- * this configuration, then the status code
- * #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED is returned from
- * #HTTPClient_Send.
- *
- * <b>Possible values:</b> Any positive 32 bit integer. <br>
- * <b>Default value:</b> `2048`
- */
-#ifndef HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
-    #define HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES    2048U
-#endif
-
-/**
- * @brief The HTTP header "User-Agent" value.
- *
- * The following header line is automatically written to
- * #HTTPRequestHeaders_t.pBuffer:
- * "User-Agent: my-platform-name\r\n"
- *
- * <b>Possible values:</b> Any string. <br>
- * <b>Default value:</b> `my-platform-name`
- */
-#ifndef HTTP_USER_AGENT_VALUE
-    #define HTTP_USER_AGENT_VALUE    "my-platform-name"
-#endif
 
 /* Convenience macros for some HTTP request methods. */
 #define HTTP_METHOD_GET                          "GET"  /**< @ingroup http_constants @brief HTTP Method GET string. */
