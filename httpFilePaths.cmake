@@ -19,5 +19,5 @@ set( HTTP_INCLUDE_PRIVATE_DIRS
      ${CMAKE_CURRENT_LIST_DIR}/source/third-party/http_parser )
 
 # HTTP library private sources.
-set( HTTP_THIRD_PARTY_SOURCES
+set( HTTP_PRIVATE_SOURCES
      ${CMAKE_CURRENT_LIST_DIR}/source/third-party/http_parser/http_parser.c )
