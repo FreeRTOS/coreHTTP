@@ -1,0 +1,140 @@
+/**
+@mainpage Overview
+@anchor http
+@brief HTTP Client library
+
+This HTTP Client library implements a subset of the HTTP/1.1 protocol. Features
+of this library include:
+- Fully synchronous API, to allow applications to completely manage their concurrency and multi-threading.
+- Operations on user supplied buffers, so that applications have complete control of their memory allocation strategy.
+- Integration with [http-parser](https://github.com/nodejs/http-parser) to handle chunked encoding.
+
+Feature of HTTP/1.1 not supported in this library:
+- Streaming uploads and downloads. Range requests for partial content responses are highly encouraged with this API.
+- Pipelining requests. There may be only one request outgoing and one response incoming, at a time, on a connection.
+- Automatic redirection. The application owns their connection and must handle redirection status codes.
+
+@section http_memory_requirements Memory Requirements
+@brief Memory requirements of the HTTP Client library.
+
+<table>
+    <tr>
+        <td colspan="4"><center><b>Code size of HTTP Client library files (sizes generated with [GCC for ARM Cortex-M toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads/9-2020-q2-update))</b></center></td>
+    </tr>
+    <tr>
+        <td><b>File</b></td>
+        <td><b>No Optimization (asserts enabled)</b></td>
+        <td><b>With -O1 Optimization</b></td>
+        <td><b>With -Os Optimization</b></td>
+    </tr>
+    <tr>
+        <td>[<FIXME: library source, add more rows for more source>]</td>
+        <td>[<FIXME: Code size>]</td>
+        <td>[<FIXME: Code size>]</td>
+        <td>[<FIXME: Code size>]</td>
+    </tr>
+    <tr>
+        <td><b>Total estimates</b></td>
+        <td>[<FIXME: Total code size>]</td>
+        <td>[<FIXME: Total code size>]</td>
+        <td>[<FIXME: Total code size>]</td>
+    </tr>
+</table>
+ */
+
+/**
+@page http_design Design
+HTTP Client Library Design
+
+[<FIXME: Some useful design information.>]
+*/
+
+/**
+@page http_config Configurations
+@brief Configurations of the HTTP Client library.
+<!-- @par configpagestyle allows the @section titles to be styled according to style.css -->
+@par configpagestyle
+
+Configuration settings are C pre-processor constants. They can be set with a \#define in the config file (core_http_config.h) or by using a compiler option such as -D in gcc.
+
+@section HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
+@copydoc HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
+
+@section HTTP_USER_AGENT_VALUE
+@copydoc HTTP_USER_AGENT_VALUE
+
+@section http_logerror LogError
+@copydoc LogError
+
+@section http_logwarn LogWarn
+@copydoc LogWarn
+
+@section http_loginfo LogInfo
+@copydoc LogInfo
+
+@section http_logdebug LogDebug
+@copydoc LogDebug
+*/
+
+/**
+@page http_functions Functions
+@brief Primary functions of the HTTP Client library:<br><br>
+@subpage httpclient_initializerequestheaders_function <br>
+@subpage httpclient_addheader_function <br>
+@subpage httpclient_addrangeheader_function <br>
+@subpage httpclient_send_function <br>
+@subpage httpclient_readheader_function <br>
+@subpage httpclient_strerror_function <br>
+
+@page httpclient_initializerequestheaders_function HTTPClient_InitializeRequestHeaders
+@snippet core_http_client.h declare_httpclient_initializerequestheaders
+@copydoc HTTPClient_InitializeRequestHeaders
+
+@page httpclient_addheader_function HTTPClient_AddHeader
+@snippet core_http_client.h declare_httpclient_addheader
+@copydoc HTTPClient_AddHeader
+
+@page httpclient_addrangeheader_function HTTPClient_AddRangeHeader
+@snippet core_http_client.h declare_httpclient_addrangeheader
+@copydoc HTTPClient_AddRangeHeader
+
+@page httpclient_send_function HTTPClient_Send
+@snippet core_http_client.h declare_httpclient_send
+@copydoc HTTPClient_Send
+
+@page httpclient_readheader_function HTTPClient_ReadHeader
+@snippet core_http_client.h declare_httpclient_readheader
+@copydoc HTTPClient_ReadHeader
+
+@page httpclient_strerror_function HTTPClient_strerror
+@snippet core_http_client.h declare_httpclient_strerror
+@copydoc HTTPClient_strerror
+*/
+
+<!-- We do not use doxygen ALIASes here because there have been issues in the past versions with "^^" newlines within the alias definition. -->
+/**
+@defgroup http_enum_types Enumerated Types
+@brief Enumerated types of the HTTP Client library
+*/
+
+/**
+@defgroup http_callback_types Callback Types
+@brief Callback function pointer types of the HTTP Client library
+*/
+
+/**
+@defgroup http_struct_types Parameter Structures
+@brief Structures passed as parameters to [HTTP Client library functions](@ref http_functions)
+
+These structures are passed as parameters to library functions. Documentation for these structures will state the functions associated with each parameter structure and the purpose of each member.
+*/
+
+/**
+@defgroup http_basic_types Basic Types
+@brief Primitive types of the HTTP Client library.
+*/
+
+/**
+@defgroup http_constants Constants
+@brief Constants defined in the HTTP Client library
+*/
