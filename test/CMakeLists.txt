@@ -47,16 +47,19 @@ target_compile_definitions( coverity_analysis PUBLIC HTTP_DO_NOT_USE_CUSTOM_CONF
 target_include_directories( coverity_analysis PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
 
 # HTTP private include path.
-target_include_directories( coverity_analysis PRIVATE ${HTTP_INCLUDE_THIRD_PARTY_DIRS} )
+target_include_directories( coverity_analysis PRIVATE ${HTTP_INCLUDE_PRIVATE_DIRS} )
 
 # ===================== Clone needed third-party libraries ======================
+
+# Define an http-paser resource path.
+set( HTTP_PARSER_DIR ${MODULE_ROOT_DIR}/source/third-party/http_parser CACHE INTERNAL "http-parser library source directory." )
 
 # Add the http_parser submodule to HTTP client library. It is out of the
 # unit-test tree and therefore needs its own binary directory.
 add_subdirectory( ${MODULE_ROOT_DIR}/source/third-party ./build-http-parser )
 
 # Check if the http_parser source directory exists.
-if( NOT EXISTS ${HTTP_INCLUDE_THIRD_PARTY_DIRS}/http_parser.c )
+if( NOT EXISTS ${HTTP_PARSER_DIR}/http_parser.c )
     # Attempt to clone http_parser.
     if( ${BUILD_CLONE_SUBMODULES} )
         clone_http_parser()
