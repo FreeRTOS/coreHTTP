@@ -16,7 +16,7 @@ jobs:
       - name: Build
         run: |
           sudo apt-get install -y lcov
-          cmake -S test/unit-test -B build/ \
+          cmake -S test -B build/ \
           -G "Unix Makefiles" \
           -DCMAKE_BUILD_TYPE=Debug \
           -DCMAKE_C_FLAGS='--coverage -Wall -Wextra -DNDEBUG'
@@ -66,7 +66,16 @@ jobs:
   spell-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Parent Repo
+        uses: actions/checkout@v2
+        with:
+          ref: master
+          repository: aws/aws-iot-device-sdk-embedded-C
+      - run: rm -r libraries/standard/coreHTTP
+      - name: Clone This Repo
+        uses: actions/checkout@v2
+        with:
+          path: libraries/standard/coreHTTP
       - name: Install spell
         run: |
           sudo apt-get install spell
@@ -74,7 +83,15 @@ jobs:
       - name: Check spelling
         run: |
           PATH=$PATH:$PWD/tools/spell
-          for lexfile in `find . -name lexicon.txt`; do dir=${lexfile%/lexicon.txt}; find-unknown-comment-words --directory $dir; if [ $? -ne "0" ]; then exit 1; fi; done;
+          for lexfile in `find libraries/standard/coreHTTP -name lexicon.txt`
+          do dir=${lexfile%/lexicon.txt}
+            echo $dir
+            find-unknown-comment-words --directory $dir
+            if [ $? -ne "0" ]
+            then
+              exit 1
+            fi
+          done
   formatting:
     runs-on: ubuntu-latest
     steps:
