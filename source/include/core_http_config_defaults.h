@@ -22,7 +22,7 @@
 
 /**
  * @file core_http_config_defaults.h
- * @brief The default values for the configuration macros for the HTTP Client 
+ * @brief The default values for the configuration macros for the HTTP Client
  * library.
  *
  * @note This file SHOULD NOT be modified. If custom values are needed for
