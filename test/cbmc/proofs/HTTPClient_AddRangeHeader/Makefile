@@ -20,6 +20,7 @@
 #
 
 HARNESS_ENTRY=HTTPClient_AddRangeHeader_harness
+PROOF_UID=HTTPClient_AddRangeHeader
 HARNESS_FILE=$(HARNESS_ENTRY)
 
 DEFINES +=

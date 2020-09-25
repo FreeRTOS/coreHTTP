@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 HARNESS_ENTRY=httpParserOnHeaderFieldCallback_harness
+PROOF_UID=httpParserOnHeaderFieldCallback
 HARNESS_FILE=$(HARNESS_ENTRY)
 
 DEFINES +=
