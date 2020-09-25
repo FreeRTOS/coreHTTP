@@ -5,12 +5,12 @@
 
 This HTTP Client library implements a subset of the HTTP/1.1 protocol. Features
 of this library include:
-- Fully synchronous API, to allow applications to completely manage their concurrency and multi-threading method.
-- Operations on fixed buffers, so that applications may control their memory allocation strategy.
+- Fully synchronous API, to allow applications to completely manage their concurrency and multi-threading.
+- Operations on user supplied buffers, so that applications have complete control of their memory allocation strategy.
 - Integration with [http-parser](https://github.com/nodejs/http-parser) to handle chunked encoding.
 
 Feature of HTTP/1.1 not supported in this library:
-- Streaming uploads and downloads. Range requests for partial content responses are highly encourage with this API.
+- Streaming uploads and downloads. Range requests for partial content responses are highly encouraged with this API.
 - Pipelining requests. There may be only one request outgoing and one response incoming, at a time, on a connection.
 - Automatic redirection. The application owns their connection and must handle redirection status codes.
 
