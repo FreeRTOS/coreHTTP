@@ -18,13 +18,13 @@ else (no)
         : Parse HTTP response;
         note left: Parsing is done with\nthird-party //http-parser//
     repeat while (Response buffer is NOT full &&
-    Response message is NOT complete &&
-    No errors found in parsing) is (   yes)
+                  Response message is NOT complete &&
+                  No errors found in parsing) is (   yes)
     -> no;
     #lightgreen:if (Errors found in parsing) then (yes)
     	#lightgray: Return ERROR;
     	stop
-    #lightgreen:else if (Response message could not fit in response buffer) then (yes)
+    #lightgreen:(no   ) elseif (Response message could not fit in response buffer) then (yes)
     	#lightgray: Return ERROR;
     	stop
     else (no)
