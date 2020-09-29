@@ -47,10 +47,14 @@
 #include "transport_interface.h"
 
 /* Convenience macros for some HTTP request methods. */
-#define HTTP_METHOD_GET                          "GET"  /**< @ingroup http_constants @brief HTTP Method GET string. */
-#define HTTP_METHOD_PUT                          "PUT"  /**< @ingroup http_constants @brief HTTP Method PUT string. */
-#define HTTP_METHOD_POST                         "POST" /**< @ingroup http_constants @brief HTTP Method POST string. */
-#define HTTP_METHOD_HEAD                         "HEAD" /**< @ingroup http_constants @brief HTTP Method HEAD string. */
+/** @addtogroup http_constants
+ *  @{
+ */
+#define HTTP_METHOD_GET                          "GET"  /**< HTTP Method GET string. */
+#define HTTP_METHOD_PUT                          "PUT"  /**< HTTP Method PUT string. */
+#define HTTP_METHOD_POST                         "POST" /**< HTTP Method POST string. */
+#define HTTP_METHOD_HEAD                         "HEAD" /**< HTTP Method HEAD string. */
+/** @}*/
 
 /**
  * @ingroup http_constants
@@ -60,20 +64,17 @@
 #define HTTP_MAX_CONTENT_LENGTH_HEADER_LENGTH    sizeof( "Content-Length: 4294967295" ) - 1u
 
 /**
- * @section http_send_flags
+ * @defgroup http_send_flags HTTPClient_Send Flags
  * @brief Values for #HTTPClient_Send sendFlags parameter.
  * These flags control some behavior of sending the request or receiving the
  * response.
- *
- * - #HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG <br>
- *   @copybrief HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG
  *
  * Flags should be bitwise-ORed with each other to change the behavior of
  * #HTTPClient_Send.
  */
 
 /**
- * @ingroup http_constants
+ * @ingroup http_send_flags
  * @brief Set this flag to disable automatically writing the Content-Length
  * header to send to the server.
  *
@@ -82,21 +83,17 @@
 #define HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG    0x1U
 
 /**
- * @ingroup http_constants
- * @section http_request_flags
+ * @defgroup http_request_flags HTTPRequestInfo_t Flags
  * @brief Flags for #HTTPRequestInfo_t.reqFlags.
  * These flags control what headers are written or not to the
  * #HTTPRequestHeaders_t.pBuffer by #HTTPClient_InitializeRequestHeaders.
- *
- * - #HTTP_REQUEST_KEEP_ALIVE_FLAG <br>
- *   @copybrief HTTP_REQUEST_KEEP_ALIVE_FLAG
  *
  * Flags should be bitwise-ORed with each other to change the behavior of
  * #HTTPClient_InitializeRequestHeaders.
  */
 
 /**
- * @ingroup http_constants
+ * @ingroup http_request_flags
  * @brief Set this flag to indicate that the request is for a persistent
  * connection.
  *
@@ -108,19 +105,17 @@
 #define HTTP_REQUEST_KEEP_ALIVE_FLAG    0x1U
 
 /**
- * @section http_response_flags
+ * @defgroup http_response_flags HTTPResponse_t Flags
  * @brief Flags for #HTTPResponse_t.respFlags.
  * These flags are populated in #HTTPResponse_t.respFlags by the #HTTPClient_Send
  * function.
- *
- * - #HTTP_RESPONSE_CONNECTION_CLOSE_FLAG <br>
- *   @copybrief HTTP_RESPONSE_CONNECTION_CLOSE_FLAG
- * - #HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG
- *   @copybrief HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG
+ * 
+ * A flags value can be extracted from #HTTPResponse_t.respFlags with a
+ * bitwise-AND.
  */
 
 /**
- * @ingroup http_constants
+ * @ingroup http_response_flags
  * @brief This will be set to true if header "Connection: close" is found.
  *
  * If a "Connection: close" header is present the application should always
@@ -131,7 +126,7 @@
 #define HTTP_RESPONSE_CONNECTION_CLOSE_FLAG         0x1U
 
 /**
- * @ingroup http_constants
+ * @ingroup http_response_flags
  * @brief This will be set to true if header "Connection: Keep-Alive" is found.
  *
  * This flag is valid only for #HTTPResponse_t.respFlags.

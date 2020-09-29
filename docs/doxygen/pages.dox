@@ -73,7 +73,30 @@ HTTP Client Library Architecture and Design
 This HTTP client library implements a subset of the HTTP/1.1 protocol. It is
 optimized for resource constrained devices and does not allocate any memory.
 
+@section http_request_serialization Building a HTTP request
 
+The HTTP client library provides the following API to serialize request headers.
+- @ref HTTPClient_InitializeRequestHeaders
+- @ref HTTPClient_AddHeader
+- @ref HTTPClient_AddRangeHeader
+
+An application is expected to create and populate a @ref HTTPRequestInfo_t and
+set a buffer to use for the headers in @ref HTTPRequestHeaders_t.pBuffer. The
+application may first call @ref HTTPClient_InitializeRequestHeaders to populate
+the @ref HTTPRequestHeaders_t with the method, the path, and the host. The
+HTTP request will be serialzied to following when HTTPRequestInfo_t.reqFlags is zero.
+
+@code
+<METHOD> <PATH> HTTP/1.1\r\n
+User-Agent: <MY-PLATFORM>\r\n
+Host: <SERVER-URL>\r\n
+@endcode
+
+When the HTTPRequestInfo_t.reqFlags is set with 
+
+@section http_range_header HTTP Range Requests and Partial Content responses
+
+This library strongly encourages the use of Range Requests to download a large.
 
 */
 
