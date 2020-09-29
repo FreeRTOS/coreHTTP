@@ -152,7 +152,7 @@ to receive the HTTP response in @ref HTTPResponse_t.pBuffer.
 @ref HTTPClient_Send is then used to send the request and receive the response.
 If the request has a body it is passed as a parameter to @ref HTTPClient_Send.
 As soon as the response is received from the network it is parsed. The final
-parsed response is represented by the @ref HTTPResponse_t returned from 
+parsed response is represented by the @ref HTTPResponse_t returned from
 @ref HTTPClient_Send. Parsing the HTTP response is done using
 [http-parser](https://github.com/nodejs/http-parser). http-parser invokes
 callbacks for each section in the HTTP response it finds. Using these callbacks
@@ -174,7 +174,7 @@ the beginning of @ref HTTPResponse_t.pBuffer until the header field of interest
 is found.
 
 If the user application wants to avoid re-parsing @ref HTTPResponse_t.pBuffer,
-then the user application may register a callback in 
+then the user application may register a callback in
 @ref HTTPResponse_t.pHeaderParsingCallback. When the HTTP response message is
 first received from the network, in @ref HTTPClient_Send, http-parser is invoked
 to parse the response. This first parsing in @ref HTTPClient_Send will invoke
