@@ -84,19 +84,51 @@ An application is expected to create and populate a @ref HTTPRequestInfo_t and
 set a buffer to use for the headers in @ref HTTPRequestHeaders_t.pBuffer. The
 application may first call @ref HTTPClient_InitializeRequestHeaders to populate
 the @ref HTTPRequestHeaders_t with the method, the path, and the host. The
-HTTP request will be serialzied to following when HTTPRequestInfo_t.reqFlags is zero.
+HTTP request will be serialized to following when HTTPRequestInfo_t.reqFlags is zero.
+
+@code
+<METHOD> <PATH> HTTP/1.1\r\n
+User-Agent: <MY-PLATFORM>\r\n
+Host: <SERVER-URL>\r\n\r\n
+@endcode
+
+When the @ref HTTPRequestInfo_t.reqFlags has @ref HTTP_REQUEST_KEEP_ALIVE_FLAG
+set, then the HTTP request will be serialized to the following:
 
 @code
 <METHOD> <PATH> HTTP/1.1\r\n
 User-Agent: <MY-PLATFORM>\r\n
 Host: <SERVER-URL>\r\n
+Connection: keep-alive\r\n\r\n
 @endcode
 
-When the HTTPRequestInfo_t.reqFlags is set with 
+The application may add more headers using @ref HTTPClient_AddHeader or 
+@ref HTTPClient_AddRangeHeader. New headers will be appended to the end of the
+existing headers. Please see the following example:
 
-@section http_range_header HTTP Range Requests and Partial Content responses
+@code
+<METHOD> <PATH> HTTP/1.1\r\n
+User-Agent: <MY-PLATFORM>\r\n
+Host: <SERVER-URL>\r\n
+Connection: keep-alive\r\n
+Another-Header1: another-value1\r\n
+Another-Header2: another-value2\r\n
+Another-Header3: another-value3\r\n\r\n
+@endcode
+
+@section http_range_header HTTP Range Requests and Partial Content Responses
 
 This library strongly encourages the use of Range Requests to download a large.
+Large is defined here to be a file whose total size cannot fit into the space
+currently available in RAM. By downloading a large file using Range Requests the
+user application can spend time processing that part of the file (for example
+writing to flash), then request the next part of the file. If the user application
+were to request the entire file at once and process it in sections from the network,
+the system is at a high risk for dropping packets. Dropped packets cause 
+retransmissions and with many there can be a negative impact on the overall system
+throughput, network bandwidth, and battery life of the device.
+
+Range requests are supported using @ref HTTPClient_AddRangeHeader. 
 
 */
 
