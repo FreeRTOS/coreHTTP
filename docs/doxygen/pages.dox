@@ -73,7 +73,15 @@ HTTP Client Library Architecture and Design
 This HTTP client library implements a subset of the HTTP/1.1 protocol. It is
 optimized for resource constrained devices and does not allocate any memory.
 
-@section http_request_serialization Building a HTTP request
+@section http_transport_interface_blurb Transport Interface
+
+The HTTP client library relies on a transport interface to dissociate itself from
+the user platform. The transport interface allows the HTTP client library to send
+and receive data over the user's transport layer. Please see the 
+[transport interface documentation](@ref http_transport_interface) for more
+information.
+
+@section http_request_serialization Building an HTTP Tequest
 
 The HTTP client library provides the following API to serialize request headers.
 - @ref HTTPClient_InitializeRequestHeaders
@@ -116,7 +124,10 @@ Another-Header2: another-value2\r\n
 Another-Header3: another-value3\r\n\r\n
 @endcode
 
-@section http_range_header HTTP Range Requests and Partial Content Responses
+The body is passed into the @ref HTTPClient_Send function when the request is
+ready to be sent.
+
+@section http_range_support HTTP Range Requests and Partial Content Responses
 
 This library strongly encourages the use of Range Requests to download a large.
 Large is defined here to be a file whose total size cannot fit into the space
@@ -124,11 +135,28 @@ currently available in RAM. By downloading a large file using Range Requests the
 user application can spend time processing that part of the file (for example
 writing to flash), then request the next part of the file. If the user application
 were to request the entire file at once and process it in sections from the network,
-the system is at a high risk for dropping packets. Dropped packets cause 
+the system is at a high risk for dropping packets. Dropped packets cause
 retransmissions and with many there can be a negative impact on the overall system
 throughput, network bandwidth, and battery life of the device.
 
-Range requests are supported using @ref HTTPClient_AddRangeHeader. 
+Range requests are supported using @ref HTTPClient_AddRangeHeader. Please see
+the function documentation for more information.
+
+@section http_response_deserialization Receiving and Parsing an HTTP Response
+
+After the request headers are serialized, the user application must set a buffer
+to receive the HTTP response in @ref HTTPResponse_t.pBuffer. @ref HTTPClient_Send
+is then used to send the request and receive the response. If the request has a
+body it is passed as a parameter to @ref HTTPClient_Send. As soon as the response
+is received from the network it is parsed. The final parsed response is represented
+by the @ref HTTPResponse_t returned from @ref HTTPClient_Send. Parsing the HTTP
+response is done using [http-parser](https://github.com/nodejs/http-parser).
+http-parser invokes callbacks for each section in the HTTP response it finds.
+Using these callbacks the HTTP client library sets the members of @ref HTTPResponse_t
+to return from @ref HTTPClient_Send. The overall flow of @ref HTTPClient_Send is
+shown in the diagram below:
+
+@image html httpclient_send_diagram.png width=50%
 
 */
 

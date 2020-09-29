@@ -371,6 +371,8 @@ typedef struct HTTPRequestInfo
 
     /**
      * @brief Flags to activate other request header configurations.
+     * 
+     * Please see @ref http_request_flags for more information.
      */
     uint32_t reqFlags;
 } HTTPRequestInfo_t;
@@ -491,7 +493,8 @@ typedef struct HTTPResponse
     /**
      * @brief Flags of useful headers found in the response.
      *
-     * This is updated by #HTTPClient_Send.
+     * This is updated by #HTTPClient_Send. Please see @ref http_response_flags
+     * for more information.
      */
     uint32_t respFlags;
 } HTTPResponse_t;
@@ -648,7 +651,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * @param[in] pResponse The response message and some notable response
  * parameters will be returned here on success.
  * @param[in] sendFlags Flags which modify the behavior of this function. Please
- * see @ref http_send_flags.
+ * see @ref http_send_flags for more information.
  *
  * @return One of the following:
  * - #HTTP_SUCCESS (If successful.)
