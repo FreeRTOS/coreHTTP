@@ -17,7 +17,7 @@ else (no)
         endif
         : Parse HTTP response;
         note left: Parsing is done with\nthird-party //http-parser//
-    repeat while (Response buffer is NOT full && 
+    repeat while (Response buffer is NOT full &&
     Response message is NOT complete &&
     No errors found in parsing) is (   yes)
     -> no;

@@ -77,7 +77,7 @@ optimized for resource constrained devices and does not allocate any memory.
 
 The HTTP client library relies on a transport interface to dissociate itself from
 the user platform. The transport interface allows the HTTP client library to send
-and receive data over the user's transport layer. Please see the 
+and receive data over the user's transport layer. Please see the
 [transport interface documentation](@ref http_transport_interface) for more
 information.
 
@@ -110,7 +110,7 @@ Host: <SERVER-URL>\r\n
 Connection: keep-alive\r\n\r\n
 @endcode
 
-The application may add more headers using @ref HTTPClient_AddHeader or 
+The application may add more headers using @ref HTTPClient_AddHeader or
 @ref HTTPClient_AddRangeHeader. New headers will be appended to the end of the
 existing headers. Please see the following example:
 

@@ -18,7 +18,7 @@ Application -> Application: Send <font color=blue>Request Body</font> over the n
 Application --> HTTP_Client_Lib: Return SUCCESS
 deactivate Application
 
-loop While <font color=darkgreen>response buffer</font> is NOT full &&\nResponse message is NOT complete &&\nNo errors found in parsing 
+loop While <font color=darkgreen>response buffer</font> is NOT full &&\nResponse message is NOT complete &&\nNo errors found in parsing
     HTTP_Client_Lib -> Application: transport read(<font color=darkgreen>Response buffer</font>)
     activate Application #lightblue
     Application -> Application: Receive network data into the <font color=darkgreen>Response buffer</font>.
