@@ -50,6 +50,34 @@ HTTP Client Library Design
 */
 
 /**
+@page http_porting Porting Guide
+
+To use the HTTP client library, a platform must implement the following
+components:
+1. [Configuration Macros](@ref http_porting_config)
+2. [Transport Interface](@ref http_porting_transport)
+
+@section http_porting_config Configuration Macros
+@brief Settings that can be set as macros in the config header
+@ref core_http_config.h, or passed in as compiler options.
+
+@note If a custom configuration header `core_http_config.h` is not provided,
+then the @ref HTTP_DO_NOT_USE_CUSTOM_CONFIG macro must be defined.
+
+@see [Configurations](@ref http_config)
+
+The following macros can be configured for this library:
+ - @ref HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES <br>
+ - @ref HTTP_USER_AGENT_VALUE <br>
+
+In addition, the following logging macros are used throughout this library:
+ - @ref LogError
+ - @ref LogWarn
+ - @ref LogInfo
+ - @ref LogDebug
+*/
+
+/**
 @page http_config Configurations
 @brief Configurations of the HTTP Client library.
 <!-- @par configpagestyle allows the @section titles to be styled according to style.css -->
