@@ -35,6 +35,24 @@
 #ifndef CORE_HTTP_CONFIG_DEFAULTS_
 #define CORE_HTTP_CONFIG_DEFAULTS_
 
+/* The macro definition for HTTP_DO_NOT_USE_CUSTOM_CONFIG is for Doxygen
+ * documentation only. */
+
+/**
+ * @brief Define this macro to build the HTTP client library without the custom
+ * config file core_http_config.h.
+ *
+ * Without the custom config, the HTTP client library builds with default values
+ * of config macros defined in core_http_config_defaults.h file.
+ *
+ * If a custom config is provided, then HTTP_DO_NOT_USE_CUSTOM_CONFIG should not
+ * be defined.
+ */
+#ifdef DOXYGEN
+    #define HTTP_DO_NOT_USE_CUSTOM_CONFIG
+#endif
+
+
 /**
  * @brief Maximum size, in bytes, of headers allowed from the server.
  *

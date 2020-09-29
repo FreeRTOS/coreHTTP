@@ -68,9 +68,13 @@ Feature of HTTP/1.1 not supported in this library:
 
 /**
 @page http_design Design
-HTTP Client Library Design
+HTTP Client Library Architecture and Design
 
-[<FIXME: Some useful design information.>]
+This HTTP client library implements a subset of the HTTP/1.1 protocol. It is
+optimized for resource constrained devices and does not allocate any memory.
+
+
+
 */
 
 /**
@@ -80,6 +84,10 @@ HTTP Client Library Design
 @par configpagestyle
 
 Configuration settings are C pre-processor constants. They can be set with a \#define in the config file (core_http_config.h) or by using a compiler option such as -D in gcc.
+
+
+@section HTTP_DO_NOT_USE_CUSTOM_CONFIG
+@copydoc HTTP_DO_NOT_USE_CUSTOM_CONFIG
 
 @section HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
 @copydoc HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
