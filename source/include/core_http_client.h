@@ -47,13 +47,14 @@
 #include "transport_interface.h"
 
 /* Convenience macros for some HTTP request methods. */
+
 /** @addtogroup http_constants
  *  @{
  */
-#define HTTP_METHOD_GET                          "GET"  /**< HTTP Method GET string. */
-#define HTTP_METHOD_PUT                          "PUT"  /**< HTTP Method PUT string. */
-#define HTTP_METHOD_POST                         "POST" /**< HTTP Method POST string. */
-#define HTTP_METHOD_HEAD                         "HEAD" /**< HTTP Method HEAD string. */
+#define HTTP_METHOD_GET     "GET"                       /**< HTTP Method GET string. */
+#define HTTP_METHOD_PUT     "PUT"                       /**< HTTP Method PUT string. */
+#define HTTP_METHOD_POST    "POST"                      /**< HTTP Method POST string. */
+#define HTTP_METHOD_HEAD    "HEAD"                      /**< HTTP Method HEAD string. */
 /** @}*/
 
 /**
@@ -109,7 +110,7 @@
  * @brief Flags for #HTTPResponse_t.respFlags.
  * These flags are populated in #HTTPResponse_t.respFlags by the #HTTPClient_Send
  * function.
- * 
+ *
  * A flags value can be extracted from #HTTPResponse_t.respFlags with a
  * bitwise-AND.
  */
@@ -371,7 +372,7 @@ typedef struct HTTPRequestInfo
 
     /**
      * @brief Flags to activate other request header configurations.
-     * 
+     *
      * Please see @ref http_request_flags for more information.
      */
     uint32_t reqFlags;
