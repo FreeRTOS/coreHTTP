@@ -81,7 +81,7 @@ and receive data over the user's transport layer. Please see the
 [transport interface documentation](@ref http_transport_interface) for more
 information.
 
-@section http_request_serialization Building an HTTP Tequest
+@section http_request_serialization Building an HTTP Request
 
 The HTTP client library provides the following API to serialize request headers.
 - @ref HTTPClient_InitializeRequestHeaders
