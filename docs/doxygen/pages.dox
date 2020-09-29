@@ -78,8 +78,10 @@ memory.
 
 The HTTP client library relies on a transport interface to decouple itself from
 the user platform. The transport interface allows the HTTP client library to send
-and receive data over the user's transport layer. Please see the
-[transport interface documentation](@ref http_transport_interface) for more
+and receive data over the user's transport layer. The user platform must implement
+a @ref TransportInterface_t to use in @ref HTTPClient_Send.
+
+@see The [transport interface documentation](@ref http_transport_interface) for more
 information.
 
 @section http_request_serialization Building an HTTP Request
