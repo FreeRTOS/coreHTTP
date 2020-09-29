@@ -51,6 +51,7 @@ HTTP Client Library Design
 
 /**
 @page http_porting Porting Guide
+@brief Guide for porting the HTTP client library to a new platform.
 
 To use the HTTP client library, a platform must implement the following
 components:
@@ -110,8 +111,6 @@ struct NetworkContext {
     // Fields necessary for the transport implementations, e.g. a TCP socket descriptor.
 };
 @endcode
-
-
 */
 
 /**
