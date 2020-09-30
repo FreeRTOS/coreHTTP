@@ -111,7 +111,7 @@
  * These flags are populated in #HTTPResponse_t.respFlags by the #HTTPClient_Send
  * function.
  *
- * A flags value can be extracted from #HTTPResponse_t.respFlags with a
+ * A flag's value can be extracted from #HTTPResponse_t.respFlags with a
  * bitwise-AND.
  */
 

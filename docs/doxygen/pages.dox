@@ -95,8 +95,8 @@ An application is expected to create and populate a @ref HTTPRequestInfo_t and
 set a buffer to use for the headers in @ref HTTPRequestHeaders_t.pBuffer. The
 application may first call @ref HTTPClient_InitializeRequestHeaders to populate
 the @ref HTTPRequestHeaders_t with the method, the path, and the host. The
-HTTP request will be serialized to following when HTTPRequestInfo_t.reqFlags is
-zero.
+HTTP request will be serialized to the following when HTTPRequestInfo_t.reqFlags
+is zero.
 
 @code
 <METHOD> <PATH> HTTP/1.1\r\n
@@ -140,9 +140,9 @@ requests the user application can spend time processing that part of the file
 (for example writing to flash), then request the next part of the file. If the
 user application were to request the entire file at once and process it in
 sections from the network, the system is at a high risk for dropping packets.
-Dropped packets cause retransmissions and with many there can be a negative
-impact on the overall system throughput, network bandwidth, and battery life of
-the device.
+Dropped packets cause retransmissions in the system's transport layer. With
+many, there can be a negative impact on the overall system throughput, network
+bandwidth, and battery life of the device.
 
 Range requests are supported using @ref HTTPClient_AddRangeHeader. Please see
 the function documentation for more information.
@@ -198,7 +198,14 @@ Configuration settings are C pre-processor constants. They can be set with a \#d
 
 
 @section HTTP_DO_NOT_USE_CUSTOM_CONFIG
-@copydoc HTTP_DO_NOT_USE_CUSTOM_CONFIG
+@brief Define this macro to build the HTTP client library without the custom
+config file core_http_config.h.
+
+Without the custom config, the HTTP client library builds with default values of
+config macros defined in core_http_config_defaults.h file.
+
+If a custom config is provided, then HTTP_DO_NOT_USE_CUSTOM_CONFIG should not be
+defined.
 
 @section HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
 @copydoc HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
