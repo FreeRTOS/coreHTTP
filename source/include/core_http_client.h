@@ -523,6 +523,33 @@ typedef struct HTTPResponse
  * - #HTTP_SUCCESS (If successful)
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If provided buffer size is not large enough to hold headers.)
+ * 
+ * <b>Example</b>
+ * @code{c}
+ * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ * // Declare a HTTPRequestHeaders_t and HTTPRequestInfo_t.
+ * HTTPRequestHeaders_t requestHeaders = { 0 };
+ * HTTPRequestInfo_t requestInfo = { 0 };
+ * // A buffer that will fit the Request-Line, the User-Agent header line, and
+ * // the Host header line.
+ * uint8_t requestHeaderBuffer[ 256 ] = { 0 };
+ * 
+ * // Set a buffer to serialize request headers to.
+ * requestHeaders.pBuffer = requestHeaderBuffer;
+ * requestHeaders.bufferLen = 256;
+ * 
+ * // Set the Method, Path, and Host in the HTTPRequestInfo_t.
+ * requestInfo.method = HTTP_METHOD_GET;
+ * requestInfo.methodLen = sizeof( HTTP_METHOD_GET ) - 1U;
+ * requestInfo.pPath = "/html/rfc2616"
+ * requestInfo.pathLen = sizeof( "/html/rfc2616" ) - 1U;
+ * requestInfo.pHost = "tools.ietf.org"
+ * requestInfo.hostLen = sizeof( "tools.ietf.org" ) - 1U;
+ * requestInfo.reqFlags |= HTTP_REQUEST_KEEP_ALIVE_FLAG;
+ * 
+ * httpLibStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders,
+ *                                                      &requestInfo );
+ * @endcode
  */
 /* @[declare_httpclient_initializerequestheaders] */
 HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pRequestHeaders,
