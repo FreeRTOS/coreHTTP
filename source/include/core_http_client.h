@@ -734,7 +734,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTP_NO_RESPONSE (No data was received from the transport interface.)
  * - #HTTP_INSUFFICIENT_MEMORY (The response received could not fit into the response buffer
  * or extra headers could not be sent in the request.)
- * - #HTTP_PARSER_INTERNAL_ERROR (Internal parsing error.)
+ * - #HTTP_PARSER_INTERNAL_ERROR (Internal parsing error.)<br><br>
  * Security alerts are listed below, please see #HTTPStatus_t for more information:
  * - #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED
  * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
@@ -743,6 +743,46 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
+ * 
+ * <b>Example</b>
+ * @code{c}
+ * // Variales used in this example.
+ * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ * TransportInterface_t transportInterface = { 0 };
+ * HTTPResponse_t = { 0 };
+ * char requestBody[] = "This is example request body.";
+ * 
+ * // Assume that requestHeaders has been intialized with
+ * // HTTPClient_InitializeResponseHeaders() and any headers needed have been
+ * // added with HTTPClient_AddHeader().
+ * HTTPRequestHeaders_t requestHeaders;
+ * 
+ * // Set the transport interface with platform specific functions assumed to be
+ * // implemented elsewhere.
+ * transportInterface.recv = myPlatformTransportReceive;
+ * transportInterface.send = myPlatformTransportSend;
+ * transportInterface.pNetworkContext = myPlatformNetworkContext;
+ * 
+ * // Set the buffer to receive the HTTP response message into. The buffer is
+ * // dynamically allocated for demonstration purposes only.
+ * response.pBuffer = ( uint8_t* )malloc( 1024 );
+ * response.bufferLen = 1024;
+ * 
+ * httpLibStatus = HTTPClient_Send( &transportInterface,
+ *                                  &requestHeaders,
+ *                                  requestBody,
+ *                                  sizeof( requestBody ) - 1U,
+ *                                  &response,
+ *                                  0 );
+ * 
+ * if( httpLibStatus == HTTP_SUCCESS )
+ * {
+ *     if( response.status == 200 )
+ *     {
+ *         // Handle a response Status-Code of 200 OK.
+ *     }
+ * }
+ * @endcode
  */
 /* @[declare_httpclient_send] */
 HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
