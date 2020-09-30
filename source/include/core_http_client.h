@@ -743,38 +743,38 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
- * 
+ *
  * <b>Example</b>
  * @code{c}
- * // Variales used in this example.
+ * // Variables used in this example.
  * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
  * TransportInterface_t transportInterface = { 0 };
  * HTTPResponse_t = { 0 };
  * char requestBody[] = "This is example request body.";
- * 
- * // Assume that requestHeaders has been intialized with
+ *
+ * // Assume that requestHeaders has been initialized with
  * // HTTPClient_InitializeResponseHeaders() and any headers needed have been
  * // added with HTTPClient_AddHeader().
  * HTTPRequestHeaders_t requestHeaders;
- * 
+ *
  * // Set the transport interface with platform specific functions assumed to be
  * // implemented elsewhere.
  * transportInterface.recv = myPlatformTransportReceive;
  * transportInterface.send = myPlatformTransportSend;
  * transportInterface.pNetworkContext = myPlatformNetworkContext;
- * 
+ *
  * // Set the buffer to receive the HTTP response message into. The buffer is
  * // dynamically allocated for demonstration purposes only.
  * response.pBuffer = ( uint8_t* )malloc( 1024 );
  * response.bufferLen = 1024;
- * 
+ *
  * httpLibStatus = HTTPClient_Send( &transportInterface,
  *                                  &requestHeaders,
  *                                  requestBody,
  *                                  sizeof( requestBody ) - 1U,
  *                                  &response,
  *                                  0 );
- * 
+ *
  * if( httpLibStatus == HTTP_SUCCESS )
  * {
  *     if( response.status == 200 )
@@ -816,20 +816,20 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * - #HTTP_HEADER_NOT_FOUND (Header is not found in the passed response buffer.)
  * - #HTTP_INVALID_RESPONSE (Provided response is not a valid HTTP response for parsing.)
  * - #HTTP_PARSER_INTERNAL_ERROR(If an error in the response parser.)
- * 
+ *
  * <b>Example</b>
  * @code{c}
  * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
  * // Assume that response is returned from a successful invocation of
  * // HTTPClient_Send().
  * HTTPResponse_t response;
- * 
+ *
  * char * pDateLoc = NULL;
  * size_t dateLen = 0;
  * // Search for a "Date" header field. pDateLoc will be the location of the
  * // Date header value in response.pBuffer.
  * httpLibStatus = HTTPClient_ReadHeader( &response,
- *                                        "Date", 
+ *                                        "Date",
  *                                        sizeof("Date") - 1,
  *                                        &pDateLoc,
  *                                        &dateLen );
