@@ -816,6 +816,24 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * - #HTTP_HEADER_NOT_FOUND (Header is not found in the passed response buffer.)
  * - #HTTP_INVALID_RESPONSE (Provided response is not a valid HTTP response for parsing.)
  * - #HTTP_PARSER_INTERNAL_ERROR(If an error in the response parser.)
+ * 
+ * <b>Example</b>
+ * @code{c}
+ * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ * // Assume that response is returned from a successful invocation of
+ * // HTTPClient_Send().
+ * HTTPResponse_t response;
+ * 
+ * char * pDateLoc = NULL;
+ * size_t dateLen = 0;
+ * // Search for a "Date" header field. pDateLoc will be the location of the
+ * // Date header value in response.pBuffer.
+ * httpLibStatus = HTTPClient_ReadHeader( &response,
+ *                                        "Date", 
+ *                                        sizeof("Date") - 1,
+ *                                        &pDateLoc,
+ *                                        &dateLen );
+ * @endcode
  */
 /* @[declare_httpclient_readheader] */
 HTTPStatus_t HTTPClient_ReadHeader( const HTTPResponse_t * pResponse,
