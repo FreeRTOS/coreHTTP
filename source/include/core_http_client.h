@@ -586,6 +586,20 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * - #HTTP_SUCCESS (If successful.)
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If application-provided buffer is not large enough to hold headers.)
+ * 
+ * <b>Example</b>
+ * @code{c}
+ * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ * // Assume that requestHeaders has already been initialized with
+ * // HTTPClient_InitializeRequestHeaders().
+ * HTTPRequestHeaders_t requestHeaders;
+ * 
+ * httpLibStatus = HTTPClient_AddHeader( requestHeaders,
+ *                                       "Request-Header-Field",
+ *                                       sizeof( "Request-Header-Field" ),
+ *                                       "Request-Header-Value",
+ *                                       sizeof("Request-Header-Value") );
+ * @endcode
  */
 /* @[declare_httpclient_addheader] */
 HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
