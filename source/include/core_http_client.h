@@ -524,7 +524,7 @@ typedef struct HTTPResponse
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If provided buffer size is not large enough to hold headers.)
  * 
- * <b>Example</b>
+ * <b>Example usage:</b>
  * @code{c}
  * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
  * // Declare a HTTPRequestHeaders_t and HTTPRequestInfo_t.
@@ -587,14 +587,14 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If application-provided buffer is not large enough to hold headers.)
  * 
- * <b>Example</b>
+ * <b>Example usage:</b>
  * @code{c}
  * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
  * // Assume that requestHeaders has already been initialized with
  * // HTTPClient_InitializeRequestHeaders().
  * HTTPRequestHeaders_t requestHeaders;
  * 
- * httpLibStatus = HTTPClient_AddHeader( requestHeaders,
+ * httpLibStatus = HTTPClient_AddHeader( &requestHeaders,
  *                                       "Request-Header-Field",
  *                                       sizeof( "Request-Header-Field" ),
  *                                       "Request-Header-Value",
@@ -623,13 +623,33 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * combination of @a rangeStartOrLastNBytes and @a rangeEnd parameter values:
  * 1. Request containing both parameters for the byte range [rangeStart, rangeEnd]
  * where @a rangeStartOrLastNBytes <= @a rangeEnd.
- * Example request: "Range: bytes=0-1023\r\n" for requesting bytes in the range [0, 1023].
+ * Example request header line: "Range: bytes=0-1023\r\n" for requesting bytes in the range [0, 1023].
+ * <b>Example usage:</b>
+ * @code{c}
+ * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ * // Assume that requestHeaders has already been initialized with
+ * // HTTPClient_InitializeRequestHeaders().
+ * HTTPRequestHeaders_t requestHeaders;
+ * 
+ * // Request for bytes 0 to 1023.
+ * httpLibStatus = HTTPClient_AddRangeHeader( &requestHeaders, 0, 1023 );
+ * @endcode
  *
  * 2. Request for the last N bytes, represented by @p rangeStartOrlastNbytes.
  * @p rangeStartOrlastNbytes should be negative and @p rangeEnd should be
  * #HTTP_RANGE_REQUEST_END_OF_FILE.
- * Example request: "Range: bytes=-512\r\n" for requesting the last 512 bytes
- * (or bytes in the range [512, 1023] for a 1kB sized file).
+ * Example request header line: "Range: bytes=-512\r\n" for requesting the last 512 bytes
+ * (or bytes in the range [512, 1023] for a 1KB sized file).
+ * <b>Example usage:</b>
+ * @code{c}
+ * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ * // Assume that requestHeaders has already been initialized with
+ * // HTTPClient_InitializeRequestHeaders().
+ * HTTPRequestHeaders_t requestHeaders;
+ * 
+ * // Request for the last 512 bytes.
+ * HTTPClient_AddRangeHeader( &requestHeaders, -512, HTTP_RANGE_REQUEST_END_OF_FILE)
+ * @endcode
  *
  * 3. Request for all bytes (till the end of byte sequence) from byte N,
  * represented by @p rangeStartOrlastNbytes.
@@ -637,7 +657,17 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * #HTTP_RANGE_REQUEST_END_OF_FILE.
  * Example request: "Range: bytes=256-\r\n" for requesting all bytes after and
  * including byte 256 (or bytes in the range [256,1023] for a 1kB sized file).
- *
+ * <b>Example usage:</b>
+ * @code{c}
+ * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ * // Assume that requestHeaders has already been initialized with
+ * // HTTPClient_InitializeRequestHeaders().
+ * HTTPRequestHeaders_t requestHeaders;
+ * 
+ * // Request for all bytes from byte 256 onward.
+ * HTTPClient_AddRangeHeader( &requestHeaders, 256, HTTP_RANGE_REQUEST_END_OF_FILE)
+ * @endcode
+ * 
  * @param[in] pRequestHeaders Request header buffer information.
  * @param[in] rangeStartOrlastNbytes Represents either the starting byte
  * for a range OR the last N number of bytes in the requested file.
