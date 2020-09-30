@@ -103,7 +103,7 @@ following functions pointers:
 The above two functions take in a pointer to a @ref NetworkContext_t, the type
 name of a `struct NetworkContext`. The NetworkContext struct must also be
 defined by the user's implementation, and ought to contain any information
-necessary to send and receive data with the @ref TransportSend_t and 
+necessary to send and receive data with the @ref TransportSend_t and
 @ref TransportRecv_t implementations, respectively:
 
 @code
