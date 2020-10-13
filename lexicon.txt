@@ -1,13 +1,14 @@
-aws
 absolutevalue
 addheader
 addrangeheader
 addrangeheaders
 addrangerequest
+addtogroup
 aggregator
 api
 apis
 ascii
+aws
 br
 bufferlen
 bufferlength
@@ -30,7 +31,9 @@ corehttp
 coverity
 cprover
 datalen
+defgroup
 doesn
+doxygen
 endcode
 endif
 enums

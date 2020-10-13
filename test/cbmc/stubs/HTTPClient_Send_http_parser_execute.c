@@ -60,13 +60,15 @@ size_t http_parser_execute( http_parser * parser,
 
     pParsingContext = ( HTTPParsingContext_t * ) ( parser->data );
     /* Choose whether the parser found the header */
-    pParsingContext->pLastHeaderField = nondet_bool() ? NULL : malloc( fieldLength );
+    pParsingContext->pLastHeaderField = malloc( fieldLength );
+    __CPROVER_assume( pParsingContext->pLastHeaderField != NULL );
     pParsingContext->state = HTTP_PARSING_COMPLETE;
 
     if( pParsingContext->pLastHeaderField )
     {
         pParsingContext->lastHeaderFieldLen = fieldLength;
         pParsingContext->pLastHeaderValue = malloc( valueLength );
+        __CPROVER_assume( pParsingContext->pLastHeaderValue != NULL );
         pParsingContext->lastHeaderValueLen = valueLength;
     }
     else

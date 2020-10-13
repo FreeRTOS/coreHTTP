@@ -32,7 +32,7 @@
 void * mallocCanFail( size_t size )
 {
     __CPROVER_assert( size < CBMC_MAX_OBJECT_SIZE, "mallocCanFail size is too big" );
-    return nondet_bool() ? NULL : malloc( size );
+    return malloc( size );
 }
 
 HTTPRequestHeaders_t * allocateHttpRequestHeaders( HTTPRequestHeaders_t * pRequestHeaders )
@@ -188,6 +188,7 @@ http_parser * allocateHttpSendParser( http_parser * pHttpParser )
     if( pHttpParser == NULL )
     {
         pHttpParser = malloc( sizeof( http_parser ) );
+        __CPROVER_assume( pHttpParser != NULL );
     }
 
     pHttpParsingContext = allocateHttpSendParsingContext( NULL );
@@ -205,6 +206,7 @@ HTTPParsingContext_t * allocateHttpSendParsingContext( HTTPParsingContext_t * pH
     if( pHttpParsingContext == NULL )
     {
         pHttpParsingContext = malloc( sizeof( HTTPParsingContext_t ) );
+        __CPROVER_assume( pHttpParsingContext != NULL );
     }
 
     if( pHttpParsingContext != NULL )
@@ -240,6 +242,7 @@ http_parser * allocateHttpReadHeaderParser( http_parser * pHttpParser )
     if( pHttpParser == NULL )
     {
         pHttpParser = malloc( sizeof( http_parser ) );
+        __CPROVER_assume( pHttpParser != NULL );
     }
 
     pFindHeaderContext = allocateFindHeaderContext( NULL );
@@ -253,6 +256,7 @@ findHeaderContext_t * allocateFindHeaderContext( findHeaderContext_t * pFindHead
     if( pFindHeaderContext == NULL )
     {
         pFindHeaderContext = malloc( sizeof( findHeaderContext_t ) );
+        __CPROVER_assume( pFindHeaderContext != NULL );
     }
 
     return pFindHeaderContext;
