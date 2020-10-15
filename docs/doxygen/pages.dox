@@ -189,6 +189,70 @@ during the operation of @ref HTTPClient_Send.
 */
 
 /**
+@page http_porting Porting Guide
+@brief Guide for porting the HTTP client library to a new platform.
+
+To use the HTTP client library, a platform must implement the following
+components:
+1. [Configuration Macros](@ref http_porting_config)
+2. [Transport Interface](@ref http_porting_transport)
+
+@section http_porting_config Configuration Macros
+@brief Settings that can be set as macros in the config header
+`core_http_config.h`, or passed in as compiler options.
+
+@note If the custom configuration header `core_http_config.h` is not provided,
+then the @ref HTTP_DO_NOT_USE_CUSTOM_CONFIG macro must be defined.
+
+@see [Configurations](@ref http_config)
+
+The following macros can be configured for this library:
+ - @ref HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
+ - @ref HTTP_USER_AGENT_VALUE
+
+In addition, the following logging macros are used throughout this library:
+ - @ref LogError
+ - @ref LogWarn
+ - @ref LogInfo
+ - @ref LogDebug
+
+@section http_porting_transport Transport Interface
+@brief The HTTP client library relies on transport interface callbacks
+that must be implemented in order to send and receive packets on a network.
+
+@see The [Transport Interface](@ref http_transport_interface) documentation for
+more information.
+
+The transport interface API used by the HTTP client is defined in
+@ref transport_interface.h. A port must implement functions corresponding to the
+following functions pointers:
+ - [Transport Receive](@ref TransportRecv_t): A function to receive bytes from a network.
+ @code
+ int32_t (* TransportRecv_t )(
+     const NetworkContext_t * pNetworkContext, void * pBuffer, size_t bytesToRecv
+ );
+ @endcode
+ - [Transport Send](@ref TransportSend_t): A function to send bytes over a network.
+ @code
+ int32_t (* TransportSend_t )(
+     const NetworkContext_t * pNetworkContext, const void * pBuffer, size_t bytesToSend
+ );
+ @endcode
+
+The above two functions take in a pointer to a @ref NetworkContext_t, the type
+name of a `struct NetworkContext`. The NetworkContext struct must also be
+defined by the user's implementation, and ought to contain any information
+necessary to send and receive data with the @ref TransportSend_t and
+@ref TransportRecv_t implementations, respectively:
+
+@code
+struct NetworkContext {
+    // Fields necessary for the transport implementations, e.g. a TCP socket descriptor.
+};
+@endcode
+*/
+
+/**
 @page http_config Configurations
 @brief Configurations of the HTTP Client library.
 <!-- @par configpagestyle allows the @section titles to be styled according to style.css -->
