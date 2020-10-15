@@ -524,10 +524,10 @@ typedef struct HTTPResponse
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If provided buffer size is not large enough to hold headers.)
  *
- * <b>Example</b>
+ * **Example**
  * @code{c}
- * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
- * // Declare a HTTPRequestHeaders_t and HTTPRequestInfo_t.
+ * HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
+ * // Declare an HTTPRequestHeaders_t and HTTPRequestInfo_t.
  * HTTPRequestHeaders_t requestHeaders = { 0 };
  * HTTPRequestInfo_t requestInfo = { 0 };
  * // A buffer that will fit the Request-Line, the User-Agent header line, and
@@ -547,7 +547,7 @@ typedef struct HTTPResponse
  * requestInfo.hostLen = sizeof( "tools.ietf.org" ) - 1U;
  * requestInfo.reqFlags |= HTTP_REQUEST_KEEP_ALIVE_FLAG;
  *
- * httpLibStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders,
+ * httpLibraryStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders,
  *                                                      &requestInfo );
  * @endcode
  */
@@ -587,14 +587,14 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If application-provided buffer is not large enough to hold headers.)
  *
- * <b>Example</b>
+ * **Example**
  * @code{c}
- * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ * HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
  * // Assume that requestHeaders has already been initialized with
  * // HTTPClient_InitializeRequestHeaders().
  * HTTPRequestHeaders_t requestHeaders;
  *
- * httpLibStatus = HTTPClient_AddHeader( &requestHeaders,
+ * httpLibraryStatus = HTTPClient_AddHeader( &requestHeaders,
  *                                       "Request-Header-Field",
  *                                       sizeof( "Request-Header-Field" ),
  *                                       "Request-Header-Value",
@@ -625,15 +625,15 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * 1. Request containing both parameters for the byte range [rangeStart, rangeEnd]
  *    where @a rangeStartOrLastNBytes <= @a rangeEnd.
  *    Example request header line: `Range: bytes=0-1023\r\n` for requesting bytes in the range [0, 1023].<br>
- *    <b>Example</b>
+ *    **Example**
  *    @code{c}
- *    HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ *    HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
  *    // Assume that requestHeaders has already been initialized with
  *    // HTTPClient_InitializeRequestHeaders().
  *    HTTPRequestHeaders_t requestHeaders;
  *
  *    // Request for bytes 0 to 1023.
- *    httpLibStatus = HTTPClient_AddRangeHeader( &requestHeaders, 0, 1023 );
+ *    httpLibraryStatus = HTTPClient_AddRangeHeader( &requestHeaders, 0, 1023 );
  *    @endcode
  *
  * 2. Request for the last N bytes, represented by @p rangeStartOrlastNbytes.
@@ -641,15 +641,15 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  *    #HTTP_RANGE_REQUEST_END_OF_FILE.
  *    Example request header line: `Range: bytes=-512\r\n` for requesting the last 512 bytes
  *    (or bytes in the range [512, 1023] for a 1KB sized file).<br>
- *    <b>Example</b>
+ *    **Example**
  *    @code{c}
- *    HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ *    HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
  *    // Assume that requestHeaders has already been initialized with
  *    // HTTPClient_InitializeRequestHeaders().
  *    HTTPRequestHeaders_t requestHeaders;
  *
  *    // Request for the last 512 bytes.
- *    httpLibStatus = HTTPClient_AddRangeHeader( &requestHeaders, -512, HTTP_RANGE_REQUEST_END_OF_FILE)
+ *    httpLibraryStatus = HTTPClient_AddRangeHeader( &requestHeaders, -512, HTTP_RANGE_REQUEST_END_OF_FILE)
  *    @endcode
  *
  * 3. Request for all bytes (till the end of byte sequence) from byte N,
@@ -658,15 +658,15 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  *    #HTTP_RANGE_REQUEST_END_OF_FILE.<br>
  *    Example request header line: `Range: bytes=256-\r\n` for requesting all bytes after and
  *    including byte 256 (or bytes in the range [256,1023] for a 1kB sized file).<br>
- *    <b>Example</b>
+ *    **Example**
  *    @code{c}
- *    HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ *    HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
  *    // Assume that requestHeaders has already been initialized with
  *    // HTTPClient_InitializeRequestHeaders().
  *    HTTPRequestHeaders_t requestHeaders;
  *
  *    // Request for all bytes from byte 256 onward.
- *    httpLibStatus = HTTPClient_AddRangeHeader( &requestHeaders, 256, HTTP_RANGE_REQUEST_END_OF_FILE)
+ *    httpLibraryStatus = HTTPClient_AddRangeHeader( &requestHeaders, 256, HTTP_RANGE_REQUEST_END_OF_FILE)
  *    @endcode
  *
  * @param[in] pRequestHeaders Request header buffer information.
@@ -734,7 +734,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTP_NO_RESPONSE (No data was received from the transport interface.)
  * - #HTTP_INSUFFICIENT_MEMORY (The response received could not fit into the response buffer
  * or extra headers could not be sent in the request.)
- * - #HTTP_PARSER_INTERNAL_ERROR (Internal parsing error.)<br><br>
+ * - #HTTP_PARSER_INTERNAL_ERROR (Internal parsing error.)\n\n
  * Security alerts are listed below, please see #HTTPStatus_t for more information:
  * - #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED
  * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
@@ -744,21 +744,21 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
  *
- * <b>Example</b>
+ * **Example**
  * @code{c}
  * // Variables used in this example.
- * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ * HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
  * TransportInterface_t transportInterface = { 0 };
  * HTTPResponse_t = { 0 };
- * char requestBody[] = "This is example request body.";
+ * char requestBody[] = "This is an example request body.";
  *
  * // Assume that requestHeaders has been initialized with
- * // HTTPClient_InitializeResponseHeaders() and any headers needed have been
- * // added with HTTPClient_AddHeader().
+ * // HTTPClient_InitializeResponseHeaders() and any additional headers have
+ * // been added with HTTPClient_AddHeader().
  * HTTPRequestHeaders_t requestHeaders;
  *
- * // Set the transport interface with platform specific functions assumed to be
- * // implemented elsewhere.
+ * // Set the transport interface with platform specific functions that are
+ * // assumed to be implemented elsewhere.
  * transportInterface.recv = myPlatformTransportReceive;
  * transportInterface.send = myPlatformTransportSend;
  * transportInterface.pNetworkContext = myPlatformNetworkContext;
@@ -768,14 +768,14 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * response.pBuffer = ( uint8_t* )malloc( 1024 );
  * response.bufferLen = 1024;
  *
- * httpLibStatus = HTTPClient_Send( &transportInterface,
+ * httpLibraryStatus = HTTPClient_Send( &transportInterface,
  *                                  &requestHeaders,
  *                                  requestBody,
  *                                  sizeof( requestBody ) - 1U,
  *                                  &response,
  *                                  0 );
  *
- * if( httpLibStatus == HTTP_SUCCESS )
+ * if( httpLibraryStatus == HTTP_SUCCESS )
  * {
  *     if( response.status == 200 )
  *     {
@@ -817,9 +817,9 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * - #HTTP_INVALID_RESPONSE (Provided response is not a valid HTTP response for parsing.)
  * - #HTTP_PARSER_INTERNAL_ERROR(If an error in the response parser.)
  *
- * <b>Example</b>
+ * **Example**
  * @code{c}
- * HTTPStatus_t httpLibStatus = HTTP_SUCCESS;
+ * HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
  * // Assume that response is returned from a successful invocation of
  * // HTTPClient_Send().
  * HTTPResponse_t response;
@@ -828,7 +828,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * size_t dateLen = 0;
  * // Search for a "Date" header field. pDateLoc will be the location of the
  * // Date header value in response.pBuffer.
- * httpLibStatus = HTTPClient_ReadHeader( &response,
+ * httpLibraryStatus = HTTPClient_ReadHeader( &response,
  *                                        "Date",
  *                                        sizeof("Date") - 1,
  *                                        &pDateLoc,
