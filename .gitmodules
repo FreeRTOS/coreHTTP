@@ -7,3 +7,6 @@
 [submodule "source/third-party/http_parser"]
 	path = source/third-party/http_parser
 	url = https://github.com/nodejs/http-parser.git
+[submodule "test/cbmc/litani"]
+	path = test/cbmc/litani
+	url = https://github.com/awslabs/aws-build-accumulator

@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 HARNESS_ENTRY=findHeaderFieldParserCallback_harness
+PROOF_UID=findHeaderFieldParserCallback
 HARNESS_FILE=$(HARNESS_ENTRY)
 
 # The header field length is bounded, so strncmp can be unwound to an expected

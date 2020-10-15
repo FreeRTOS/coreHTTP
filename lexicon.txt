@@ -3,12 +3,15 @@ addheader
 addrangeheader
 addrangeheaders
 addrangerequest
+addtogroup
 aggregator
 api
 apis
 ascii
+aws
 br
 bufferlen
+bufferlength
 bytesreceived
 bytesremaining
 bytessent
@@ -28,7 +31,9 @@ corehttp
 coverity
 cprover
 datalen
+defgroup
 doesn
+doxygen
 endcode
 endif
 enums
@@ -75,9 +80,11 @@ httpstatus
 ietf
 ifndef
 inc
+ingroup
 init
 initializerequestheaders
 int
+iot
 isheaderresponse
 isheadresponse
 iso
@@ -140,6 +147,7 @@ pnetworkcontext
 pnetworkdata
 pnext
 pnextwriteloc
+posix
 pparsingcontext
 pparsingstate
 ppath
@@ -172,9 +180,11 @@ requestinfo
 respflags
 responsebufferlen
 rfc
+sdk
 senderrorcall
 sendflags
 sendpartialcall
+sizeof
 snprintf
 statuscode
 strchr
