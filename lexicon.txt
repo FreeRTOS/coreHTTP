@@ -60,7 +60,7 @@ hpe
 html
 http
 httpclient
-httplibstatus
+httplibrarystatus
 httpparseonstatusfieldcallback
 httpparser
 httpparseronbodycallback
