@@ -548,7 +548,7 @@ typedef struct HTTPResponse
  * requestInfo.reqFlags |= HTTP_REQUEST_KEEP_ALIVE_FLAG;
  *
  * httpLibraryStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders,
- *                                                      &requestInfo );
+ *                                                          &requestInfo );
  * @endcode
  */
 /* @[declare_httpclient_initializerequestheaders] */
@@ -595,10 +595,10 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * HTTPRequestHeaders_t requestHeaders;
  *
  * httpLibraryStatus = HTTPClient_AddHeader( &requestHeaders,
- *                                       "Request-Header-Field",
- *                                       sizeof( "Request-Header-Field" ),
- *                                       "Request-Header-Value",
- *                                       sizeof("Request-Header-Value") );
+ *                                           "Request-Header-Field",
+ *                                           sizeof( "Request-Header-Field" ),
+ *                                           "Request-Header-Value",
+ *                                           sizeof("Request-Header-Value") );
  * @endcode
  */
 /* @[declare_httpclient_addheader] */
@@ -769,11 +769,11 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * response.bufferLen = 1024;
  *
  * httpLibraryStatus = HTTPClient_Send( &transportInterface,
- *                                  &requestHeaders,
- *                                  requestBody,
- *                                  sizeof( requestBody ) - 1U,
- *                                  &response,
- *                                  0 );
+ *                                      &requestHeaders,
+ *                                      requestBody,
+ *                                      sizeof( requestBody ) - 1U,
+ *                                      &response,
+ *                                      0 );
  *
  * if( httpLibraryStatus == HTTP_SUCCESS )
  * {
@@ -829,10 +829,10 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * // Search for a "Date" header field. pDateLoc will be the location of the
  * // Date header value in response.pBuffer.
  * httpLibraryStatus = HTTPClient_ReadHeader( &response,
- *                                        "Date",
- *                                        sizeof("Date") - 1,
- *                                        &pDateLoc,
- *                                        &dateLen );
+ *                                            "Date",
+ *                                            sizeof("Date") - 1,
+ *                                            &pDateLoc,
+ *                                            &dateLen );
  * @endcode
  */
 /* @[declare_httpclient_readheader] */
