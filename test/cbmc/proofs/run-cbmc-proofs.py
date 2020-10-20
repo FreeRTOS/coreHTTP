@@ -1,17 +1,7 @@
 #!/usr/bin/env python3
 #
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License"). You may not
-# use this file except in compliance with the License. A copy of the License is
-# located at
-#
-#     http://aws.amazon.com/apache2.0/
-#
-# or in the "license" file accompanying this file. This file is distributed on
-# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
-# or implied. See the License for the specific language governing permissions
-# and limitations under the License.
+# SPDX-License-Identifier: Apache-2.0
 
 
 import argparse
@@ -23,11 +13,11 @@ import pathlib
 import subprocess
 import sys
 
-PROOF_TOUCH_FILE_NAME = "cbmc-proof.txt"
 
 DESCRIPTION = "Configure and run all CBMC proofs in parallel"
-# Keep this hard-wrapped at 70 characters, as it gets printed verbatim
-# in the terminal. 70 characters stops here -----------------------> |
+
+# Keep the epilog hard-wrapped at 70 characters, as it gets printed
+# verbatim in the terminal. 70 characters stops here --------------> |
 EPILOG = """
 This tool automates the process of running `make report` in each of
 the CBMC proof directories. The tool calculates the dependency graph
@@ -36,11 +26,15 @@ executes these tasks in parallel.
 
 The tool is roughly equivalent to doing this:
 
-        litani init --project "FreeRTOS coreHTTP";
+        litani init --project "my-cool-project";
 
-        for proof in $(find . -name wellspring.txt); do
+        find . -name cbmc-proof.txt | while read -r proof; do
             pushd $(dirname ${proof});
-            make report;
+
+            # The `make _report` rule adds a single proof to litani
+            # without running it
+            make _report;
+
             popd;
         done
 
@@ -48,7 +42,8 @@ The tool is roughly equivalent to doing this:
 
 except that it is much faster and provides some convenience options.
 The CBMC CI runs this script with no arguments to build and run all
-proofs in parallel.
+proofs in parallel. The value of "my-cool-project" is taken from the
+PROJECT_NAME variable in Makefile-project-defines.
 
 The --no-standalone argument omits the `litani init` and `litani
 run-build`; use it when you want to add additional proof jobs, not
@@ -57,6 +52,26 @@ yourself; then run `run-cbmc-proofs --no-standalone`; add any
 additional jobs that you want to execute with `litani add-job`; and
 finally run `litani run-build`.
 """
+
+
+def get_project_name():
+    cmd = [
+        "make",
+        "-f", "Makefile.common",
+        "echo-project-name",
+    ]
+    logging.debug(" ".join(cmd))
+    proc = subprocess.run(cmd, universal_newlines=True, stdout=subprocess.PIPE)
+    if proc.returncode:
+        logging.warning("could not run make to determine project name")
+        sys.exit(1)
+    if not proc.stdout.strip():
+        logging.warning(
+            "project name has not been set; using generic name instead. "
+            "Set the PROJECT_NAME value in Makefile-project-defines to "
+            "remove this warning")
+        return "<PROJECT NAME HERE>"
+    return proc.stdout.strip()
 
 
 def get_args():
@@ -80,8 +95,15 @@ def get_args():
     }, {
             "flags": ["--project-name"],
             "metavar": "NAME",
-            "default": "FreeRTOS coreHTTP",
-            "help": "Project name for report. Default: %(default)s",
+            "default": get_project_name(),
+            "help": "project name for report. Default: %(default)s",
+    }, {
+            "flags": ["--proof-marker"],
+            "metavar": "FILE",
+            "default": "cbmc-proof.txt",
+            "help": (
+                "name of file that marks proof directories. Default: "
+                "%(default)s"),
     }, {
             "flags": ["--verbose"],
             "action": "store_true",
@@ -115,7 +137,7 @@ def print_counter(counter):
             **counter), end="", file=sys.stderr)
 
 
-def get_proof_dirs(proof_root, proof_list):
+def get_proof_dirs(proof_root, proof_list, proof_marker):
     if proof_list is not None:
         proofs_remaining = list(proof_list)
     else:
@@ -127,7 +149,7 @@ def get_proof_dirs(proof_root, proof_list):
             continue
         if proof_list and proof_name in proofs_remaining:
             proofs_remaining.remove(proof_name)
-        if PROOF_TOUCH_FILE_NAME in fyles:
+        if proof_marker in fyles:
             yield root
 
     if proofs_remaining:
@@ -137,7 +159,7 @@ def get_proof_dirs(proof_root, proof_list):
         sys.exit(1)
 
 
-def run_build(litani, jobs, proofs):
+def run_build(litani, jobs):
     cmd = [str(litani), "run-build"]
     if jobs:
         cmd.extend(["-j", str(jobs)])
@@ -194,7 +216,8 @@ async def main():
             logging.error("Failed to run litani init")
             sys.exit(1)
 
-    proof_dirs = list(get_proof_dirs(proof_root, args.proofs))
+    proof_dirs = list(get_proof_dirs(
+        proof_root, args.proofs, args.proof_marker))
     if not proof_dirs:
         logging.error("No proof directories found")
         sys.exit(1)
@@ -213,7 +236,8 @@ async def main():
 
     tasks = []
     for _ in range(task_pool_size()):
-        task = asyncio.create_task(configure_proof_dirs(proof_queue, counter))
+        task = asyncio.create_task(configure_proof_dirs(
+            proof_queue, counter))
         tasks.append(task)
 
     await proof_queue.join()
@@ -227,7 +251,7 @@ async def main():
                 [str(f) for f in counter["fail"]]))
 
     if not args.no_standalone:
-        run_build(litani, args.parallel_jobs, args.proofs)
+        run_build(litani, args.parallel_jobs)
 
 
 if __name__ == "__main__":
