@@ -1,1 +1,1 @@
-This file marks this directory as a cbmc proof directory.
+# This file marks this directory as containing a CBMC proof.
