@@ -503,7 +503,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  * - #HTTPSecurityAlertInvalidProtocolVersion
  * - #HTTPSecurityAlertInvalidStatusCode
  * - #HTTPSecurityAlertInvalidCharacter
- * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
+ * - #HTTPSecurityAlertInvalidContentLength
  * - #HTTP_PARSER_INTERNAL_ERROR
  */
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
@@ -1015,13 +1015,13 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
              * character and location. */
             LogError( ( "Response parsing error: Invalid character found in "
                         "content-length headers." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH;
+            returnStatus = HTTPSecurityAlertInvalidContentLength;
             break;
 
         case HPE_UNEXPECTED_CONTENT_LENGTH:
             LogError( ( "Response parsing error: A Content-Length header was "
                         "found when it shouldn't have been." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH;
+            returnStatus = HTTPSecurityAlertInvalidContentLength;
             break;
 
         /* All other error cases cannot be triggered and indicate an error in the
@@ -2406,8 +2406,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPSecurityAlertInvalidCharacter";
             break;
 
-        case HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH:
-            str = "HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH";
+        case HTTPSecurityAlertInvalidContentLength:
+            str = "HTTPSecurityAlertInvalidContentLength";
             break;
 
         case HTTP_PARSER_INTERNAL_ERROR:

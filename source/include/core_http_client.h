@@ -277,7 +277,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH,
+    HTTPSecurityAlertInvalidContentLength,
 
     /**
      * @brief An error occurred in the third-party parsing library.
@@ -710,7 +710,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPSecurityAlertInvalidProtocolVersion
  * - #HTTPSecurityAlertInvalidStatusCode
  * - #HTTPSecurityAlertInvalidCharacter
- * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
+ * - #HTTPSecurityAlertInvalidContentLength
  *
  * The @p pResponse returned is valid only if this function returns HTTPSuccess.
  *
@@ -742,7 +742,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPSecurityAlertInvalidProtocolVersion
  * - #HTTPSecurityAlertInvalidStatusCode
  * - #HTTPSecurityAlertInvalidCharacter
- * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
+ * - #HTTPSecurityAlertInvalidContentLength
  *
  * **Example**
  * @code{c}

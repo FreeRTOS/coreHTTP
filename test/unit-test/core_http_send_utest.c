@@ -1586,7 +1586,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidContentLength, returnStatus );
 
     httpParsingErrno = HPE_UNEXPECTED_CONTENT_LENGTH;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1595,7 +1595,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidContentLength, returnStatus );
 
     httpParsingErrno = HPE_UNKNOWN;
     returnStatus = HTTPClient_Send( &transportInterface,
