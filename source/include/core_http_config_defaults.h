@@ -40,7 +40,7 @@
  *
  * If the total size in bytes of the headers received from the server exceeds
  * this configuration, then the status code
- * #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED is returned from
+ * #HTTPSecurityAlertResponseHeadersSizeLimitExceeded is returned from
  * #HTTPClient_Send.
  *
  * <b>Possible values:</b> Any positive 32 bit integer. <br>

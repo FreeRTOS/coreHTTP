@@ -151,7 +151,7 @@ static const char * pTestResponse = "HTTP/1.1 200 OK\r\n"
 #define HEADER_NOT_IN_BUFFER_LEN     ( sizeof( HEADER_NOT_IN_BUFFER ) - 1 )
 
 /* File-scoped Global variables */
-static HTTPStatus_t retCode = HTTP_SUCCESS;
+static HTTPStatus_t retCode = HTTPSuccess;
 static uint8_t testBuffer[ HTTP_TEST_BUFFER_SIZE ] = { 0 };
 static HTTPRequestHeaders_t testHeaders = { 0 };
 static _headers_t expectedHeaders = { 0 };
@@ -350,7 +350,7 @@ void setUp()
 /* Called after each test method. */
 void tearDown()
 {
-    retCode = HTTP_SUCCESS;
+    retCode = HTTPSuccess;
     memset( &testHeaders, 0, sizeof( testHeaders ) );
     memset( testBuffer, 0, sizeof( testBuffer ) );
     memset( &expectedHeaders, 0, sizeof( expectedHeaders ) );
@@ -420,7 +420,7 @@ static void setupBuffer( HTTPRequestHeaders_t * pRequestHeaders )
  */
 void test_Http_InitializeRequestHeaders_Happy_Path()
 {
-    HTTPStatus_t httpStatus = HTTP_SUCCESS;
+    HTTPStatus_t httpStatus = HTTPSuccess;
     HTTPRequestHeaders_t requestHeaders = { 0 };
     HTTPRequestInfo_t requestInfo = { 0 };
     int numBytes = 0;
@@ -441,7 +441,7 @@ void test_Http_InitializeRequestHeaders_Happy_Path()
     TEST_ASSERT_LESS_THAN( sizeof( expectedHeaders.buffer ), ( size_t ) numBytes );
 
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, httpStatus );
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, requestHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer, requestHeaders.pBuffer,
                               expectedHeaders.dataLen );
@@ -452,42 +452,42 @@ void test_Http_InitializeRequestHeaders_Happy_Path()
  */
 void test_Http_InitializeRequestHeaders_Invalid_Params()
 {
-    HTTPStatus_t httpStatus = HTTP_SUCCESS;
+    HTTPStatus_t httpStatus = HTTPSuccess;
     HTTPRequestHeaders_t requestHeaders = { 0 };
     HTTPRequestInfo_t requestInfo = { 0 };
 
     /* Test NULL parameters, following order of else-if blocks. */
     httpStatus = HTTPClient_InitializeRequestHeaders( NULL, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* TEST requestInfo.pBuffer == NULL */
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
     requestHeaders.pBuffer = testBuffer;
     requestHeaders.bufferLen = HTTP_TEST_INITIALIZED_HEADER_BUFFER_LEN;
 
     /* Test requestInfo == NULL. */
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, NULL );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test requestInfo.pMethod == NULL. */
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
     requestInfo.pMethod = HTTP_METHOD_GET;
 
     /* Test requestInfo.pHost == NULL. */
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test requestInfo.methodLen == 0. */
     requestInfo.pHost = HTTP_TEST_HOST_VALUE;
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test requestInfo.hostLen == 0. */
     requestInfo.methodLen = HTTP_METHOD_GET_LEN;
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 }
 
 /**
@@ -497,7 +497,7 @@ void test_Http_InitializeRequestHeaders_Invalid_Params()
  */
 void test_Http_InitializeRequestHeaders_ReqInfo()
 {
-    HTTPStatus_t httpStatus = HTTP_SUCCESS;
+    HTTPStatus_t httpStatus = HTTPSuccess;
     HTTPRequestHeaders_t requestHeaders = { 0 };
     HTTPRequestInfo_t requestInfo = { 0 };
     int numBytes = 0;
@@ -530,7 +530,7 @@ void test_Http_InitializeRequestHeaders_ReqInfo()
     requestHeaders.pBuffer = testBuffer;
     requestHeaders.bufferLen = expectedHeaders.dataLen;
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, httpStatus );
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, requestHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer, requestHeaders.pBuffer,
                               expectedHeaders.dataLen );
@@ -553,19 +553,19 @@ void test_Http_InitializeRequestHeaders_ReqInfo()
     requestHeaders.pBuffer = testBuffer;
     requestHeaders.bufferLen = expectedHeaders.dataLen;
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, httpStatus );
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, requestHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer, requestHeaders.pBuffer,
                               expectedHeaders.dataLen );
 }
 
 /**
- * @brief Test HTTP_INSUFFICIENT_MEMORY from having requestHeaders.bufferLen less than
+ * @brief Test HTTPInsufficientMemory from having requestHeaders.bufferLen less than
  * what is required to fit HTTP_TEST_REQUEST_LINE.
  */
 void test_Http_InitializeRequestHeaders_Insufficient_Memory()
 {
-    HTTPStatus_t httpStatus = HTTP_SUCCESS;
+    HTTPStatus_t httpStatus = HTTPSuccess;
     HTTPRequestHeaders_t requestHeaders = { 0 };
     HTTPRequestInfo_t requestInfo = { 0 };
 
@@ -577,7 +577,7 @@ void test_Http_InitializeRequestHeaders_Insufficient_Memory()
     requestHeaders.bufferLen = HTTP_TEST_REQUEST_LINE_LEN - 1;
 
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, httpStatus );
     TEST_ASSERT_TRUE( strncmp( ( char * ) requestHeaders.pBuffer,
                                HTTP_TEST_REQUEST_LINE,
                                HTTP_TEST_REQUEST_LINE_LEN ) != 0 );
@@ -591,7 +591,7 @@ void test_Http_InitializeRequestHeaders_Insufficient_Memory()
  */
 void test_Http_AddHeader_Happy_Path()
 {
-    HTTPStatus_t httpStatus = HTTP_SUCCESS;
+    HTTPStatus_t httpStatus = HTTPSuccess;
     HTTPRequestHeaders_t requestHeaders = { 0 };
     int numBytes = 0;
 
@@ -625,7 +625,7 @@ void test_Http_AddHeader_Happy_Path()
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, requestHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
                               requestHeaders.pBuffer, expectedHeaders.dataLen );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, httpStatus );
 }
 
 /**
@@ -633,21 +633,21 @@ void test_Http_AddHeader_Happy_Path()
  */
 void test_Http_AddHeader_Invalid_Params()
 {
-    HTTPStatus_t httpStatus = HTTP_SUCCESS;
+    HTTPStatus_t httpStatus = HTTPSuccess;
     HTTPRequestHeaders_t requestHeaders = { 0 };
 
     /* Test a NULL request headers interface. */
     httpStatus = HTTPClient_AddHeader( NULL,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test a NULL pBuffer member of request headers. */
     requestHeaders.pBuffer = NULL;
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test NULL header field. */
     requestHeaders.pBuffer = testBuffer;
@@ -655,32 +655,32 @@ void test_Http_AddHeader_Invalid_Params()
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        NULL, HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test NULL header value. */
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        NULL, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test that fieldLen > 0. */
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, 0,
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test that valueLen > 0. */
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE, 0 );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test that requestHeaders.headersLen <= requestHeaders.bufferLen. */
     requestHeaders.headersLen = requestHeaders.bufferLen + 1;
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 }
 
 /**
@@ -688,7 +688,7 @@ void test_Http_AddHeader_Invalid_Params()
  */
 void test_Http_AddHeader_Extra_Header_Sufficient_Memory()
 {
-    HTTPStatus_t httpStatus = HTTP_SUCCESS;
+    HTTPStatus_t httpStatus = HTTPSuccess;
     HTTPRequestHeaders_t requestHeaders = { 0 };
     int numBytes = 0;
 
@@ -725,7 +725,7 @@ void test_Http_AddHeader_Extra_Header_Sufficient_Memory()
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, requestHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
                               requestHeaders.pBuffer, expectedHeaders.dataLen );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, httpStatus );
 }
 
 /**
@@ -733,7 +733,7 @@ void test_Http_AddHeader_Extra_Header_Sufficient_Memory()
  */
 void test_Http_AddHeader_Extra_Header_Insufficient_Memory()
 {
-    HTTPStatus_t httpStatus = HTTP_SUCCESS;
+    HTTPStatus_t httpStatus = HTTPSuccess;
     HTTPRequestHeaders_t requestHeaders = { 0 };
     int numBytes = 0;
 
@@ -771,16 +771,16 @@ void test_Http_AddHeader_Extra_Header_Insufficient_Memory()
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, requestHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
                               requestHeaders.pBuffer, expectedHeaders.dataLen );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, httpStatus );
 }
 
 /**
- * @brief Test HTTP_INSUFFICIENT_MEMORY error from having buffer size less than
+ * @brief Test HTTPInsufficientMemory error from having buffer size less than
  * what is required to fit a single HTTP header.
  */
 void test_Http_AddHeader_Single_Header_Insufficient_Memory()
 {
-    HTTPStatus_t httpStatus = HTTP_SUCCESS;
+    HTTPStatus_t httpStatus = HTTPSuccess;
     HTTPRequestHeaders_t requestHeaders = { 0 };
     int numBytes = 0;
 
@@ -803,7 +803,7 @@ void test_Http_AddHeader_Single_Header_Insufficient_Memory()
                                        HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE,
                                        HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, httpStatus );
 }
 
 /* ============== Testing HTTPClient_AddRangeHeader ================== */
@@ -818,14 +818,14 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( NULL,
                                          0 /* rangeStart */,
                                          0 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Underlying buffer is NULL in request headers. */
     tearDown();
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          0 /* rangeStart */,
                                          0 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Request Header Size is zero. */
     tearDown();
@@ -835,7 +835,7 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          0 /* rangeStart */,
                                          10 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, retCode );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, retCode );
 
     /* Length of headers > length of buffer.*/
     tearDown();
@@ -845,7 +845,7 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          0 /* rangeStart */,
                                          10 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Test incorrect combinations of rangeStart and rangeEnd. */
 
@@ -855,7 +855,7 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          10 /* rangeStart */,
                                          5 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* rangeStart == INT32_MIN */
     tearDown();
@@ -863,7 +863,7 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          INT32_MIN /* rangeStart */,
                                          HTTP_RANGE_REQUEST_END_OF_FILE /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* rangeStart is negative but rangeStart is non-End of File. */
     tearDown();
@@ -871,13 +871,13 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          -10 /* rangeStart */,
                                          HTTP_RANGE_REQUEST_END_OF_FILE + 1 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
     tearDown();
     testHeaders.pBuffer = &testBuffer[ 0 ];
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          -50 /* rangeStart */,
                                          -10 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 }
 
 /**
@@ -914,7 +914,7 @@ void test_Http_AddRangeHeader_Insufficient_Memory( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          testRangeStart,
                                          testRangeEnd );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, retCode );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, retCode );
     /* Verify the headers input parameter is unaltered. */
     TEST_ASSERT_EQUAL( preHeadersLen, testHeaders.headersLen );
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen - 1, testHeaders.bufferLen );
@@ -944,7 +944,7 @@ void test_Http_AddRangeHeader_Without_Trailing_Terminator( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          testRangeStart,
                                          testRangeEnd );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, retCode );
+    TEST_ASSERT_EQUAL( HTTPSuccess, retCode );
     /* Verify the the Range Request header data. */
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, testHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
@@ -974,7 +974,7 @@ void test_Http_AddRangeHeader_RangeType_File_SubRange( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          testRangeStart,
                                          testRangeEnd );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, retCode );
+    TEST_ASSERT_EQUAL( HTTPSuccess, retCode );
     /* Verify the the Range Request header data. */
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, testHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
@@ -996,7 +996,7 @@ void test_Http_AddRangeHeader_RangeType_File_SubRange( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          testRangeStart,
                                          testRangeEnd );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, retCode );
+    TEST_ASSERT_EQUAL( HTTPSuccess, retCode );
     /* Verify the the Range Request header data. */
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, testHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
@@ -1023,7 +1023,7 @@ void test_Http_AddRangeHeader_RangeType_Entire_File( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          testRangeStart,
                                          testRangeEnd );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, retCode );
+    TEST_ASSERT_EQUAL( HTTPSuccess, retCode );
     /* Verify the the Range Request header data. */
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, testHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
@@ -1053,7 +1053,7 @@ void test_Http_AddRangeHeader_RangeType_All_Bytes_From_RangeStart( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          testRangeStart,
                                          testRangeEnd );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, retCode );
+    TEST_ASSERT_EQUAL( HTTPSuccess, retCode );
     /* Verify the the Range Request header data. */
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, testHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
@@ -1081,7 +1081,7 @@ void test_Http_AddRangeHeader_RangeType_LastNBytes( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          testRangeStart,
                                          testRangeEnd );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, retCode );
+    TEST_ASSERT_EQUAL( HTTPSuccess, retCode );
     /* Verify the the Range Request header data. */
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, testHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
@@ -1109,7 +1109,7 @@ void test_Http_AddRangeHeader_With_Max_INT32_Range_Values( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          testRangeStart,
                                          testRangeEnd );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, retCode );
+    TEST_ASSERT_EQUAL( HTTPSuccess, retCode );
     /* Verify the the Range Request header data. */
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, testHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
@@ -1132,7 +1132,7 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      HEADER_INVALID_PARAMS_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Underlying buffer is NULL in the response parameter. */
     tearDown();
@@ -1142,7 +1142,7 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      HEADER_INVALID_PARAMS_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Response buffer size is zero. */
     tearDown();
@@ -1152,7 +1152,7 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      HEADER_INVALID_PARAMS_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Header field name is NULL. */
     tearDown();
@@ -1161,7 +1161,7 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      HEADER_INVALID_PARAMS_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Header field length is 0. */
     tearDown();
@@ -1170,7 +1170,7 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      0u,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Invalid output parameters. */
     tearDown();
@@ -1179,14 +1179,14 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      HEADER_INVALID_PARAMS_LEN,
                                      NULL,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
     tearDown();
     retCode = HTTPClient_ReadHeader( &testResponse,
                                      HEADER_INVALID_PARAMS,
                                      HEADER_INVALID_PARAMS_LEN,
                                      &pValueLoc,
                                      NULL );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 }
 
 /**
@@ -1217,7 +1217,7 @@ void test_Http_ReadHeader_Header_Not_In_Response( void )
                                      HEADER_NOT_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_HEADER_NOT_FOUND, retCode );
+    TEST_ASSERT_EQUAL( HTTPHeaderNotFound, retCode );
 
     /* Repeat the test above but with fieldLenToReturn == HEADER_NOT_IN_BUFFER_LEN.
      * Doing this allows us to take the branch where the actual contents
@@ -1250,7 +1250,7 @@ void test_Http_ReadHeader_Header_Not_In_Response( void )
                                      HEADER_NOT_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_HEADER_NOT_FOUND, retCode );
+    TEST_ASSERT_EQUAL( HTTPHeaderNotFound, retCode );
 }
 
 /**
@@ -1284,7 +1284,7 @@ void test_Http_ReadHeader_Invalid_Response_Only_Header_Field_Found()
                                      HEADER_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_RESPONSE, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidResponse, retCode );
 }
 
 /**
@@ -1317,7 +1317,7 @@ void test_Http_ReadHeader_Invalid_Response_No_Headers_Complete_Ending()
                                      HEADER_NOT_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_RESPONSE, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidResponse, retCode );
 }
 
 /**
@@ -1348,7 +1348,7 @@ void test_Http_ReadHeader_With_HttpParser_Internal_Error()
                                      HEADER_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_PARSER_INTERNAL_ERROR, retCode );
+    TEST_ASSERT_EQUAL( HTTPParserInternalError, retCode );
 }
 
 /**
@@ -1377,7 +1377,7 @@ void test_Http_ReadHeader_Happy_Path()
                                      HEADER_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, retCode );
+    TEST_ASSERT_EQUAL( HTTPSuccess, retCode );
     TEST_ASSERT_EQUAL( &pTestResponse[ headerValInRespLoc ], pValueLoc );
     TEST_ASSERT_EQUAL( headerValInRespLen, valueLen );
 }
@@ -1390,71 +1390,71 @@ void test_HTTPClient_strerror( void )
     HTTPStatus_t status;
     const char * str = NULL;
 
-    status = HTTP_SUCCESS;
+    status = HTTPSuccess;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SUCCESS", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSuccess", str );
 
-    status = HTTP_INVALID_PARAMETER;
+    status = HTTPInvalidParameter;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_INVALID_PARAMETER", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPInvalidParameter", str );
 
-    status = HTTP_NETWORK_ERROR;
+    status = HTTPNetworkError;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_NETWORK_ERROR", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPNetworkError", str );
 
-    status = HTTP_PARTIAL_RESPONSE;
+    status = HTTPPartialResponse;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_PARTIAL_RESPONSE", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPPartialResponse", str );
 
-    status = HTTP_NO_RESPONSE;
+    status = HTTPNoResponse;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_NO_RESPONSE", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPNoResponse", str );
 
-    status = HTTP_INSUFFICIENT_MEMORY;
+    status = HTTPInsufficientMemory;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_INSUFFICIENT_MEMORY", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPInsufficientMemory", str );
 
-    status = HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED;
+    status = HTTPSecurityAlertResponseHeadersSizeLimitExceeded;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertResponseHeadersSizeLimitExceeded", str );
 
-    status = HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA;
+    status = HTTPSecurityAlertExtraneousResponseData;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertExtraneousResponseData", str );
 
-    status = HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER;
+    status = HTTPSecurityAlertInvalidChunkHeader;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidChunkHeader", str );
 
-    status = HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION;
+    status = HTTPSecurityAlertInvalidProtocolVersion;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidProtocolVersion", str );
 
-    status = HTTP_SECURITY_ALERT_INVALID_STATUS_CODE;
+    status = HTTPSecurityAlertInvalidStatusCode;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_INVALID_STATUS_CODE", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidStatusCode", str );
 
-    status = HTTP_SECURITY_ALERT_INVALID_CHARACTER;
+    status = HTTPSecurityAlertInvalidCharacter;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_INVALID_CHARACTER", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidCharacter", str );
 
-    status = HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH;
+    status = HTTPSecurityAlertInvalidContentLength;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidContentLength", str );
 
-    status = HTTP_PARSER_INTERNAL_ERROR;
+    status = HTTPParserInternalError;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_PARSER_INTERNAL_ERROR", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPParserInternalError", str );
 
-    status = HTTP_HEADER_NOT_FOUND;
+    status = HTTPHeaderNotFound;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_HEADER_NOT_FOUND", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPHeaderNotFound", str );
 
-    status = HTTP_INVALID_RESPONSE;
+    status = HTTPInvalidResponse;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_INVALID_RESPONSE", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPInvalidResponse", str );
 
-    status = HTTP_INVALID_RESPONSE + 1;
+    status = HTTPInvalidResponse + 1;
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( NULL, str );
 }

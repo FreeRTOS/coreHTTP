@@ -768,7 +768,7 @@ void setUp( void )
  * message is present in the response buffer on the first network read. */
 void test_HTTPClient_Send_HEAD_request_parse_whole_response( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_whole_response );
 
@@ -778,7 +778,7 @@ void test_HTTPClient_Send_HEAD_request_parse_whole_response( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0U, response.bodyLen );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ), response.pHeaders );
@@ -796,7 +796,7 @@ void test_HTTPClient_Send_HEAD_request_parse_whole_response( void )
  * message is present in the response buffer on the first network read. */
 void test_HTTPClient_Send_PUT_request_parse_whole_response( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_whole_response );
 
@@ -816,7 +816,7 @@ void test_HTTPClient_Send_PUT_request_parse_whole_response( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.headersLen );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
@@ -834,7 +834,7 @@ void test_HTTPClient_Send_PUT_request_parse_whole_response( void )
  * message is present in the response buffer on the first network read. */
 void test_HTTPClient_Send_GET_request_parse_whole_response( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_whole_response );
 
@@ -852,7 +852,7 @@ void test_HTTPClient_Send_GET_request_parse_whole_response( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH, response.headersLen );
     TEST_ASSERT_EQUAL( response.pHeaders + HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH, response.pBody );
@@ -870,7 +870,7 @@ void test_HTTPClient_Send_GET_request_parse_whole_response( void )
  * response message is present in the response buffer on the first network read. */
 void test_HTTPClient_Send_no_response_headers( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_whole_response );
 
@@ -884,7 +884,7 @@ void test_HTTPClient_Send_no_response_headers( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0U, response.bodyLen );
     TEST_ASSERT_EQUAL( NULL, response.pHeaders );
@@ -903,7 +903,7 @@ void test_HTTPClient_Send_no_response_headers( void )
  * second read. */
 void test_HTTPClient_Send_parse_partial_header_field( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_partial_header_field );
 
@@ -914,7 +914,7 @@ void test_HTTPClient_Send_parse_partial_header_field( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0, response.bodyLen );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ), response.pHeaders );
@@ -933,7 +933,7 @@ void test_HTTPClient_Send_parse_partial_header_field( void )
  * second read. */
 void test_HTTPClient_Send_parse_partial_header_value( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_partial_header_value );
 
@@ -944,7 +944,7 @@ void test_HTTPClient_Send_parse_partial_header_value( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0, response.bodyLen );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ), response.pHeaders );
@@ -963,7 +963,7 @@ void test_HTTPClient_Send_parse_partial_header_value( void )
  * second read. */
 void test_HTTPClient_Send_parse_partial_body( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_partial_body );
 
@@ -980,7 +980,7 @@ void test_HTTPClient_Send_parse_partial_body( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH, response.headersLen );
     TEST_ASSERT_EQUAL( response.pHeaders + HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH, response.pBody );
@@ -997,7 +997,7 @@ void test_HTTPClient_Send_parse_partial_body( void )
 /* Test receiving a response where the body is of Transfer-Encoding chunked. */
 void test_HTTPClient_Send_parse_chunked_body( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_chunked_body );
 
@@ -1015,7 +1015,7 @@ void test_HTTPClient_Send_parse_chunked_body( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_CHUNKED_HEADERS_LENGTH, response.headersLen );
     TEST_ASSERT_EQUAL( ( response.pHeaders + response.headersLen ), response.pBody );
@@ -1032,7 +1032,7 @@ void test_HTTPClient_Send_parse_chunked_body( void )
 /* Test a timeout is returned from the first network read. */
 void test_HTTPClient_Send_timeout_recv_immediate( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_ExpectAnyArgsAndReturn( 0 );
 
@@ -1043,7 +1043,7 @@ void test_HTTPClient_Send_timeout_recv_immediate( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_NO_RESPONSE, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPNoResponse, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1052,7 +1052,7 @@ void test_HTTPClient_Send_timeout_recv_immediate( void )
  * network read a partial response is received and parsed. */
 void test_HTTPClient_Send_timeout_partial_response( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_partial_header_field );
     http_errno_description_IgnoreAndReturn( "Dummy unit test print." );
@@ -1066,7 +1066,7 @@ void test_HTTPClient_Send_timeout_partial_response( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_PARTIAL_RESPONSE, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPPartialResponse, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1075,7 +1075,7 @@ void test_HTTPClient_Send_timeout_partial_response( void )
  * the response is not complete. */
 void test_HTTPClient_Send_response_larger_than_buffer( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_partial_body );
     http_errno_description_IgnoreAndReturn( "Dummy unit test print." );
@@ -1097,7 +1097,7 @@ void test_HTTPClient_Send_response_larger_than_buffer( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1105,7 +1105,7 @@ void test_HTTPClient_Send_response_larger_than_buffer( void )
 /* Test sending a request with a NULL response configured. */
 void test_HTTPClient_Send_null_response( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     memcpy( requestHeaders.pBuffer,
             HTTP_TEST_REQUEST_PUT_HEADERS,
@@ -1117,7 +1117,7 @@ void test_HTTPClient_Send_null_response( void )
                                     HTTP_TEST_REQUEST_PUT_BODY_LENGTH,
                                     NULL,
                                     0U );
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1125,7 +1125,7 @@ void test_HTTPClient_Send_null_response( void )
 /* Test a network error is returned when sending the request headers. */
 void test_HTTPClient_Send_network_error_request_headers( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     sendErrorCall = 0U;
     transportInterface.send = transportSendNetworkError;
@@ -1135,7 +1135,7 @@ void test_HTTPClient_Send_network_error_request_headers( void )
                                     0U,
                                     &response,
                                     0U );
-    TEST_ASSERT_EQUAL( HTTP_NETWORK_ERROR, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPNetworkError, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1143,7 +1143,7 @@ void test_HTTPClient_Send_network_error_request_headers( void )
 /* Test a network error is returned when sending the request body. */
 void test_HTTPClient_Send_network_error_request_body( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     transportInterface.send = transportSendNetworkError;
 
@@ -1160,7 +1160,7 @@ void test_HTTPClient_Send_network_error_request_body( void )
                                     &response,
                                     HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG );
 
-    TEST_ASSERT_EQUAL( HTTP_NETWORK_ERROR, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPNetworkError, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1168,7 +1168,7 @@ void test_HTTPClient_Send_network_error_request_body( void )
 /* Test less bytes, of the request headers, are sent than expected. */
 void test_HTTPClient_Send_less_bytes_request_headers( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_whole_response );
 
@@ -1189,7 +1189,7 @@ void test_HTTPClient_Send_less_bytes_request_headers( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.headersLen );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
@@ -1206,7 +1206,7 @@ void test_HTTPClient_Send_less_bytes_request_headers( void )
 /* Test less bytes, of the request body, are sent that expected. */
 void test_HTTPClient_Send_less_bytes_request_body( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_execute_Stub( http_parser_execute_whole_response );
 
@@ -1228,7 +1228,7 @@ void test_HTTPClient_Send_less_bytes_request_body( void )
                                     &response,
                                     HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG );
 
-    TEST_ASSERT_EQUAL( HTTP_SUCCESS, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.headersLen );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
@@ -1245,7 +1245,7 @@ void test_HTTPClient_Send_less_bytes_request_body( void )
 /* Test when a network error is returned when receiving the response. */
 void test_HTTPClient_Send_network_error_response( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_init_Ignore();
 
@@ -1256,7 +1256,7 @@ void test_HTTPClient_Send_network_error_response( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_NETWORK_ERROR, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPNetworkError, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1264,7 +1264,7 @@ void test_HTTPClient_Send_network_error_response( void )
 /* Test a NULL transport interface passed to the API. */
 void test_HTTPClient_Send_null_transport_interface( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     returnStatus = HTTPClient_Send( NULL,
                                     &requestHeaders,
@@ -1273,7 +1273,7 @@ void test_HTTPClient_Send_null_transport_interface( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1281,7 +1281,7 @@ void test_HTTPClient_Send_null_transport_interface( void )
 /* Test a NULL transport send callback passed to the API. */
 void test_HTTPClient_Send_null_transport_send( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     transportInterface.send = NULL;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1291,7 +1291,7 @@ void test_HTTPClient_Send_null_transport_send( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1299,7 +1299,7 @@ void test_HTTPClient_Send_null_transport_send( void )
 /* Test a NULL transport receive callback passed to the API. */
 void test_HTTPClient_Send_null_transport_recv( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     transportInterface.recv = NULL;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1309,7 +1309,7 @@ void test_HTTPClient_Send_null_transport_recv( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1317,7 +1317,7 @@ void test_HTTPClient_Send_null_transport_recv( void )
 /* Test a NULL request headers structure passed to the API. */
 void test_HTTPClient_Send_null_request_headers( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     returnStatus = HTTPClient_Send( &transportInterface,
                                     NULL,
@@ -1326,7 +1326,7 @@ void test_HTTPClient_Send_null_request_headers( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1334,7 +1334,7 @@ void test_HTTPClient_Send_null_request_headers( void )
 /* Test a null request headers buffer passed to the API. */
 void test_HTTPClient_Send_null_request_header_buffer( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     requestHeaders.pBuffer = NULL;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1344,7 +1344,7 @@ void test_HTTPClient_Send_null_request_header_buffer( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1352,7 +1352,7 @@ void test_HTTPClient_Send_null_request_header_buffer( void )
 /* Test when the length of request headers is greater than length of buffer. */
 void test_HTTPClient_Send_request_headers_gt_buffer( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     requestHeaders.headersLen = requestHeaders.bufferLen + 1;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1362,7 +1362,7 @@ void test_HTTPClient_Send_request_headers_gt_buffer( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1370,7 +1370,7 @@ void test_HTTPClient_Send_request_headers_gt_buffer( void )
 /* Test a NULL response buffer passed to the API. */
 void test_HTTPClient_Send_null_response_buffer( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     response.pBuffer = NULL;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1380,7 +1380,7 @@ void test_HTTPClient_Send_null_response_buffer( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1388,7 +1388,7 @@ void test_HTTPClient_Send_null_response_buffer( void )
 /* Test when reqBodyBufLen is greater than the max value of a 32-bit integer. */
 void test_HTTPClient_Send_request_body_buffer_length_gt_max( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
     size_t reqBodyBufLen = INT32_MAX;
 
     /* Increment separately to prevent an overflow warning. */
@@ -1401,7 +1401,7 @@ void test_HTTPClient_Send_request_body_buffer_length_gt_max( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1410,7 +1410,7 @@ void test_HTTPClient_Send_request_body_buffer_length_gt_max( void )
  */
 void test_HTTPClient_Send_not_enough_request_headers( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     requestHeaders.headersLen = HTTP_MINIMUM_REQUEST_LINE_LENGTH - 1;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1419,7 +1419,7 @@ void test_HTTPClient_Send_not_enough_request_headers( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1427,7 +1427,7 @@ void test_HTTPClient_Send_not_enough_request_headers( void )
 /* Test when length of headers is greater than the max value of a 32-bit integer. */
 void test_HTTPClient_Send_headers_length_gt_max( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     requestHeaders.headersLen = INT32_MAX;
     /* Increment separately to prevent an overflow warning. */
@@ -1441,7 +1441,7 @@ void test_HTTPClient_Send_headers_length_gt_max( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1450,7 +1450,7 @@ void test_HTTPClient_Send_headers_length_gt_max( void )
  */
 void test_HTTPClient_Send_null_request_body_nonzero_body_length( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     returnStatus = HTTPClient_Send( &transportInterface,
                                     &requestHeaders,
@@ -1458,7 +1458,7 @@ void test_HTTPClient_Send_null_request_body_nonzero_body_length( void )
                                     1,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1466,7 +1466,7 @@ void test_HTTPClient_Send_null_request_body_nonzero_body_length( void )
 /* Test when the Content-Length header cannot fit into the header buffer. */
 void test_HTTPClient_Send_Content_Length_Header_Doesnt_Fit( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     requestHeaders.pBuffer = ( uint8_t * ) HTTP_TEST_REQUEST_PUT_HEADERS;
 
@@ -1482,7 +1482,7 @@ void test_HTTPClient_Send_Content_Length_Header_Doesnt_Fit( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1491,7 +1491,7 @@ void test_HTTPClient_Send_Content_Length_Header_Doesnt_Fit( void )
  * errors. */
 void test_HTTPClient_Send_parsing_errors( void )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     http_parser_init_Ignore();
     http_parser_settings_init_Ignore();
@@ -1505,7 +1505,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertResponseHeadersSizeLimitExceeded, returnStatus );
 
     httpParsingErrno = HPE_INVALID_CHUNK_SIZE;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1514,7 +1514,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidChunkHeader, returnStatus );
 
     httpParsingErrno = HPE_CLOSED_CONNECTION;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1523,7 +1523,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertExtraneousResponseData, returnStatus );
 
     httpParsingErrno = HPE_INVALID_VERSION;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1532,7 +1532,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidProtocolVersion, returnStatus );
 
     httpParsingErrno = HPE_INVALID_STATUS;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1541,7 +1541,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_STATUS_CODE, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidStatusCode, returnStatus );
 
     httpParsingErrno = HPE_STRICT;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1550,7 +1550,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CHARACTER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, returnStatus );
 
     httpParsingErrno = HPE_INVALID_CONSTANT;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1559,7 +1559,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CHARACTER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, returnStatus );
 
     httpParsingErrno = HPE_LF_EXPECTED;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1568,7 +1568,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CHARACTER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, returnStatus );
 
     httpParsingErrno = HPE_INVALID_HEADER_TOKEN;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1577,7 +1577,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CHARACTER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, returnStatus );
 
     httpParsingErrno = HPE_INVALID_CONTENT_LENGTH;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1586,7 +1586,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidContentLength, returnStatus );
 
     httpParsingErrno = HPE_UNEXPECTED_CONTENT_LENGTH;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1595,7 +1595,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidContentLength, returnStatus );
 
     httpParsingErrno = HPE_UNKNOWN;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1604,5 +1604,5 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_PARSER_INTERNAL_ERROR, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPParserInternalError, returnStatus );
 }

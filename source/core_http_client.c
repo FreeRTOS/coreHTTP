@@ -40,8 +40,8 @@
  * @param[in] pData HTTP request data to send.
  * @param[in] dataLen HTTP request data length.
  *
- * @return #HTTP_SUCCESS if successful. If there was a network error or less
- * bytes than what were specified were sent, then #HTTP_NETWORK_ERROR is
+ * @return #HTTPSuccess if successful. If there was a network error or less
+ * bytes than what were specified were sent, then #HTTPNetworkError is
  * returned.
  */
 static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
@@ -58,8 +58,8 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
  * used to generated a Content-Length header.
  * @param[in] sendFlags Application provided flags to #HTTPClient_Send.
  *
- * @return #HTTP_SUCCESS if successful. If there was a network error or less
- * bytes than what were specified were sent, then #HTTP_NETWORK_ERROR is
+ * @return #HTTPSuccess if successful. If there was a network error or less
+ * bytes than what were specified were sent, then #HTTPNetworkError is
  * returned.
  */
 static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
@@ -74,8 +74,8 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
  * @param[in] pRequestHeaders Request header buffer information.
  * @param[in] contentLength The Content-Length header value to write.
  *
- * @return #HTTP_SUCCESS if successful. If there was insufficient memory in the
- * application buffer, then #HTTP_INSUFFICIENT_MEMORY is returned.
+ * @return #HTTPSuccess if successful. If there was insufficient memory in the
+ * application buffer, then #HTTPInsufficientMemory is returned.
  */
 static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                             size_t contentLength );
@@ -87,8 +87,8 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
  * @param[in] pRequestBodyBuf Request body buffer.
  * @param[in] reqBodyBufLen Length of the request body buffer.
  *
- * @return #HTTP_SUCCESS if successful. If there was a network error or less
- * bytes than what was specified were sent, then #HTTP_NETWORK_ERROR is
+ * @return #HTTPSuccess if successful. If there was a network error or less
+ * bytes than what was specified were sent, then #HTTPNetworkError is
  * returned.
  */
 static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
@@ -106,8 +106,8 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
  * @param[in] pValue The ISO 8859-1 encoded header value to write.
  * @param[in] valueLen The byte length of the header field value.
  *
- * @return #HTTP_SUCCESS if successful. If there was insufficient memory in the
- * application buffer, then #HTTP_INSUFFICIENT_MEMORY is returned.
+ * @return #HTTPSuccess if successful. If there was insufficient memory in the
+ * application buffer, then #HTTPInsufficientMemory is returned.
  */
 static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                const char * pField,
@@ -126,8 +126,8 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * byte in Range Specifications 2. and 3., #HTTP_RANGE_REQUEST_END_OF_FILE
  * should be passed.
  *
- * @return #HTTP_SUCCESS if successful. If there was insufficient memory in the
- * application buffer, then #HTTP_INSUFFICIENT_MEMORY is returned.
+ * @return #HTTPSuccess if successful. If there was insufficient memory in the
+ * application buffer, then #HTTPInsufficientMemory is returned.
  */
 static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                     int32_t rangeStartOrlastNbytes,
@@ -141,8 +141,8 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * @param[in] bufferLen Length of the response buffer.
  * @param[out] pBytesReceived Bytes received from the transport interface.
  *
- * @return Returns #HTTP_SUCCESS if successful. If there was a network error or
- * more bytes than what was specified were read, then #HTTP_NETWORK_ERROR is
+ * @return Returns #HTTPSuccess if successful. If there was a network error or
+ * more bytes than what was specified were read, then #HTTPNetworkError is
  * returned.
  */
 static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
@@ -159,11 +159,11 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
  * buffer.
  * @param[in] responseBufferLen The length of the response buffer.
  *
- * @return Returns #HTTP_SUCCESS if the parsing state is complete. If
- * the parsing state denotes it never started, then return #HTTP_NO_RESPONSE. If
+ * @return Returns #HTTPSuccess if the parsing state is complete. If
+ * the parsing state denotes it never started, then return #HTTPNoResponse. If
  * the parsing state is incomplete, then if the response buffer is not full
- * #HTTP_PARTIAL_RESPONSE is returned. If the parsing state is incomplete, then
- * if the response buffer is full #HTTP_INSUFFICIENT_MEMORY is returned.
+ * #HTTPPartialResponse is returned. If the parsing state is incomplete, then
+ * if the response buffer is full #HTTPInsufficientMemory is returned.
  */
 static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                                             size_t totalReceived,
@@ -176,7 +176,7 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
  * @param[in] pResponse Response message to receive data from the network.
  * @param[in] pRequestHeaders Request headers for the corresponding HTTP request.
  *
- * @return Returns #HTTP_SUCCESS if successful. Please see #receiveHttpData,
+ * @return Returns #HTTPSuccess if successful. Please see #receiveHttpData,
  * #parseHttpResponse, and #getFinalResponseStatus for other statuses returned.
  */
 static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pTransport,
@@ -208,8 +208,8 @@ static uint8_t convertInt32ToAscii( int32_t value,
  * @param pPath The Request-URI to the objects of interest, e.g. "/path/to/item.txt".
  * @param pathLen The byte length of the request path.
  *
- * @return #HTTP_SUCCESS if successful. If there was insufficient memory in the
- * application buffer, then #HTTP_INSUFFICIENT_MEMORY is returned.
+ * @return #HTTPSuccess if successful. If there was insufficient memory in the
+ * application buffer, then #HTTPInsufficientMemory is returned.
  */
 static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
                                       const char * pMethod,
@@ -228,10 +228,10 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
  * @param[out] pValueLen The length of pValue.
  *
  * @return One of the following:
- * - #HTTP_SUCCESS when header is found in the response.
- * - #HTTP_HEADER_NOT_FOUND if requested header is not found in response.
- * - #HTTP_INVALID_RESPONSE if passed response is invalid for parsing.
- * - #HTTP_PARSER_INTERNAL_ERROR for any parsing errors.
+ * - #HTTPSuccess when header is found in the response.
+ * - #HTTPHeaderNotFound if requested header is not found in response.
+ * - #HTTPInvalidResponse if passed response is invalid for parsing.
+ * - #HTTPParserInternalError for any parsing errors.
  */
 static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                                           size_t bufferLen,
@@ -314,8 +314,8 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
  * to 1, otherwise this is set to 0.
  *
  * @return One of the following:
- * - #HTTP_SUCCESS
- * - #HTTP_INVALID_PARAMETER
+ * - #HTTPSuccess
+ * - #HTTPInvalidParameter
  * - Please see #processHttpParserError for parsing errors returned.
  */
 static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
@@ -496,15 +496,15 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  * @param[in] pHttpParser Third-party HTTP parsing context.
  *
  * @return One of the following:
- * - #HTTP_SUCCESS
- * - #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED
- * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
- * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
- * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
- * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
- * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
- * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
- * - #HTTP_PARSER_INTERNAL_ERROR
+ * - #HTTPSuccess
+ * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
+ * - #HTTPSecurityAlertExtraneousResponseData
+ * - #HTTPSecurityAlertInvalidChunkHeader
+ * - #HTTPSecurityAlertInvalidProtocolVersion
+ * - #HTTPSecurityAlertInvalidStatusCode
+ * - #HTTPSecurityAlertInvalidCharacter
+ * - #HTTPSecurityAlertInvalidContentLength
+ * - #HTTPParserInternalError
  */
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
 
@@ -930,7 +930,7 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
 
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     assert( pHttpParser != NULL );
 
@@ -951,13 +951,13 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
             LogError( ( "Response parsing error: Header byte limit "
                         "exceeded: HeaderByteLimit=%d",
                         HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES ) );
-            returnStatus = HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED;
+            returnStatus = HTTPSecurityAlertResponseHeadersSizeLimitExceeded;
             break;
 
         case HPE_CLOSED_CONNECTION:
             LogError( ( "Response parsing error: Data received past complete "
                         "response with \"Connection: close\" header present." ) );
-            returnStatus = HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA;
+            returnStatus = HTTPSecurityAlertExtraneousResponseData;
             break;
 
         case HPE_INVALID_CHUNK_SIZE:
@@ -966,7 +966,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
              * character and location. */
             LogError( ( "Response parsing error: Invalid character found in "
                         "chunk header." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER;
+            returnStatus = HTTPSecurityAlertInvalidChunkHeader;
             break;
 
         case HPE_INVALID_VERSION:
@@ -975,7 +975,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
              * character and location. */
             LogError( ( "Response parsing error: Invalid character found in "
                         "HTTP protocol version." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION;
+            returnStatus = HTTPSecurityAlertInvalidProtocolVersion;
             break;
 
         case HPE_INVALID_STATUS:
@@ -984,20 +984,20 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
              * could be out of range. This feedback is not given back by the
              * http-parser library. */
             LogError( ( "Response parsing error: Invalid Status code." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_STATUS_CODE;
+            returnStatus = HTTPSecurityAlertInvalidStatusCode;
             break;
 
         case HPE_STRICT:
         case HPE_INVALID_CONSTANT:
             LogError( ( "Response parsing error: Invalid character found in "
                         "Status-Line or header delimiters." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CHARACTER;
+            returnStatus = HTTPSecurityAlertInvalidCharacter;
             break;
 
         case HPE_LF_EXPECTED:
             LogError( ( "Response parsing error: Expected line-feed in header "
                         "not found." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CHARACTER;
+            returnStatus = HTTPSecurityAlertInvalidCharacter;
             break;
 
         case HPE_INVALID_HEADER_TOKEN:
@@ -1006,7 +1006,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
              * character and location. */
             LogError( ( "Response parsing error: Invalid character found in "
                         "headers." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CHARACTER;
+            returnStatus = HTTPSecurityAlertInvalidCharacter;
             break;
 
         case HPE_INVALID_CONTENT_LENGTH:
@@ -1015,20 +1015,20 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
              * character and location. */
             LogError( ( "Response parsing error: Invalid character found in "
                         "content-length headers." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH;
+            returnStatus = HTTPSecurityAlertInvalidContentLength;
             break;
 
         case HPE_UNEXPECTED_CONTENT_LENGTH:
             LogError( ( "Response parsing error: A Content-Length header was "
                         "found when it shouldn't have been." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH;
+            returnStatus = HTTPSecurityAlertInvalidContentLength;
             break;
 
         /* All other error cases cannot be triggered and indicate an error in the
          * third-party parsing library if found. */
         default:
             LogError( ( "Error in third-party http-parser library." ) );
-            returnStatus = HTTP_PARSER_INTERNAL_ERROR;
+            returnStatus = HTTPParserInternalError;
             break;
     }
 
@@ -1182,7 +1182,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                const char * pValue,
                                size_t valueLen )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferCur = ( char * ) ( pRequestHeaders->pBuffer + pRequestHeaders->headersLen );
     size_t toAddLen = 0u;
     size_t backtrackHeaderLen = pRequestHeaders->headersLen;
@@ -1245,7 +1245,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                     "RequiredBytes=%lu, RemainingBufferSize=%lu",
                     ( unsigned long ) toAddLen,
                     ( unsigned long ) ( pRequestHeaders->bufferLen - pRequestHeaders->headersLen ) ) );
-        returnStatus = HTTP_INSUFFICIENT_MEMORY;
+        returnStatus = HTTPInsufficientMemory;
     }
 
     return returnStatus;
@@ -1257,7 +1257,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                     int32_t rangeStartOrlastNbytes,
                                     int32_t rangeEnd )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
     char rangeValueBuffer[ HTTP_MAX_RANGE_REQUEST_VALUE_LEN ];
     size_t rangeValueLength = 0u;
 
@@ -1324,7 +1324,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
                                       const char * pPath,
                                       size_t pathLen )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferCur = ( char * ) ( pRequestHeaders->pBuffer );
     size_t toAddLen = methodLen +                 \
                       SPACE_CHARACTER_LEN +       \
@@ -1341,10 +1341,10 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
 
     if( ( toAddLen + pRequestHeaders->headersLen ) > pRequestHeaders->bufferLen )
     {
-        returnStatus = HTTP_INSUFFICIENT_MEMORY;
+        returnStatus = HTTPInsufficientMemory;
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. */
         ( void ) memcpy( pBufferCur, pMethod, methodLen );
@@ -1389,50 +1389,50 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
 HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pRequestHeaders,
                                                   const HTTPRequestInfo_t * pRequestInfo )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     /* Check for NULL parameters. */
     if( pRequestHeaders == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo == NULL )
     {
         LogError( ( "Parameter check failed: pRequestInfo is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo->pMethod == NULL )
     {
         LogError( ( "Parameter check failed: pRequestInfo->pMethod is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo->pHost == NULL )
     {
         LogError( ( "Parameter check failed: pRequestInfo->pHost is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo->methodLen == 0u )
     {
         LogError( ( "Parameter check failed: pRequestInfo->methodLen must be greater than 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo->hostLen == 0u )
     {
         LogError( ( "Parameter check failed: pRequestInfo->hostLen must be greater than 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else
     {
         /* Empty else MISRA 15.7 */
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         /* Reset application-provided parameters. */
         pRequestHeaders->headersLen = 0u;
@@ -1445,7 +1445,7 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
                                          pRequestInfo->pathLen );
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         /* Write "User-Agent: <Value>". */
         returnStatus = addHeader( pRequestHeaders,
@@ -1455,7 +1455,7 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
                                   HTTP_USER_AGENT_VALUE_LEN );
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         /* Write "Host: <Value>". */
         returnStatus = addHeader( pRequestHeaders,
@@ -1465,7 +1465,7 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
                                   pRequestInfo->hostLen );
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         if( ( HTTP_REQUEST_KEEP_ALIVE_FLAG & pRequestInfo->reqFlags ) != 0u )
         {
@@ -1489,50 +1489,50 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                    const char * pValue,
                                    size_t valueLen )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     /* Check for NULL parameters. */
     if( pRequestHeaders == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pField == NULL )
     {
         LogError( ( "Parameter check failed: pField is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pValue == NULL )
     {
         LogError( ( "Parameter check failed: pValue is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( fieldLen == 0u )
     {
         LogError( ( "Parameter check failed: fieldLen must be greater than 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( valueLen == 0u )
     {
         LogError( ( "Parameter check failed: valueLen must be greater than 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->headersLen > pRequestHeaders->bufferLen )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->headersLen > pRequestHeaders->bufferLen." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else
     {
         /* Empty else MISRA 15.7 */
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         returnStatus = addHeader( pRequestHeaders,
                                   pField, fieldLen, pValue, valueLen );
@@ -1547,28 +1547,28 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                         int32_t rangeStartOrlastNbytes,
                                         int32_t rangeEnd )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     if( pRequestHeaders == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->headersLen > pRequestHeaders->bufferLen )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->headersLen > pRequestHeaders->bufferLen." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( rangeEnd < HTTP_RANGE_REQUEST_END_OF_FILE )
     {
         LogError( ( "Parameter check failed: rangeEnd is invalid: "
                     "rangeEnd should be >=-1: RangeEnd=%d", rangeEnd ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( ( rangeStartOrlastNbytes < 0 ) &&
              ( rangeEnd != HTTP_RANGE_REQUEST_END_OF_FILE ) )
@@ -1577,7 +1577,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                     "rangeEnd should be -1 when rangeStart < 0: "
                     "RangeStart=%d, RangeEnd=%d",
                     rangeStartOrlastNbytes, rangeEnd ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( ( rangeEnd != HTTP_RANGE_REQUEST_END_OF_FILE ) &&
              ( rangeStartOrlastNbytes > rangeEnd ) )
@@ -1586,7 +1586,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                     "rangeStart should be < rangeEnd when both are >= 0: "
                     "RangeStart=%d, RangeEnd=%d",
                     rangeStartOrlastNbytes, rangeEnd ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( rangeStartOrlastNbytes == INT32_MIN )
     {
@@ -1594,7 +1594,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                     "rangeStart should be > -2147483648 (INT32_MIN): "
                     "RangeStart=%d",
                     rangeStartOrlastNbytes ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else
     {
@@ -1612,7 +1612,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
                                   const uint8_t * pData,
                                   size_t dataLen )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
     const uint8_t * pIndex = pData;
     int32_t transportStatus = 0;
     size_t bytesRemaining = dataLen;
@@ -1622,7 +1622,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
     assert( pData != NULL );
 
     /* Loop until all data is sent. */
-    while( ( bytesRemaining > 0UL ) && ( returnStatus != HTTP_NETWORK_ERROR ) )
+    while( ( bytesRemaining > 0UL ) && ( returnStatus != HTTPNetworkError ) )
     {
         transportStatus = pTransport->send( pTransport->pNetworkContext,
                                             pIndex,
@@ -1634,7 +1634,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
             LogError( ( "Failed to send HTTP data: Transport send()"
                         " returned error: TransportStatus=%d",
                         transportStatus ) );
-            returnStatus = HTTP_NETWORK_ERROR;
+            returnStatus = HTTPNetworkError;
         }
         else
         {
@@ -1654,7 +1654,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
         }
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         LogDebug( ( "Sent HTTP data over the transport: BytesSent=%d",
                     transportStatus ) );
@@ -1668,7 +1668,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
 static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                             size_t contentLength )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
     char pContentLengthValue[ MAX_INT32_NO_OF_DECIMAL_DIGITS ] = { '\0' };
     uint8_t contentLengthValueNumBytes = 0u;
 
@@ -1685,7 +1685,7 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
                               pContentLengthValue,
                               contentLengthValueNumBytes );
 
-    if( returnStatus != HTTP_SUCCESS )
+    if( returnStatus != HTTPSuccess )
     {
         LogError( ( "Failed to write Content-Length header to the request "
                     "header buffer: ContentLengthValue: %lu",
@@ -1702,7 +1702,7 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
                                      size_t reqBodyLen,
                                      uint32_t sendFlags )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
     uint8_t shouldSendContentLength = 0u;
 
     assert( pTransport != NULL );
@@ -1719,14 +1719,14 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
         returnStatus = addContentLengthHeader( pRequestHeaders, reqBodyLen );
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         /* Send the HTTP headers over the network. */
         if( pRequestHeaders->headersLen > INT32_MAX )
         {
             LogError( ( "Parameter check failed: pRequestHeaders->headersLen > "
                         "2147483647 (INT32_MAX)." ) );
-            returnStatus = HTTP_INVALID_PARAMETER;
+            returnStatus = HTTPInvalidParameter;
         }
         else
         {
@@ -1745,7 +1745,7 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
                                   const uint8_t * pRequestBodyBuf,
                                   size_t reqBodyBufLen )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     assert( pTransport != NULL );
     assert( pTransport->send != NULL );
@@ -1766,7 +1766,7 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
                                      size_t bufferLen,
                                      size_t * pBytesReceived )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
     int32_t transportStatus = 0;
 
     assert( pTransport != NULL );
@@ -1784,7 +1784,7 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
         LogError( ( "Failed to receive HTTP data: Transport recv() "
                     "returned error: TransportStatus=%d",
                     transportStatus ) );
-        returnStatus = HTTP_NETWORK_ERROR;
+        returnStatus = HTTPNetworkError;
     }
     else if( transportStatus > 0 )
     {
@@ -1817,7 +1817,7 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                                             size_t totalReceived,
                                             size_t responseBufferLen )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     assert( parsingState >= HTTP_PARSING_NONE &&
             parsingState <= HTTP_PARSING_COMPLETE );
@@ -1829,7 +1829,7 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
         LogError( ( "Response not received: Zero returned from "
                     "transport recv: totalReceived=%lu",
                     ( unsigned long ) totalReceived ) );
-        returnStatus = HTTP_NO_RESPONSE;
+        returnStatus = HTTPNoResponse;
     }
     else if( parsingState == HTTP_PARSING_INCOMPLETE )
     {
@@ -1839,7 +1839,7 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                         " interface: Response buffer has insufficient "
                         "space: responseBufferLen=%lu",
                         ( unsigned long ) responseBufferLen ) );
-            returnStatus = HTTP_INSUFFICIENT_MEMORY;
+            returnStatus = HTTPInsufficientMemory;
         }
         else
         {
@@ -1847,7 +1847,7 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                         "receive(): ResponseSize=%lu, TotalBufferSize=%lu",
                         ( unsigned long ) totalReceived,
                         ( unsigned long ) ( responseBufferLen - totalReceived ) ) );
-            returnStatus = HTTP_PARTIAL_RESPONSE;
+            returnStatus = HTTPPartialResponse;
         }
     }
     else
@@ -1864,7 +1864,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
                                                  HTTPResponse_t * pResponse,
                                                  const HTTPRequestHeaders_t * pRequestHeaders )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
     size_t totalReceived = 0u;
     size_t currentReceived = 0u;
     HTTPParsingContext_t parsingContext = { 0 };
@@ -1900,7 +1900,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
                                         pResponse->bufferLen - totalReceived,
                                         &currentReceived );
 
-        if( returnStatus == HTTP_SUCCESS )
+        if( returnStatus == HTTPSuccess )
         {
             /* Data is received into the buffer and must be parsed. Parsing is
              * invoked even with a length of zero. A length of zero indicates to
@@ -1916,13 +1916,13 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
          * or parsing, non-zero data was received from the network,
          * the parser indicated the response message is not finished, and there
          * is room in the response buffer. */
-        shouldRecv = ( ( returnStatus == HTTP_SUCCESS ) &&
+        shouldRecv = ( ( returnStatus == HTTPSuccess ) &&
                        ( currentReceived > 0u ) &&
                        ( parsingContext.state != HTTP_PARSING_COMPLETE ) &&
                        ( totalReceived < pResponse->bufferLen ) ) ? 1u : 0u;
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         /* If there are errors in receiving from the network or during parsing,
          * the final status of the response message is derived from the state of
@@ -1944,32 +1944,32 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                               HTTPResponse_t * pResponse,
                               uint32_t sendFlags )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     if( pTransport == NULL )
     {
         LogError( ( "Parameter check failed: pTransport interface is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pTransport->send == NULL )
     {
         LogError( ( "Parameter check failed: pTransport->send is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pTransport->recv == NULL )
     {
         LogError( ( "Parameter check failed: pTransport->recv is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->headersLen < HTTP_MINIMUM_REQUEST_LINE_LENGTH )
     {
@@ -1978,24 +1978,24 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                     "MinimumRequiredLength=%u, HeadersLength =%lu",
                     HTTP_MINIMUM_REQUEST_LINE_LENGTH,
                     ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->headersLen > pRequestHeaders->bufferLen )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->headersLen > "
                     "pRequestHeaders->bufferLen." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( ( pResponse != NULL ) && ( pResponse->pBuffer == NULL ) )
     {
         LogError( ( "Parameter check failed: pResponse->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen > 0u ) )
     {
         LogError( ( "Parameter check failed: pRequestBodyBuf is NULL, but "
                     "reqBodyBufLen is greater than zero." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( reqBodyBufLen > INT32_MAX )
     {
@@ -2003,7 +2003,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
          * reqBodyBufLen to create a Content-Length header value string. */
         LogError( ( "Parameter check failed: reqBodyBufLen > "
                     "2147483647 (INT32_MAX)." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else
     {
@@ -2011,7 +2011,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
     }
 
     /* Send the headers, which are at one location in memory. */
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         returnStatus = sendHttpHeaders( pTransport,
                                         pRequestHeaders,
@@ -2020,7 +2020,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
     }
 
     /* Send the body, which is at another location in memory. */
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         if( pRequestBodyBuf != NULL )
         {
@@ -2034,7 +2034,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
         }
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         /* If the application chooses to receive a response, then pResponse
          * will not be NULL. */
@@ -2176,7 +2176,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                                           const char ** pValueLoc,
                                           size_t * pValueLen )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
     http_parser parser = { 0 };
     http_parser_settings parserSettings = { 0 };
     findHeaderContext_t context = { 0 };
@@ -2224,7 +2224,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                    ( int ) fieldLen,
                    pField ) );
 
-        returnStatus = HTTP_HEADER_NOT_FOUND;
+        returnStatus = HTTPHeaderNotFound;
     }
     else if( context.valueFound == 0u )
     {
@@ -2236,7 +2236,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                     ( int ) fieldLen,
                     pField,
                     http_errno_description( HTTP_PARSER_ERRNO( &( parser ) ) ) ) );
-        returnStatus = HTTP_INVALID_RESPONSE;
+        returnStatus = HTTPInvalidResponse;
     }
     else
     {
@@ -2257,25 +2257,25 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     /* If the header field-value pair is found in response, then the return
      * value of "on_header_value" callback (related to the header value) should
      * cause the http_parser.http_errno to be "CB_header_value". */
-    if( ( returnStatus == HTTP_SUCCESS ) &&
+    if( ( returnStatus == HTTPSuccess ) &&
         ( parser.http_errno != ( unsigned int ) HPE_CB_header_value ) )
     {
         LogError( ( "Header found in response but http-parser returned error: "
                     "ParserError=%s",
                     http_errno_description( HTTP_PARSER_ERRNO( &( parser ) ) ) ) );
-        returnStatus = HTTP_PARSER_INTERNAL_ERROR;
+        returnStatus = HTTPParserInternalError;
     }
 
     /* If header was not found, then the "on_header_complete" callback is
      * expected to be called which should cause the http_parser.http_errno to be
      * "OK" */
-    else if( ( returnStatus == HTTP_HEADER_NOT_FOUND ) &&
+    else if( ( returnStatus == HTTPHeaderNotFound ) &&
              ( parser.http_errno != ( unsigned int ) ( HPE_OK ) ) )
     {
         LogError( ( "Header not found in response: http-parser returned error: "
                     "ParserError=%s",
                     http_errno_description( HTTP_PARSER_ERRNO( &( parser ) ) ) ) );
-        returnStatus = HTTP_INVALID_RESPONSE;
+        returnStatus = HTTPInvalidResponse;
     }
     else
     {
@@ -2293,51 +2293,51 @@ HTTPStatus_t HTTPClient_ReadHeader( const HTTPResponse_t * pResponse,
                                     const char ** pValueLoc,
                                     size_t * pValueLen )
 {
-    HTTPStatus_t returnStatus = HTTP_SUCCESS;
+    HTTPStatus_t returnStatus = HTTPSuccess;
 
     if( pResponse == NULL )
     {
         LogError( ( "Parameter check failed: pResponse is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pResponse->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pResponse->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pResponse->bufferLen == 0u )
     {
         LogError( ( "Parameter check failed: pResponse->bufferLen is 0: "
                     "Buffer len should be > 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pField == NULL )
     {
         LogError( ( "Parameter check failed: Input header name is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( fieldLen == 0u )
     {
         LogError( ( "Parameter check failed: Input header name length is 0: "
                     "fieldLen should be > 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pValueLoc == NULL )
     {
         LogError( ( "Parameter check failed: Output parameter for header value location is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pValueLen == NULL )
     {
         LogError( ( "Parameter check failed: Output parameter for header value length is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else
     {
         /* Empty else for MISRA 15.7 compliance. */
     }
 
-    if( returnStatus == HTTP_SUCCESS )
+    if( returnStatus == HTTPSuccess )
     {
         returnStatus = findHeaderInResponse( pResponse->pBuffer,
                                              pResponse->bufferLen,
@@ -2358,68 +2358,68 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
 
     switch( status )
     {
-        case HTTP_SUCCESS:
-            str = "HTTP_SUCCESS";
+        case HTTPSuccess:
+            str = "HTTPSuccess";
             break;
 
-        case HTTP_INVALID_PARAMETER:
-            str = "HTTP_INVALID_PARAMETER";
+        case HTTPInvalidParameter:
+            str = "HTTPInvalidParameter";
             break;
 
-        case HTTP_NETWORK_ERROR:
-            str = "HTTP_NETWORK_ERROR";
+        case HTTPNetworkError:
+            str = "HTTPNetworkError";
             break;
 
-        case HTTP_PARTIAL_RESPONSE:
-            str = "HTTP_PARTIAL_RESPONSE";
+        case HTTPPartialResponse:
+            str = "HTTPPartialResponse";
             break;
 
-        case HTTP_NO_RESPONSE:
-            str = "HTTP_NO_RESPONSE";
+        case HTTPNoResponse:
+            str = "HTTPNoResponse";
             break;
 
-        case HTTP_INSUFFICIENT_MEMORY:
-            str = "HTTP_INSUFFICIENT_MEMORY";
+        case HTTPInsufficientMemory:
+            str = "HTTPInsufficientMemory";
             break;
 
-        case HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED:
-            str = "HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED";
+        case HTTPSecurityAlertResponseHeadersSizeLimitExceeded:
+            str = "HTTPSecurityAlertResponseHeadersSizeLimitExceeded";
             break;
 
-        case HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA:
-            str = "HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA";
+        case HTTPSecurityAlertExtraneousResponseData:
+            str = "HTTPSecurityAlertExtraneousResponseData";
             break;
 
-        case HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER:
-            str = "HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER";
+        case HTTPSecurityAlertInvalidChunkHeader:
+            str = "HTTPSecurityAlertInvalidChunkHeader";
             break;
 
-        case HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION:
-            str = "HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION";
+        case HTTPSecurityAlertInvalidProtocolVersion:
+            str = "HTTPSecurityAlertInvalidProtocolVersion";
             break;
 
-        case HTTP_SECURITY_ALERT_INVALID_STATUS_CODE:
-            str = "HTTP_SECURITY_ALERT_INVALID_STATUS_CODE";
+        case HTTPSecurityAlertInvalidStatusCode:
+            str = "HTTPSecurityAlertInvalidStatusCode";
             break;
 
-        case HTTP_SECURITY_ALERT_INVALID_CHARACTER:
-            str = "HTTP_SECURITY_ALERT_INVALID_CHARACTER";
+        case HTTPSecurityAlertInvalidCharacter:
+            str = "HTTPSecurityAlertInvalidCharacter";
             break;
 
-        case HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH:
-            str = "HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH";
+        case HTTPSecurityAlertInvalidContentLength:
+            str = "HTTPSecurityAlertInvalidContentLength";
             break;
 
-        case HTTP_PARSER_INTERNAL_ERROR:
-            str = "HTTP_PARSER_INTERNAL_ERROR";
+        case HTTPParserInternalError:
+            str = "HTTPParserInternalError";
             break;
 
-        case HTTP_HEADER_NOT_FOUND:
-            str = "HTTP_HEADER_NOT_FOUND";
+        case HTTPHeaderNotFound:
+            str = "HTTPHeaderNotFound";
             break;
 
-        case HTTP_INVALID_RESPONSE:
-            str = "HTTP_INVALID_RESPONSE";
+        case HTTPInvalidResponse:
+            str = "HTTPInvalidResponse";
             break;
 
         default:
