@@ -60,6 +60,7 @@ hpe
 html
 http
 httpclient
+httpheadernotfound
 httpinsufficientmemory
 httpinvalidparameter
 httplibrarystatus

@@ -294,7 +294,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_ReadHeader
      */
-    HTTP_HEADER_NOT_FOUND,
+    HTTPHeaderNotFound,
 
     /**
      * @brief The HTTP response, provided for parsing, is either corrupt or
@@ -813,7 +813,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * @return One of the following:
  * - #HTTPSuccess (If successful.)
  * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
- * - #HTTP_HEADER_NOT_FOUND (Header is not found in the passed response buffer.)
+ * - #HTTPHeaderNotFound (Header is not found in the passed response buffer.)
  * - #HTTP_INVALID_RESPONSE (Provided response is not a valid HTTP response for parsing.)
  * - #HTTPParserInternalError(If an error in the response parser.)
  *

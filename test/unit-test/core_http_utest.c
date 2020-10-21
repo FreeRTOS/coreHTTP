@@ -1217,7 +1217,7 @@ void test_Http_ReadHeader_Header_Not_In_Response( void )
                                      HEADER_NOT_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_HEADER_NOT_FOUND, retCode );
+    TEST_ASSERT_EQUAL( HTTPHeaderNotFound, retCode );
 
     /* Repeat the test above but with fieldLenToReturn == HEADER_NOT_IN_BUFFER_LEN.
      * Doing this allows us to take the branch where the actual contents
@@ -1250,7 +1250,7 @@ void test_Http_ReadHeader_Header_Not_In_Response( void )
                                      HEADER_NOT_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_HEADER_NOT_FOUND, retCode );
+    TEST_ASSERT_EQUAL( HTTPHeaderNotFound, retCode );
 }
 
 /**
@@ -1446,9 +1446,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPParserInternalError", str );
 
-    status = HTTP_HEADER_NOT_FOUND;
+    status = HTTPHeaderNotFound;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_HEADER_NOT_FOUND", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPHeaderNotFound", str );
 
     status = HTTP_INVALID_RESPONSE;
     str = HTTPClient_strerror( status );

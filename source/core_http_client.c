@@ -229,7 +229,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
  *
  * @return One of the following:
  * - #HTTPSuccess when header is found in the response.
- * - #HTTP_HEADER_NOT_FOUND if requested header is not found in response.
+ * - #HTTPHeaderNotFound if requested header is not found in response.
  * - #HTTP_INVALID_RESPONSE if passed response is invalid for parsing.
  * - #HTTPParserInternalError for any parsing errors.
  */
@@ -2224,7 +2224,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                    ( int ) fieldLen,
                    pField ) );
 
-        returnStatus = HTTP_HEADER_NOT_FOUND;
+        returnStatus = HTTPHeaderNotFound;
     }
     else if( context.valueFound == 0u )
     {
@@ -2269,7 +2269,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     /* If header was not found, then the "on_header_complete" callback is
      * expected to be called which should cause the http_parser.http_errno to be
      * "OK" */
-    else if( ( returnStatus == HTTP_HEADER_NOT_FOUND ) &&
+    else if( ( returnStatus == HTTPHeaderNotFound ) &&
              ( parser.http_errno != ( unsigned int ) ( HPE_OK ) ) )
     {
         LogError( ( "Header not found in response: http-parser returned error: "
@@ -2414,8 +2414,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPParserInternalError";
             break;
 
-        case HTTP_HEADER_NOT_FOUND:
-            str = "HTTP_HEADER_NOT_FOUND";
+        case HTTPHeaderNotFound:
+            str = "HTTPHeaderNotFound";
             break;
 
         case HTTP_INVALID_RESPONSE:
