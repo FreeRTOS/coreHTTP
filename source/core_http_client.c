@@ -501,7 +501,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  * - #HTTPSecurityAlertExtraneousResponseData
  * - #HTTPSecurityAlertInvalidChunkHeader
  * - #HTTPSecurityAlertInvalidProtocolVersion
- * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
+ * - #HTTPSecurityAlertInvalidStatusCode
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
  * - #HTTP_PARSER_INTERNAL_ERROR
@@ -984,7 +984,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
              * could be out of range. This feedback is not given back by the
              * http-parser library. */
             LogError( ( "Response parsing error: Invalid Status code." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_STATUS_CODE;
+            returnStatus = HTTPSecurityAlertInvalidStatusCode;
             break;
 
         case HPE_STRICT:
@@ -2398,8 +2398,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPSecurityAlertInvalidProtocolVersion";
             break;
 
-        case HTTP_SECURITY_ALERT_INVALID_STATUS_CODE:
-            str = "HTTP_SECURITY_ALERT_INVALID_STATUS_CODE";
+        case HTTPSecurityAlertInvalidStatusCode:
+            str = "HTTPSecurityAlertInvalidStatusCode";
             break;
 
         case HTTP_SECURITY_ALERT_INVALID_CHARACTER:

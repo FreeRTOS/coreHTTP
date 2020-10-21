@@ -1541,7 +1541,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_STATUS_CODE, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidStatusCode, returnStatus );
 
     httpParsingErrno = HPE_STRICT;
     returnStatus = HTTPClient_Send( &transportInterface,

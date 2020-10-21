@@ -86,6 +86,7 @@ https
 httpsecurityalertextraneousresponsedata
 httpsecurityalertinvalidchunkheader
 httpsecurityalertinvalidprotocolversion
+httpsecurityalertinvalidstatuscode
 httpsecurityalertresponseheaderssizelimitexceeded
 httpstatus
 httpsuccess

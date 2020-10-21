@@ -1430,9 +1430,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidProtocolVersion", str );
 
-    status = HTTP_SECURITY_ALERT_INVALID_STATUS_CODE;
+    status = HTTPSecurityAlertInvalidStatusCode;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_INVALID_STATUS_CODE", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidStatusCode", str );
 
     status = HTTP_SECURITY_ALERT_INVALID_CHARACTER;
     str = HTTPClient_strerror( status );
