@@ -498,7 +498,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  * @return One of the following:
  * - #HTTPSuccess
  * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
- * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
+ * - #HTTPSecurityAlertExtraneousResponseData
  * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
  * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
@@ -957,7 +957,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
         case HPE_CLOSED_CONNECTION:
             LogError( ( "Response parsing error: Data received past complete "
                         "response with \"Connection: close\" header present." ) );
-            returnStatus = HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA;
+            returnStatus = HTTPSecurityAlertExtraneousResponseData;
             break;
 
         case HPE_INVALID_CHUNK_SIZE:
@@ -2386,8 +2386,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPSecurityAlertResponseHeadersSizeLimitExceeded";
             break;
 
-        case HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA:
-            str = "HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA";
+        case HTTPSecurityAlertExtraneousResponseData:
+            str = "HTTPSecurityAlertExtraneousResponseData";
             break;
 
         case HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER:

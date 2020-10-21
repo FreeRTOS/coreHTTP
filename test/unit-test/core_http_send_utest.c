@@ -1523,7 +1523,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertExtraneousResponseData, returnStatus );
 
     httpParsingErrno = HPE_INVALID_VERSION;
     returnStatus = HTTPClient_Send( &transportInterface,

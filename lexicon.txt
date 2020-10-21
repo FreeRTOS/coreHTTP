@@ -84,6 +84,7 @@ httprequestinfo
 httpresponse
 https
 httpsecurityalertresponseheaderssizelimitexceeded
+httpsecurityalertextraneousresponsedata
 httpstatus
 httpsuccess
 ietf

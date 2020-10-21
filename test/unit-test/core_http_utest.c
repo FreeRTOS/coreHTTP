@@ -1418,9 +1418,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertResponseHeadersSizeLimitExceeded", str );
 
-    status = HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA;
+    status = HTTPSecurityAlertExtraneousResponseData;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertExtraneousResponseData", str );
 
     status = HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER;
     str = HTTPClient_strerror( status );

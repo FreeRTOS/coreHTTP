@@ -233,7 +233,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA,
+    HTTPSecurityAlertExtraneousResponseData,
 
     /**
      * @brief The server sent a chunk header containing an invalid character.
@@ -705,7 +705,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * The application should close the connection with the server if any of the
  * following errors are returned:
  * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
- * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
+ * - #HTTPSecurityAlertExtraneousResponseData
  * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
  * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
@@ -737,7 +737,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTP_PARSER_INTERNAL_ERROR (Internal parsing error.)\n\n
  * Security alerts are listed below, please see #HTTPStatus_t for more information:
  * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
- * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
+ * - #HTTPSecurityAlertExtraneousResponseData
  * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
  * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
