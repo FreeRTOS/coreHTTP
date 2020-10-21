@@ -74,7 +74,7 @@ HTTPRequestInfo_t * allocateHttpRequestInfo( HTTPRequestInfo_t * pRequestInfo )
     if( pRequestInfo != NULL )
     {
         __CPROVER_assume( pRequestInfo->methodLen < CBMC_MAX_OBJECT_SIZE );
-        pRequestInfo->method = mallocCanFail( pRequestInfo->methodLen );
+        pRequestInfo->pMethod = mallocCanFail( pRequestInfo->methodLen );
 
         __CPROVER_assume( pRequestInfo->hostLen < CBMC_MAX_OBJECT_SIZE );
         pRequestInfo->pHost = mallocCanFail( pRequestInfo->hostLen );
