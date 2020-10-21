@@ -164,7 +164,7 @@ typedef enum HTTPStatus
      * - #HTTPClient_Send
      * - #HTTPClient_ReadHeader
      */
-    HTTP_SUCCESS,
+    HTTPSuccess,
 
     /**
      * @brief The HTTP Client library function input an invalid parameter.
@@ -520,13 +520,13 @@ typedef struct HTTPResponse
  * @param[in] pRequestHeaders Request header buffer information.
  * @param[in] pRequestInfo Initial request header configurations.
  * @return One of the following:
- * - #HTTP_SUCCESS (If successful)
+ * - #HTTPSuccess (If successful)
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If provided buffer size is not large enough to hold headers.)
  *
  * **Example**
  * @code{c}
- * HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
+ * HTTPStatus_t httpLibraryStatus = HTTPSuccess;
  * // Declare an HTTPRequestHeaders_t and HTTPRequestInfo_t.
  * HTTPRequestHeaders_t requestHeaders = { 0 };
  * HTTPRequestInfo_t requestInfo = { 0 };
@@ -583,13 +583,13 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * @param[in] valueLen The byte length of the header field value.
  *
  * @return One of the following:
- * - #HTTP_SUCCESS (If successful.)
+ * - #HTTPSuccess (If successful.)
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If application-provided buffer is not large enough to hold headers.)
  *
  * **Example**
  * @code{c}
- * HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
+ * HTTPStatus_t httpLibraryStatus = HTTPSuccess;
  * // Assume that requestHeaders has already been initialized with
  * // HTTPClient_InitializeRequestHeaders().
  * HTTPRequestHeaders_t requestHeaders;
@@ -627,7 +627,7 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  *    Example request header line: `Range: bytes=0-1023\r\n` for requesting bytes in the range [0, 1023].<br>
  *    **Example**
  *    @code{c}
- *    HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
+ *    HTTPStatus_t httpLibraryStatus = HTTPSuccess;
  *    // Assume that requestHeaders has already been initialized with
  *    // HTTPClient_InitializeRequestHeaders().
  *    HTTPRequestHeaders_t requestHeaders;
@@ -643,7 +643,7 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  *    (or bytes in the range [512, 1023] for a 1KB sized file).<br>
  *    **Example**
  *    @code{c}
- *    HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
+ *    HTTPStatus_t httpLibraryStatus = HTTPSuccess;
  *    // Assume that requestHeaders has already been initialized with
  *    // HTTPClient_InitializeRequestHeaders().
  *    HTTPRequestHeaders_t requestHeaders;
@@ -660,7 +660,7 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  *    including byte 256 (or bytes in the range [256,1023] for a 1kB sized file).<br>
  *    **Example**
  *    @code{c}
- *    HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
+ *    HTTPStatus_t httpLibraryStatus = HTTPSuccess;
  *    // Assume that requestHeaders has already been initialized with
  *    // HTTPClient_InitializeRequestHeaders().
  *    HTTPRequestHeaders_t requestHeaders;
@@ -677,7 +677,7 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * should be passed.
  *
  * @return Returns the following status codes:
- * #HTTP_SUCCESS if successful.
+ * #HTTPSuccess if successful.
  * #HTTP_INVALID_PARAMETER, if input parameters are invalid, including when
  * the @p rangeStartOrlastNbytes and @p rangeEnd parameter combination is invalid.
  * #HTTP_INSUFFICIENT_MEMORY, if the passed #HTTPRequestHeaders_t.pBuffer
@@ -712,7 +712,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
  *
- * The @p pResponse returned is valid only if this function returns HTTP_SUCCESS.
+ * The @p pResponse returned is valid only if this function returns HTTPSuccess.
  *
  * @param[in] pTransport Transport interface, see #TransportInterface_t for
  * more information.
@@ -727,7 +727,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * see @ref http_send_flags for more information.
  *
  * @return One of the following:
- * - #HTTP_SUCCESS (If successful.)
+ * - #HTTPSuccess (If successful.)
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_NETWORK_ERROR (Errors in sending or receiving over the transport interface.)
  * - #HTTP_PARTIAL_RESPONSE (Part of an HTTP response was received in a partially filled response buffer.)
@@ -747,7 +747,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * **Example**
  * @code{c}
  * // Variables used in this example.
- * HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
+ * HTTPStatus_t httpLibraryStatus = HTTPSuccess;
  * TransportInterface_t transportInterface = { 0 };
  * HTTPResponse_t = { 0 };
  * char requestBody[] = "This is an example request body.";
@@ -775,7 +775,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  *                                      &response,
  *                                      0 );
  *
- * if( httpLibraryStatus == HTTP_SUCCESS )
+ * if( httpLibraryStatus == HTTPSuccess )
  * {
  *     if( response.status == 200 )
  *     {
@@ -811,7 +811,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * header value in bytes.
  *
  * @return One of the following:
- * - #HTTP_SUCCESS (If successful.)
+ * - #HTTPSuccess (If successful.)
  * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
  * - #HTTP_HEADER_NOT_FOUND (Header is not found in the passed response buffer.)
  * - #HTTP_INVALID_RESPONSE (Provided response is not a valid HTTP response for parsing.)
@@ -819,7 +819,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  *
  * **Example**
  * @code{c}
- * HTTPStatus_t httpLibraryStatus = HTTP_SUCCESS;
+ * HTTPStatus_t httpLibraryStatus = HTTPSuccess;
  * // Assume that response is returned from a successful invocation of
  * // HTTPClient_Send().
  * HTTPResponse_t response;

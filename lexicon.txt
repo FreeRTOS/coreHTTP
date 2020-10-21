@@ -79,6 +79,7 @@ httprequestinfo
 httpresponse
 https
 httpstatus
+httpsuccess
 ietf
 ifndef
 inc
