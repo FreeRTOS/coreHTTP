@@ -1422,9 +1422,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertExtraneousResponseData", str );
 
-    status = HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER;
+    status = HTTPSecurityAlertInvalidChunkHeader;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidChunkHeader", str );
 
     status = HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION;
     str = HTTPClient_strerror( status );

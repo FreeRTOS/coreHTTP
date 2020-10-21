@@ -1514,7 +1514,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidChunkHeader, returnStatus );
 
     httpParsingErrno = HPE_CLOSED_CONNECTION;
     returnStatus = HTTPClient_Send( &transportInterface,

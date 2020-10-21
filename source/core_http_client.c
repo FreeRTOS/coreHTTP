@@ -499,7 +499,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  * - #HTTPSuccess
  * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTPSecurityAlertExtraneousResponseData
- * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
+ * - #HTTPSecurityAlertInvalidChunkHeader
  * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
@@ -966,7 +966,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
              * character and location. */
             LogError( ( "Response parsing error: Invalid character found in "
                         "chunk header." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER;
+            returnStatus = HTTPSecurityAlertInvalidChunkHeader;
             break;
 
         case HPE_INVALID_VERSION:
@@ -2390,8 +2390,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPSecurityAlertExtraneousResponseData";
             break;
 
-        case HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER:
-            str = "HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER";
+        case HTTPSecurityAlertInvalidChunkHeader:
+            str = "HTTPSecurityAlertInvalidChunkHeader";
             break;
 
         case HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION:

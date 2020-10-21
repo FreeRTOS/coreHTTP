@@ -241,7 +241,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER,
+    HTTPSecurityAlertInvalidChunkHeader,
 
     /**
      * @brief The server sent a response with an invalid character in the
@@ -706,7 +706,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * following errors are returned:
  * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTPSecurityAlertExtraneousResponseData
- * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
+ * - #HTTPSecurityAlertInvalidChunkHeader
  * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
@@ -738,7 +738,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * Security alerts are listed below, please see #HTTPStatus_t for more information:
  * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTPSecurityAlertExtraneousResponseData
- * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
+ * - #HTTPSecurityAlertInvalidChunkHeader
  * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
