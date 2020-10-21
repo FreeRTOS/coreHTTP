@@ -250,7 +250,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION,
+    HTTPSecurityAlertInvalidProtocolVersion,
 
     /**
      * @brief The server sent a response with an invalid character in the
@@ -677,7 +677,7 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * should be passed.
  *
  * @return Returns the following status codes:
- * #HTTPSuccess if successful.
+ * #HTTPSuccess, if successful.
  * #HTTPInvalidParameter, if input parameters are invalid, including when
  * the @p rangeStartOrlastNbytes and @p rangeEnd parameter combination is invalid.
  * #HTTPInsufficientMemory, if the passed #HTTPRequestHeaders_t.pBuffer
@@ -707,7 +707,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTPSecurityAlertExtraneousResponseData
  * - #HTTPSecurityAlertInvalidChunkHeader
- * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
+ * - #HTTPSecurityAlertInvalidProtocolVersion
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
@@ -739,7 +739,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTPSecurityAlertExtraneousResponseData
  * - #HTTPSecurityAlertInvalidChunkHeader
- * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
+ * - #HTTPSecurityAlertInvalidProtocolVersion
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH

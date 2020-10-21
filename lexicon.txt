@@ -83,9 +83,10 @@ httprequestheaders
 httprequestinfo
 httpresponse
 https
-httpsecurityalertresponseheaderssizelimitexceeded
 httpsecurityalertextraneousresponsedata
 httpsecurityalertinvalidchunkheader
+httpsecurityalertinvalidprotocolversion
+httpsecurityalertresponseheaderssizelimitexceeded
 httpstatus
 httpsuccess
 ietf

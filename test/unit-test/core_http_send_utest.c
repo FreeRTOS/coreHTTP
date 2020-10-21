@@ -1532,7 +1532,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidProtocolVersion, returnStatus );
 
     httpParsingErrno = HPE_INVALID_STATUS;
     returnStatus = HTTPClient_Send( &transportInterface,

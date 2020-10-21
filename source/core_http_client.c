@@ -500,7 +500,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTPSecurityAlertExtraneousResponseData
  * - #HTTPSecurityAlertInvalidChunkHeader
- * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
+ * - #HTTPSecurityAlertInvalidProtocolVersion
  * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
  * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
@@ -975,7 +975,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
              * character and location. */
             LogError( ( "Response parsing error: Invalid character found in "
                         "HTTP protocol version." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION;
+            returnStatus = HTTPSecurityAlertInvalidProtocolVersion;
             break;
 
         case HPE_INVALID_STATUS:
@@ -2394,8 +2394,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPSecurityAlertInvalidChunkHeader";
             break;
 
-        case HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION:
-            str = "HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION";
+        case HTTPSecurityAlertInvalidProtocolVersion:
+            str = "HTTPSecurityAlertInvalidProtocolVersion";
             break;
 
         case HTTP_SECURITY_ALERT_INVALID_STATUS_CODE:
