@@ -67,6 +67,7 @@ httpnetworkerror
 httpnoresponse
 httpparseonstatusfieldcallback
 httpparser
+httpparserinternalerror
 httpparseronbodycallback
 httpparseronheaderfieldcallback
 httpparseronheaderscompletecallback

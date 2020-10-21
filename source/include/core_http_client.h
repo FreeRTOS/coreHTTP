@@ -286,7 +286,7 @@ typedef enum HTTPStatus
      * - #HTTPClient_Send
      * - #HTTPClient_ReadHeader
      */
-    HTTP_PARSER_INTERNAL_ERROR,
+    HTTPParserInternalError,
 
     /**
      * @brief The requested header field was not found in the response buffer.
@@ -734,7 +734,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPNoResponse (No data was received from the transport interface.)
  * - #HTTPInsufficientMemory (The response received could not fit into the response buffer
  * or extra headers could not be sent in the request.)
- * - #HTTP_PARSER_INTERNAL_ERROR (Internal parsing error.)\n\n
+ * - #HTTPParserInternalError (Internal parsing error.)\n\n
  * Security alerts are listed below, please see #HTTPStatus_t for more information:
  * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTPSecurityAlertExtraneousResponseData
@@ -815,7 +815,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
  * - #HTTP_HEADER_NOT_FOUND (Header is not found in the passed response buffer.)
  * - #HTTP_INVALID_RESPONSE (Provided response is not a valid HTTP response for parsing.)
- * - #HTTP_PARSER_INTERNAL_ERROR(If an error in the response parser.)
+ * - #HTTPParserInternalError(If an error in the response parser.)
  *
  * **Example**
  * @code{c}

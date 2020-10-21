@@ -1348,7 +1348,7 @@ void test_Http_ReadHeader_With_HttpParser_Internal_Error()
                                      HEADER_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_PARSER_INTERNAL_ERROR, retCode );
+    TEST_ASSERT_EQUAL( HTTPParserInternalError, retCode );
 }
 
 /**
@@ -1442,9 +1442,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidContentLength", str );
 
-    status = HTTP_PARSER_INTERNAL_ERROR;
+    status = HTTPParserInternalError;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_PARSER_INTERNAL_ERROR", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPParserInternalError", str );
 
     status = HTTP_HEADER_NOT_FOUND;
     str = HTTPClient_strerror( status );

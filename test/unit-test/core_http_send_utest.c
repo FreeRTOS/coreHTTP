@@ -1604,5 +1604,5 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_PARSER_INTERNAL_ERROR, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPParserInternalError, returnStatus );
 }

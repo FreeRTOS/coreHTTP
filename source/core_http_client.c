@@ -231,7 +231,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPSuccess when header is found in the response.
  * - #HTTP_HEADER_NOT_FOUND if requested header is not found in response.
  * - #HTTP_INVALID_RESPONSE if passed response is invalid for parsing.
- * - #HTTP_PARSER_INTERNAL_ERROR for any parsing errors.
+ * - #HTTPParserInternalError for any parsing errors.
  */
 static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                                           size_t bufferLen,
@@ -504,7 +504,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  * - #HTTPSecurityAlertInvalidStatusCode
  * - #HTTPSecurityAlertInvalidCharacter
  * - #HTTPSecurityAlertInvalidContentLength
- * - #HTTP_PARSER_INTERNAL_ERROR
+ * - #HTTPParserInternalError
  */
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
 
@@ -1028,7 +1028,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
          * third-party parsing library if found. */
         default:
             LogError( ( "Error in third-party http-parser library." ) );
-            returnStatus = HTTP_PARSER_INTERNAL_ERROR;
+            returnStatus = HTTPParserInternalError;
             break;
     }
 
@@ -2263,7 +2263,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
         LogError( ( "Header found in response but http-parser returned error: "
                     "ParserError=%s",
                     http_errno_description( HTTP_PARSER_ERRNO( &( parser ) ) ) ) );
-        returnStatus = HTTP_PARSER_INTERNAL_ERROR;
+        returnStatus = HTTPParserInternalError;
     }
 
     /* If header was not found, then the "on_header_complete" callback is
@@ -2410,8 +2410,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPSecurityAlertInvalidContentLength";
             break;
 
-        case HTTP_PARSER_INTERNAL_ERROR:
-            str = "HTTP_PARSER_INTERNAL_ERROR";
+        case HTTPParserInternalError:
+            str = "HTTPParserInternalError";
             break;
 
         case HTTP_HEADER_NOT_FOUND:
