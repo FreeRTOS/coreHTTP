@@ -84,6 +84,7 @@ httprequestinfo
 httpresponse
 https
 httpsecurityalertextraneousresponsedata
+httpsecurityalertinvalidcharacter
 httpsecurityalertinvalidchunkheader
 httpsecurityalertinvalidprotocolversion
 httpsecurityalertinvalidstatuscode

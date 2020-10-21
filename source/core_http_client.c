@@ -502,7 +502,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  * - #HTTPSecurityAlertInvalidChunkHeader
  * - #HTTPSecurityAlertInvalidProtocolVersion
  * - #HTTPSecurityAlertInvalidStatusCode
- * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
+ * - #HTTPSecurityAlertInvalidCharacter
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
  * - #HTTP_PARSER_INTERNAL_ERROR
  */
@@ -991,13 +991,13 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
         case HPE_INVALID_CONSTANT:
             LogError( ( "Response parsing error: Invalid character found in "
                         "Status-Line or header delimiters." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CHARACTER;
+            returnStatus = HTTPSecurityAlertInvalidCharacter;
             break;
 
         case HPE_LF_EXPECTED:
             LogError( ( "Response parsing error: Expected line-feed in header "
                         "not found." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CHARACTER;
+            returnStatus = HTTPSecurityAlertInvalidCharacter;
             break;
 
         case HPE_INVALID_HEADER_TOKEN:
@@ -1006,7 +1006,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
              * character and location. */
             LogError( ( "Response parsing error: Invalid character found in "
                         "headers." ) );
-            returnStatus = HTTP_SECURITY_ALERT_INVALID_CHARACTER;
+            returnStatus = HTTPSecurityAlertInvalidCharacter;
             break;
 
         case HPE_INVALID_CONTENT_LENGTH:
@@ -2402,8 +2402,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPSecurityAlertInvalidStatusCode";
             break;
 
-        case HTTP_SECURITY_ALERT_INVALID_CHARACTER:
-            str = "HTTP_SECURITY_ALERT_INVALID_CHARACTER";
+        case HTTPSecurityAlertInvalidCharacter:
+            str = "HTTPSecurityAlertInvalidCharacter";
             break;
 
         case HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH:

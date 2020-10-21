@@ -1550,7 +1550,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CHARACTER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, returnStatus );
 
     httpParsingErrno = HPE_INVALID_CONSTANT;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1559,7 +1559,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CHARACTER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, returnStatus );
 
     httpParsingErrno = HPE_LF_EXPECTED;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1568,7 +1568,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CHARACTER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, returnStatus );
 
     httpParsingErrno = HPE_INVALID_HEADER_TOKEN;
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1577,7 +1577,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_INVALID_CHARACTER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, returnStatus );
 
     httpParsingErrno = HPE_INVALID_CONTENT_LENGTH;
     returnStatus = HTTPClient_Send( &transportInterface,

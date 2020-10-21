@@ -267,7 +267,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_INVALID_CHARACTER,
+    HTTPSecurityAlertInvalidCharacter,
 
     /**
      * @brief The response contains either an invalid character in the
@@ -709,7 +709,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPSecurityAlertInvalidChunkHeader
  * - #HTTPSecurityAlertInvalidProtocolVersion
  * - #HTTPSecurityAlertInvalidStatusCode
- * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
+ * - #HTTPSecurityAlertInvalidCharacter
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
  *
  * The @p pResponse returned is valid only if this function returns HTTPSuccess.
@@ -741,7 +741,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPSecurityAlertInvalidChunkHeader
  * - #HTTPSecurityAlertInvalidProtocolVersion
  * - #HTTPSecurityAlertInvalidStatusCode
- * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
+ * - #HTTPSecurityAlertInvalidCharacter
  * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
  *
  * **Example**

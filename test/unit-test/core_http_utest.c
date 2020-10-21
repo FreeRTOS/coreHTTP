@@ -1434,9 +1434,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidStatusCode", str );
 
-    status = HTTP_SECURITY_ALERT_INVALID_CHARACTER;
+    status = HTTPSecurityAlertInvalidCharacter;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_SECURITY_ALERT_INVALID_CHARACTER", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidCharacter", str );
 
     status = HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH;
     str = HTTPClient_strerror( status );
