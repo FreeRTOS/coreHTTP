@@ -1505,7 +1505,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertResponseHeadersSizeLimitExceeded, returnStatus );
 
     httpParsingErrno = HPE_INVALID_CHUNK_SIZE;
     returnStatus = HTTPClient_Send( &transportInterface,

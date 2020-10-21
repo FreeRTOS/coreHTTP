@@ -224,7 +224,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED,
+    HTTPSecurityAlertResponseHeadersSizeLimitExceeded,
 
     /**
      * @brief A response contained the "Connection: close" header, but there
@@ -704,7 +704,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  *
  * The application should close the connection with the server if any of the
  * following errors are returned:
- * - #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED
+ * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
  * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
  * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
@@ -736,7 +736,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * or extra headers could not be sent in the request.)
  * - #HTTP_PARSER_INTERNAL_ERROR (Internal parsing error.)\n\n
  * Security alerts are listed below, please see #HTTPStatus_t for more information:
- * - #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED
+ * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
  * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
  * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION

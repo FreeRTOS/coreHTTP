@@ -83,6 +83,7 @@ httprequestheaders
 httprequestinfo
 httpresponse
 https
+httpsecurityalertresponseheaderssizelimitexceeded
 httpstatus
 httpsuccess
 ietf

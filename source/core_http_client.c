@@ -497,7 +497,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  *
  * @return One of the following:
  * - #HTTPSuccess
- * - #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED
+ * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
  * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
  * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
@@ -951,7 +951,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
             LogError( ( "Response parsing error: Header byte limit "
                         "exceeded: HeaderByteLimit=%d",
                         HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES ) );
-            returnStatus = HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED;
+            returnStatus = HTTPSecurityAlertResponseHeadersSizeLimitExceeded;
             break;
 
         case HPE_CLOSED_CONNECTION:
@@ -2382,8 +2382,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPInsufficientMemory";
             break;
 
-        case HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED:
-            str = "HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED";
+        case HTTPSecurityAlertResponseHeadersSizeLimitExceeded:
+            str = "HTTPSecurityAlertResponseHeadersSizeLimitExceeded";
             break;
 
         case HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA:
