@@ -1273,7 +1273,7 @@ void test_HTTPClient_Send_null_transport_interface( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1291,7 +1291,7 @@ void test_HTTPClient_Send_null_transport_send( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1309,7 +1309,7 @@ void test_HTTPClient_Send_null_transport_recv( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1326,7 +1326,7 @@ void test_HTTPClient_Send_null_request_headers( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1344,7 +1344,7 @@ void test_HTTPClient_Send_null_request_header_buffer( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1362,7 +1362,7 @@ void test_HTTPClient_Send_request_headers_gt_buffer( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1380,7 +1380,7 @@ void test_HTTPClient_Send_null_response_buffer( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1401,7 +1401,7 @@ void test_HTTPClient_Send_request_body_buffer_length_gt_max( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1419,7 +1419,7 @@ void test_HTTPClient_Send_not_enough_request_headers( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1441,7 +1441,7 @@ void test_HTTPClient_Send_headers_length_gt_max( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1458,7 +1458,7 @@ void test_HTTPClient_Send_null_request_body_nonzero_body_length( void )
                                     1,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/

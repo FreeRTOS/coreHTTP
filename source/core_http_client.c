@@ -315,7 +315,7 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
  *
  * @return One of the following:
  * - #HTTPSuccess
- * - #HTTP_INVALID_PARAMETER
+ * - #HTTPInvalidParameter
  * - Please see #processHttpParserError for parsing errors returned.
  */
 static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
@@ -1395,37 +1395,37 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
     if( pRequestHeaders == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo == NULL )
     {
         LogError( ( "Parameter check failed: pRequestInfo is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo->method == NULL )
     {
         LogError( ( "Parameter check failed: pRequestInfo->method is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo->pHost == NULL )
     {
         LogError( ( "Parameter check failed: pRequestInfo->pHost is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo->methodLen == 0u )
     {
         LogError( ( "Parameter check failed: pRequestInfo->methodLen must be greater than 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo->hostLen == 0u )
     {
         LogError( ( "Parameter check failed: pRequestInfo->hostLen must be greater than 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else
     {
@@ -1495,37 +1495,37 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
     if( pRequestHeaders == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pField == NULL )
     {
         LogError( ( "Parameter check failed: pField is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pValue == NULL )
     {
         LogError( ( "Parameter check failed: pValue is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( fieldLen == 0u )
     {
         LogError( ( "Parameter check failed: fieldLen must be greater than 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( valueLen == 0u )
     {
         LogError( ( "Parameter check failed: valueLen must be greater than 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->headersLen > pRequestHeaders->bufferLen )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->headersLen > pRequestHeaders->bufferLen." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else
     {
@@ -1552,23 +1552,23 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     if( pRequestHeaders == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->headersLen > pRequestHeaders->bufferLen )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->headersLen > pRequestHeaders->bufferLen." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( rangeEnd < HTTP_RANGE_REQUEST_END_OF_FILE )
     {
         LogError( ( "Parameter check failed: rangeEnd is invalid: "
                     "rangeEnd should be >=-1: RangeEnd=%d", rangeEnd ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( ( rangeStartOrlastNbytes < 0 ) &&
              ( rangeEnd != HTTP_RANGE_REQUEST_END_OF_FILE ) )
@@ -1577,7 +1577,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                     "rangeEnd should be -1 when rangeStart < 0: "
                     "RangeStart=%d, RangeEnd=%d",
                     rangeStartOrlastNbytes, rangeEnd ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( ( rangeEnd != HTTP_RANGE_REQUEST_END_OF_FILE ) &&
              ( rangeStartOrlastNbytes > rangeEnd ) )
@@ -1586,7 +1586,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                     "rangeStart should be < rangeEnd when both are >= 0: "
                     "RangeStart=%d, RangeEnd=%d",
                     rangeStartOrlastNbytes, rangeEnd ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( rangeStartOrlastNbytes == INT32_MIN )
     {
@@ -1594,7 +1594,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                     "rangeStart should be > -2147483648 (INT32_MIN): "
                     "RangeStart=%d",
                     rangeStartOrlastNbytes ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else
     {
@@ -1726,7 +1726,7 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
         {
             LogError( ( "Parameter check failed: pRequestHeaders->headersLen > "
                         "2147483647 (INT32_MAX)." ) );
-            returnStatus = HTTP_INVALID_PARAMETER;
+            returnStatus = HTTPInvalidParameter;
         }
         else
         {
@@ -1949,27 +1949,27 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
     if( pTransport == NULL )
     {
         LogError( ( "Parameter check failed: pTransport interface is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pTransport->send == NULL )
     {
         LogError( ( "Parameter check failed: pTransport->send is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pTransport->recv == NULL )
     {
         LogError( ( "Parameter check failed: pTransport->recv is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->headersLen < HTTP_MINIMUM_REQUEST_LINE_LENGTH )
     {
@@ -1978,24 +1978,24 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                     "MinimumRequiredLength=%u, HeadersLength =%lu",
                     HTTP_MINIMUM_REQUEST_LINE_LENGTH,
                     ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->headersLen > pRequestHeaders->bufferLen )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->headersLen > "
                     "pRequestHeaders->bufferLen." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( ( pResponse != NULL ) && ( pResponse->pBuffer == NULL ) )
     {
         LogError( ( "Parameter check failed: pResponse->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen > 0u ) )
     {
         LogError( ( "Parameter check failed: pRequestBodyBuf is NULL, but "
                     "reqBodyBufLen is greater than zero." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( reqBodyBufLen > INT32_MAX )
     {
@@ -2003,7 +2003,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
          * reqBodyBufLen to create a Content-Length header value string. */
         LogError( ( "Parameter check failed: reqBodyBufLen > "
                     "2147483647 (INT32_MAX)." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else
     {
@@ -2298,39 +2298,39 @@ HTTPStatus_t HTTPClient_ReadHeader( const HTTPResponse_t * pResponse,
     if( pResponse == NULL )
     {
         LogError( ( "Parameter check failed: pResponse is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pResponse->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pResponse->pBuffer is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pResponse->bufferLen == 0u )
     {
         LogError( ( "Parameter check failed: pResponse->bufferLen is 0: "
                     "Buffer len should be > 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pField == NULL )
     {
         LogError( ( "Parameter check failed: Input header name is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( fieldLen == 0u )
     {
         LogError( ( "Parameter check failed: Input header name length is 0: "
                     "fieldLen should be > 0." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pValueLoc == NULL )
     {
         LogError( ( "Parameter check failed: Output parameter for header value location is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else if( pValueLen == NULL )
     {
         LogError( ( "Parameter check failed: Output parameter for header value length is NULL." ) );
-        returnStatus = HTTP_INVALID_PARAMETER;
+        returnStatus = HTTPInvalidParameter;
     }
     else
     {
@@ -2362,8 +2362,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPSuccess";
             break;
 
-        case HTTP_INVALID_PARAMETER:
-            str = "HTTP_INVALID_PARAMETER";
+        case HTTPInvalidParameter:
+            str = "HTTPInvalidParameter";
             break;
 
         case HTTP_NETWORK_ERROR:

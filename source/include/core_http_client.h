@@ -176,7 +176,7 @@ typedef enum HTTPStatus
      * - #HTTPClient_Send
      * - #HTTPClient_ReadHeader
      */
-    HTTP_INVALID_PARAMETER,
+    HTTPInvalidParameter,
 
     /**
      * @brief A network error was returned from the transport interface.
@@ -521,7 +521,7 @@ typedef struct HTTPResponse
  * @param[in] pRequestInfo Initial request header configurations.
  * @return One of the following:
  * - #HTTPSuccess (If successful)
- * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
+ * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If provided buffer size is not large enough to hold headers.)
  *
  * **Example**
@@ -584,7 +584,7 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  *
  * @return One of the following:
  * - #HTTPSuccess (If successful.)
- * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
+ * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
  * - #HTTP_INSUFFICIENT_MEMORY (If application-provided buffer is not large enough to hold headers.)
  *
  * **Example**
@@ -678,7 +678,7 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  *
  * @return Returns the following status codes:
  * #HTTPSuccess if successful.
- * #HTTP_INVALID_PARAMETER, if input parameters are invalid, including when
+ * #HTTPInvalidParameter, if input parameters are invalid, including when
  * the @p rangeStartOrlastNbytes and @p rangeEnd parameter combination is invalid.
  * #HTTP_INSUFFICIENT_MEMORY, if the passed #HTTPRequestHeaders_t.pBuffer
  * contains insufficient remaining memory for storing the range request.
@@ -728,7 +728,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  *
  * @return One of the following:
  * - #HTTPSuccess (If successful.)
- * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
+ * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
  * - #HTTP_NETWORK_ERROR (Errors in sending or receiving over the transport interface.)
  * - #HTTP_PARTIAL_RESPONSE (Part of an HTTP response was received in a partially filled response buffer.)
  * - #HTTP_NO_RESPONSE (No data was received from the transport interface.)
@@ -812,7 +812,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  *
  * @return One of the following:
  * - #HTTPSuccess (If successful.)
- * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
+ * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
  * - #HTTP_HEADER_NOT_FOUND (Header is not found in the passed response buffer.)
  * - #HTTP_INVALID_RESPONSE (Provided response is not a valid HTTP response for parsing.)
  * - #HTTP_PARSER_INTERNAL_ERROR(If an error in the response parser.)

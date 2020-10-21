@@ -458,36 +458,36 @@ void test_Http_InitializeRequestHeaders_Invalid_Params()
 
     /* Test NULL parameters, following order of else-if blocks. */
     httpStatus = HTTPClient_InitializeRequestHeaders( NULL, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* TEST requestInfo.pBuffer == NULL */
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
     requestHeaders.pBuffer = testBuffer;
     requestHeaders.bufferLen = HTTP_TEST_INITIALIZED_HEADER_BUFFER_LEN;
 
     /* Test requestInfo == NULL. */
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, NULL );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test requestInfo.method == NULL. */
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
     requestInfo.method = HTTP_METHOD_GET;
 
     /* Test requestInfo.pHost == NULL. */
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test requestInfo.methodLen == 0. */
     requestInfo.pHost = HTTP_TEST_HOST_VALUE;
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test requestInfo.hostLen == 0. */
     requestInfo.methodLen = HTTP_METHOD_GET_LEN;
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 }
 
 /**
@@ -640,14 +640,14 @@ void test_Http_AddHeader_Invalid_Params()
     httpStatus = HTTPClient_AddHeader( NULL,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test a NULL pBuffer member of request headers. */
     requestHeaders.pBuffer = NULL;
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test NULL header field. */
     requestHeaders.pBuffer = testBuffer;
@@ -655,32 +655,32 @@ void test_Http_AddHeader_Invalid_Params()
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        NULL, HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test NULL header value. */
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        NULL, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test that fieldLen > 0. */
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, 0,
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test that valueLen > 0. */
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE, 0 );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
     /* Test that requestHeaders.headersLen <= requestHeaders.bufferLen. */
     requestHeaders.headersLen = requestHeaders.bufferLen + 1;
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 }
 
 /**
@@ -818,14 +818,14 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( NULL,
                                          0 /* rangeStart */,
                                          0 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Underlying buffer is NULL in request headers. */
     tearDown();
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          0 /* rangeStart */,
                                          0 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Request Header Size is zero. */
     tearDown();
@@ -845,7 +845,7 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          0 /* rangeStart */,
                                          10 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Test incorrect combinations of rangeStart and rangeEnd. */
 
@@ -855,7 +855,7 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          10 /* rangeStart */,
                                          5 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* rangeStart == INT32_MIN */
     tearDown();
@@ -863,7 +863,7 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          INT32_MIN /* rangeStart */,
                                          HTTP_RANGE_REQUEST_END_OF_FILE /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* rangeStart is negative but rangeStart is non-End of File. */
     tearDown();
@@ -871,13 +871,13 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          -10 /* rangeStart */,
                                          HTTP_RANGE_REQUEST_END_OF_FILE + 1 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
     tearDown();
     testHeaders.pBuffer = &testBuffer[ 0 ];
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          -50 /* rangeStart */,
                                          -10 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 }
 
 /**
@@ -1132,7 +1132,7 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      HEADER_INVALID_PARAMS_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Underlying buffer is NULL in the response parameter. */
     tearDown();
@@ -1142,7 +1142,7 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      HEADER_INVALID_PARAMS_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Response buffer size is zero. */
     tearDown();
@@ -1152,7 +1152,7 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      HEADER_INVALID_PARAMS_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Header field name is NULL. */
     tearDown();
@@ -1161,7 +1161,7 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      HEADER_INVALID_PARAMS_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Header field length is 0. */
     tearDown();
@@ -1170,7 +1170,7 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      0u,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 
     /* Invalid output parameters. */
     tearDown();
@@ -1179,14 +1179,14 @@ void test_Http_ReadHeader_Invalid_Params( void )
                                      HEADER_INVALID_PARAMS_LEN,
                                      NULL,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
     tearDown();
     retCode = HTTPClient_ReadHeader( &testResponse,
                                      HEADER_INVALID_PARAMS,
                                      HEADER_INVALID_PARAMS_LEN,
                                      &pValueLoc,
                                      NULL );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_PARAMETER, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, retCode );
 }
 
 /**
@@ -1394,9 +1394,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPSuccess", str );
 
-    status = HTTP_INVALID_PARAMETER;
+    status = HTTPInvalidParameter;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_INVALID_PARAMETER", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPInvalidParameter", str );
 
     status = HTTP_NETWORK_ERROR;
     str = HTTPClient_strerror( status );

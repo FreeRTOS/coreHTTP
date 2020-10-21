@@ -60,6 +60,7 @@ hpe
 html
 http
 httpclient
+httpinvalidparameter
 httplibrarystatus
 httpparseonstatusfieldcallback
 httpparser
