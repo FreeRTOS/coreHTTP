@@ -1402,9 +1402,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPNetworkError", str );
 
-    status = HTTP_PARTIAL_RESPONSE;
+    status = HTTPPartialResponse;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_PARTIAL_RESPONSE", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPPartialResponse", str );
 
     status = HTTP_NO_RESPONSE;
     str = HTTPClient_strerror( status );

@@ -192,7 +192,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_PARTIAL_RESPONSE,
+    HTTPPartialResponse,
 
     /**
      * @brief No HTTP response was received from the network.
@@ -730,7 +730,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPSuccess (If successful.)
  * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
  * - #HTTPNetworkError (Errors in sending or receiving over the transport interface.)
- * - #HTTP_PARTIAL_RESPONSE (Part of an HTTP response was received in a partially filled response buffer.)
+ * - #HTTPPartialResponse (Part of an HTTP response was received in a partially filled response buffer.)
  * - #HTTP_NO_RESPONSE (No data was received from the transport interface.)
  * - #HTTP_INSUFFICIENT_MEMORY (The response received could not fit into the response buffer
  * or extra headers could not be sent in the request.)

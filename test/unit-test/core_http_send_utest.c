@@ -1066,7 +1066,7 @@ void test_HTTPClient_Send_timeout_partial_response( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_PARTIAL_RESPONSE, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPPartialResponse, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
