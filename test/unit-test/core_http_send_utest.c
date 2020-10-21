@@ -1135,7 +1135,7 @@ void test_HTTPClient_Send_network_error_request_headers( void )
                                     0U,
                                     &response,
                                     0U );
-    TEST_ASSERT_EQUAL( HTTP_NETWORK_ERROR, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPNetworkError, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1160,7 +1160,7 @@ void test_HTTPClient_Send_network_error_request_body( void )
                                     &response,
                                     HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG );
 
-    TEST_ASSERT_EQUAL( HTTP_NETWORK_ERROR, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPNetworkError, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1256,7 +1256,7 @@ void test_HTTPClient_Send_network_error_response( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_NETWORK_ERROR, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPNetworkError, returnStatus );
 }
 
 /*-----------------------------------------------------------*/

@@ -62,6 +62,7 @@ http
 httpclient
 httpinvalidparameter
 httplibrarystatus
+httpnetworkerror
 httpparseonstatusfieldcallback
 httpparser
 httpparseronbodycallback

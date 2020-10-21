@@ -41,7 +41,7 @@
  * @param[in] dataLen HTTP request data length.
  *
  * @return #HTTPSuccess if successful. If there was a network error or less
- * bytes than what were specified were sent, then #HTTP_NETWORK_ERROR is
+ * bytes than what were specified were sent, then #HTTPNetworkError is
  * returned.
  */
 static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
@@ -59,7 +59,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
  * @param[in] sendFlags Application provided flags to #HTTPClient_Send.
  *
  * @return #HTTPSuccess if successful. If there was a network error or less
- * bytes than what were specified were sent, then #HTTP_NETWORK_ERROR is
+ * bytes than what were specified were sent, then #HTTPNetworkError is
  * returned.
  */
 static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
@@ -88,7 +88,7 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
  * @param[in] reqBodyBufLen Length of the request body buffer.
  *
  * @return #HTTPSuccess if successful. If there was a network error or less
- * bytes than what was specified were sent, then #HTTP_NETWORK_ERROR is
+ * bytes than what was specified were sent, then #HTTPNetworkError is
  * returned.
  */
 static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
@@ -142,7 +142,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * @param[out] pBytesReceived Bytes received from the transport interface.
  *
  * @return Returns #HTTPSuccess if successful. If there was a network error or
- * more bytes than what was specified were read, then #HTTP_NETWORK_ERROR is
+ * more bytes than what was specified were read, then #HTTPNetworkError is
  * returned.
  */
 static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
@@ -1622,7 +1622,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
     assert( pData != NULL );
 
     /* Loop until all data is sent. */
-    while( ( bytesRemaining > 0UL ) && ( returnStatus != HTTP_NETWORK_ERROR ) )
+    while( ( bytesRemaining > 0UL ) && ( returnStatus != HTTPNetworkError ) )
     {
         transportStatus = pTransport->send( pTransport->pNetworkContext,
                                             pIndex,
@@ -1634,7 +1634,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
             LogError( ( "Failed to send HTTP data: Transport send()"
                         " returned error: TransportStatus=%d",
                         transportStatus ) );
-            returnStatus = HTTP_NETWORK_ERROR;
+            returnStatus = HTTPNetworkError;
         }
         else
         {
@@ -1784,7 +1784,7 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
         LogError( ( "Failed to receive HTTP data: Transport recv() "
                     "returned error: TransportStatus=%d",
                     transportStatus ) );
-        returnStatus = HTTP_NETWORK_ERROR;
+        returnStatus = HTTPNetworkError;
     }
     else if( transportStatus > 0 )
     {
@@ -2366,8 +2366,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPInvalidParameter";
             break;
 
-        case HTTP_NETWORK_ERROR:
-            str = "HTTP_NETWORK_ERROR";
+        case HTTPNetworkError:
+            str = "HTTPNetworkError";
             break;
 
         case HTTP_PARTIAL_RESPONSE:

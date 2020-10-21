@@ -1398,9 +1398,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPInvalidParameter", str );
 
-    status = HTTP_NETWORK_ERROR;
+    status = HTTPNetworkError;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_NETWORK_ERROR", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPNetworkError", str );
 
     status = HTTP_PARTIAL_RESPONSE;
     str = HTTPClient_strerror( status );
