@@ -303,7 +303,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_ReadHeader
      */
-    HTTP_INVALID_RESPONSE
+    HTTPInvalidResponse
 } HTTPStatus_t;
 
 /**
@@ -814,7 +814,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * - #HTTPSuccess (If successful.)
  * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
  * - #HTTPHeaderNotFound (Header is not found in the passed response buffer.)
- * - #HTTP_INVALID_RESPONSE (Provided response is not a valid HTTP response for parsing.)
+ * - #HTTPInvalidResponse (Provided response is not a valid HTTP response for parsing.)
  * - #HTTPParserInternalError(If an error in the response parser.)
  *
  * **Example**

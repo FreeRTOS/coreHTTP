@@ -1284,7 +1284,7 @@ void test_Http_ReadHeader_Invalid_Response_Only_Header_Field_Found()
                                      HEADER_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_RESPONSE, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidResponse, retCode );
 }
 
 /**
@@ -1317,7 +1317,7 @@ void test_Http_ReadHeader_Invalid_Response_No_Headers_Complete_Ending()
                                      HEADER_NOT_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
-    TEST_ASSERT_EQUAL( HTTP_INVALID_RESPONSE, retCode );
+    TEST_ASSERT_EQUAL( HTTPInvalidResponse, retCode );
 }
 
 /**
@@ -1450,11 +1450,11 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPHeaderNotFound", str );
 
-    status = HTTP_INVALID_RESPONSE;
+    status = HTTPInvalidResponse;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_INVALID_RESPONSE", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPInvalidResponse", str );
 
-    status = HTTP_INVALID_RESPONSE + 1;
+    status = HTTPInvalidResponse + 1;
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( NULL, str );
 }
