@@ -353,7 +353,7 @@ typedef struct HTTPRequestInfo
     /**
      * @brief The HTTP request method e.g. "GET", "POST", "PUT", or "HEAD".
      */
-    const char * method;
+    const char * pMethod;
     size_t methodLen; /**< The length of the method in bytes. */
 
     /**
@@ -510,7 +510,7 @@ typedef struct HTTPResponse
  * of bytes written.
  *
  * Each line in the header is listed below and written in this order:
- *     <#HTTPRequestInfo_t.method> <#HTTPRequestInfo_t.pPath> <#HTTP_PROTOCOL_VERSION>
+ *     <#HTTPRequestInfo_t.pMethod> <#HTTPRequestInfo_t.pPath> <#HTTP_PROTOCOL_VERSION>
  *     User-Agent: <#HTTP_USER_AGENT_VALUE>
  *     Host: <#HTTPRequestInfo_t.pHost>
  *
@@ -539,7 +539,7 @@ typedef struct HTTPResponse
  * requestHeaders.bufferLen = 256;
  *
  * // Set the Method, Path, and Host in the HTTPRequestInfo_t.
- * requestInfo.method = HTTP_METHOD_GET;
+ * requestInfo.pMethod = HTTP_METHOD_GET;
  * requestInfo.methodLen = sizeof( HTTP_METHOD_GET ) - 1U;
  * requestInfo.pPath = "/html/rfc2616"
  * requestInfo.pathLen = sizeof( "/html/rfc2616" ) - 1U;

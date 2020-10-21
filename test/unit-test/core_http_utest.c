@@ -395,7 +395,7 @@ int suiteTearDown( int numFailures )
  */
 static void setupRequestInfo( HTTPRequestInfo_t * pRequestInfo )
 {
-    pRequestInfo->method = HTTP_METHOD_GET;
+    pRequestInfo->pMethod = HTTP_METHOD_GET;
     pRequestInfo->methodLen = HTTP_METHOD_GET_LEN;
     pRequestInfo->pPath = HTTP_TEST_REQUEST_PATH;
     pRequestInfo->pathLen = HTTP_TEST_REQUEST_PATH_LEN;
@@ -470,10 +470,10 @@ void test_Http_InitializeRequestHeaders_Invalid_Params()
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, NULL );
     TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
 
-    /* Test requestInfo.method == NULL. */
+    /* Test requestInfo.pMethod == NULL. */
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
     TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
-    requestInfo.method = HTTP_METHOD_GET;
+    requestInfo.pMethod = HTTP_METHOD_GET;
 
     /* Test requestInfo.pHost == NULL. */
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );

@@ -1407,9 +1407,9 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
         LogError( ( "Parameter check failed: pRequestInfo is NULL." ) );
         returnStatus = HTTPInvalidParameter;
     }
-    else if( pRequestInfo->method == NULL )
+    else if( pRequestInfo->pMethod == NULL )
     {
-        LogError( ( "Parameter check failed: pRequestInfo->method is NULL." ) );
+        LogError( ( "Parameter check failed: pRequestInfo->pMethod is NULL." ) );
         returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestInfo->pHost == NULL )
@@ -1439,7 +1439,7 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
 
         /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. */
         returnStatus = writeRequestLine( pRequestHeaders,
-                                         pRequestInfo->method,
+                                         pRequestInfo->pMethod,
                                          pRequestInfo->methodLen,
                                          pRequestInfo->pPath,
                                          pRequestInfo->pathLen );
