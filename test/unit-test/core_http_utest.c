@@ -560,7 +560,7 @@ void test_Http_InitializeRequestHeaders_ReqInfo()
 }
 
 /**
- * @brief Test HTTP_INSUFFICIENT_MEMORY from having requestHeaders.bufferLen less than
+ * @brief Test HTTPInsufficientMemory from having requestHeaders.bufferLen less than
  * what is required to fit HTTP_TEST_REQUEST_LINE.
  */
 void test_Http_InitializeRequestHeaders_Insufficient_Memory()
@@ -577,7 +577,7 @@ void test_Http_InitializeRequestHeaders_Insufficient_Memory()
     requestHeaders.bufferLen = HTTP_TEST_REQUEST_LINE_LEN - 1;
 
     httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, httpStatus );
     TEST_ASSERT_TRUE( strncmp( ( char * ) requestHeaders.pBuffer,
                                HTTP_TEST_REQUEST_LINE,
                                HTTP_TEST_REQUEST_LINE_LEN ) != 0 );
@@ -771,11 +771,11 @@ void test_Http_AddHeader_Extra_Header_Insufficient_Memory()
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen, requestHeaders.headersLen );
     TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
                               requestHeaders.pBuffer, expectedHeaders.dataLen );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, httpStatus );
 }
 
 /**
- * @brief Test HTTP_INSUFFICIENT_MEMORY error from having buffer size less than
+ * @brief Test HTTPInsufficientMemory error from having buffer size less than
  * what is required to fit a single HTTP header.
  */
 void test_Http_AddHeader_Single_Header_Insufficient_Memory()
@@ -803,7 +803,7 @@ void test_Http_AddHeader_Single_Header_Insufficient_Memory()
                                        HTTP_TEST_HEADER_FIELD_LEN,
                                        HTTP_TEST_HEADER_VALUE,
                                        HTTP_TEST_HEADER_VALUE_LEN );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, httpStatus );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, httpStatus );
 }
 
 /* ============== Testing HTTPClient_AddRangeHeader ================== */
@@ -835,7 +835,7 @@ void test_Http_AddRangeHeader_Invalid_Params( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          0 /* rangeStart */,
                                          10 /* rangeEnd */ );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, retCode );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, retCode );
 
     /* Length of headers > length of buffer.*/
     tearDown();
@@ -914,7 +914,7 @@ void test_Http_AddRangeHeader_Insufficient_Memory( void )
     retCode = HTTPClient_AddRangeHeader( &testHeaders,
                                          testRangeStart,
                                          testRangeEnd );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, retCode );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, retCode );
     /* Verify the headers input parameter is unaltered. */
     TEST_ASSERT_EQUAL( preHeadersLen, testHeaders.headersLen );
     TEST_ASSERT_EQUAL( expectedHeaders.dataLen - 1, testHeaders.bufferLen );
@@ -1410,9 +1410,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPNoResponse", str );
 
-    status = HTTP_INSUFFICIENT_MEMORY;
+    status = HTTPInsufficientMemory;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_INSUFFICIENT_MEMORY", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPInsufficientMemory", str );
 
     status = HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED;
     str = HTTPClient_strerror( status );

@@ -215,7 +215,7 @@ typedef enum HTTPStatus
      * - #HTTPClient_AddRangeHeader
      * - #HTTPClient_Send
      */
-    HTTP_INSUFFICIENT_MEMORY,
+    HTTPInsufficientMemory,
 
     /**
      * @brief The server sent more headers than the configured
@@ -522,7 +522,7 @@ typedef struct HTTPResponse
  * @return One of the following:
  * - #HTTPSuccess (If successful)
  * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
- * - #HTTP_INSUFFICIENT_MEMORY (If provided buffer size is not large enough to hold headers.)
+ * - #HTTPInsufficientMemory (If provided buffer size is not large enough to hold headers.)
  *
  * **Example**
  * @code{c}
@@ -585,7 +585,7 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * @return One of the following:
  * - #HTTPSuccess (If successful.)
  * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
- * - #HTTP_INSUFFICIENT_MEMORY (If application-provided buffer is not large enough to hold headers.)
+ * - #HTTPInsufficientMemory (If application-provided buffer is not large enough to hold headers.)
  *
  * **Example**
  * @code{c}
@@ -680,7 +680,7 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * #HTTPSuccess if successful.
  * #HTTPInvalidParameter, if input parameters are invalid, including when
  * the @p rangeStartOrlastNbytes and @p rangeEnd parameter combination is invalid.
- * #HTTP_INSUFFICIENT_MEMORY, if the passed #HTTPRequestHeaders_t.pBuffer
+ * #HTTPInsufficientMemory, if the passed #HTTPRequestHeaders_t.pBuffer
  * contains insufficient remaining memory for storing the range request.
  */
 /* @[declare_httpclient_addrangeheader] */
@@ -698,7 +698,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * then the Content-Length to be sent to the server is automatically written to
  * @p pRequestHeaders. The Content-Length will not be written when there is
  * no request body. If there is not enough room in the buffer to write the
- * Content-Length then #HTTP_INSUFFICIENT_MEMORY is returned. Please see
+ * Content-Length then #HTTPInsufficientMemory is returned. Please see
  * #HTTP_MAX_CONTENT_LENGTH_HEADER_LENGTH for the maximum Content-Length header
  * field and value that could be written to the buffer.
  *
@@ -732,7 +732,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPNetworkError (Errors in sending or receiving over the transport interface.)
  * - #HTTPPartialResponse (Part of an HTTP response was received in a partially filled response buffer.)
  * - #HTTPNoResponse (No data was received from the transport interface.)
- * - #HTTP_INSUFFICIENT_MEMORY (The response received could not fit into the response buffer
+ * - #HTTPInsufficientMemory (The response received could not fit into the response buffer
  * or extra headers could not be sent in the request.)
  * - #HTTP_PARSER_INTERNAL_ERROR (Internal parsing error.)\n\n
  * Security alerts are listed below, please see #HTTPStatus_t for more information:

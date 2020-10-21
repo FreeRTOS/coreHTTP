@@ -1097,7 +1097,7 @@ void test_HTTPClient_Send_response_larger_than_buffer( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1482,7 +1482,7 @@ void test_HTTPClient_Send_Content_Length_Header_Doesnt_Fit( void )
                                     &response,
                                     0 );
 
-    TEST_ASSERT_EQUAL( HTTP_INSUFFICIENT_MEMORY, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInsufficientMemory, returnStatus );
 }
 
 /*-----------------------------------------------------------*/

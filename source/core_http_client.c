@@ -75,7 +75,7 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
  * @param[in] contentLength The Content-Length header value to write.
  *
  * @return #HTTPSuccess if successful. If there was insufficient memory in the
- * application buffer, then #HTTP_INSUFFICIENT_MEMORY is returned.
+ * application buffer, then #HTTPInsufficientMemory is returned.
  */
 static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                             size_t contentLength );
@@ -107,7 +107,7 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
  * @param[in] valueLen The byte length of the header field value.
  *
  * @return #HTTPSuccess if successful. If there was insufficient memory in the
- * application buffer, then #HTTP_INSUFFICIENT_MEMORY is returned.
+ * application buffer, then #HTTPInsufficientMemory is returned.
  */
 static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                const char * pField,
@@ -127,7 +127,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * should be passed.
  *
  * @return #HTTPSuccess if successful. If there was insufficient memory in the
- * application buffer, then #HTTP_INSUFFICIENT_MEMORY is returned.
+ * application buffer, then #HTTPInsufficientMemory is returned.
  */
 static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                     int32_t rangeStartOrlastNbytes,
@@ -163,7 +163,7 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
  * the parsing state denotes it never started, then return #HTTPNoResponse. If
  * the parsing state is incomplete, then if the response buffer is not full
  * #HTTPPartialResponse is returned. If the parsing state is incomplete, then
- * if the response buffer is full #HTTP_INSUFFICIENT_MEMORY is returned.
+ * if the response buffer is full #HTTPInsufficientMemory is returned.
  */
 static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                                             size_t totalReceived,
@@ -209,7 +209,7 @@ static uint8_t convertInt32ToAscii( int32_t value,
  * @param pathLen The byte length of the request path.
  *
  * @return #HTTPSuccess if successful. If there was insufficient memory in the
- * application buffer, then #HTTP_INSUFFICIENT_MEMORY is returned.
+ * application buffer, then #HTTPInsufficientMemory is returned.
  */
 static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
                                       const char * pMethod,
@@ -1245,7 +1245,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                     "RequiredBytes=%lu, RemainingBufferSize=%lu",
                     ( unsigned long ) toAddLen,
                     ( unsigned long ) ( pRequestHeaders->bufferLen - pRequestHeaders->headersLen ) ) );
-        returnStatus = HTTP_INSUFFICIENT_MEMORY;
+        returnStatus = HTTPInsufficientMemory;
     }
 
     return returnStatus;
@@ -1341,7 +1341,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
 
     if( ( toAddLen + pRequestHeaders->headersLen ) > pRequestHeaders->bufferLen )
     {
-        returnStatus = HTTP_INSUFFICIENT_MEMORY;
+        returnStatus = HTTPInsufficientMemory;
     }
 
     if( returnStatus == HTTPSuccess )
@@ -1839,7 +1839,7 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                         " interface: Response buffer has insufficient "
                         "space: responseBufferLen=%lu",
                         ( unsigned long ) responseBufferLen ) );
-            returnStatus = HTTP_INSUFFICIENT_MEMORY;
+            returnStatus = HTTPInsufficientMemory;
         }
         else
         {
@@ -2378,8 +2378,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPNoResponse";
             break;
 
-        case HTTP_INSUFFICIENT_MEMORY:
-            str = "HTTP_INSUFFICIENT_MEMORY";
+        case HTTPInsufficientMemory:
+            str = "HTTPInsufficientMemory";
             break;
 
         case HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED:
