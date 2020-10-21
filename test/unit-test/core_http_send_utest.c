@@ -1043,7 +1043,7 @@ void test_HTTPClient_Send_timeout_recv_immediate( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTP_NO_RESPONSE, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPNoResponse, returnStatus );
 }
 
 /*-----------------------------------------------------------*/

@@ -160,7 +160,7 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
  * @param[in] responseBufferLen The length of the response buffer.
  *
  * @return Returns #HTTPSuccess if the parsing state is complete. If
- * the parsing state denotes it never started, then return #HTTP_NO_RESPONSE. If
+ * the parsing state denotes it never started, then return #HTTPNoResponse. If
  * the parsing state is incomplete, then if the response buffer is not full
  * #HTTPPartialResponse is returned. If the parsing state is incomplete, then
  * if the response buffer is full #HTTP_INSUFFICIENT_MEMORY is returned.
@@ -1829,7 +1829,7 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
         LogError( ( "Response not received: Zero returned from "
                     "transport recv: totalReceived=%lu",
                     ( unsigned long ) totalReceived ) );
-        returnStatus = HTTP_NO_RESPONSE;
+        returnStatus = HTTPNoResponse;
     }
     else if( parsingState == HTTP_PARSING_INCOMPLETE )
     {
@@ -2374,8 +2374,8 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
             str = "HTTPPartialResponse";
             break;
 
-        case HTTP_NO_RESPONSE:
-            str = "HTTP_NO_RESPONSE";
+        case HTTPNoResponse:
+            str = "HTTPNoResponse";
             break;
 
         case HTTP_INSUFFICIENT_MEMORY:

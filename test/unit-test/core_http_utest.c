@@ -1406,9 +1406,9 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPPartialResponse", str );
 
-    status = HTTP_NO_RESPONSE;
+    status = HTTPNoResponse;
     str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTP_NO_RESPONSE", str );
+    TEST_ASSERT_EQUAL_STRING( "HTTPNoResponse", str );
 
     status = HTTP_INSUFFICIENT_MEMORY;
     str = HTTPClient_strerror( status );

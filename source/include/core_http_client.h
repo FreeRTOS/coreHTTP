@@ -203,7 +203,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_NO_RESPONSE,
+    HTTPNoResponse,
 
     /**
      * @brief The application buffer was not large enough for the HTTP request
@@ -731,7 +731,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
  * - #HTTPNetworkError (Errors in sending or receiving over the transport interface.)
  * - #HTTPPartialResponse (Part of an HTTP response was received in a partially filled response buffer.)
- * - #HTTP_NO_RESPONSE (No data was received from the transport interface.)
+ * - #HTTPNoResponse (No data was received from the transport interface.)
  * - #HTTP_INSUFFICIENT_MEMORY (The response received could not fit into the response buffer
  * or extra headers could not be sent in the request.)
  * - #HTTP_PARSER_INTERNAL_ERROR (Internal parsing error.)\n\n
