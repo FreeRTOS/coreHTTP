@@ -1183,7 +1183,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                size_t valueLen )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
-    char * pBufferCur = ( char * ) ( pRequestHeaders->pBuffer + pRequestHeaders->headersLen );
+    char * pBufferCur = NULL;
     size_t toAddLen = 0u;
     size_t backtrackHeaderLen = pRequestHeaders->headersLen;
 
@@ -1193,6 +1193,8 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     assert( pValue != NULL );
     assert( fieldLen != 0u );
     assert( valueLen != 0u );
+
+    pBufferCur = ( char * ) ( pRequestHeaders->pBuffer + pRequestHeaders->headersLen );
 
     /* Backtrack before trailing "\r\n" (HTTP header end) if it's already written.
      * Note that this method also writes trailing "\r\n" before returning.
