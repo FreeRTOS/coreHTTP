@@ -27,7 +27,7 @@ int32_t TransportInterfaceSendStub( NetworkContext_t * pNetworkContext,
                                     size_t bytesToSend )
 {
     /* The number of tries to send the message before this invocation */
-    static int32_t tries;
+    static int32_t tries = 0;
     /* The number of bytes considered sent after this invocation */
     int32_t ret;
 
@@ -48,14 +48,21 @@ int32_t TransportInterfaceSendStub( NetworkContext_t * pNetworkContext,
     * finish the message after MAX_TRIES tries.
     ****************************************************************/
 
-    __CPROVER_assume( ret <= ( int32_t ) bytesToSend );
+    if( bytesToSend <= INT32_MAX )
+    {
+        __CPROVER_assume( ret <= ( int32_t ) bytesToSend );
+    }
 
     tries++;
 
     if( tries >= MAX_TRIES )
     {
         tries = 0;
-        ret = bytesToSend;
+
+        /* In order to stop the looping on send we must return an error or
+         * bytesToSend. We return an error instead of bytesToSend because
+         * bytesToSend may be a value larger than INT32_MAX. */
+        ret = -1;
     }
 
     return ret;
