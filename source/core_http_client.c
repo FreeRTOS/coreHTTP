@@ -2243,7 +2243,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                     ( int ) ( *pValueLen ),
                     *pValueLoc ) );
 
-        /* MISRA 15.7 requres a non-empty terminating else for this block. */
+        /* MISRA 15.7 requires a non-empty terminating else for this block. */
         returnStatus = HTTPSuccess;
     }
 
