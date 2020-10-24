@@ -1265,9 +1265,10 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
     assert( pRequestHeaders != NULL );
 
-    /* This buffer uses a char type instead of the general purpose uint8_t because
-    * the range value expected to be written is within the ASCII character set. */
-    ( void ) memset( rangeValueBuffer, '\0', HTTP_MAX_RANGE_REQUEST_VALUE_LEN );
+    /* This buffer uses a char type instead of the general purpose uint8_t
+     * because the range value expected to be written is within the ASCII
+     * character set. */
+    ( void ) memset( rangeValueBuffer, ( int ) '\0', HTTP_MAX_RANGE_REQUEST_VALUE_LEN );
 
     /* Generate the value data for the Range Request header.*/
 
@@ -1723,19 +1724,9 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
 
     if( returnStatus == HTTPSuccess )
     {
-        /* Send the HTTP headers over the network. */
-        if( pRequestHeaders->headersLen > INT32_MAX )
-        {
-            LogError( ( "Parameter check failed: pRequestHeaders->headersLen > "
-                        "2147483647 (INT32_MAX)." ) );
-            returnStatus = HTTPInvalidParameter;
-        }
-        else
-        {
-            LogDebug( ( "Sending HTTP request headers: HeaderBytes=%lu",
-                        ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
-            returnStatus = sendHttpData( pTransport, pRequestHeaders->pBuffer, pRequestHeaders->headersLen );
-        }
+        LogDebug( ( "Sending HTTP request headers: HeaderBytes=%lu",
+                    ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
+        returnStatus = sendHttpData( pTransport, pRequestHeaders->pBuffer, pRequestHeaders->headersLen );
     }
 
     return returnStatus;
@@ -1999,7 +1990,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                     "reqBodyBufLen is greater than zero." ) );
         returnStatus = HTTPInvalidParameter;
     }
-    else if( reqBodyBufLen > INT32_MAX )
+    else if( reqBodyBufLen > ( size_t ) ( INT32_MAX ) )
     {
         /* This check is needed because convertInt32ToAscii() is used on the
          * reqBodyBufLen to create a Content-Length header value string. */
@@ -2242,9 +2233,6 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     }
     else
     {
-        /* Empty else (when assert and logging is disabled) for MISRA 15.7
-         * compliance. */
-
         /* Header is found. */
         assert( ( context.fieldFound == 1u ) && ( context.valueFound == 1u ) );
 
@@ -2254,6 +2242,9 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                     pField,
                     ( int ) ( *pValueLen ),
                     *pValueLoc ) );
+
+        /* MISRA 15.7 requres a non-empty terminating else for this block. */
+        returnStatus = HTTPSuccess;
     }
 
     /* If the header field-value pair is found in response, then the return
