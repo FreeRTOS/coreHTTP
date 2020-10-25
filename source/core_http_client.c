@@ -1218,24 +1218,27 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     {
         /* Write "<Field>: <Value> \r\n" to the headers buffer. */
 
-        /* Copy the header name into the buffer. */
-        ( void ) memcpy( pBufferCur, pField, fieldLen );
+        /* Copy the header name into the buffer. memcpy can be used here, but
+         * for consistency with the rest of the function we use strncpy. */
+        ( void ) strncpy( pBufferCur, pField, fieldLen );
         pBufferCur += fieldLen;
 
-        /* Copy the field separator, ": ", into the buffer. */
-        ( void ) memcpy( pBufferCur,
-                         HTTP_HEADER_FIELD_SEPARATOR,
-                         HTTP_HEADER_FIELD_SEPARATOR_LEN );
+        /* Copy the field separator, ": ", into the buffer. We use strncpy,
+         * instead of memcpy, here and for other string literal copies in this
+         * function, because this satisfies MISRA rule 7.4. */
+        ( void ) strncpy( pBufferCur,
+                          HTTP_HEADER_FIELD_SEPARATOR,
+                          HTTP_HEADER_FIELD_SEPARATOR_LEN );
         pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
 
         /* Copy the header value into the buffer. */
-        ( void ) memcpy( pBufferCur, pValue, valueLen );
+        ( void ) strncpy( pBufferCur, pValue, valueLen );
         pBufferCur += valueLen;
 
         /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
-        ( void ) memcpy( pBufferCur,
-                         HTTP_HEADER_END_INDICATOR,
-                         HTTP_HEADER_END_INDICATOR_LEN );
+        ( void ) strncpy( pBufferCur,
+                          HTTP_HEADER_END_INDICATOR,
+                          HTTP_HEADER_END_INDICATOR_LEN );
 
         /* Update the headers length value. */
         pRequestHeaders->headersLen = backtrackHeaderLen + toAddLen;
@@ -1272,10 +1275,11 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
     /* Generate the value data for the Range Request header.*/
 
-    /* Write the range value prefix in the buffer. */
-    ( void ) memcpy( rangeValueBuffer,
-                     HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
-                     HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
+    /* Write the range value prefix in the buffer. We use strncpy here instead
+     * of memcpy because this satisfies MISRA rule 7.4. */
+    ( void ) strncpy( rangeValueBuffer,
+                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
+                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
     rangeValueLength += HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN;
 
     /* Write the range start value in the buffer. */
@@ -1349,38 +1353,42 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
 
     if( returnStatus == HTTPSuccess )
     {
-        /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. */
-        ( void ) memcpy( pBufferCur, pMethod, methodLen );
+        /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. memcpy
+         * can be used here, but, for consistency with the rest of the function,
+         * we use strncpy. */
+        ( void ) strncpy( pBufferCur, pMethod, methodLen );
         pBufferCur += methodLen;
 
         *pBufferCur = SPACE_CHARACTER;
         pBufferCur += SPACE_CHARACTER_LEN;
 
-        /* Use "/" as default value if <PATH> is NULL. */
+        /* Use "/" as default value if <PATH> is NULL. We use strncpy, instead
+         * of memcpy, here and for other string literal copies in this function,
+         * because this satisfies MISRA rule 7.4. */
         if( ( pPath == NULL ) || ( pathLen == 0u ) )
         {
-            ( void ) memcpy( pBufferCur,
-                             HTTP_EMPTY_PATH,
-                             HTTP_EMPTY_PATH_LEN );
+            ( void ) strncpy( pBufferCur,
+                              HTTP_EMPTY_PATH,
+                              HTTP_EMPTY_PATH_LEN );
             pBufferCur += HTTP_EMPTY_PATH_LEN;
         }
         else
         {
-            ( void ) memcpy( pBufferCur, pPath, pathLen );
+            ( void ) strncpy( pBufferCur, pPath, pathLen );
             pBufferCur += pathLen;
         }
 
         *pBufferCur = SPACE_CHARACTER;
         pBufferCur += SPACE_CHARACTER_LEN;
 
-        ( void ) memcpy( pBufferCur,
-                         HTTP_PROTOCOL_VERSION,
-                         HTTP_PROTOCOL_VERSION_LEN );
+        ( void ) strncpy( pBufferCur,
+                          HTTP_PROTOCOL_VERSION,
+                          HTTP_PROTOCOL_VERSION_LEN );
         pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
 
-        ( void ) memcpy( pBufferCur,
-                         HTTP_HEADER_LINE_SEPARATOR,
-                         HTTP_HEADER_LINE_SEPARATOR_LEN );
+        ( void ) strncpy( pBufferCur,
+                          HTTP_HEADER_LINE_SEPARATOR,
+                          HTTP_HEADER_LINE_SEPARATOR_LEN );
         pRequestHeaders->headersLen = toAddLen;
     }
 

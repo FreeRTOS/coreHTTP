@@ -213,6 +213,7 @@ snprintf
 statuscode
 strchr
 strerror
+strncpy
 struct
 sublicense
 tcp

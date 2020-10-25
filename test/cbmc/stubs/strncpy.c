@@ -21,9 +21,10 @@
  */
 
 /**
- * @file memcpy.c
- * @brief Creates a stub for memcpy so that the proof for
- * HTTPClient_InitializeRequestHeaders runs much faster.
+ * @file strncpy.c
+ * @brief Creates a stub for strncpy so that the proof for
+ * HTTPClient_InitializeRequestHeaders runs much faster. This stub checks if the
+ * destination and source are valid accessible memory, for the length to copy.
  */
 
 #include <string.h>
@@ -33,18 +34,18 @@
     #define __has_builtin( x )    0
 #endif
 
-#if __has_builtin( __builtin___memcpy_chk )
-    void * __builtin___memcpy_chk( void * dest,
+#if __has_builtin( __builtin___strncpy_chk )
+    void * __builtin___strncpy_chk( void * dest,
                                    const void * src,
                                    size_t n,
-                                   size_t m )
+                                   size_t os )
     {
         __CPROVER_assert( __CPROVER_w_ok( dest, n ), "write" );
         __CPROVER_assert( __CPROVER_r_ok( src, n ), "read" );
         return dest;
     }
 #else
-    void * memcpy( void * dest,
+    void * strncpy( void * dest,
                    const void * src,
                    size_t n )
     {
@@ -52,4 +53,4 @@
         __CPROVER_assert( __CPROVER_r_ok( src, n ), "read" );
         return dest;
     }
-#endif /* if __has_builtin( __builtin___memcpy_chk ) */
+#endif /* if __has_builtin( __builtin___strncpy_chk ) */
