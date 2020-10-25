@@ -36,9 +36,9 @@
 
 #if __has_builtin( __builtin___strncpy_chk )
     void * __builtin___strncpy_chk( void * dest,
-                                   const void * src,
-                                   size_t n,
-                                   size_t os )
+                                    const void * src,
+                                    size_t n,
+                                    size_t os )
     {
         __CPROVER_assert( __CPROVER_w_ok( dest, n ), "write" );
         __CPROVER_assert( __CPROVER_r_ok( src, n ), "read" );
@@ -46,8 +46,8 @@
     }
 #else
     void * strncpy( void * dest,
-                   const void * src,
-                   size_t n )
+                    const void * src,
+                    size_t n )
     {
         __CPROVER_assert( __CPROVER_w_ok( dest, n ), "write" );
         __CPROVER_assert( __CPROVER_r_ok( src, n ), "read" );
