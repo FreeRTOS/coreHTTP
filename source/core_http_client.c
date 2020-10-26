@@ -1218,14 +1218,11 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     {
         /* Write "<Field>: <Value> \r\n" to the headers buffer. */
 
-        /* Copy the header name into the buffer. memcpy can be used here, but
-         * for consistency with the rest of the function we use strncpy. */
+        /* Copy the header name into the buffer. */
         ( void ) strncpy( pBufferCur, pField, fieldLen );
         pBufferCur += fieldLen;
 
-        /* Copy the field separator, ": ", into the buffer. We use strncpy,
-         * instead of memcpy, here and for other string literal copies in this
-         * function, because this satisfies MISRA rule 7.4. */
+        /* Copy the field separator, ": ", into the buffer. */
         ( void ) strncpy( pBufferCur,
                           HTTP_HEADER_FIELD_SEPARATOR,
                           HTTP_HEADER_FIELD_SEPARATOR_LEN );
@@ -1275,8 +1272,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
     /* Generate the value data for the Range Request header.*/
 
-    /* Write the range value prefix in the buffer. We use strncpy here instead
-     * of memcpy because this satisfies MISRA rule 7.4. */
+    /* Write the range value prefix in the buffer. */
     ( void ) strncpy( rangeValueBuffer,
                       HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
                       HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
@@ -1353,18 +1349,14 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
 
     if( returnStatus == HTTPSuccess )
     {
-        /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. memcpy
-         * can be used here, but, for consistency with the rest of the function,
-         * we use strncpy. */
+        /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. */
         ( void ) strncpy( pBufferCur, pMethod, methodLen );
         pBufferCur += methodLen;
 
         *pBufferCur = SPACE_CHARACTER;
         pBufferCur += SPACE_CHARACTER_LEN;
 
-        /* Use "/" as default value if <PATH> is NULL. We use strncpy, instead
-         * of memcpy, here and for other string literal copies in this function,
-         * because this satisfies MISRA rule 7.4. */
+        /* Use "/" as default value if <PATH> is NULL. */
         if( ( pPath == NULL ) || ( pathLen == 0u ) )
         {
             ( void ) strncpy( pBufferCur,
@@ -2002,8 +1994,9 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
     {
         /* This check is needed because convertInt32ToAscii() is used on the
          * reqBodyBufLen to create a Content-Length header value string. */
-        LogError( ( "Parameter check failed: reqBodyBufLen > "
-                    "2147483647 (INT32_MAX)." ) );
+        LogError( ( "Parameter check failed: reqBodyBufLen > INT32_MAX."
+                    "reqBodyBufLen=%lu",
+                    ( unsigned long ) reqBodyBufLen ) );
         returnStatus = HTTPInvalidParameter;
     }
     else
@@ -2250,8 +2243,6 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                     pField,
                     ( int ) ( *pValueLen ),
                     *pValueLoc ) );
-
-        /* MISRA 15.7 requires a non-empty terminating else for this block. */
         returnStatus = HTTPSuccess;
     }
 
