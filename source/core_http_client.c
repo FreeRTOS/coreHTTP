@@ -1219,23 +1219,23 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
         /* Write "<Field>: <Value> \r\n" to the headers buffer. */
 
         /* Copy the header name into the buffer. */
-        ( void ) memcpy( pBufferCur, pField, fieldLen );
+        ( void ) strncpy( pBufferCur, pField, fieldLen );
         pBufferCur += fieldLen;
 
         /* Copy the field separator, ": ", into the buffer. */
-        ( void ) memcpy( pBufferCur,
-                         HTTP_HEADER_FIELD_SEPARATOR,
-                         HTTP_HEADER_FIELD_SEPARATOR_LEN );
+        ( void ) strncpy( pBufferCur,
+                          HTTP_HEADER_FIELD_SEPARATOR,
+                          HTTP_HEADER_FIELD_SEPARATOR_LEN );
         pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
 
         /* Copy the header value into the buffer. */
-        ( void ) memcpy( pBufferCur, pValue, valueLen );
+        ( void ) strncpy( pBufferCur, pValue, valueLen );
         pBufferCur += valueLen;
 
         /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
-        ( void ) memcpy( pBufferCur,
-                         HTTP_HEADER_END_INDICATOR,
-                         HTTP_HEADER_END_INDICATOR_LEN );
+        ( void ) strncpy( pBufferCur,
+                          HTTP_HEADER_END_INDICATOR,
+                          HTTP_HEADER_END_INDICATOR_LEN );
 
         /* Update the headers length value. */
         pRequestHeaders->headersLen = backtrackHeaderLen + toAddLen;
@@ -1265,16 +1265,17 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
     assert( pRequestHeaders != NULL );
 
-    /* This buffer uses a char type instead of the general purpose uint8_t because
-    * the range value expected to be written is within the ASCII character set. */
-    ( void ) memset( rangeValueBuffer, '\0', HTTP_MAX_RANGE_REQUEST_VALUE_LEN );
+    /* This buffer uses a char type instead of the general purpose uint8_t
+     * because the range value expected to be written is within the ASCII
+     * character set. */
+    ( void ) memset( rangeValueBuffer, ( int ) '\0', HTTP_MAX_RANGE_REQUEST_VALUE_LEN );
 
     /* Generate the value data for the Range Request header.*/
 
     /* Write the range value prefix in the buffer. */
-    ( void ) memcpy( rangeValueBuffer,
-                     HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
-                     HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
+    ( void ) strncpy( rangeValueBuffer,
+                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
+                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
     rangeValueLength += HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN;
 
     /* Write the range start value in the buffer. */
@@ -1349,7 +1350,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     if( returnStatus == HTTPSuccess )
     {
         /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. */
-        ( void ) memcpy( pBufferCur, pMethod, methodLen );
+        ( void ) strncpy( pBufferCur, pMethod, methodLen );
         pBufferCur += methodLen;
 
         *pBufferCur = SPACE_CHARACTER;
@@ -1358,28 +1359,28 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
         /* Use "/" as default value if <PATH> is NULL. */
         if( ( pPath == NULL ) || ( pathLen == 0u ) )
         {
-            ( void ) memcpy( pBufferCur,
-                             HTTP_EMPTY_PATH,
-                             HTTP_EMPTY_PATH_LEN );
+            ( void ) strncpy( pBufferCur,
+                              HTTP_EMPTY_PATH,
+                              HTTP_EMPTY_PATH_LEN );
             pBufferCur += HTTP_EMPTY_PATH_LEN;
         }
         else
         {
-            ( void ) memcpy( pBufferCur, pPath, pathLen );
+            ( void ) strncpy( pBufferCur, pPath, pathLen );
             pBufferCur += pathLen;
         }
 
         *pBufferCur = SPACE_CHARACTER;
         pBufferCur += SPACE_CHARACTER_LEN;
 
-        ( void ) memcpy( pBufferCur,
-                         HTTP_PROTOCOL_VERSION,
-                         HTTP_PROTOCOL_VERSION_LEN );
+        ( void ) strncpy( pBufferCur,
+                          HTTP_PROTOCOL_VERSION,
+                          HTTP_PROTOCOL_VERSION_LEN );
         pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
 
-        ( void ) memcpy( pBufferCur,
-                         HTTP_HEADER_LINE_SEPARATOR,
-                         HTTP_HEADER_LINE_SEPARATOR_LEN );
+        ( void ) strncpy( pBufferCur,
+                          HTTP_HEADER_LINE_SEPARATOR,
+                          HTTP_HEADER_LINE_SEPARATOR_LEN );
         pRequestHeaders->headersLen = toAddLen;
     }
 
@@ -1723,19 +1724,9 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
 
     if( returnStatus == HTTPSuccess )
     {
-        /* Send the HTTP headers over the network. */
-        if( pRequestHeaders->headersLen > INT32_MAX )
-        {
-            LogError( ( "Parameter check failed: pRequestHeaders->headersLen > "
-                        "2147483647 (INT32_MAX)." ) );
-            returnStatus = HTTPInvalidParameter;
-        }
-        else
-        {
-            LogDebug( ( "Sending HTTP request headers: HeaderBytes=%lu",
-                        ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
-            returnStatus = sendHttpData( pTransport, pRequestHeaders->pBuffer, pRequestHeaders->headersLen );
-        }
+        LogDebug( ( "Sending HTTP request headers: HeaderBytes=%lu",
+                    ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
+        returnStatus = sendHttpData( pTransport, pRequestHeaders->pBuffer, pRequestHeaders->headersLen );
     }
 
     return returnStatus;
@@ -1999,12 +1990,13 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                     "reqBodyBufLen is greater than zero." ) );
         returnStatus = HTTPInvalidParameter;
     }
-    else if( reqBodyBufLen > INT32_MAX )
+    else if( reqBodyBufLen > ( size_t ) ( INT32_MAX ) )
     {
         /* This check is needed because convertInt32ToAscii() is used on the
          * reqBodyBufLen to create a Content-Length header value string. */
-        LogError( ( "Parameter check failed: reqBodyBufLen > "
-                    "2147483647 (INT32_MAX)." ) );
+        LogError( ( "Parameter check failed: reqBodyBufLen > INT32_MAX."
+                    "reqBodyBufLen=%lu",
+                    ( unsigned long ) reqBodyBufLen ) );
         returnStatus = HTTPInvalidParameter;
     }
     else
@@ -2242,9 +2234,6 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     }
     else
     {
-        /* Empty else (when assert and logging is disabled) for MISRA 15.7
-         * compliance. */
-
         /* Header is found. */
         assert( ( context.fieldFound == 1u ) && ( context.valueFound == 1u ) );
 
@@ -2254,6 +2243,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                     pField,
                     ( int ) ( *pValueLen ),
                     *pValueLoc ) );
+        returnStatus = HTTPSuccess;
     }
 
     /* If the header field-value pair is found in response, then the return

@@ -23,7 +23,17 @@ HARNESS_ENTRY=HTTPClient_AddHeader_harness
 PROOF_UID=HTTPClient_AddHeader
 HARNESS_FILE=$(HARNESS_ENTRY)
 
-DEFINES +=
+# The header field and value string lengths input into HTTPClient_AddHeader are
+# bounded to reduce the proof run time. This length is a bound on the strncpys
+# used to write the header field and values to the request header buffer. Memory
+# safety on the request header buffer can be proven in a reasonable bound. It
+# adds no value to the proof to write a header field and a header value of
+# SIZE_MAX length.
+HEADER_FIELD_MAX_LENGTH=16
+HEADER_VALUE_MAX_LENGTH=16
+
+DEFINES += -DHEADER_FIELD_MAX_LENGTH=$(HEADER_FIELD_MAX_LENGTH)
+DEFINES += -DHEADER_VALUE_MAX_LENGTH=$(HEADER_VALUE_MAX_LENGTH)
 INCLUDES +=
 
 # We remove these function bodies so that they aren't categorized as possible
@@ -39,13 +49,13 @@ REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnHead
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMessageBeginCallback
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMessageCompleteCallback
 
-REMOVE_FUNCTION_BODY += memcpy
-
+# strncmp is used to find if there exists "\r\n\r\n" at the end of the header
+# buffer. Therefore, we need to unwind strncmp the length of "\r\n\r\n" + 1.
 UNWINDSET += strncmp.0:5
+UNWINDSET += strncpy.0:$(HEADER_FIELD_MAX_LENGTH)
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
-PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/memcpy.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 

@@ -38,13 +38,13 @@ REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnHead
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMessageBeginCallback
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMessageCompleteCallback
 
-REMOVE_FUNCTION_BODY += memcpy
+REMOVE_FUNCTION_BODY += strncpy
 
 UNWINDSET += strncmp.0:5
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
-PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/memcpy.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/strncpy.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 

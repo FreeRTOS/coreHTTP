@@ -27,8 +27,14 @@ DEFINES +=
 INCLUDES +=
 
 REMOVE_FUNCTION_BODY +=
-# Maximum value of a 32 bit signed integer is 2,147,483,647, which is 10 digits.
+# strncmp is used to find if there exists "\r\n\r\n" at the end of the header
+# buffer. Therefore, we need to unwind strncmp the length of "\r\n\r\n" + 1.
 UNWINDSET += strncmp.0:5
+# The maximum number of characters expected to be copied is the maximum length
+# of the range header value. It is of the form:
+# "bytes=<Max-Integer-Value>-<Max-Integer-Value>".
+UNWINDSET += strncpy.0:28
+# Maximum value of a 32 bit signed integer is 2,147,483,647, which is 10 digits.
 UNWINDSET += __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0:11
 UNWINDSET += __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1:11
 
