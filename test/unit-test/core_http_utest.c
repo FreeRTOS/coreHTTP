@@ -1405,7 +1405,7 @@ void test_Http_ReadHeader_EmptyHeaderValue()
     expectedValCbRetVal = HTTP_PARSER_STOP_PARSING;
     pFieldLocToReturn = &pTestResponseEmptyValue[ headerFieldInRespLoc ];
     fieldLenToReturn = headerFieldInRespLen;
-    /* Add two charactesr past the empty value to point to the next field. */
+    /* Add two characters past the empty value to point to the next field. */
     pValueLocToReturn = &pTestResponseEmptyValue[ headerValInRespLoc + HTTP_HEADER_LINE_SEPARATOR_LEN ];
     /* http-parser will pass in a value of zero for an empty value. */
     valueLenToReturn = 0;
