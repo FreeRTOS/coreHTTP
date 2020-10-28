@@ -13,5 +13,5 @@ set( HTTP_SOURCES
 # HTTP library public include directories.
 set( HTTP_INCLUDE_PUBLIC_DIRS
      ${CMAKE_CURRENT_LIST_DIR}/source/include
-     ${CMAKE_CURRENT_LIST_DIR}/source/portable
+     ${CMAKE_CURRENT_LIST_DIR}/source/interface
      ${CMAKE_CURRENT_LIST_DIR}/source/third-party/http_parser )
