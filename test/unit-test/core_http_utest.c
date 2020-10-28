@@ -141,6 +141,15 @@ static const char * pTestResponse = "HTTP/1.1 200 OK\r\n"
                                     "header_not_in_buffer: test-value3\r\n"
                                     "\r\n";
 
+/* HTTP response for testing HTTPClient_ReadHeader API. This response contains
+ * an empty value. */
+static const char * pTestResponseEmptyValue = "HTTP/1.1 200 OK\r\n"
+                                              "test-header0: test-value0\r\n"
+                                              "test-header1: \r\n"
+                                              "test-header2: test-value2\r\n"
+                                              "\r\n";
+
+
 #define HEADER_INVALID_PARAMS        "Header"
 #define HEADER_INVALID_PARAMS_LEN    ( sizeof( HEADER_INVALID_PARAMS ) - 1 )
 
@@ -1380,6 +1389,40 @@ void test_Http_ReadHeader_Happy_Path()
     TEST_ASSERT_EQUAL( HTTPSuccess, retCode );
     TEST_ASSERT_EQUAL( &pTestResponse[ headerValInRespLoc ], pValueLoc );
     TEST_ASSERT_EQUAL( headerValInRespLen, valueLen );
+}
+
+/**
+ * @brief Test the case when the header is empty. Empty headers are not
+ * invalid according to RFC 2616.
+ */
+void test_Http_ReadHeader_EmptyHeaderValue()
+{
+    /* Add expectations for http_parser init dependencies. */
+    http_parser_init_ExpectAnyArgs();
+    http_parser_settings_init_ExpectAnyArgs();
+
+    /* Configure the http_parser_execute mock. */
+    expectedValCbRetVal = HTTP_PARSER_STOP_PARSING;
+    pFieldLocToReturn = &pTestResponseEmptyValue[ headerFieldInRespLoc ];
+    fieldLenToReturn = headerFieldInRespLen;
+    /* Add two characters past the empty value to point to the next field. */
+    pValueLocToReturn = &pTestResponseEmptyValue[ headerValInRespLoc + HTTP_HEADER_LINE_SEPARATOR_LEN ];
+    /* http-parser will pass in a value of zero for an empty value. */
+    valueLenToReturn = 0;
+    invokeHeaderFieldCallback = 1u;
+    invokeHeaderValueCallback = 1u;
+    parserErrNo = HPE_CB_header_value;
+    http_parser_execute_ExpectAnyArgsAndReturn( strlen( pTestResponse ) );
+
+    /* Call the function under test. */
+    retCode = HTTPClient_ReadHeader( &testResponse,
+                                     HEADER_IN_BUFFER,
+                                     HEADER_IN_BUFFER_LEN,
+                                     &pValueLoc,
+                                     &valueLen );
+    TEST_ASSERT_EQUAL( HTTPSuccess, retCode );
+    TEST_ASSERT_EQUAL( NULL, pValueLoc );
+    TEST_ASSERT_EQUAL( 0, valueLen );
 }
 
 /**
