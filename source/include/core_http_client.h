@@ -572,6 +572,10 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * The trailing `\r\n` that denotes the end of the header lines is overwritten,
  * if it already exists in the buffer.
  *
+ * @note This function does not validate that the characters in @p pField and
+ * @p pValue form a valid HTTP request header line. The characters in these
+ * buffers are copied as-is to #HTTPRequestHeaders_t.pBuffer.
+ *
  * @param[in] pRequestHeaders Request header buffer information.
  * @param[in] pField The header field name to write.
  * The data should be ISO 8859-1 (Latin-1) encoded per the HTTP standard,
