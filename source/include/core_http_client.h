@@ -801,7 +801,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * The location within #HTTPResponse_t.pBuffer, of the value found, will be
  * returned in @p pValue. If the value empty, for the @p pField found, then this
  * function will return #HTTPSuccess and @p pValue will be set to NULL with
- * @p pValueLen set to zero. According to rfc2616 it is not invalid to have an
+ * @p pValueLen set to zero. According to RFC 2616 it is not invalid to have an
  * empty value for some header fields.
  *
  * @note This function should only be called on a complete HTTP response. If the

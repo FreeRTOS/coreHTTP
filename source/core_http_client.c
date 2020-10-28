@@ -2124,7 +2124,7 @@ static int findHeaderValueParserCallback( http_parser * pHttpParser,
         }
         else
         {
-            /* It is not invalid according to rfc2616 to have an empty header
+            /* It is not invalid according to RFC 2616 to have an empty header
              * value. */
             *pContext->pValueLoc = NULL;
             *pContext->pValueLen = 0;
