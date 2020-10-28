@@ -2098,7 +2098,6 @@ static int findHeaderValueParserCallback( http_parser * pHttpParser,
 
     assert( pHttpParser != NULL );
     assert( pValueLoc != NULL );
-    assert( valueLen > 0u );
 
     pContext = ( findHeaderContext_t * ) pHttpParser->data;
 
@@ -2116,9 +2115,20 @@ static int findHeaderValueParserCallback( http_parser * pHttpParser,
                     "RequestedField=%.*s, ValueLocation=0x%p",
                     ( int ) ( pContext->fieldLen ), pContext->pField, pValueLoc ) );
 
-        /* Populate the output parameters with the location of the header value in the response buffer. */
-        *pContext->pValueLoc = pValueLoc;
-        *pContext->pValueLen = valueLen;
+        if( valueLen > 0 )
+        {
+            /* Populate the output parameters with the location of the header
+             * value in the response buffer. */
+            *pContext->pValueLoc = pValueLoc;
+            *pContext->pValueLen = valueLen;
+        }
+        else
+        {
+            /* It is not invalid according to RFC 2616 to have an empty header
+             * value. */
+            *pContext->pValueLoc = NULL;
+            *pContext->pValueLen = 0;
+        }
 
         /* Set the header value found flag. */
         pContext->valueFound = 1u;
