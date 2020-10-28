@@ -125,8 +125,8 @@ jobs:
           path: ssot
       - name: Check transport_interface.h
         run: |
-          SSOT_FILE="ssot/source/portable/transport_interface.h"
-          CURRENT_FILE="current/source/portable/transport_interface.h"
+          SSOT_FILE="ssot/source/interface/transport_interface.h"
+          CURRENT_FILE="current/source/interface/transport_interface.h"
           diff <(tail -n +3 $SSOT_FILE) <(tail -n +3 $CURRENT_FILE)
           if [ "$?" -ne "0" ]; then
             echo "transport_interface.h differs from coreMQTT."
