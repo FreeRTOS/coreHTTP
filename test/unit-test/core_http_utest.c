@@ -1393,7 +1393,7 @@ void test_Http_ReadHeader_Happy_Path()
 
 /**
  * @brief Test the case when the header is empty. Empty headers are not
- * invalid according to rfc2616.
+ * invalid according to RFC 2616.
  */
 void test_Http_ReadHeader_EmptyHeaderValue()
 {
