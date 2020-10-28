@@ -24,7 +24,7 @@ PROJECT_NAME = "FreeRTOS coreHTTP"
 # Preprocessor include paths -I...
 INCLUDES += -I$(SRCDIR)/test/cbmc/include
 INCLUDES += -I$(SRCDIR)/source/include
-INCLUDES += -I$(SRCDIR)/source/portable
+INCLUDES += -I$(SRCDIR)/source/interface
 INCLUDES += -I$(SRCDIR)/source
 INCLUDES += -I$(SRCDIR)/source/3rdparty/http_parser
 
