@@ -62,7 +62,7 @@
  * @brief The maximum Content-Length header field and value that could be
  * written to the request header buffer.
  */
-#define HTTP_MAX_CONTENT_LENGTH_HEADER_LENGTH    sizeof( "Content-Length: 4294967295" ) - 1u
+#define HTTP_MAX_CONTENT_LENGTH_HEADER_LENGTH    sizeof( "Content-Length: 4294967295" ) - 1U
 
 /**
  * @defgroup http_send_flags HTTPClient_Send Flags
