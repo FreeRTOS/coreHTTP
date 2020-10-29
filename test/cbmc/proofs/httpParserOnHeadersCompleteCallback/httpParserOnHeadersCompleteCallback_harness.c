@@ -56,7 +56,7 @@ void httpParserOnHeadersCompleteCallback_harness()
      * is an assertion in the function. */
     if( pResponse->pHeaders != NULL )
     {
-        __CPROVER_assume( headerOffSet <= bufferOffset );
+        __CPROVER_assume( headerOffSet < bufferOffset );
         pResponse->pHeaders = pResponse->pBuffer + headerOffSet;
     }
 
