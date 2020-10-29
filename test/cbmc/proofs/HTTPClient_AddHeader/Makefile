@@ -24,7 +24,7 @@ PROOF_UID=HTTPClient_AddHeader
 HARNESS_FILE=$(HARNESS_ENTRY)
 
 # The header field and value string lengths input into HTTPClient_AddHeader are
-# bounded to reduce the proof run time. This length is a bound on the strncpys
+# bounded to reduce the proof run time. This length is a bound on httpHeaderStrncpy
 # used to write the header field and values to the request header buffer. Memory
 # safety on the request header buffer can be proven in a reasonable bound. It
 # adds no value to the proof to write a header field and a header value of
@@ -52,7 +52,9 @@ REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMess
 # strncmp is used to find if there exists "\r\n\r\n" at the end of the header
 # buffer. Therefore, we need to unwind strncmp the length of "\r\n\r\n" + 1.
 UNWINDSET += strncmp.0:5
-UNWINDSET += strncpy.0:$(HEADER_FIELD_MAX_LENGTH)
+# The longest string input into strncpy in addHeader() is "\r\n\r\n".
+UNWINDSET += strncpy.0:5
+UNWINDSET += __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy.0:$(HEADER_FIELD_MAX_LENGTH)
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
