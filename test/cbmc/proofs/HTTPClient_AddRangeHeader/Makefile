@@ -30,8 +30,9 @@ REMOVE_FUNCTION_BODY +=
 # strncmp is used to find if there exists "\r\n\r\n" at the end of the header
 # buffer. Therefore, we need to unwind strncmp the length of "\r\n\r\n" + 1.
 UNWINDSET += strncmp.0:5
-# The longest string input into strncpy in addHeader() is "\r\n\r\n".
-UNWINDSET += strncpy.0:5
+# The longest string input into strncpy is "bytes=". Therefore, we need to
+# unwind strncpy the length of "bytes=" + 1.
+UNWINDSET += strncpy.0:7
 # The maximum number of characters expected to be copied is the maximum length
 # of the range header value. It is of the form:
 # "bytes=<Max-Integer-Value>-<Max-Integer-Value>".
