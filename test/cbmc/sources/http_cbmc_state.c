@@ -112,14 +112,21 @@ HTTPResponse_t * allocateHttpResponse( HTTPResponse_t * pResponse )
     if( pResponse != NULL )
     {
         __CPROVER_assume( pResponse->bufferLen < CBMC_MAX_OBJECT_SIZE );
-        __CPROVER_assume( pResponse->bodyLen <= pResponse->bufferLen );
-        __CPROVER_assume( pResponse->headersLen <= pResponse->bufferLen );
-
         pResponse->pBuffer = mallocCanFail( pResponse->bufferLen );
 
-        __CPROVER_assume( headerOffset <= pResponse->headersLen );
+        __CPROVER_assume( headerOffset <= pResponse->bufferLen );
+
+        /* It is possible to have no headers in the response so set to NULL or
+         * an offset in the response buffer. */
         pResponse->pHeaders = nondet_bool() ? NULL :
                               pResponse->pBuffer + headerOffset;
+
+        if( pResponse->pHeaders != NULL )
+        {
+            /* The length of the headers MUST be between the start of the start
+             * of the headers and the end of the buffer. */
+            __CPROVER_assume( pResponse->headersLen < ( pResponse->bufferLen - headerOffset ) );
+        }
 
         if( pResponse->bufferLen == 0 )
         {
@@ -127,8 +134,7 @@ HTTPResponse_t * allocateHttpResponse( HTTPResponse_t * pResponse )
         }
         else
         {
-            __CPROVER_assume( pResponse->headersLen < bodyOffset &&
-                              bodyOffset <= pResponse->bufferLen );
+            __CPROVER_assume( bodyOffset <= pResponse->bufferLen );
         }
 
         pResponse->pBody = nondet_bool() ? NULL :
@@ -207,10 +213,7 @@ HTTPParsingContext_t * allocateHttpSendParsingContext( HTTPParsingContext_t * pH
     {
         pHttpParsingContext = malloc( sizeof( HTTPParsingContext_t ) );
         __CPROVER_assume( pHttpParsingContext != NULL );
-    }
 
-    if( pHttpParsingContext != NULL )
-    {
         pResponse = allocateHttpResponse( NULL );
         __CPROVER_assume( isValidHttpResponse( pResponse ) &&
                           pResponse != NULL &&
