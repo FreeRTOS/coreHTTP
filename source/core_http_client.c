@@ -1201,7 +1201,7 @@ static char * httpHeaderStrncpy( char * pDest,
                                  uint8_t isField )
 {
     size_t i = 0U;
-    char * ret = pDest;
+    char * pRet = pDest;
     uint8_t hasError = 0;
 
     assert( pDest != NULL );
@@ -1234,12 +1234,12 @@ static char * httpHeaderStrncpy( char * pDest,
 
         if( hasError == 1 )
         {
-            ret = NULL;
+            pRet = NULL;
             break;
         }
     }
 
-    return ret;
+    return pRet;
 }
 
 /*-----------------------------------------------------------*/
@@ -1254,8 +1254,6 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     char * pBufferCur = NULL;
     size_t toAddLen = 0u;
     size_t backtrackHeaderLen = pRequestHeaders->headersLen;
-    const uint8_t isField = 1;
-    const uint8_t isValue = 0;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
@@ -1289,7 +1287,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
         /* Write "<Field>: <Value> \r\n" to the headers buffer. */
 
         /* Copy the header name into the buffer. */
-        if( httpHeaderStrncpy( pBufferCur, pField, fieldLen, isField ) == NULL )
+        if( httpHeaderStrncpy( pBufferCur, pField, fieldLen, HTTP_HEADER_STRNCPY_IS_FIELD ) == NULL )
         {
             returnStatus = HTTPSecurityAlertInvalidCharacter;
         }
@@ -1306,7 +1304,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
             pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
 
             /* Copy the header value into the buffer. */
-            if( httpHeaderStrncpy( pBufferCur, pValue, valueLen, isValue ) == NULL )
+            if( httpHeaderStrncpy( pBufferCur, pValue, valueLen, HTTP_HEADER_STRNCPY_IS_VALUE ) == NULL )
             {
                 returnStatus = HTTPSecurityAlertInvalidCharacter;
             }
