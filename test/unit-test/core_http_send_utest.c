@@ -951,7 +951,7 @@ void test_HTTPClient_Send_parse_partial_header_value( void )
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0, response.bodyLen );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - HTTP_HEADER_END_INDICATOR_LEN, 
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - HTTP_HEADER_END_INDICATOR_LEN,
                        response.headersLen );
     TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH, response.contentLength );
@@ -986,7 +986,7 @@ void test_HTTPClient_Send_parse_partial_body( void )
                                     0 );
     TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH - HTTP_HEADER_END_INDICATOR_LEN, 
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH - HTTP_HEADER_END_INDICATOR_LEN,
                        response.headersLen );
     TEST_ASSERT_EQUAL( response.pHeaders + HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH, response.pBody );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_BODY_LENGTH, response.bodyLen );
@@ -1196,7 +1196,8 @@ void test_HTTPClient_Send_less_bytes_request_headers( void )
 
     TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.headersLen );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ) - HTTP_HEADER_END_INDICATOR_LEN,
+                       response.headersLen );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0, response.bodyLen );
     TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
@@ -1235,7 +1236,8 @@ void test_HTTPClient_Send_less_bytes_request_body( void )
 
     TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.headersLen );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ) - HTTP_HEADER_END_INDICATOR_LEN,
+                       response.headersLen );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0, response.bodyLen );
     TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );

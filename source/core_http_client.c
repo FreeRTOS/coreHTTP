@@ -750,6 +750,7 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser )
 
     assert( pResponse != NULL );
     assert( pParsingContext->pBufferCur != NULL );
+
     /* The current location to parse was updated in previous callbacks and MUST
      * alawys be within the response buffer. */
     assert( pParsingContext->pBufferCur >= ( const char * ) ( pResponse->pBuffer ) );
@@ -1061,7 +1062,7 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
     HTTPStatus_t returnStatus;
     http_parser_settings parserSettings = { 0 };
     size_t bytesParsed = 0u;
-    const char* parsingStartLoc = NULL;
+    const char * parsingStartLoc = NULL;
 
     /* Disable unused variable warning. */
     ( void ) bytesParsed;
