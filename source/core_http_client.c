@@ -1050,6 +1050,7 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
     HTTPStatus_t returnStatus;
     http_parser_settings parserSettings = { 0 };
     size_t bytesParsed = 0u;
+    const char* parsingStartLoc = NULL;
 
     /* Disable unused variable warning. */
     ( void ) bytesParsed;
@@ -1103,6 +1104,11 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
      * each of the callbacks that http_parser_execute() will invoke. */
     pParsingContext->httpParser.data = pParsingContext;
 
+    /* Save the starting response buffer location to parse. This is needed to
+     * ensure that we move the next location to parse to exactly how many
+     * characters were parsed in this call. */
+    parsingStartLoc = pParsingContext->pBufferCur;
+
     /* This will begin the parsing. Each of the callbacks set in
      * parserSettings will be invoked as parts of the HTTP response are
      * reached. */
@@ -1110,6 +1116,10 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
                                        &parserSettings,
                                        pParsingContext->pBufferCur,
                                        parseLen );
+
+    /* The next location to parse will always be after what has already
+     * been parsed. */
+    pParsingContext->pBufferCur = parsingStartLoc + bytesParsed;
 
     LogDebug( ( "Parsed HTTP Response buffer: BytesParsed=%lu, "
                 "ExpectedBytesParsed=%lu",
