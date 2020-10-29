@@ -752,7 +752,7 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser )
     assert( pParsingContext->pBufferCur != NULL );
 
     /* The current location to parse was updated in previous callbacks and MUST
-     * alawys be within the response buffer. */
+     * always be within the response buffer. */
     assert( pParsingContext->pBufferCur >= ( const char * ) ( pResponse->pBuffer ) );
     assert( pParsingContext->pBufferCur < ( const char * ) ( pResponse->pBuffer + pResponse->bufferLen ) );
 
