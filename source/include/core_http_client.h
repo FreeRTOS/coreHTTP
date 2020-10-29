@@ -596,9 +596,9 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  *
  * httpLibraryStatus = HTTPClient_AddHeader( &requestHeaders,
  *                                           "Request-Header-Field",
- *                                           sizeof( "Request-Header-Field" ),
+ *                                           sizeof( "Request-Header-Field" ) - 1U,
  *                                           "Request-Header-Value",
- *                                           sizeof("Request-Header-Value") );
+ *                                           sizeof("Request-Header-Value") - 1U );
  * @endcode
  */
 /* @[declare_httpclient_addheader] */
