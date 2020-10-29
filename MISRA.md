@@ -23,12 +23,12 @@ include the third-party [http-parser source code](source/third-party/http_parser
 | Rule 8.7 | Advisory | API functions are not used by the library outside of the files they are defined; however, they must be externally visible in order to be used by an application. |
 | Rule 8.13 | Advisory | The third-party http-parser library callback definitions have a non-const parameter which holds the state of the parsing. This parameter is never updated in the callback implementations, but have fields that may be read. |
 | Rule 10.5 | Advisory | The third-party http-parser library has a structure with a field of type unsigned int whose values are intended to be mapped to an enum. This field contains error codes used by the HTTP client library. |
-| Rule 14.3 | Required | The third-party http-parser library sets a uint64_t type field to ULLONG_MAX or ( ( uint64_t ) -1 ) during it's internal parsing. Coverity MISRA does not detect that this variable changes. This field is checked by the HTTP Client library. |
+| Rule 14.3 | Required | The third-party http-parser library sets a uint64_t type field to `ULLONG_MAX` or `( ( uint64_t ) -1 )`, during its internal parsing. Coverity MISRA does not detect that this variable changes. This field is checked by the HTTP Client library. |
 
 ### Suppressed with Coverity Comments
 | Deviation | Category | Justification |
 | :-: | :-: | :-- |
 | Rule 5.4 | Required | The length of string literal macro identifiers are labeled with the identifier of the string literal itself postfixed with "_LEN" for clarity. This is consistent throughout the library. |
-| Rule 10.8 | Required | The size of the headers is found by taking the current location being parsed and subtracting it from the start of the headers. The start of the headers is set on the first header field found from http-parser. This always comes before finding the header length. If it does not an assertion is triggered. |
-| Rule 11.8 | Required | If the response body is of type transfer encoding chunked, then it is necessary to copy over the chunk headers with the data pointed to by the current parsing location. The current parsing location is returned to the callback implementation as a const char *. |
-| Rule 18.3 | Required | It is expected that the current location passed into the body parsing callback, by http-parser, points to the same user response buffer. |
+| Rule 10.8 | Required | The size of the headers is found by taking the current location being parsed and subtracting it from the start of the headers. The start of the headers is set on the first header field found from http-parser. This always comes before finding the header length; if it does not, an assertion is triggered. |
+| Rule 11.8 | Required | If the response body uses chunked transfer encoding, then it is necessary to copy over the chunk headers with the data to which the current parsing location points. The current parsing location is returned to the callback implementation as a `const char *`. |
+| Rule 18.3 | Required | It is expected that the current location http-parser passes into the body parsing callback points to the same user response buffer; it it does not, an assertion is triggered. |
