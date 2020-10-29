@@ -1126,7 +1126,7 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
      * reached. */
     bytesParsed = http_parser_execute( &( pParsingContext->httpParser ),
                                        &parserSettings,
-                                       pParsingContext->pBufferCur,
+                                       parsingStartLoc,
                                        parseLen );
 
     /* The next location to parse will always be after what has already

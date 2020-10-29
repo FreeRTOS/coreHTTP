@@ -123,8 +123,8 @@ HTTPResponse_t * allocateHttpResponse( HTTPResponse_t * pResponse )
 
         if( pResponse->pHeaders != NULL )
         {
-            /* The length of the headers MUST be between the start of the start
-             * of the headers and the end of the buffer. */
+            /* The length of the headers MUST be between the start of the
+             * headers and the end of the buffer. */
             __CPROVER_assume( pResponse->headersLen < ( pResponse->bufferLen - headerOffset ) );
         }
 
@@ -140,8 +140,8 @@ HTTPResponse_t * allocateHttpResponse( HTTPResponse_t * pResponse )
         pResponse->pBody = nondet_bool() ? NULL :
                            pResponse->pBuffer + bodyOffset;
 
-        /* The length of the body MUST be between the start of the start of the
-         * body and the end of the buffer. */
+        /* The length of the body MUST be between the start of body and the end
+         * of the buffer. */
         if( pResponse->pBody )
         {
             __CPROVER_assume( pResponse->bodyLen < ( pResponse->bufferLen - bodyOffset ) );
