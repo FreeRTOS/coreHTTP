@@ -1201,13 +1201,13 @@ static char * httpHeaderStrncpy( char * pDest,
                                  uint8_t isField )
 {
     size_t i = 0U;
-    char * ret = pSrc;
+    char * ret = pDest;
     uint8_t hasError = 0;
 
     assert( pDest != NULL );
     assert( pSrc != NULL );
 
-    for( ; ( i < len ) && ( pSrc[ i ] != '\0' ); i++ )
+    for( ; i < len; i++ )
     {
         if( pSrc[ i ] == CARRIAGE_RETURN_CHARACTER )
         {
@@ -1321,7 +1321,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                               HTTP_HEADER_END_INDICATOR,
                               HTTP_HEADER_END_INDICATOR_LEN );
 
-            /* Update the headers length value. */
+            /* Update the headers length value only when everything is successful. */
             pRequestHeaders->headersLen = backtrackHeaderLen + toAddLen;
         }
     }

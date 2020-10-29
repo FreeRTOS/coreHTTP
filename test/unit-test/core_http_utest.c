@@ -815,6 +815,102 @@ void test_Http_AddHeader_Single_Header_Insufficient_Memory()
     TEST_ASSERT_EQUAL( HTTPInsufficientMemory, httpStatus );
 }
 
+/**
+ * @brief Test adding invalid header fields.
+ */
+void test_Http_AddHeader_Invalid_Fields()
+{
+    HTTPStatus_t httpStatus = HTTPSuccess;
+    HTTPRequestHeaders_t requestHeaders = { 0 };
+    int numBytes = 0;
+
+    const char * colonInField = "head:er-field";
+    const char * linefeedInField = "head\ner-field";
+    const char * carriageReturnInField = "head\rer-field";
+
+    setupBuffer( &requestHeaders );
+
+    /* Set parameters for requestHeaders. */
+    numBytes = snprintf( ( char * ) requestHeaders.pBuffer,
+                         HTTP_TEST_HEADER_REQUEST_LINE_LEN + 1,
+                         HTTP_TEST_HEADER_REQUEST_LINE );
+    /* Make sure that the entire pre-existing data was printed to the buffer. */
+    TEST_ASSERT_GREATER_THAN( 0, numBytes );
+
+    httpStatus = HTTPClient_AddHeader( &requestHeaders,
+                                       colonInField, strlen( colonInField ),
+                                       HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, httpStatus );
+
+    httpStatus = HTTPClient_AddHeader( &requestHeaders,
+                                       linefeedInField, strlen( linefeedInField ),
+                                       HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, httpStatus );
+
+    httpStatus = HTTPClient_AddHeader( &requestHeaders,
+                                       carriageReturnInField, strlen( carriageReturnInField ),
+                                       HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, httpStatus );
+}
+
+/**
+ * @brief Test adding invalid header values.
+ */
+void test_Http_AddHeader_Invalid_Values()
+{
+    HTTPStatus_t httpStatus = HTTPSuccess;
+    HTTPRequestHeaders_t requestHeaders = { 0 };
+    int numBytes = 0;
+
+    const char * colonInValue = "head:er-value";
+    const char * linefeedInValue = "head\ner-Value";
+    const char * carriageReturnInValue = "head\rer-Value";
+
+    setupBuffer( &requestHeaders );
+
+    /* Test that a colon in the value is OK. */
+
+    /* Add 1 because snprintf(...) writes a null byte at the end. */
+    numBytes = snprintf( ( char * ) expectedHeaders.buffer,
+                         sizeof( expectedHeaders.buffer ),
+                         HTTP_TEST_SINGLE_HEADER_FORMAT,
+                         HTTP_TEST_HEADER_REQUEST_LINE,
+                         HTTP_TEST_HEADER_FIELD, colonInValue );
+
+    /* Make sure that the entire pre-existing data was printed to the buffer. */
+    TEST_ASSERT_GREATER_THAN( 0, numBytes );
+    expectedHeaders.dataLen = numBytes;
+
+    /* Set parameters for requestHeaders. */
+    numBytes = snprintf( ( char * ) requestHeaders.pBuffer,
+                         HTTP_TEST_HEADER_REQUEST_LINE_LEN + 1,
+                         HTTP_TEST_HEADER_REQUEST_LINE );
+    /* Make sure that the entire pre-existing data was printed to the buffer. */
+    TEST_ASSERT_GREATER_THAN( 0, numBytes );
+
+    /* We correctly set headersLen after writing request line to requestHeaders.pBuffer. */
+    requestHeaders.headersLen = HTTP_TEST_HEADER_REQUEST_LINE_LEN;
+
+    httpStatus = HTTPClient_AddHeader( &requestHeaders,
+                                       HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
+                                       colonInValue, strlen( colonInValue ) );
+    TEST_ASSERT_EQUAL( expectedHeaders.dataLen, requestHeaders.headersLen );
+    TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer,
+                              requestHeaders.pBuffer, expectedHeaders.dataLen );
+    TEST_ASSERT_EQUAL( HTTPSuccess, httpStatus );
+
+    /* Now test invalid character cases. */
+    httpStatus = HTTPClient_AddHeader( &requestHeaders,
+                                       HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
+                                       linefeedInValue, strlen( linefeedInValue ) );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, httpStatus );
+
+    httpStatus = HTTPClient_AddHeader( &requestHeaders,
+                                       HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
+                                       carriageReturnInValue, strlen( carriageReturnInValue ) );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, httpStatus );
+}
+
 /* ============== Testing HTTPClient_AddRangeHeader ================== */
 
 /**
