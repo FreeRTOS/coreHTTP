@@ -1428,7 +1428,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferCur = NULL;
-    size_t toAddLen = 0;
+    size_t toAddLen = 0U;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
