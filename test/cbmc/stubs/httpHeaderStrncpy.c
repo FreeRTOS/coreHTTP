@@ -21,7 +21,7 @@
  */
 
 /**
- * @file httpHeadersStrncpy.c
+ * @file httpHeaderStrncpy.c
  * @brief Creates a stub for strncpy so that the proof for
  * HTTPClient_InitializeRequestHeaders runs much faster. This stub checks if the
  * destination and source are valid accessible memory, for the length to copy.
@@ -30,7 +30,7 @@
 #include <string.h>
 #include <stdint.h>
 
-void * httpHeadersStrncpy( void * pDest,
+void * httpHeaderStrncpy( void * pDest,
                            const void * pSrc,
                            size_t len,
                            uint8_t isField )
