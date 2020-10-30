@@ -37,6 +37,7 @@ void httpParserOnHeadersCompleteCallback_harness()
     HTTPResponse_t * pResponse;
     HTTPClient_ResponseHeaderParsingCallback_t headerParserCallback;
     size_t bufferOffset;
+    size_t headerOffSet;
 
     pHttpParser = allocateHttpSendParser( NULL );
 
@@ -46,9 +47,18 @@ void httpParserOnHeadersCompleteCallback_harness()
     pResponse = pParsingContext->pResponse;
     pResponse->pHeaderParsingCallback = &headerParserCallback;
 
-    __CPROVER_assume( pResponse->headersLen <= bufferOffset &&
-                      bufferOffset < pResponse->bufferLen );
+    /* The next place to parse must be between the start of the buffer and the
+     * end of the buffer. This assumption is an assertion in the function. */
+    __CPROVER_assume( bufferOffset < pResponse->bufferLen );
     pParsingContext->pBufferCur = pResponse->pBuffer + bufferOffset;
+
+    /* The response headers MUST have been set prior or be NULL. This assumption
+     * is an assertion in the function. */
+    if( pResponse->pHeaders != NULL )
+    {
+        __CPROVER_assume( headerOffSet < bufferOffset );
+        pResponse->pHeaders = pResponse->pBuffer + headerOffSet;
+    }
 
     /* This assumption suppresses an overflow error when incrementing pResponse->headerCount. */
     __CPROVER_assume( pResponse->headerCount < SIZE_MAX );

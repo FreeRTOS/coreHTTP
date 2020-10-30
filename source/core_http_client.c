@@ -749,9 +749,16 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser )
     pResponse = pParsingContext->pResponse;
 
     assert( pResponse != NULL );
+    assert( pParsingContext->pBufferCur != NULL );
 
-    /* Set the location of what to parse next. */
-    pParsingContext->pBufferCur += HTTP_HEADER_END_INDICATOR_LEN;
+    /* The current location to parse was updated in previous callbacks and MUST
+     * always be within the response buffer. */
+    assert( pParsingContext->pBufferCur >= ( const char * ) ( pResponse->pBuffer ) );
+    assert( pParsingContext->pBufferCur < ( const char * ) ( pResponse->pBuffer + pResponse->bufferLen ) );
+
+    /* `\r\n\r\n`, `\r\n\n`, `\n\r\n`, and `\n\n` are all valid indicators of
+     * the end of the response headers. To reduce complexity these characters
+     * are not included in the response headers length returned to the user. */
 
     /* If headers existed, then pResponse->pHeaders was set during the first
      * call to httpParserOnHeaderFieldCallback(). */
@@ -844,7 +851,12 @@ static int httpParserOnBodyCallback( http_parser * pHttpParser,
      * then the start of the response body is NULL. */
     if( pResponse->pBody == NULL )
     {
-        pResponse->pBody = ( const uint8_t * ) ( pParsingContext->pBufferCur );
+        /* Ideally the start of the body should follow right after the header
+         * end indicating characters, but to reduce complexity and ensure users
+         * are given the correct start of the body, we set the start of the body
+         * to what the parser tells us is the start. This could come after the
+         * initial transfer encoding chunked header. */
+        pResponse->pBody = ( const uint8_t * ) ( pLoc );
         pResponse->bodyLen = 0U;
     }
 
@@ -1050,6 +1062,7 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
     HTTPStatus_t returnStatus;
     http_parser_settings parserSettings = { 0 };
     size_t bytesParsed = 0U;
+    const char * parsingStartLoc = NULL;
 
     /* Disable unused variable warning. */
     ( void ) bytesParsed;
@@ -1103,13 +1116,22 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
      * each of the callbacks that http_parser_execute() will invoke. */
     pParsingContext->httpParser.data = pParsingContext;
 
+    /* Save the starting response buffer location to parse. This is needed to
+     * ensure that we move the next location to parse to exactly how many
+     * characters were parsed in this call. */
+    parsingStartLoc = pParsingContext->pBufferCur;
+
     /* This will begin the parsing. Each of the callbacks set in
      * parserSettings will be invoked as parts of the HTTP response are
      * reached. */
     bytesParsed = http_parser_execute( &( pParsingContext->httpParser ),
                                        &parserSettings,
-                                       pParsingContext->pBufferCur,
+                                       parsingStartLoc,
                                        parseLen );
+
+    /* The next location to parse will always be after what has already
+     * been parsed. */
+    pParsingContext->pBufferCur = parsingStartLoc + bytesParsed;
 
     LogDebug( ( "Parsed HTTP Response buffer: BytesParsed=%lu, "
                 "ExpectedBytesParsed=%lu",
