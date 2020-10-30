@@ -21,26 +21,21 @@
  */
 
 /**
- * @file HTTPClient_InitializeRequestHeaders_harness.c
- * @brief Implements the proof harness for HTTPClient_InitializeRequestHeaders function.
+ * @file httpHeadersStrncpy.c
+ * @brief Creates a stub for strncpy so that the proof for
+ * HTTPClient_InitializeRequestHeaders runs much faster. This stub checks if the
+ * destination and source are valid accessible memory, for the length to copy.
  */
 
-#include "core_http_client.h"
+#include <string.h>
+#include <stdint.h>
 
-#include "http_cbmc_state.h"
-
-void HTTPClient_InitializeRequestHeaders_harness()
+void * httpHeadersStrncpy( void * pDest,
+                           const void * pSrc,
+                           size_t len,
+                           uint8_t isField )
 {
-    HTTPRequestHeaders_t * pRequestHeaders;
-    HTTPRequestInfo_t * pRequestInfo;
-
-    /* Initialize and make assumptions for the request headers object. */
-    pRequestHeaders = allocateHttpRequestHeaders( NULL );
-    __CPROVER_assume( isValidHttpRequestHeaders( pRequestHeaders ) );
-
-    /* Initialize and make assumptions for the request info object. */
-    pRequestInfo = allocateHttpRequestInfo( NULL );
-    __CPROVER_assume( isValidHttpRequestInfo( pRequestInfo ) );
-
-    HTTPClient_InitializeRequestHeaders( pRequestHeaders, pRequestInfo );
+    __CPROVER_assert( __CPROVER_w_ok( pDest, len ), "write" );
+    __CPROVER_assert( __CPROVER_r_ok( pSrc, len ), "read" );
+    return pDest;
 }
