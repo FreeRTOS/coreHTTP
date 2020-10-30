@@ -22,18 +22,20 @@
 
 /**
  * @file httpHeaderStrncpy.c
- * @brief Creates a stub for strncpy so that the proof for
- * HTTPClient_InitializeRequestHeaders runs much faster. This stub checks if the
- * destination and source are valid accessible memory, for the length to copy.
+ * @brief Creates a stub for httpHeaderStrncpy so that the proofs for
+ * HTTPClient_AddHeader, HTTPClient_AddRangeHeader, and
+ * HTTPClient_InitializeRequestHeaders run much faster. This stub checks if, for
+ * the input copy length, the destination and source are valid accessible
+ * memory.
  */
 
 #include <string.h>
 #include <stdint.h>
 
 void * httpHeaderStrncpy( void * pDest,
-                           const void * pSrc,
-                           size_t len,
-                           uint8_t isField )
+                          const void * pSrc,
+                          size_t len,
+                          uint8_t isField )
 {
     __CPROVER_assert( __CPROVER_w_ok( pDest, len ), "write" );
     __CPROVER_assert( __CPROVER_r_ok( pSrc, len ), "read" );

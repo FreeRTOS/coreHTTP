@@ -40,7 +40,7 @@ REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMess
 
 # These functions are removed and replace with stubs that check that the
 # destination parameter is writeable and that the source parameter is readable.
-# This increases the run-time of the proof. This is safe to do for this proof
+# This decreases the run-time of the proof. This is safe to do for this proof
 # because HTTPClient_InitializeRequestHeaders does not use the results of the
 # copy later in the function.
 REMOVE_FUNCTION_BODY += strncpy
