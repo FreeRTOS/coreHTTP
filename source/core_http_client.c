@@ -662,8 +662,7 @@ static int httpParserOnHeaderFieldCallback( http_parser * pHttpParser,
     assert( pResponse != NULL );
 
     /* If this is the first time httpParserOnHeaderFieldCallback() has been
-     * invoked on a response, then the headers location in the response was set
-     * to NULL in the preceding httpParseOnStatusFieldCallback(). */
+     * invoked on a response, then the start of the response headers is NULL. */
     if( pResponse->pHeaders == NULL )
     {
         pResponse->pHeaders = ( const uint8_t * ) pLoc;
