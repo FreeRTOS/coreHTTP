@@ -34,11 +34,11 @@ void HTTPClient_InitializeRequestHeaders_harness()
     HTTPRequestHeaders_t * pRequestHeaders;
     HTTPRequestInfo_t * pRequestInfo;
 
-    /* Initialize and make assumptions for request headers object. */
+    /* Initialize and make assumptions for the request headers object. */
     pRequestHeaders = allocateHttpRequestHeaders( NULL );
     __CPROVER_assume( isValidHttpRequestHeaders( pRequestHeaders ) );
 
-    /* Initialize and make assumptions for request info object. */
+    /* Initialize and make assumptions for the request info object. */
     pRequestInfo = allocateHttpRequestInfo( NULL );
     __CPROVER_assume( isValidHttpRequestInfo( pRequestInfo ) );
 

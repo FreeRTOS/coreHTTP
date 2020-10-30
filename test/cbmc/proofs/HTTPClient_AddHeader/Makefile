@@ -23,17 +23,7 @@ HARNESS_ENTRY=HTTPClient_AddHeader_harness
 PROOF_UID=HTTPClient_AddHeader
 HARNESS_FILE=$(HARNESS_ENTRY)
 
-# The header field and value string lengths input into HTTPClient_AddHeader are
-# bounded to reduce the proof run time. This length is a bound on the strncpys
-# used to write the header field and values to the request header buffer. Memory
-# safety on the request header buffer can be proven in a reasonable bound. It
-# adds no value to the proof to write a header field and a header value of
-# SIZE_MAX length.
-HEADER_FIELD_MAX_LENGTH=16
-HEADER_VALUE_MAX_LENGTH=16
-
-DEFINES += -DHEADER_FIELD_MAX_LENGTH=$(HEADER_FIELD_MAX_LENGTH)
-DEFINES += -DHEADER_VALUE_MAX_LENGTH=$(HEADER_VALUE_MAX_LENGTH)
+DEFINES +=
 INCLUDES +=
 
 # We remove these function bodies so that they aren't categorized as possible
@@ -49,13 +39,22 @@ REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnHead
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMessageBeginCallback
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMessageCompleteCallback
 
+# These functions are removed and replace with stubs that check that the
+# destination parameter is writeable and that the source parameter is readable.
+# This decreases the run-time of the proof. This is safe to do for this proof
+# because HTTPClient_AddHeader does not use the results of the copy later in the
+# function.
+REMOVE_FUNCTION_BODY += strncpy
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy
+
 # strncmp is used to find if there exists "\r\n\r\n" at the end of the header
 # buffer. Therefore, we need to unwind strncmp the length of "\r\n\r\n" + 1.
 UNWINDSET += strncmp.0:5
-UNWINDSET += strncpy.0:$(HEADER_FIELD_MAX_LENGTH)
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/strncpy.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/httpHeaderStrncpy.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 

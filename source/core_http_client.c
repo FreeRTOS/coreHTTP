@@ -96,6 +96,25 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
                                   size_t reqBodyBufLen );
 
 /**
+ * @brief A strncpy replacement with HTTP header validation.
+ *
+ * This function checks for `\r` and `\n` in the @p pSrc while copying.
+ * This function checks for `:` in the @p pSrc, if @p isField is set to 1.
+ *
+ * @param[in] pDest The destination buffer to copy to.
+ * @param[in] pSrc The source buffer to copy from.
+ * @param[in] len The length of @p pSrc to copy to pDest.
+ * @param[in] isField Set to 0 to indicate that @p pSrc is a field. Set to 1 to
+ * indicate that @p pSrc is a value.
+ *
+ * @return @p pDest if the copy was successful, NULL otherwise.
+ */
+static char * httpHeaderStrncpy( char * pDest,
+                                 const char * pSrc,
+                                 size_t len,
+                                 uint8_t isField );
+
+/**
  * @brief Write header based on parameters. This method also adds a trailing
  * "\r\n". If a trailing "\r\n" already exists in the HTTP header, this method
  * backtracks in order to write over it and updates the length accordingly.
@@ -643,8 +662,7 @@ static int httpParserOnHeaderFieldCallback( http_parser * pHttpParser,
     assert( pResponse != NULL );
 
     /* If this is the first time httpParserOnHeaderFieldCallback() has been
-     * invoked on a response, then the headers location in the response was set
-     * to NULL in the preceding httpParseOnStatusFieldCallback(). */
+     * invoked on a response, then the start of the response headers is NULL. */
     if( pResponse->pHeaders == NULL )
     {
         pResponse->pHeaders = ( const uint8_t * ) pLoc;
@@ -1198,6 +1216,55 @@ static uint8_t convertInt32ToAscii( int32_t value,
 
 /*-----------------------------------------------------------*/
 
+static char * httpHeaderStrncpy( char * pDest,
+                                 const char * pSrc,
+                                 size_t len,
+                                 uint8_t isField )
+{
+    size_t i = 0U;
+    char * pRet = pDest;
+    uint8_t hasError = 0;
+
+    assert( pDest != NULL );
+    assert( pSrc != NULL );
+
+    for( ; i < len; i++ )
+    {
+        if( pSrc[ i ] == CARRIAGE_RETURN_CHARACTER )
+        {
+            LogError( ( "Invalid character '\r' found in %.*s",
+                        ( int ) len, pSrc ) );
+            hasError = 1;
+        }
+        else if( pSrc[ i ] == LINEFEED_CHARACTER )
+        {
+            LogError( ( "Invalid character '\n' found in %.*s",
+                        ( int ) len, pSrc ) );
+            hasError = 1;
+        }
+        else if( ( isField == 1 ) && ( pSrc[ i ] == COLON_CHARACTER ) )
+        {
+            LogError( ( "Invalid character ':' found in %.*s",
+                        ( int ) len, pSrc ) );
+            hasError = 1;
+        }
+        else
+        {
+            pDest[ i ] = pSrc[ i ];
+        }
+
+        if( hasError == 1 )
+        {
+            pRet = NULL;
+            break;
+        }
+    }
+
+    return pRet;
+}
+
+/*-----------------------------------------------------------*/
+
 static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                const char * pField,
                                size_t fieldLen,
@@ -1241,26 +1308,41 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
         /* Write "<Field>: <Value> \r\n" to the headers buffer. */
 
         /* Copy the header name into the buffer. */
-        ( void ) strncpy( pBufferCur, pField, fieldLen );
-        pBufferCur += fieldLen;
+        if( httpHeaderStrncpy( pBufferCur, pField, fieldLen, HTTP_HEADER_STRNCPY_IS_FIELD ) == NULL )
+        {
+            returnStatus = HTTPSecurityAlertInvalidCharacter;
+        }
 
-        /* Copy the field separator, ": ", into the buffer. */
-        ( void ) strncpy( pBufferCur,
-                          HTTP_HEADER_FIELD_SEPARATOR,
-                          HTTP_HEADER_FIELD_SEPARATOR_LEN );
-        pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
+        if( returnStatus == HTTPSuccess )
+        {
+            pBufferCur += fieldLen;
 
-        /* Copy the header value into the buffer. */
-        ( void ) strncpy( pBufferCur, pValue, valueLen );
-        pBufferCur += valueLen;
+            /* Copy the field separator, ": ", into the buffer. */
+            ( void ) strncpy( pBufferCur,
+                              HTTP_HEADER_FIELD_SEPARATOR,
+                              HTTP_HEADER_FIELD_SEPARATOR_LEN );
 
-        /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
-        ( void ) strncpy( pBufferCur,
-                          HTTP_HEADER_END_INDICATOR,
-                          HTTP_HEADER_END_INDICATOR_LEN );
+            pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
 
-        /* Update the headers length value. */
-        pRequestHeaders->headersLen = backtrackHeaderLen + toAddLen;
+            /* Copy the header value into the buffer. */
+            if( httpHeaderStrncpy( pBufferCur, pValue, valueLen, HTTP_HEADER_STRNCPY_IS_VALUE ) == NULL )
+            {
+                returnStatus = HTTPSecurityAlertInvalidCharacter;
+            }
+        }
+
+        if( returnStatus == HTTPSuccess )
+        {
+            pBufferCur += valueLen;
+
+            /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
+            ( void ) strncpy( pBufferCur,
+                              HTTP_HEADER_END_INDICATOR,
+                              HTTP_HEADER_END_INDICATOR_LEN );
+
+            /* Update the headers length value only when everything is successful. */
+            pRequestHeaders->headersLen = backtrackHeaderLen + toAddLen;
+        }
     }
     else
     {

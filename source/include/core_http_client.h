@@ -262,9 +262,11 @@ typedef enum HTTPStatus
     HTTPSecurityAlertInvalidStatusCode,
 
     /**
-     * @brief An invalid character was found in the HTTP response message.
+     * @brief An invalid character was found in the HTTP response message or in
+     * the HTTP request header.
      *
      * Functions that may return this value:
+     * - #HTTPClient_AddHeader
      * - #HTTPClient_Send
      */
     HTTPSecurityAlertInvalidCharacter,
@@ -572,6 +574,9 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * The trailing `\r\n` that denotes the end of the header lines is overwritten,
  * if it already exists in the buffer.
  *
+ * @note This function validates only that `\r`, `\n`, and `:` are not present
+ * in @p pValue or @p pField. `:` is allowed in @p pValue.
+ *
  * @param[in] pRequestHeaders Request header buffer information.
  * @param[in] pField The header field name to write.
  * The data should be ISO 8859-1 (Latin-1) encoded per the HTTP standard,
@@ -586,6 +591,7 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * - #HTTPSuccess (If successful.)
  * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
  * - #HTTPInsufficientMemory (If application-provided buffer is not large enough to hold headers.)
+ * - #HTTPSecurityAlertInvalidCharacter (If an invalid character was found in @p pField or @p pValue.)
  *
  * **Example**
  * @code{c}

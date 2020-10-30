@@ -21,34 +21,23 @@
  */
 
 /**
- * @file HTTPClient_AddHeader_harness.c
- * @brief Implements the proof harness for HTTPClient_AddHeader function.
+ * @file httpHeaderStrncpy.c
+ * @brief Creates a stub for httpHeaderStrncpy so that the proofs for
+ * HTTPClient_AddHeader, HTTPClient_AddRangeHeader, and
+ * HTTPClient_InitializeRequestHeaders run much faster. This stub checks if, for
+ * the input copy length, the destination and source are valid accessible
+ * memory.
  */
 
-#include "core_http_client.h"
+#include <string.h>
+#include <stdint.h>
 
-#include "http_cbmc_state.h"
-
-void HTTPClient_AddHeader_harness()
+void * httpHeaderStrncpy( char * pDest,
+                          const char * pSrc,
+                          size_t len,
+                          uint8_t isField )
 {
-    HTTPRequestHeaders_t * pRequestHeaders;
-    char * pField;
-    char * pValue;
-    size_t fieldLen;
-    size_t valueLen;
-
-    /* Initialize and make assumptions for request headers. */
-    pRequestHeaders = allocateHttpRequestHeaders( NULL );
-    __CPROVER_assume( isValidHttpRequestHeaders( pRequestHeaders ) );
-
-    /* Initialize and make assumptions for header field. */
-    __CPROVER_assume( fieldLen < CBMC_MAX_OBJECT_SIZE );
-    pField = mallocCanFail( fieldLen );
-
-    /* Initialize and make assumptions for header value. */
-    __CPROVER_assume( valueLen < CBMC_MAX_OBJECT_SIZE );
-    pValue = mallocCanFail( valueLen );
-
-    HTTPClient_AddHeader( pRequestHeaders,
-                          pField, fieldLen, pValue, valueLen );
+    __CPROVER_assert( __CPROVER_w_ok( pDest, len ), "write" );
+    __CPROVER_assert( __CPROVER_r_ok( pSrc, len ), "read" );
+    return pDest;
 }

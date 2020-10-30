@@ -61,6 +61,7 @@ html
 http
 httpclient
 httpheadernotfound
+httpheaderstrncpy
 httpinsufficientmemory
 httpinvalidparameter
 httpinvalidresponse
@@ -103,6 +104,7 @@ init
 initializerequestheaders
 int
 iot
+isfield
 isheaderresponse
 isheadresponse
 iso
@@ -152,6 +154,7 @@ pbytesreceived
 pcontext
 pdata
 pdateloc
+pdest
 pfield
 pfieldloc
 pfindheadercontext
@@ -163,6 +166,7 @@ plaintext
 plastheaderfield
 plastheadervalue
 ploc
+psrc
 pmethod
 pname
 pnetworkcontext
