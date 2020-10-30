@@ -21,26 +21,37 @@
  */
 
 /**
- * @file HTTPClient_InitializeRequestHeaders_harness.c
- * @brief Implements the proof harness for HTTPClient_InitializeRequestHeaders function.
+ * @file strncpy.c
+ * @brief Creates a stub for strncpy so that the proofs for HTTPClient_AddHeader,
+ * HTTPClient_AddRangeHeader, and HTTPClient_InitializeRequestHeaders, run much
+ * faster. This stub checks if, for the input copy length, the destination and
+ * source are valid accessible memory.
  */
 
-#include "core_http_client.h"
+#include <string.h>
 
-#include "http_cbmc_state.h"
+/* This is a clang macro not available on linux */
+#ifndef __has_builtin
+    #define __has_builtin( x )    0
+#endif
 
-void HTTPClient_InitializeRequestHeaders_harness()
-{
-    HTTPRequestHeaders_t * pRequestHeaders;
-    HTTPRequestInfo_t * pRequestInfo;
-
-    /* Initialize and make assumptions for the request headers object. */
-    pRequestHeaders = allocateHttpRequestHeaders( NULL );
-    __CPROVER_assume( isValidHttpRequestHeaders( pRequestHeaders ) );
-
-    /* Initialize and make assumptions for the request info object. */
-    pRequestInfo = allocateHttpRequestInfo( NULL );
-    __CPROVER_assume( isValidHttpRequestInfo( pRequestInfo ) );
-
-    HTTPClient_InitializeRequestHeaders( pRequestHeaders, pRequestInfo );
-}
+#if __has_builtin( __builtin___strncpy_chk )
+    void * __builtin___strncpy_chk( void * dest,
+                                    const void * src,
+                                    size_t n,
+                                    size_t os )
+    {
+        __CPROVER_assert( __CPROVER_w_ok( dest, n ), "write" );
+        __CPROVER_assert( __CPROVER_r_ok( src, n ), "read" );
+        return dest;
+    }
+#else
+    void * strncpy( void * dest,
+                    const void * src,
+                    size_t n )
+    {
+        __CPROVER_assert( __CPROVER_w_ok( dest, n ), "write" );
+        __CPROVER_assert( __CPROVER_r_ok( src, n ), "read" );
+        return dest;
+    }
+#endif /* if __has_builtin( __builtin___strncpy_chk ) */

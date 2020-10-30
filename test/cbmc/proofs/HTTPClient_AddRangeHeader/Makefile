@@ -26,14 +26,25 @@ HARNESS_FILE=$(HARNESS_ENTRY)
 DEFINES +=
 INCLUDES +=
 
-REMOVE_FUNCTION_BODY +=
-# Maximum value of a 32 bit signed integer is 2,147,483,647, which is 10 digits.
+# These functions are removed and replace with stubs that check that the
+# destination parameter is writeable and that the source parameter is readable.
+# This decreases the run-time of the proof. This is safe to do for this proof
+# because HTTPClient_AddRangeHeader does not use the results of the copy later
+# in the function.
+REMOVE_FUNCTION_BODY += strncpy
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy
+
+# strncmp is used to find if there exists "\r\n\r\n" at the end of the header
+# buffer. Therefore, we need to unwind strncmp the length of "\r\n\r\n" + 1.
 UNWINDSET += strncmp.0:5
+# Maximum value of a 32 bit signed integer is 2,147,483,647, which is 10 digits.
 UNWINDSET += __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0:11
 UNWINDSET += __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1:11
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/strncpy.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/httpHeaderStrncpy.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
