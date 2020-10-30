@@ -62,7 +62,7 @@
  * @brief The maximum Content-Length header field and value that could be
  * written to the request header buffer.
  */
-#define HTTP_MAX_CONTENT_LENGTH_HEADER_LENGTH    sizeof( "Content-Length: 4294967295" ) - 1u
+#define HTTP_MAX_CONTENT_LENGTH_HEADER_LENGTH    sizeof( "Content-Length: 4294967295" ) - 1U
 
 /**
  * @defgroup http_send_flags HTTPClient_Send Flags
@@ -164,7 +164,7 @@ typedef enum HTTPStatus
      * - #HTTPClient_Send
      * - #HTTPClient_ReadHeader
      */
-    HTTP_SUCCESS,
+    HTTPSuccess,
 
     /**
      * @brief The HTTP Client library function input an invalid parameter.
@@ -176,7 +176,7 @@ typedef enum HTTPStatus
      * - #HTTPClient_Send
      * - #HTTPClient_ReadHeader
      */
-    HTTP_INVALID_PARAMETER,
+    HTTPInvalidParameter,
 
     /**
      * @brief A network error was returned from the transport interface.
@@ -184,7 +184,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_NETWORK_ERROR,
+    HTTPNetworkError,
 
     /**
      * @brief Part of the HTTP response was received from the network.
@@ -192,7 +192,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_PARTIAL_RESPONSE,
+    HTTPPartialResponse,
 
     /**
      * @brief No HTTP response was received from the network.
@@ -203,7 +203,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_NO_RESPONSE,
+    HTTPNoResponse,
 
     /**
      * @brief The application buffer was not large enough for the HTTP request
@@ -215,7 +215,7 @@ typedef enum HTTPStatus
      * - #HTTPClient_AddRangeHeader
      * - #HTTPClient_Send
      */
-    HTTP_INSUFFICIENT_MEMORY,
+    HTTPInsufficientMemory,
 
     /**
      * @brief The server sent more headers than the configured
@@ -224,7 +224,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED,
+    HTTPSecurityAlertResponseHeadersSizeLimitExceeded,
 
     /**
      * @brief A response contained the "Connection: close" header, but there
@@ -233,7 +233,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA,
+    HTTPSecurityAlertExtraneousResponseData,
 
     /**
      * @brief The server sent a chunk header containing an invalid character.
@@ -241,7 +241,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER,
+    HTTPSecurityAlertInvalidChunkHeader,
 
     /**
      * @brief The server sent a response with an invalid character in the
@@ -250,7 +250,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION,
+    HTTPSecurityAlertInvalidProtocolVersion,
 
     /**
      * @brief The server sent a response with an invalid character in the
@@ -259,15 +259,17 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_INVALID_STATUS_CODE,
+    HTTPSecurityAlertInvalidStatusCode,
 
     /**
-     * @brief An invalid character was found in the HTTP response message.
+     * @brief An invalid character was found in the HTTP response message or in
+     * the HTTP request header.
      *
      * Functions that may return this value:
+     * - #HTTPClient_AddHeader
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_INVALID_CHARACTER,
+    HTTPSecurityAlertInvalidCharacter,
 
     /**
      * @brief The response contains either an invalid character in the
@@ -277,7 +279,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_Send
      */
-    HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH,
+    HTTPSecurityAlertInvalidContentLength,
 
     /**
      * @brief An error occurred in the third-party parsing library.
@@ -286,7 +288,7 @@ typedef enum HTTPStatus
      * - #HTTPClient_Send
      * - #HTTPClient_ReadHeader
      */
-    HTTP_PARSER_INTERNAL_ERROR,
+    HTTPParserInternalError,
 
     /**
      * @brief The requested header field was not found in the response buffer.
@@ -294,7 +296,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_ReadHeader
      */
-    HTTP_HEADER_NOT_FOUND,
+    HTTPHeaderNotFound,
 
     /**
      * @brief The HTTP response, provided for parsing, is either corrupt or
@@ -303,7 +305,7 @@ typedef enum HTTPStatus
      * Functions that may return this value:
      * - #HTTPClient_ReadHeader
      */
-    HTTP_INVALID_RESPONSE
+    HTTPInvalidResponse
 } HTTPStatus_t;
 
 /**
@@ -353,7 +355,7 @@ typedef struct HTTPRequestInfo
     /**
      * @brief The HTTP request method e.g. "GET", "POST", "PUT", or "HEAD".
      */
-    const char * method;
+    const char * pMethod;
     size_t methodLen; /**< The length of the method in bytes. */
 
     /**
@@ -510,7 +512,7 @@ typedef struct HTTPResponse
  * of bytes written.
  *
  * Each line in the header is listed below and written in this order:
- *     <#HTTPRequestInfo_t.method> <#HTTPRequestInfo_t.pPath> <#HTTP_PROTOCOL_VERSION>
+ *     <#HTTPRequestInfo_t.pMethod> <#HTTPRequestInfo_t.pPath> <#HTTP_PROTOCOL_VERSION>
  *     User-Agent: <#HTTP_USER_AGENT_VALUE>
  *     Host: <#HTTPRequestInfo_t.pHost>
  *
@@ -520,9 +522,36 @@ typedef struct HTTPResponse
  * @param[in] pRequestHeaders Request header buffer information.
  * @param[in] pRequestInfo Initial request header configurations.
  * @return One of the following:
- * - #HTTP_SUCCESS (If successful)
- * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
- * - #HTTP_INSUFFICIENT_MEMORY (If provided buffer size is not large enough to hold headers.)
+ * - #HTTPSuccess (If successful)
+ * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
+ * - #HTTPInsufficientMemory (If provided buffer size is not large enough to hold headers.)
+ *
+ * **Example**
+ * @code{c}
+ * HTTPStatus_t httpLibraryStatus = HTTPSuccess;
+ * // Declare an HTTPRequestHeaders_t and HTTPRequestInfo_t.
+ * HTTPRequestHeaders_t requestHeaders = { 0 };
+ * HTTPRequestInfo_t requestInfo = { 0 };
+ * // A buffer that will fit the Request-Line, the User-Agent header line, and
+ * // the Host header line.
+ * uint8_t requestHeaderBuffer[ 256 ] = { 0 };
+ *
+ * // Set a buffer to serialize request headers to.
+ * requestHeaders.pBuffer = requestHeaderBuffer;
+ * requestHeaders.bufferLen = 256;
+ *
+ * // Set the Method, Path, and Host in the HTTPRequestInfo_t.
+ * requestInfo.pMethod = HTTP_METHOD_GET;
+ * requestInfo.methodLen = sizeof( HTTP_METHOD_GET ) - 1U;
+ * requestInfo.pPath = "/html/rfc2616"
+ * requestInfo.pathLen = sizeof( "/html/rfc2616" ) - 1U;
+ * requestInfo.pHost = "tools.ietf.org"
+ * requestInfo.hostLen = sizeof( "tools.ietf.org" ) - 1U;
+ * requestInfo.reqFlags |= HTTP_REQUEST_KEEP_ALIVE_FLAG;
+ *
+ * httpLibraryStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders,
+ *                                                          &requestInfo );
+ * @endcode
  */
 /* @[declare_httpclient_initializerequestheaders] */
 HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pRequestHeaders,
@@ -545,6 +574,9 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * The trailing `\r\n` that denotes the end of the header lines is overwritten,
  * if it already exists in the buffer.
  *
+ * @note This function validates only that `\r`, `\n`, and `:` are not present
+ * in @p pValue or @p pField. `:` is allowed in @p pValue.
+ *
  * @param[in] pRequestHeaders Request header buffer information.
  * @param[in] pField The header field name to write.
  * The data should be ISO 8859-1 (Latin-1) encoded per the HTTP standard,
@@ -556,9 +588,24 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
  * @param[in] valueLen The byte length of the header field value.
  *
  * @return One of the following:
- * - #HTTP_SUCCESS (If successful.)
- * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
- * - #HTTP_INSUFFICIENT_MEMORY (If application-provided buffer is not large enough to hold headers.)
+ * - #HTTPSuccess (If successful.)
+ * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
+ * - #HTTPInsufficientMemory (If application-provided buffer is not large enough to hold headers.)
+ * - #HTTPSecurityAlertInvalidCharacter (If an invalid character was found in @p pField or @p pValue.)
+ *
+ * **Example**
+ * @code{c}
+ * HTTPStatus_t httpLibraryStatus = HTTPSuccess;
+ * // Assume that requestHeaders has already been initialized with
+ * // HTTPClient_InitializeRequestHeaders().
+ * HTTPRequestHeaders_t requestHeaders;
+ *
+ * httpLibraryStatus = HTTPClient_AddHeader( &requestHeaders,
+ *                                           "Request-Header-Field",
+ *                                           sizeof( "Request-Header-Field" ) - 1U,
+ *                                           "Request-Header-Value",
+ *                                           sizeof("Request-Header-Value") - 1U );
+ * @endcode
  */
 /* @[declare_httpclient_addheader] */
 HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
@@ -573,29 +620,60 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * #HTTPRequestHeaders_t.pBuffer.
  *
  * For example, if requesting for the first 1kB of a file the following would be
- * written  "Range: bytes=0-1023\r\n\r\n".
+ * written: `Range: bytes=0-1023\r\n\r\n`.
  *
- * The trailing "\r\n" that denotes the end of the header lines is overwritten, if it
- * already exists in the buffer.
+ * The trailing `\r\n` that denotes the end of the header lines is overwritten,
+ * if it already exists in the buffer.
  *
- * @note There are 3 different forms of range specification, determined by the
+ * There are 3 different forms of range specification, determined by the
  * combination of @a rangeStartOrLastNBytes and @a rangeEnd parameter values:
+ *
  * 1. Request containing both parameters for the byte range [rangeStart, rangeEnd]
- * where @a rangeStartOrLastNBytes <= @a rangeEnd.
- * Example request: "Range: bytes=0-1023\r\n" for requesting bytes in the range [0, 1023].
+ *    where @a rangeStartOrLastNBytes <= @a rangeEnd.
+ *    Example request header line: `Range: bytes=0-1023\r\n` for requesting bytes in the range [0, 1023].<br>
+ *    **Example**
+ *    @code{c}
+ *    HTTPStatus_t httpLibraryStatus = HTTPSuccess;
+ *    // Assume that requestHeaders has already been initialized with
+ *    // HTTPClient_InitializeRequestHeaders().
+ *    HTTPRequestHeaders_t requestHeaders;
+ *
+ *    // Request for bytes 0 to 1023.
+ *    httpLibraryStatus = HTTPClient_AddRangeHeader( &requestHeaders, 0, 1023 );
+ *    @endcode
  *
  * 2. Request for the last N bytes, represented by @p rangeStartOrlastNbytes.
- * @p rangeStartOrlastNbytes should be negative and @p rangeEnd should be
- * #HTTP_RANGE_REQUEST_END_OF_FILE.
- * Example request: "Range: bytes=-512\r\n" for requesting the last 512 bytes
- * (or bytes in the range [512, 1023] for a 1kB sized file).
+ *    @p rangeStartOrlastNbytes should be negative and @p rangeEnd should be
+ *    #HTTP_RANGE_REQUEST_END_OF_FILE.
+ *    Example request header line: `Range: bytes=-512\r\n` for requesting the last 512 bytes
+ *    (or bytes in the range [512, 1023] for a 1KB sized file).<br>
+ *    **Example**
+ *    @code{c}
+ *    HTTPStatus_t httpLibraryStatus = HTTPSuccess;
+ *    // Assume that requestHeaders has already been initialized with
+ *    // HTTPClient_InitializeRequestHeaders().
+ *    HTTPRequestHeaders_t requestHeaders;
+ *
+ *    // Request for the last 512 bytes.
+ *    httpLibraryStatus = HTTPClient_AddRangeHeader( &requestHeaders, -512, HTTP_RANGE_REQUEST_END_OF_FILE)
+ *    @endcode
  *
  * 3. Request for all bytes (till the end of byte sequence) from byte N,
- * represented by @p rangeStartOrlastNbytes.
- * @p rangeStartOrlastNbytes should be >= 0 and @p rangeEnd should be
- * #HTTP_RANGE_REQUEST_END_OF_FILE.
- * Example request: "Range: bytes=256-\r\n" for requesting all bytes after and
- * including byte 256 (or bytes in the range [256,1023] for a 1kB sized file).
+ *    represented by @p rangeStartOrlastNbytes.
+ *    @p rangeStartOrlastNbytes should be >= 0 and @p rangeEnd should be
+ *    #HTTP_RANGE_REQUEST_END_OF_FILE.<br>
+ *    Example request header line: `Range: bytes=256-\r\n` for requesting all bytes after and
+ *    including byte 256 (or bytes in the range [256,1023] for a 1kB sized file).<br>
+ *    **Example**
+ *    @code{c}
+ *    HTTPStatus_t httpLibraryStatus = HTTPSuccess;
+ *    // Assume that requestHeaders has already been initialized with
+ *    // HTTPClient_InitializeRequestHeaders().
+ *    HTTPRequestHeaders_t requestHeaders;
+ *
+ *    // Request for all bytes from byte 256 onward.
+ *    httpLibraryStatus = HTTPClient_AddRangeHeader( &requestHeaders, 256, HTTP_RANGE_REQUEST_END_OF_FILE)
+ *    @endcode
  *
  * @param[in] pRequestHeaders Request header buffer information.
  * @param[in] rangeStartOrlastNbytes Represents either the starting byte
@@ -605,10 +683,10 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * should be passed.
  *
  * @return Returns the following status codes:
- * #HTTP_SUCCESS if successful.
- * #HTTP_INVALID_PARAMETER, if input parameters are invalid, including when
+ * #HTTPSuccess, if successful.
+ * #HTTPInvalidParameter, if input parameters are invalid, including when
  * the @p rangeStartOrlastNbytes and @p rangeEnd parameter combination is invalid.
- * #HTTP_INSUFFICIENT_MEMORY, if the passed #HTTPRequestHeaders_t.pBuffer
+ * #HTTPInsufficientMemory, if the passed #HTTPRequestHeaders_t.pBuffer
  * contains insufficient remaining memory for storing the range request.
  */
 /* @[declare_httpclient_addrangeheader] */
@@ -626,21 +704,21 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * then the Content-Length to be sent to the server is automatically written to
  * @p pRequestHeaders. The Content-Length will not be written when there is
  * no request body. If there is not enough room in the buffer to write the
- * Content-Length then #HTTP_INSUFFICIENT_MEMORY is returned. Please see
+ * Content-Length then #HTTPInsufficientMemory is returned. Please see
  * #HTTP_MAX_CONTENT_LENGTH_HEADER_LENGTH for the maximum Content-Length header
  * field and value that could be written to the buffer.
  *
  * The application should close the connection with the server if any of the
  * following errors are returned:
- * - #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED
- * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
- * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
- * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
- * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
- * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
- * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
+ * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
+ * - #HTTPSecurityAlertExtraneousResponseData
+ * - #HTTPSecurityAlertInvalidChunkHeader
+ * - #HTTPSecurityAlertInvalidProtocolVersion
+ * - #HTTPSecurityAlertInvalidStatusCode
+ * - #HTTPSecurityAlertInvalidCharacter
+ * - #HTTPSecurityAlertInvalidContentLength
  *
- * The @p pResponse returned is valid only if this function returns HTTP_SUCCESS.
+ * The @p pResponse returned is valid only if this function returns HTTPSuccess.
  *
  * @param[in] pTransport Transport interface, see #TransportInterface_t for
  * more information.
@@ -655,22 +733,62 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * see @ref http_send_flags for more information.
  *
  * @return One of the following:
- * - #HTTP_SUCCESS (If successful.)
- * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
- * - #HTTP_NETWORK_ERROR (Errors in sending or receiving over the transport interface.)
- * - #HTTP_PARTIAL_RESPONSE (Part of an HTTP response was received in a partially filled response buffer.)
- * - #HTTP_NO_RESPONSE (No data was received from the transport interface.)
- * - #HTTP_INSUFFICIENT_MEMORY (The response received could not fit into the response buffer
+ * - #HTTPSuccess (If successful.)
+ * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
+ * - #HTTPNetworkError (Errors in sending or receiving over the transport interface.)
+ * - #HTTPPartialResponse (Part of an HTTP response was received in a partially filled response buffer.)
+ * - #HTTPNoResponse (No data was received from the transport interface.)
+ * - #HTTPInsufficientMemory (The response received could not fit into the response buffer
  * or extra headers could not be sent in the request.)
- * - #HTTP_PARSER_INTERNAL_ERROR (Internal parsing error.)
+ * - #HTTPParserInternalError (Internal parsing error.)\n\n
  * Security alerts are listed below, please see #HTTPStatus_t for more information:
- * - #HTTP_SECURITY_ALERT_RESPONSE_HEADERS_SIZE_LIMIT_EXCEEDED
- * - #HTTP_SECURITY_ALERT_EXTRANEOUS_RESPONSE_DATA
- * - #HTTP_SECURITY_ALERT_INVALID_CHUNK_HEADER
- * - #HTTP_SECURITY_ALERT_INVALID_PROTOCOL_VERSION
- * - #HTTP_SECURITY_ALERT_INVALID_STATUS_CODE
- * - #HTTP_SECURITY_ALERT_INVALID_CHARACTER
- * - #HTTP_SECURITY_ALERT_INVALID_CONTENT_LENGTH
+ * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
+ * - #HTTPSecurityAlertExtraneousResponseData
+ * - #HTTPSecurityAlertInvalidChunkHeader
+ * - #HTTPSecurityAlertInvalidProtocolVersion
+ * - #HTTPSecurityAlertInvalidStatusCode
+ * - #HTTPSecurityAlertInvalidCharacter
+ * - #HTTPSecurityAlertInvalidContentLength
+ *
+ * **Example**
+ * @code{c}
+ * // Variables used in this example.
+ * HTTPStatus_t httpLibraryStatus = HTTPSuccess;
+ * TransportInterface_t transportInterface = { 0 };
+ * HTTPResponse_t = { 0 };
+ * char requestBody[] = "This is an example request body.";
+ *
+ * // Assume that requestHeaders has been initialized with
+ * // HTTPClient_InitializeResponseHeaders() and any additional headers have
+ * // been added with HTTPClient_AddHeader().
+ * HTTPRequestHeaders_t requestHeaders;
+ *
+ * // Set the transport interface with platform specific functions that are
+ * // assumed to be implemented elsewhere.
+ * transportInterface.recv = myPlatformTransportReceive;
+ * transportInterface.send = myPlatformTransportSend;
+ * transportInterface.pNetworkContext = myPlatformNetworkContext;
+ *
+ * // Set the buffer to receive the HTTP response message into. The buffer is
+ * // dynamically allocated for demonstration purposes only.
+ * response.pBuffer = ( uint8_t* )malloc( 1024 );
+ * response.bufferLen = 1024;
+ *
+ * httpLibraryStatus = HTTPClient_Send( &transportInterface,
+ *                                      &requestHeaders,
+ *                                      requestBody,
+ *                                      sizeof( requestBody ) - 1U,
+ *                                      &response,
+ *                                      0 );
+ *
+ * if( httpLibraryStatus == HTTPSuccess )
+ * {
+ *     if( response.status == 200 )
+ *     {
+ *         // Handle a response Status-Code of 200 OK.
+ *     }
+ * }
+ * @endcode
  */
 /* @[declare_httpclient_send] */
 HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
@@ -686,6 +804,12 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * This will return the location of the response header value in the
  * #HTTPResponse_t.pBuffer buffer.
  *
+ * The location, within #HTTPResponse_t.pBuffer, of the value found, will be
+ * returned in @p pValue. If the header value is empty for the found @p pField,
+ * then this function will return #HTTPSuccess, and set the values for
+ * @p pValueLoc and @p pValueLen as NULL and zero respectively. According to
+ * RFC 2616, it is not invalid to have an empty value for some header fields.
+ *
  * @note This function should only be called on a complete HTTP response. If the
  * request is sent through the #HTTPClient_Send function, the #HTTPResponse_t is
  * incomplete until #HTTPClient_Send returns.
@@ -699,11 +823,29 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
  * header value in bytes.
  *
  * @return One of the following:
- * - #HTTP_SUCCESS (If successful.)
- * - #HTTP_INVALID_PARAMETER (If any provided parameters or their members are invalid.)
- * - #HTTP_HEADER_NOT_FOUND (Header is not found in the passed response buffer.)
- * - #HTTP_INVALID_RESPONSE (Provided response is not a valid HTTP response for parsing.)
- * - #HTTP_PARSER_INTERNAL_ERROR(If an error in the response parser.)
+ * - #HTTPSuccess (If successful.)
+ * - #HTTPInvalidParameter (If any provided parameters or their members are invalid.)
+ * - #HTTPHeaderNotFound (Header is not found in the passed response buffer.)
+ * - #HTTPInvalidResponse (Provided response is not a valid HTTP response for parsing.)
+ * - #HTTPParserInternalError(If an error in the response parser.)
+ *
+ * **Example**
+ * @code{c}
+ * HTTPStatus_t httpLibraryStatus = HTTPSuccess;
+ * // Assume that response is returned from a successful invocation of
+ * // HTTPClient_Send().
+ * HTTPResponse_t response;
+ *
+ * char * pDateLoc = NULL;
+ * size_t dateLen = 0;
+ * // Search for a "Date" header field. pDateLoc will be the location of the
+ * // Date header value in response.pBuffer.
+ * httpLibraryStatus = HTTPClient_ReadHeader( &response,
+ *                                            "Date",
+ *                                            sizeof("Date") - 1,
+ *                                            &pDateLoc,
+ *                                            &dateLen );
+ * @endcode
  */
 /* @[declare_httpclient_readheader] */
 HTTPStatus_t HTTPClient_ReadHeader( const HTTPResponse_t * pResponse,
