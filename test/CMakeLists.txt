@@ -50,7 +50,7 @@ target_include_directories( coverity_analysis PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS}
 # Define an http-paser resource path.
 set( HTTP_PARSER_DIR ${MODULE_ROOT_DIR}/source/dependency/3rdparty/http_parser CACHE INTERNAL "http-parser library source directory." )
 
-#include( http_parser_build.cmake )
+include( http_parser_build.cmake )
 
 # Check if the http_parser source directory exists.
 if( NOT EXISTS ${HTTP_PARSER_DIR}/http_parser.c )
