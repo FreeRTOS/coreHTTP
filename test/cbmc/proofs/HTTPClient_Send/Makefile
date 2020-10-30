@@ -46,6 +46,14 @@ REMOVE_FUNCTION_BODY += http_parser_init
 REMOVE_FUNCTION_BODY += http_parser_set_max_header_size
 REMOVE_FUNCTION_BODY += http_parser_settings_init
 
+# These functions are removed and replace with stubs that check that the
+# destination parameter is writeable and that the source parameter is readable.
+# This decreases the run-time of the proof. This is safe to do for this proof
+# because all of the functions, in HTTPClient_Send, that would have used the
+# results of the copy are stubbed out to be proven separately.
+REMOVE_FUNCTION_BODY += strncpy
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy
+
 # There is a total of 10 digits in INT32_MAX. These loops are unwound once more
 # than the total possible iterations in the int32_t to ASCII converation.
 UNWINDSET += __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0:11
@@ -56,18 +64,13 @@ UNWINDSET += __CPROVER_file_local_core_http_client_c_sendHttpData.0:10
 # strncmp is used to find if there exists "\r\n\r\n" at the end of the header
 # buffer. Therefore, we need to unwind strncmp to the length of "\r\n\r\n" + 1.
 UNWINDSET += strncmp.0:5
-# addHeader() is called to write the Content-Length header field and value. The
-# longest string input into strncpy, in addHeader(), is "\r\n\r\n".
-UNWINDSET += strncpy.0:5
-# httpHeaderStrncpy() is used to write the Content-Length header field to the
-# request before sending it. Therefore, we need to unwind httpHeaderStrncpy to
-# the length of "Content-Length" + 1.
-UNWINDSET += __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy.0:15
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_Send_http_parser_execute.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/transport_interface_stubs.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/strncpy.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/httpHeaderStrncpy.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
