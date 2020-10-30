@@ -570,9 +570,9 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext )
          * httpParserOnHeaderFieldCallback() and
          * httpParserOnHeaderValueCallback(). */
         pParsingContext->pLastHeaderField = NULL;
-        pParsingContext->lastHeaderFieldLen = 0u;
+        pParsingContext->lastHeaderFieldLen = 0U;
         pParsingContext->pLastHeaderValue = NULL;
-        pParsingContext->lastHeaderValueLen = 0u;
+        pParsingContext->lastHeaderValueLen = 0U;
     }
 }
 
@@ -626,9 +626,9 @@ static int httpParserOnStatusCallback( http_parser * pHttpParser,
     /* Initialize the first header field and value to be passed to the user
      * callback. */
     pParsingContext->pLastHeaderField = NULL;
-    pParsingContext->lastHeaderFieldLen = 0u;
+    pParsingContext->lastHeaderFieldLen = 0U;
     pParsingContext->pLastHeaderValue = NULL;
-    pParsingContext->lastHeaderValueLen = 0u;
+    pParsingContext->lastHeaderValueLen = 0U;
 
     /* httpParserOnStatusCallback() is reached because http_parser_execute() has
      * successfully read the HTTP response status code. */
@@ -788,7 +788,7 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser )
     }
     else
     {
-        pResponse->headersLen = 0u;
+        pResponse->headersLen = 0U;
     }
 
     /* If the Content-Length header was found, then pHttpParser->content_length
@@ -799,17 +799,17 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser )
     }
     else
     {
-        pResponse->contentLength = 0u;
+        pResponse->contentLength = 0U;
     }
 
     /* If the Connection: close header was found this flag will be set. */
-    if( ( pHttpParser->flags & ( unsigned int ) ( F_CONNECTION_CLOSE ) ) != 0u )
+    if( ( pHttpParser->flags & ( unsigned int ) ( F_CONNECTION_CLOSE ) ) != 0U )
     {
         pResponse->respFlags |= HTTP_RESPONSE_CONNECTION_CLOSE_FLAG;
     }
 
     /* If the Connection: keep-alive header was found this flag will be set. */
-    if( ( pHttpParser->flags & ( unsigned int ) ( F_CONNECTION_KEEP_ALIVE ) ) != 0u )
+    if( ( pHttpParser->flags & ( unsigned int ) ( F_CONNECTION_KEEP_ALIVE ) ) != 0U )
     {
         pResponse->respFlags |= HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG;
     }
@@ -819,7 +819,7 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser )
      * request. A HEAD response will contain Content-Length, but no body. If
      * the parser is not stopped here, then it will try to keep parsing past the
      * end of the headers up to the Content-Length found. */
-    if( pParsingContext->isHeadResponse == 1u )
+    if( pParsingContext->isHeadResponse == 1U )
     {
         shouldContinueParse = HTTP_PARSER_STOP_PARSING;
     }
@@ -864,7 +864,7 @@ static int httpParserOnBodyCallback( http_parser * pHttpParser,
     if( pResponse->pBody == NULL )
     {
         pResponse->pBody = ( const uint8_t * ) ( pParsingContext->pBufferCur );
-        pResponse->bodyLen = 0u;
+        pResponse->bodyLen = 0U;
     }
 
     /* The next location to write. */
@@ -1068,7 +1068,7 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
 {
     HTTPStatus_t returnStatus;
     http_parser_settings parserSettings = { 0 };
-    size_t bytesParsed = 0u;
+    size_t bytesParsed = 0U;
 
     /* Disable unused variable warning. */
     ( void ) bytesParsed;
@@ -1087,18 +1087,18 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
         pParsingContext->isHeadResponse = isHeadResponse;
 
         /* Initialize the status-code returned in the response. */
-        pResponse->statusCode = 0u;
+        pResponse->statusCode = 0U;
         /* Initialize the start of the response body and length. */
         pResponse->pBody = NULL;
-        pResponse->bodyLen = 0u;
+        pResponse->bodyLen = 0U;
 
         /* Initialize the start of the headers, its length, and the count for
          * the parsing that follows the status. */
         pResponse->pHeaders = NULL;
-        pResponse->headersLen = 0u;
-        pResponse->headerCount = 0u;
+        pResponse->headersLen = 0U;
+        pResponse->headerCount = 0U;
         /* Initialize the response flags. */
-        pResponse->respFlags = 0u;
+        pResponse->respFlags = 0U;
     }
     else
     {
@@ -1153,9 +1153,9 @@ static uint8_t convertInt32ToAscii( int32_t value,
      * a privately used variable. This variable's size will always be less
      * than INT32_MAX. */
     int32_t absoluteValue = value;
-    uint8_t numOfDigits = 0u;
-    uint8_t index = 0u;
-    uint8_t isNegative = 0u;
+    uint8_t numOfDigits = 0U;
+    uint8_t index = 0U;
+    uint8_t isNegative = 0U;
     char temp = '\0';
 
     assert( pBuffer != NULL );
@@ -1165,7 +1165,7 @@ static uint8_t convertInt32ToAscii( int32_t value,
     /* If the value is negative, write the '-' (minus) character to the buffer. */
     if( value < 0 )
     {
-        isNegative = 1u;
+        isNegative = 1U;
 
         *pBuffer = '-';
 
@@ -1183,11 +1183,11 @@ static uint8_t convertInt32ToAscii( int32_t value,
 
     /* Reverse the digits in the buffer to store the correct ASCII representation
      * of the value. */
-    for( index = 0u; index < ( numOfDigits / 2u ); index++ )
+    for( index = 0U; index < ( numOfDigits / 2U ); index++ )
     {
         temp = pBuffer[ isNegative + index ];
-        pBuffer[ isNegative + index ] = pBuffer[ isNegative + numOfDigits - index - 1u ];
-        pBuffer[ isNegative + numOfDigits - index - 1u ] = temp;
+        pBuffer[ isNegative + index ] = pBuffer[ isNegative + numOfDigits - index - 1U ];
+        pBuffer[ isNegative + numOfDigits - index - 1U ] = temp;
     }
 
     return( isNegative + numOfDigits );
@@ -1252,15 +1252,15 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferCur = NULL;
-    size_t toAddLen = 0u;
+    size_t toAddLen = 0U;
     size_t backtrackHeaderLen = pRequestHeaders->headersLen;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
     assert( pField != NULL );
     assert( pValue != NULL );
-    assert( fieldLen != 0u );
-    assert( valueLen != 0u );
+    assert( fieldLen != 0U );
+    assert( valueLen != 0U );
 
     pBufferCur = ( char * ) ( pRequestHeaders->pBuffer + pRequestHeaders->headersLen );
 
@@ -1344,7 +1344,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char rangeValueBuffer[ HTTP_MAX_RANGE_REQUEST_VALUE_LEN ];
-    size_t rangeValueLength = 0u;
+    size_t rangeValueLength = 0U;
 
     assert( pRequestHeaders != NULL );
 
@@ -1421,9 +1421,9 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
     assert( pMethod != NULL );
-    assert( methodLen != 0u );
+    assert( methodLen != 0U );
 
-    toAddLen += ( ( pPath == NULL ) || ( pathLen == 0u ) ) ? HTTP_EMPTY_PATH_LEN : pathLen;
+    toAddLen += ( ( pPath == NULL ) || ( pathLen == 0U ) ) ? HTTP_EMPTY_PATH_LEN : pathLen;
 
     if( ( toAddLen + pRequestHeaders->headersLen ) > pRequestHeaders->bufferLen )
     {
@@ -1440,7 +1440,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
         pBufferCur += SPACE_CHARACTER_LEN;
 
         /* Use "/" as default value if <PATH> is NULL. */
-        if( ( pPath == NULL ) || ( pathLen == 0u ) )
+        if( ( pPath == NULL ) || ( pathLen == 0U ) )
         {
             ( void ) strncpy( pBufferCur,
                               HTTP_EMPTY_PATH,
@@ -1503,12 +1503,12 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
         LogError( ( "Parameter check failed: pRequestInfo->pHost is NULL." ) );
         returnStatus = HTTPInvalidParameter;
     }
-    else if( pRequestInfo->methodLen == 0u )
+    else if( pRequestInfo->methodLen == 0U )
     {
         LogError( ( "Parameter check failed: pRequestInfo->methodLen must be greater than 0." ) );
         returnStatus = HTTPInvalidParameter;
     }
-    else if( pRequestInfo->hostLen == 0u )
+    else if( pRequestInfo->hostLen == 0U )
     {
         LogError( ( "Parameter check failed: pRequestInfo->hostLen must be greater than 0." ) );
         returnStatus = HTTPInvalidParameter;
@@ -1521,7 +1521,7 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
     if( returnStatus == HTTPSuccess )
     {
         /* Reset application-provided parameters. */
-        pRequestHeaders->headersLen = 0u;
+        pRequestHeaders->headersLen = 0U;
 
         /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. */
         returnStatus = writeRequestLine( pRequestHeaders,
@@ -1553,7 +1553,7 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
 
     if( returnStatus == HTTPSuccess )
     {
-        if( ( HTTP_REQUEST_KEEP_ALIVE_FLAG & pRequestInfo->reqFlags ) != 0u )
+        if( ( HTTP_REQUEST_KEEP_ALIVE_FLAG & pRequestInfo->reqFlags ) != 0U )
         {
             /* Write "Connection: keep-alive". */
             returnStatus = addHeader( pRequestHeaders,
@@ -1598,12 +1598,12 @@ HTTPStatus_t HTTPClient_AddHeader( HTTPRequestHeaders_t * pRequestHeaders,
         LogError( ( "Parameter check failed: pValue is NULL." ) );
         returnStatus = HTTPInvalidParameter;
     }
-    else if( fieldLen == 0u )
+    else if( fieldLen == 0U )
     {
         LogError( ( "Parameter check failed: fieldLen must be greater than 0." ) );
         returnStatus = HTTPInvalidParameter;
     }
-    else if( valueLen == 0u )
+    else if( valueLen == 0U )
     {
         LogError( ( "Parameter check failed: valueLen must be greater than 0." ) );
         returnStatus = HTTPInvalidParameter;
@@ -1756,10 +1756,10 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char pContentLengthValue[ MAX_INT32_NO_OF_DECIMAL_DIGITS ] = { '\0' };
-    uint8_t contentLengthValueNumBytes = 0u;
+    uint8_t contentLengthValueNumBytes = 0U;
 
     assert( pRequestHeaders != NULL );
-    assert( contentLength > 0u );
+    assert( contentLength > 0U );
 
     contentLengthValueNumBytes = convertInt32ToAscii( ( int32_t ) contentLength,
                                                       pContentLengthValue,
@@ -1789,7 +1789,7 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
                                      uint32_t sendFlags )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
-    uint8_t shouldSendContentLength = 0u;
+    uint8_t shouldSendContentLength = 0U;
 
     assert( pTransport != NULL );
     assert( pTransport->send != NULL );
@@ -1797,10 +1797,10 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
 
     /* Send the content length header if the flag to disable is not set and the
      * body length is greater than zero. */
-    shouldSendContentLength = ( ( ( sendFlags & HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG ) == 0u ) &&
-                                ( reqBodyLen > 0u ) ) ? 1u : 0u;
+    shouldSendContentLength = ( ( ( sendFlags & HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG ) == 0U ) &&
+                                ( reqBodyLen > 0U ) ) ? 1U : 0U;
 
-    if( shouldSendContentLength == 1u )
+    if( shouldSendContentLength == 1U )
     {
         returnStatus = addContentLengthHeader( pRequestHeaders, reqBodyLen );
     }
@@ -1879,7 +1879,7 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
     {
         /* When a zero is returned from the transport recv it will not be
          * invoked again. */
-        *pBytesReceived = 0;
+        *pBytesReceived = 0U;
         LogDebug( ( "Received zero bytes from transport recv(). Receiving "
                     "transport data is complete." ) );
     }
@@ -1941,11 +1941,11 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
                                                  const HTTPRequestHeaders_t * pRequestHeaders )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
-    size_t totalReceived = 0u;
-    size_t currentReceived = 0u;
+    size_t totalReceived = 0U;
+    size_t currentReceived = 0U;
     HTTPParsingContext_t parsingContext = { 0 };
-    uint8_t shouldRecv = 1u;
-    uint8_t isHeadResponse = 0u;
+    uint8_t shouldRecv = 1U;
+    uint8_t isHeadResponse = 0U;
 
     assert( pTransport != NULL );
     assert( pTransport->recv != NULL );
@@ -1959,16 +1959,16 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
      * otherwise the parser will not indicate the message was complete. */
     if( strncmp( ( const char * ) ( pRequestHeaders->pBuffer ),
                  HTTP_METHOD_HEAD,
-                 sizeof( HTTP_METHOD_HEAD ) - 1u ) == 0 )
+                 sizeof( HTTP_METHOD_HEAD ) - 1U ) == 0 )
     {
-        isHeadResponse = 1u;
+        isHeadResponse = 1U;
     }
 
     /* Initialize the parsing context for parsing the response received from the
      * network. */
     initializeParsingContextForFirstResponse( &parsingContext );
 
-    while( shouldRecv == 1u )
+    while( shouldRecv == 1U )
     {
         /* Receive the HTTP response data into the pResponse->pBuffer. */
         returnStatus = receiveHttpData( pTransport,
@@ -1993,9 +1993,9 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
          * the parser indicated the response message is not finished, and there
          * is room in the response buffer. */
         shouldRecv = ( ( returnStatus == HTTPSuccess ) &&
-                       ( currentReceived > 0u ) &&
+                       ( currentReceived > 0U ) &&
                        ( parsingContext.state != HTTP_PARSING_COMPLETE ) &&
-                       ( totalReceived < pResponse->bufferLen ) ) ? 1u : 0u;
+                       ( totalReceived < pResponse->bufferLen ) ) ? 1U : 0U;
     }
 
     if( returnStatus == HTTPSuccess )
@@ -2067,7 +2067,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
         LogError( ( "Parameter check failed: pResponse->pBuffer is NULL." ) );
         returnStatus = HTTPInvalidParameter;
     }
-    else if( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen > 0u ) )
+    else if( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen > 0U ) )
     {
         LogError( ( "Parameter check failed: pRequestBodyBuf is NULL, but "
                     "reqBodyBufLen is greater than zero." ) );
@@ -2140,16 +2140,16 @@ static int findHeaderFieldParserCallback( http_parser * pHttpParser,
 
     assert( pHttpParser != NULL );
     assert( pFieldLoc != NULL );
-    assert( fieldLen > 0u );
+    assert( fieldLen > 0U );
 
     pContext = ( findHeaderContext_t * ) pHttpParser->data;
 
     assert( pContext->pField != NULL );
-    assert( pContext->fieldLen > 0u );
+    assert( pContext->fieldLen > 0U );
 
     /* The header found flags should not be set. */
-    assert( pContext->fieldFound == 0u );
-    assert( pContext->valueFound == 0u );
+    assert( pContext->fieldFound == 0U );
+    assert( pContext->valueFound == 0U );
 
     /* Check whether the parsed header matches the header we are looking for. */
     if( ( fieldLen == pContext->fieldLen ) &&
@@ -2160,7 +2160,7 @@ static int findHeaderFieldParserCallback( http_parser * pHttpParser,
                     ( int ) fieldLen, pContext->pField, pFieldLoc ) );
 
         /* Set the flag to indicate that header has been found in response. */
-        pContext->fieldFound = 1u;
+        pContext->fieldFound = 1U;
     }
     else
     {
@@ -2185,20 +2185,20 @@ static int findHeaderValueParserCallback( http_parser * pHttpParser,
     pContext = ( findHeaderContext_t * ) pHttpParser->data;
 
     assert( pContext->pField != NULL );
-    assert( pContext->fieldLen > 0u );
+    assert( pContext->fieldLen > 0U );
     assert( pContext->pValueLoc != NULL );
     assert( pContext->pValueLen != NULL );
 
     /* The header value found flag should not be set. */
-    assert( pContext->valueFound == 0u );
+    assert( pContext->valueFound == 0U );
 
-    if( pContext->fieldFound == 1u )
+    if( pContext->fieldFound == 1U )
     {
         LogDebug( ( "Found header value in response: "
                     "RequestedField=%.*s, ValueLocation=0x%p",
                     ( int ) ( pContext->fieldLen ), pContext->pField, pValueLoc ) );
 
-        if( valueLen > 0 )
+        if( valueLen > 0U )
         {
             /* Populate the output parameters with the location of the header
              * value in the response buffer. */
@@ -2210,11 +2210,11 @@ static int findHeaderValueParserCallback( http_parser * pHttpParser,
             /* It is not invalid according to RFC 2616 to have an empty header
              * value. */
             *pContext->pValueLoc = NULL;
-            *pContext->pValueLen = 0;
+            *pContext->pValueLen = 0U;
         }
 
         /* Set the header value found flag. */
-        pContext->valueFound = 1u;
+        pContext->valueFound = 1U;
 
         /* As we have found the value associated with the header, we don't need
          * to parse the response any further. */
@@ -2267,14 +2267,14 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     http_parser parser = { 0 };
     http_parser_settings parserSettings = { 0 };
     findHeaderContext_t context = { 0 };
-    size_t numOfBytesParsed = 0u;
+    size_t numOfBytesParsed = 0U;
 
     context.pField = pField;
     context.fieldLen = fieldLen;
     context.pValueLoc = pValueLoc;
     context.pValueLen = pValueLen;
-    context.fieldFound = 0u;
-    context.valueFound = 0u;
+    context.fieldFound = 0U;
+    context.valueFound = 0U;
 
     /* Disable unused variable warning. This variable is used only in logging. */
     ( void ) numOfBytesParsed;
@@ -2301,10 +2301,10 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     LogDebug( ( "Parsed response for header search: NumBytesParsed=%lu",
                 ( unsigned long ) numOfBytesParsed ) );
 
-    if( context.fieldFound == 0u )
+    if( context.fieldFound == 0U )
     {
         /* If header field is not found, then both the flags should be zero. */
-        assert( context.valueFound == 0u );
+        assert( context.valueFound == 0U );
 
         /* Header is not present in buffer. */
         LogWarn( ( "Header not found in response buffer: RequestedHeader=%.*s",
@@ -2313,7 +2313,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
 
         returnStatus = HTTPHeaderNotFound;
     }
-    else if( context.valueFound == 0u )
+    else if( context.valueFound == 0U )
     {
         /* The response buffer is invalid as only the header field was found
          * in the "<field>: <value>\r\n" format of an HTTP header. */
@@ -2328,7 +2328,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     else
     {
         /* Header is found. */
-        assert( ( context.fieldFound == 1u ) && ( context.valueFound == 1u ) );
+        assert( ( context.fieldFound == 1U ) && ( context.valueFound == 1U ) );
 
         LogDebug( ( "Found requested header in response: "
                     "HeaderName=%.*s, HeaderValue=%.*s",
@@ -2390,7 +2390,7 @@ HTTPStatus_t HTTPClient_ReadHeader( const HTTPResponse_t * pResponse,
         LogError( ( "Parameter check failed: pResponse->pBuffer is NULL." ) );
         returnStatus = HTTPInvalidParameter;
     }
-    else if( pResponse->bufferLen == 0u )
+    else if( pResponse->bufferLen == 0U )
     {
         LogError( ( "Parameter check failed: pResponse->bufferLen is 0: "
                     "Buffer len should be > 0." ) );
@@ -2401,7 +2401,7 @@ HTTPStatus_t HTTPClient_ReadHeader( const HTTPResponse_t * pResponse,
         LogError( ( "Parameter check failed: Input header name is NULL." ) );
         returnStatus = HTTPInvalidParameter;
     }
-    else if( fieldLen == 0u )
+    else if( fieldLen == 0U )
     {
         LogError( ( "Parameter check failed: Input header name length is 0: "
                     "fieldLen should be > 0." ) );

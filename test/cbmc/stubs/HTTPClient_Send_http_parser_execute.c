@@ -73,9 +73,9 @@ size_t http_parser_execute( http_parser * parser,
     }
     else
     {
-        pParsingContext->lastHeaderFieldLen = 0u;
+        pParsingContext->lastHeaderFieldLen = 0U;
         pParsingContext->pLastHeaderValue = NULL;
-        pParsingContext->lastHeaderValueLen = 0u;
+        pParsingContext->lastHeaderValueLen = 0U;
     }
 
     return pParsingContext->lastHeaderValueLen;
