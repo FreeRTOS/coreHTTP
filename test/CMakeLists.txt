@@ -52,7 +52,7 @@ set( HTTP_PARSER_DIR ${MODULE_ROOT_DIR}/source/dependency/3rdparty/http_parser C
 
 # Add the http_parser submodule to HTTP client library. It is out of the
 # unit-test tree and therefore needs its own binary directory.
-add_subdirectory( ${MODULE_ROOT_DIR}/source/3rdparty ./build-http-parser )
+add_subdirectory( ${MODULE_ROOT_DIR}/source/dependency/3rdparty ./build-http-parser )
 
 # Check if the http_parser source directory exists.
 if( NOT EXISTS ${HTTP_PARSER_DIR}/http_parser.c )
