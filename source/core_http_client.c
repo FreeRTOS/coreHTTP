@@ -583,16 +583,10 @@ static int httpParserOnMessageBeginCallback( http_parser * pHttpParser )
     HTTPParsingContext_t * pParsingContext = NULL;
     HTTPResponse_t * pResponse = NULL;
 
-    /* Disable unused variable warning. */
-    ( void ) pResponse;
-
     assert( pHttpParser != NULL );
     assert( pHttpParser->data != NULL );
 
     pParsingContext = ( HTTPParsingContext_t * ) ( pHttpParser->data );
-    pResponse = pParsingContext->pResponse;
-
-    assert( pResponse != NULL );
 
     /* Parsing has initiated. */
     pParsingContext->state = HTTP_PARSING_INCOMPLETE;
@@ -1274,7 +1268,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferCur = NULL;
     size_t toAddLen = 0U;
-    size_t backtrackHeaderLen = pRequestHeaders->headersLen;
+    size_t backtrackHeaderLen = 0;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
@@ -1284,6 +1278,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     assert( valueLen != 0U );
 
     pBufferCur = ( char * ) ( pRequestHeaders->pBuffer + pRequestHeaders->headersLen );
+    backtrackHeaderLen = pRequestHeaders->headersLen;
 
     /* Backtrack before trailing "\r\n" (HTTP header end) if it's already written.
      * Note that this method also writes trailing "\r\n" before returning.
@@ -1432,18 +1427,21 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
                                       size_t pathLen )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
-    char * pBufferCur = ( char * ) ( pRequestHeaders->pBuffer );
-    size_t toAddLen = methodLen +                 \
-                      SPACE_CHARACTER_LEN +       \
-                      SPACE_CHARACTER_LEN +       \
-                      HTTP_PROTOCOL_VERSION_LEN + \
-                      HTTP_HEADER_LINE_SEPARATOR_LEN;
+    char * pBufferCur = NULL;
+    size_t toAddLen = 0;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
     assert( pMethod != NULL );
     assert( methodLen != 0U );
 
+    toAddLen = methodLen +                 \
+               SPACE_CHARACTER_LEN +       \
+               SPACE_CHARACTER_LEN +       \
+               HTTP_PROTOCOL_VERSION_LEN + \
+               HTTP_HEADER_LINE_SEPARATOR_LEN;
+
+    pBufferCur = ( char * ) ( pRequestHeaders->pBuffer );
     toAddLen += ( ( pPath == NULL ) || ( pathLen == 0U ) ) ? HTTP_EMPTY_PATH_LEN : pathLen;
 
     if( ( toAddLen + pRequestHeaders->headersLen ) > pRequestHeaders->bufferLen )
@@ -2160,6 +2158,7 @@ static int findHeaderFieldParserCallback( http_parser * pHttpParser,
     findHeaderContext_t * pContext = NULL;
 
     assert( pHttpParser != NULL );
+    assert( pHttpParser->data != NULL );
     assert( pFieldLoc != NULL );
     assert( fieldLen > 0U );
 
@@ -2201,6 +2200,7 @@ static int findHeaderValueParserCallback( http_parser * pHttpParser,
     findHeaderContext_t * pContext = NULL;
 
     assert( pHttpParser != NULL );
+    assert( pHttpParser->data != NULL );
     assert( pValueLoc != NULL );
 
     pContext = ( findHeaderContext_t * ) pHttpParser->data;
