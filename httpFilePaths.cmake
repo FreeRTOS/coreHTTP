@@ -8,10 +8,10 @@
 # HTTP library source files.
 set( HTTP_SOURCES
      ${CMAKE_CURRENT_LIST_DIR}/source/core_http_client.c
-     ${CMAKE_CURRENT_LIST_DIR}/source/3rdparty/http_parser/http_parser.c )
+     ${CMAKE_CURRENT_LIST_DIR}/source/dependency/3rdparty/http_parser/http_parser.c )
 
 # HTTP library public include directories.
 set( HTTP_INCLUDE_PUBLIC_DIRS
      ${CMAKE_CURRENT_LIST_DIR}/source/include
      ${CMAKE_CURRENT_LIST_DIR}/source/interface
-     ${CMAKE_CURRENT_LIST_DIR}/source/3rdparty/http_parser )
+     ${CMAKE_CURRENT_LIST_DIR}/source/dependency/3rdparty/http_parser )

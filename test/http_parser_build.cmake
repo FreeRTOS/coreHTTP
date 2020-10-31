@@ -1,4 +1,3 @@
-
 macro( clone_http_parser )
         find_package( Git REQUIRED )
         message( "Cloning submodule http_parser." )
