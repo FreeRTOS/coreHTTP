@@ -581,7 +581,6 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext )
 static int httpParserOnMessageBeginCallback( http_parser * pHttpParser )
 {
     HTTPParsingContext_t * pParsingContext = NULL;
-    HTTPResponse_t * pResponse = NULL;
 
     assert( pHttpParser != NULL );
     assert( pHttpParser->data != NULL );
@@ -701,19 +700,12 @@ static int httpParserOnHeaderValueCallback( http_parser * pHttpParser,
                                             size_t length )
 {
     HTTPParsingContext_t * pParsingContext = NULL;
-    HTTPResponse_t * pResponse = NULL;
-
-    /* Disable unused variable warning. */
-    ( void ) pResponse;
 
     assert( pHttpParser != NULL );
     assert( pHttpParser->data != NULL );
     assert( pLoc != NULL );
 
     pParsingContext = ( HTTPParsingContext_t * ) ( pHttpParser->data );
-    pResponse = pParsingContext->pResponse;
-
-    assert( pResponse != NULL );
 
     /* Set the location of what to parse next. */
     pParsingContext->pBufferCur = pLoc + length;
