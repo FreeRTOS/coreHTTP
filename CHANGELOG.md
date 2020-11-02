@@ -1,4 +1,4 @@
-# Change Log for coreHTTP Client Library
+# Changelog for coreHTTP Client Library
 
 ## v1.0.0 November 2020
 
