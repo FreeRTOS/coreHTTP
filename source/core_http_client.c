@@ -1359,7 +1359,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     /* This buffer uses a char type instead of the general purpose uint8_t
      * because the range value expected to be written is within the ASCII
      * character set. */
-    ( void ) memset( rangeValueBuffer, ( int ) '\0', HTTP_MAX_RANGE_REQUEST_VALUE_LEN );
+    ( void ) memset( rangeValueBuffer, 0, HTTP_MAX_RANGE_REQUEST_VALUE_LEN );
 
     /* Generate the value data for the Range Request header.*/
 
