@@ -1209,7 +1209,7 @@ static char * httpHeaderStrncpy( char * pDest,
 {
     size_t i = 0U;
     char * pRet = pDest;
-    uint8_t hasError = 0;
+    uint8_t hasError = 0U;
 
     assert( pDest != NULL );
     assert( pSrc != NULL );
@@ -1220,26 +1220,26 @@ static char * httpHeaderStrncpy( char * pDest,
         {
             LogError( ( "Invalid character '\r' found in %.*s",
                         ( int ) len, pSrc ) );
-            hasError = 1;
+            hasError = 1U;
         }
         else if( pSrc[ i ] == LINEFEED_CHARACTER )
         {
             LogError( ( "Invalid character '\n' found in %.*s",
                         ( int ) len, pSrc ) );
-            hasError = 1;
+            hasError = 1U;
         }
-        else if( ( isField == 1 ) && ( pSrc[ i ] == COLON_CHARACTER ) )
+        else if( ( isField == 1U ) && ( pSrc[ i ] == COLON_CHARACTER ) )
         {
             LogError( ( "Invalid character ':' found in %.*s",
                         ( int ) len, pSrc ) );
-            hasError = 1;
+            hasError = 1U;
         }
         else
         {
             pDest[ i ] = pSrc[ i ];
         }
 
-        if( hasError == 1 )
+        if( hasError == 1U )
         {
             pRet = NULL;
             break;
