@@ -2,9 +2,9 @@
 
 This repository contains a C language HTTP client library designed for embedded
 platforms. It has no dependencies on any additional libraries other than the
-standard C library and [http-parser](https://github.com/nodejs/http-parser), and
-a customer-implemented network transport interface. This library is distributed
-under the [MIT Open Source License](LICENSE).
+standard C library, [http-parser](https://github.com/nodejs/http-parser), and
+a customer-implemented transport interface. This library is distributed under
+the [MIT Open Source License](LICENSE).
 
 This library has gone through code quality checks including verification that no
 function has a [GNU Complexity](https://www.gnu.org/software/complexity/manual/complexity.html)
