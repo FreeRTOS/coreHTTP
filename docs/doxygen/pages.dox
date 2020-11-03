@@ -40,27 +40,27 @@ Feature of HTTP/1.1 not supported in this library:
         <td>core_http_client.c</td>
         <td>15.3K</td>
         <td>0</td>
-        <td>9.6K</td>
+        <td>9.5K</td>
         <td>0</td>
         <td>8.2K</td>
         <td>0</td>
     </tr>
     <tr>
         <td>http_parser.c</td>
-        <td>38.5K</td>
+        <td>38.0K</td>
         <td>412</td>
-        <td>24.9K</td>
+        <td>24.8K</td>
         <td>4</td>
         <td>20.8K</td>
         <td>4</td>
     </tr>
     <tr>
         <td><b>Total estimates →</b></td>
-        <td>53.8K</td>
+        <td>53.3K</td>
         <td>412</td>
-        <td>34.4K</td>
+        <td>34.3K</td>
         <td>4</td>
-        <td>29.1K</td>
+        <td>29.0K</td>
         <td>4</td>
     </tr>
 </table>
