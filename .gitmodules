@@ -1,12 +1,15 @@
 [submodule "test/cbmc/aws-templates-for-cbmc-proofs"]
 	path = test/cbmc/aws-templates-for-cbmc-proofs
 	url = https://github.com/awslabs/aws-templates-for-cbmc-proofs.git
+	update = none
 [submodule "test/unit-test/CMock"]
 	path = test/unit-test/CMock
 	url = https://github.com/ThrowTheSwitch/CMock.git
+	update = none
 [submodule "test/cbmc/litani"]
 	path = test/cbmc/litani
 	url = https://github.com/awslabs/aws-build-accumulator
+	update = none
 [submodule "source/dependency/3rdparty/http_parser"]
 	path = source/dependency/3rdparty/http_parser
 	url = https://github.com/nodejs/http-parser.git
