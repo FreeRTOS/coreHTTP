@@ -37,7 +37,7 @@ library build.
 
 ## Building the Library
 
-The [httpFilePaths.cmake](httFilePaths.cmake) file contains the information of
+The [httpFilePaths.cmake](httpFilePaths.cmake) file contains the information of
 all source files and header include paths required to build the HTTP client
 library.
 
