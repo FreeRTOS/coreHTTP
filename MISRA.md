@@ -3,7 +3,7 @@
 The HTTP Client library files conform to the [MISRA C:2012](https://www.misra.org.uk/MISRAHome/MISRAC2012/tabid/196/Default.aspx)
 guidelines, with some noted exceptions. Compliance is checked with Coverity static analysis.
 Deviations from the MISRA standard are listed below. The deviations below do not
-include the third-party [http-parser source code](source/dependency/3rdparty/http_parser):
+include the third-party [http-parser source code](https://github.com/nodejs/http-parser/tree/v2.9.3):
 
 ### Ignored by [Coverity Configuration](https://github.com/aws/aws-iot-device-sdk-embedded-C/blob/master/tools/coverity/misra.config)
 | Deviation | Category | Justification |
