@@ -77,7 +77,7 @@ file, refer to the `coverity_analysis` library target in
 ## Reference examples
 
 The AWS IoT Device SDK for Embedded C repository contains demos of using the HTTP client
-library [here](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/master/demos/http)
+library [here](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/main/demos/http)
 on a POSIX platform. These can be used as reference examples for the library API.
 
 ## Generating documentation
