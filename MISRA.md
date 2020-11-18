@@ -5,7 +5,7 @@ guidelines, with some noted exceptions. Compliance is checked with Coverity stat
 Deviations from the MISRA standard are listed below. The deviations below do not
 include the third-party [http-parser source code](https://github.com/nodejs/http-parser/tree/v2.9.3):
 
-### Ignored by [Coverity Configuration](https://github.com/aws/aws-iot-device-sdk-embedded-C/blob/master/tools/coverity/misra.config)
+### Ignored by [Coverity Configuration](https://github.com/aws/aws-iot-device-sdk-embedded-C/blob/main/tools/coverity/misra.config)
 | Deviation | Category | Justification |
 | :-: | :-: | :-- |
 | Directive 4.5 | Advisory | Allow names that MISRA considers ambiguous (such as LogInfo and LogError). |
