@@ -965,7 +965,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
 
         case HPE_HEADER_OVERFLOW:
             LogError( ( "Response parsing error: Header byte limit "
-                        "exceeded: HeaderByteLimit=%d",
+                        "exceeded: HeaderByteLimit=%u",
                         HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES ) );
             returnStatus = HTTPSecurityAlertResponseHeadersSizeLimitExceeded;
             break;
@@ -1664,7 +1664,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     else if( rangeEnd < HTTP_RANGE_REQUEST_END_OF_FILE )
     {
         LogError( ( "Parameter check failed: rangeEnd is invalid: "
-                    "rangeEnd should be >=-1: RangeEnd=%d", rangeEnd ) );
+                    "rangeEnd should be >=-1: RangeEnd=%d", ( int ) rangeEnd ) );
         returnStatus = HTTPInvalidParameter;
     }
     else if( ( rangeStartOrlastNbytes < 0 ) &&
@@ -1673,7 +1673,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
         LogError( ( "Parameter check failed: Invalid range values: "
                     "rangeEnd should be -1 when rangeStart < 0: "
                     "RangeStart=%d, RangeEnd=%d",
-                    rangeStartOrlastNbytes, rangeEnd ) );
+                    ( int ) rangeStartOrlastNbytes, ( int ) rangeEnd ) );
         returnStatus = HTTPInvalidParameter;
     }
     else if( ( rangeEnd != HTTP_RANGE_REQUEST_END_OF_FILE ) &&
@@ -1682,7 +1682,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
         LogError( ( "Parameter check failed: Invalid range values: "
                     "rangeStart should be < rangeEnd when both are >= 0: "
                     "RangeStart=%d, RangeEnd=%d",
-                    rangeStartOrlastNbytes, rangeEnd ) );
+                    ( int ) rangeStartOrlastNbytes, ( int ) rangeEnd ) );
         returnStatus = HTTPInvalidParameter;
     }
     else if( rangeStartOrlastNbytes == INT32_MIN )
@@ -1690,7 +1690,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
         LogError( ( "Parameter check failed: Arithmetic overflow detected: "
                     "rangeStart should be > -2147483648 (INT32_MIN): "
                     "RangeStart=%d",
-                    rangeStartOrlastNbytes ) );
+                    ( int ) rangeStartOrlastNbytes ) );
         returnStatus = HTTPInvalidParameter;
     }
     else
@@ -1730,7 +1730,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
         {
             LogError( ( "Failed to send HTTP data: Transport send()"
                         " returned error: TransportStatus=%d",
-                        transportStatus ) );
+                        ( int ) transportStatus ) );
             returnStatus = HTTPNetworkError;
         }
         else
@@ -1745,8 +1745,8 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
             pIndex += transportStatus;
             LogDebug( ( "Sent HTTP data over the transport: "
                         "BytesSent=%d, BytesRemaining=%lu, TotalBytesSent=%lu",
-                        transportStatus,
-                        bytesRemaining,
+                        ( int ) transportStatus,
+                        ( unsigned long ) bytesRemaining,
                         ( unsigned long ) ( dataLen - bytesRemaining ) ) );
         }
     }
@@ -1754,7 +1754,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
     if( returnStatus == HTTPSuccess )
     {
         LogDebug( ( "Sent HTTP data over the transport: BytesSent=%d",
-                    transportStatus ) );
+                    ( int ) transportStatus ) );
     }
 
     return returnStatus;
@@ -1840,7 +1840,7 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
 
     /* Send the request body. */
     LogDebug( ( "Sending the HTTP request body: BodyBytes=%d",
-                ( int32_t ) reqBodyBufLen ) );
+                ( int ) reqBodyBufLen ) );
     returnStatus = sendHttpData( pTransport, pRequestBodyBuf, reqBodyBufLen );
 
     return returnStatus;
@@ -1870,7 +1870,7 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
     {
         LogError( ( "Failed to receive HTTP data: Transport recv() "
                     "returned error: TransportStatus=%d",
-                    transportStatus ) );
+                    ( int ) transportStatus ) );
         returnStatus = HTTPNetworkError;
     }
     else if( transportStatus > 0 )
@@ -1884,7 +1884,7 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
         /* Some or all of the specified data was received. */
         *pBytesReceived = ( size_t ) ( transportStatus );
         LogDebug( ( "Received data from the transport: BytesReceived=%d",
-                    transportStatus ) );
+                    ( int ) transportStatus ) );
     }
     else
     {
@@ -2522,7 +2522,7 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
 
         default:
             LogWarn( ( "Invalid status code received for string conversion: "
-                       "StatusCode=%d", status ) );
+                       "StatusCode=%d", ( int ) status ) );
             break;
     }
 
