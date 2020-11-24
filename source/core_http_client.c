@@ -2062,7 +2062,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
     {
         LogError( ( "Parameter check failed: pRequestHeaders->headersLen "
                     "does not meet minimum the required length. "
-                    "MinimumRequiredLength=%u, HeadersLength =%lu",
+                    "MinimumRequiredLength=%u, HeadersLength=%lu",
                     HTTP_MINIMUM_REQUEST_LINE_LENGTH,
                     ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
         returnStatus = HTTPInvalidParameter;
