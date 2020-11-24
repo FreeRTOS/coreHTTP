@@ -628,8 +628,8 @@ static int httpParserOnStatusCallback( http_parser * pHttpParser,
     pResponse->statusCode = ( uint16_t ) ( pHttpParser->status_code );
 
     LogDebug( ( "Response parsing: Found the Reason-Phrase: "
-                "StatusCode=%d, ReasonPhrase=%.*s",
-                pResponse->statusCode,
+                "StatusCode=%u, ReasonPhrase=%.*s",
+                ( unsigned int ) pResponse->statusCode,
                 ( int ) length,
                 pLoc ) );
 
@@ -899,8 +899,8 @@ static int httpParserOnBodyCallback( http_parser * pHttpParser,
     pParsingContext->pBufferCur = pLoc + length;
 
     LogDebug( ( "Response parsing: Found the response body: "
-                "BodyLength=%d",
-                ( int ) length ) );
+                "BodyLength=%lu",
+                ( unsigned long ) length ) );
 
     return shouldContinueParse;
 }
@@ -1664,7 +1664,7 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     else if( rangeEnd < HTTP_RANGE_REQUEST_END_OF_FILE )
     {
         LogError( ( "Parameter check failed: rangeEnd is invalid: "
-                    "rangeEnd should be >=-1: RangeEnd=%d", ( int ) rangeEnd ) );
+                    "rangeEnd should be >=-1: RangeEnd=%ld", ( long int ) rangeEnd ) );
         returnStatus = HTTPInvalidParameter;
     }
     else if( ( rangeStartOrlastNbytes < 0 ) &&
@@ -1672,8 +1672,8 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     {
         LogError( ( "Parameter check failed: Invalid range values: "
                     "rangeEnd should be -1 when rangeStart < 0: "
-                    "RangeStart=%d, RangeEnd=%d",
-                    ( int ) rangeStartOrlastNbytes, ( int ) rangeEnd ) );
+                    "RangeStart=%ld, RangeEnd=%ld",
+                    ( long int ) rangeStartOrlastNbytes, ( long int ) rangeEnd ) );
         returnStatus = HTTPInvalidParameter;
     }
     else if( ( rangeEnd != HTTP_RANGE_REQUEST_END_OF_FILE ) &&
@@ -1681,16 +1681,16 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     {
         LogError( ( "Parameter check failed: Invalid range values: "
                     "rangeStart should be < rangeEnd when both are >= 0: "
-                    "RangeStart=%d, RangeEnd=%d",
-                    ( int ) rangeStartOrlastNbytes, ( int ) rangeEnd ) );
+                    "RangeStart=%ld, RangeEnd=%ld",
+                    ( long int ) rangeStartOrlastNbytes, ( long int ) rangeEnd ) );
         returnStatus = HTTPInvalidParameter;
     }
     else if( rangeStartOrlastNbytes == INT32_MIN )
     {
         LogError( ( "Parameter check failed: Arithmetic overflow detected: "
                     "rangeStart should be > -2147483648 (INT32_MIN): "
-                    "RangeStart=%d",
-                    ( int ) rangeStartOrlastNbytes ) );
+                    "RangeStart=%ld",
+                    ( long int ) rangeStartOrlastNbytes ) );
         returnStatus = HTTPInvalidParameter;
     }
     else
@@ -1729,8 +1729,8 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
         if( transportStatus < 0 )
         {
             LogError( ( "Failed to send HTTP data: Transport send()"
-                        " returned error: TransportStatus=%d",
-                        ( int ) transportStatus ) );
+                        " returned error: TransportStatus=%ld",
+                        ( long int ) transportStatus ) );
             returnStatus = HTTPNetworkError;
         }
         else
@@ -1744,8 +1744,8 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
             bytesRemaining -= ( size_t ) transportStatus;
             pIndex += transportStatus;
             LogDebug( ( "Sent HTTP data over the transport: "
-                        "BytesSent=%d, BytesRemaining=%lu, TotalBytesSent=%lu",
-                        ( int ) transportStatus,
+                        "BytesSent=%ld, BytesRemaining=%lu, TotalBytesSent=%lu",
+                        ( long int ) transportStatus,
                         ( unsigned long ) bytesRemaining,
                         ( unsigned long ) ( dataLen - bytesRemaining ) ) );
         }
@@ -1753,8 +1753,8 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
 
     if( returnStatus == HTTPSuccess )
     {
-        LogDebug( ( "Sent HTTP data over the transport: BytesSent=%d",
-                    ( int ) transportStatus ) );
+        LogDebug( ( "Sent HTTP data over the transport: BytesSent=%ld",
+                    ( long int ) transportStatus ) );
     }
 
     return returnStatus;
@@ -1839,8 +1839,8 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
     assert( pRequestBodyBuf != NULL );
 
     /* Send the request body. */
-    LogDebug( ( "Sending the HTTP request body: BodyBytes=%d",
-                ( int ) reqBodyBufLen ) );
+    LogDebug( ( "Sending the HTTP request body: BodyBytes=%lu",
+                ( unsigned long ) reqBodyBufLen ) );
     returnStatus = sendHttpData( pTransport, pRequestBodyBuf, reqBodyBufLen );
 
     return returnStatus;
@@ -1869,8 +1869,8 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
     if( transportStatus < 0 )
     {
         LogError( ( "Failed to receive HTTP data: Transport recv() "
-                    "returned error: TransportStatus=%d",
-                    ( int ) transportStatus ) );
+                    "returned error: TransportStatus=%ld",
+                    ( long int ) transportStatus ) );
         returnStatus = HTTPNetworkError;
     }
     else if( transportStatus > 0 )
@@ -1883,8 +1883,8 @@ static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
 
         /* Some or all of the specified data was received. */
         *pBytesReceived = ( size_t ) ( transportStatus );
-        LogDebug( ( "Received data from the transport: BytesReceived=%d",
-                    ( int ) transportStatus ) );
+        LogDebug( ( "Received data from the transport: BytesReceived=%ld",
+                    ( long int ) transportStatus ) );
     }
     else
     {
