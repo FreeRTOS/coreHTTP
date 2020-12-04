@@ -700,6 +700,8 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * body in @p pRequestBodyBuf over the transport. The response is received in
  * #HTTPResponse_t.pBuffer.
  *
+ * If this function returns an error any data in @p pResponse is invalid.
+ *
  * If #HTTP_SEND_DISABLE_CONTENT_LENGTH_FLAG is not set in parameter @p sendFlags,
  * then the Content-Length to be sent to the server is automatically written to
  * @p pRequestHeaders. The Content-Length will not be written when there is
@@ -707,6 +709,12 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * Content-Length then #HTTPInsufficientMemory is returned. Please see
  * #HTTP_MAX_CONTENT_LENGTH_HEADER_LENGTH for the maximum Content-Length header
  * field and value that could be written to the buffer.
+ *
+ * By default HTTP_FLUSH_NETWORK_SOCKET_ON_ERROR is set to 1. Therefore, upon
+ * any error in parsing the response, the network socket is flushed using the
+ * user implemented #TransportRecv_t function in @p pTransport and the user
+ * configured #HTTPResponse_t.pBuffer. Set HTTP_FLUSH_NETWORK_SOCKET_ON_ERROR to
+ * 0 to skip flushing the network socket on error.
  *
  * The application should close the connection with the server if any of the
  * following errors are returned:

@@ -158,7 +158,8 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * @param[in] pTransport Transport interface.
  * @param[in] pBuffer Response buffer.
  * @param[in] bufferLen Length of the response buffer.
- * @param[out] pBytesReceived Bytes received from the transport interface.
+ * @param[out] pBytesReceived Bytes received from the transport interface. If
+ * there is an error, then no bytes are received.
  *
  * @return Returns #HTTPSuccess if successful. If there was a network error or
  * more bytes than what was specified were read, then #HTTPNetworkError is
@@ -2018,6 +2019,25 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
                                                totalReceived,
                                                pResponse->bufferLen );
     }
+
+    /* If there was an error, then flush any possible data on the network
+     * socket. If there was an error the response buffer is invalid anyways, so
+     * the response buffer is used to flush the socket. */
+    #if ( HTTP_FLUSH_NETWORK_SOCKET_ON_ERROR == 1U )
+        if( returnStatus != HTTPSuccess )
+        {
+            /* When currentReceived is zero, a timeout or an error on the last
+             * call to receiveHttpData. If a timeout occurred it is assumed that
+             * there is no data left on the socket. */
+            while( currentReceived > 0 )
+            {
+                ( void ) receiveHttpData( pTransport,
+                                          pResponse->pBuffer,
+                                          pResponse->bufferLen,
+                                          &currentReceived );
+            }
+        }
+    #endif /* ifdef HTTP_FLUSH_NETWORK_SOCKET_ON_ERROR */
 
     return returnStatus;
 }

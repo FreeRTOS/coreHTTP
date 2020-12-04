@@ -65,6 +65,17 @@
 #endif
 
 /**
+ * @brief When set to 1U, the network socket will be flushed after an error
+ * occurs during response parsing.
+ *
+ * <b>Possible values:</b> 1U or 0U.<br>
+ * <b>Default value:</b> 1U
+ */
+#ifndef HTTP_FLUSH_NETWORK_SOCKET_ON_ERROR
+    #define HTTP_FLUSH_NETWORK_SOCKET_ON_ERROR    1U
+#endif
+
+/**
  * @brief Macro that is called in the HTTP Client library for logging "Error" level
  * messages.
  *

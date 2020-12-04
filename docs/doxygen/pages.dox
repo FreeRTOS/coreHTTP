@@ -277,6 +277,9 @@ defined.
 @section HTTP_USER_AGENT_VALUE
 @copydoc HTTP_USER_AGENT_VALUE
 
+@section HTTP_FLUSH_NETWORK_SOCKET_ON_ERROR
+@copydoc HTTP_FLUSH_NETWORK_SOCKET_ON_ERROR
+
 @section http_logerror LogError
 @copydoc LogError
 
