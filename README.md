@@ -2,9 +2,9 @@
 
 This repository contains a C language HTTP client library designed for embedded
 platforms. It has no dependencies on any additional libraries other than the
-standard C library and [http-parser](https://github.com/nodejs/http-parser), and
-a customer-implemented network transport interface. This library is distributed
-under the [MIT Open Source License](LICENSE).
+standard C library, [http-parser](https://github.com/nodejs/http-parser), and
+a customer-implemented transport interface. This library is distributed under
+the [MIT Open Source License](LICENSE).
 
 This library has gone through code quality checks including verification that no
 function has a [GNU Complexity](https://www.gnu.org/software/complexity/manual/complexity.html)
@@ -12,6 +12,8 @@ score over 8. This library has also undergone both static code analysis from
 [Coverity static analysis](https://scan.coverity.com/), and validation of memory
 safety and data structure invariance through the
 [CBMC automated reasoning tool](https://www.cprover.org/cbmc/).
+
+See memory requirements for this library [here](https://docs.aws.amazon.com/embedded-csdk/202011.00/lib-ref/libraries/standard/coreHTTP/docs/doxygen/output/html/index.html#http_memory_requirements).
 
 ## coreHTTP Config File
 
@@ -35,7 +37,7 @@ library build.
 
 ## Building the Library
 
-The [httpFilePaths.cmake](httFilePaths.cmake) file contains the information of
+The [httpFilePaths.cmake](httpFilePaths.cmake) file contains the information of
 all source files and header include paths required to build the HTTP client
 library.
 
@@ -75,7 +77,7 @@ file, refer to the `coverity_analysis` library target in
 ## Reference examples
 
 The AWS IoT Device SDK for Embedded C repository contains demos of using the HTTP client
-library [here](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/master/demos/http)
+library [here](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/main/demos/http)
 on a POSIX platform. These can be used as reference examples for the library API.
 
 ## Generating documentation
@@ -86,3 +88,7 @@ Doxygen pages, please run the following command from the root of this repository
 ```shell
 doxygen docs/doxygen/config.doxyfile
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](./.github/CONTRIBUTING.md) for information on contributing.
