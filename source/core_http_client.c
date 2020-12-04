@@ -2037,7 +2037,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
                                           &currentReceived );
             }
         }
-    #endif /* ifdef HTTP_FLUSH_NETWORK_SOCKET_ON_ERROR */
+    #endif /* if ( HTTP_FLUSH_NETWORK_SOCKET_ON_ERROR == 1U ) */
 
     return returnStatus;
 }
