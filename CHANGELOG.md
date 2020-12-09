@@ -1,10 +1,10 @@
 # Changelog for coreHTTP Client Library
 
-## v1.0.1 December 2020
+## v1.0.1 (December 2020)
 
 ### Updates
 
- - [#75](https://github.com/aws/coreHTTP/pull/75) Cast variable type based on format identifier to fix logging warnings.
+ - [#75](https://github.com/aws/coreHTTP/pull/75) Cast logging arguments to C types matching the format specifier.
  - [#79](https://github.com/aws/coreHTTP/pull/79) Update transport_interface.h to match coreMQTT.
 
 ### Other
@@ -12,7 +12,7 @@
  - [#73](https://github.com/aws/coreHTTP/pull/73), [#76](https://github.com/aws/coreHTTP/pull/76) Github repo chores.
  - [#71](https://github.com/aws/coreHTTP/pull/71) CBMC automation update.
 
-## v1.0.0 November 2020
+## v1.0.0 (November 2020)
 
 This is the first release of the coreHTTP client library in this repository.
 
