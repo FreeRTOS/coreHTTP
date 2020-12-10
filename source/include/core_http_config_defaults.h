@@ -67,21 +67,21 @@
 /**
  * @brief The maximum duration between non-empty network reads while receiving
  * an HTTP response via the #HTTPClient_Send API function.
- * 
- * When an incoming HTTP response is detected, the transport receive function
- * may be called multiple times until the end of the response is detected by the
- * parser. This timeout represents the maximum duration that is allowed without
- * any data reception from the network for the incoming response.
- * 
+ *
+ * The transport receive function may be called multiple times until the end of
+ * the response is detected by the parser. This timeout represents the maximum
+ * duration that is allowed without any data reception from the network for the
+ * incoming response.
+ *
  * If the timeout expires, the #HTTPClient_Send function will return
  * #HTTPNetworkError.
- * 
+ *
  * <b>Possible values:</b> Any positive 32 bit integer. A small timeout value
  * is recommended. <br>
- * <b>Default value:</b> `10`
+ * <b>Default value:</b> `0`
  */
 #ifndef HTTP_RECV_RETRY_TIMEOUT_MS
-    #define HTTP_RECV_RETRY_TIMEOUT_MS    ( 10U )
+    #define HTTP_RECV_RETRY_TIMEOUT_MS    ( 0U )
 #endif
 
 /**
@@ -97,10 +97,10 @@
  *
  * <b>Possible values:</b> Any positive 32 bit integer. A small timeout value
  * is recommended. <br>
- * <b>Default value:</b> `10`
+ * <b>Default value:</b> `0`
  */
 #ifndef HTTP_SEND_RETRY_TIMEOUT_MS
-    #define HTTP_SEND_RETRY_TIMEOUT_MS    ( 10U )
+    #define HTTP_SEND_RETRY_TIMEOUT_MS    ( 0U )
 #endif
 
 /**

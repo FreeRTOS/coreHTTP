@@ -453,18 +453,18 @@ typedef struct HTTPResponse
 
     /**
      * @brief Optional callback for getting the system time.
-     * 
+     *
      * This is used to calculate the elapsed time between network sends and
      * receives greater than zero. If this field is set to NULL, then network
      * send and receive won't be retries after a zero is returned.
      *
      * If this function is set, then the maximum elapsed time between network
      * receives greater than zero is set in HTTP_RECV_RETRY_TIMEOUT_MS.
-     * 
+     *
      * If this function is set, then the maximum elapsed time between network
      * sends greater than zero is set in HTTP_SEND_RETRY_TIMEOUT_MS.
      */
-    HTTPClient_GetCurrentTimeFunc_t * pGetTimeFunction;
+    HTTPClient_GetCurrentTimeFunc_t getTime;
 
     /**
      * @brief The starting location of the response headers in pBuffer.
