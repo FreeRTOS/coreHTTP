@@ -19,49 +19,31 @@ Feature of HTTP/1.1 not supported in this library:
 
 <table>
     <tr>
-        <td colspan="7"><center><b>Code size of HTTP Client library files (sizes generated with [GCC for ARM Cortex-M toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads/9-2020-q2-update))</b></center></td>
+        <td colspan="4"><center><b>Code size of HTTP Client library files (sizes generated with [GCC for ARM Cortex-M toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads/9-2020-q2-update))</b></center></td>
     </tr>
     <tr>
-        <td><b>File ↓</b></td>
-        <td colspan="2"><b>No Optimization (asserts enabled)</b></td>
-        <td colspan="2"><b>With -O1 Optimization</b></td>
-        <td colspan="2"><b>With -Os Optimization</b></td>
-    </tr>
-    <tr>
-        <td><b>Segment →</b></td>
-        <td><b>text</b></td>
-        <td><b>data</b></td>
-        <td><b>text</b></td>
-        <td><b>data</b></td>
-        <td><b>text</b></td>
-        <td><b>data</b></td>
+        <td><b>File</b></td>
+        <td><b>No Optimization (asserts enabled)</b></td>
+        <td><b>With -O1 Optimization (asserts disabled)</b></td>
+        <td><b>With -Os Optimization (asserts disabled)</b></td>
     </tr>
     <tr>
         <td>core_http_client.c</td>
         <td>15.3K</td>
-        <td>0</td>
         <td>9.5K</td>
-        <td>0</td>
         <td>8.2K</td>
-        <td>0</td>
     </tr>
     <tr>
         <td>http_parser.c</td>
-        <td>38.0K</td>
-        <td>412</td>
+        <td>38.4K</td>
         <td>24.8K</td>
-        <td>4</td>
         <td>20.8K</td>
-        <td>4</td>
     </tr>
     <tr>
-        <td><b>Total estimates →</b></td>
-        <td>53.3K</td>
-        <td>412</td>
+        <td><b>Total estimates</b></td>
+        <td>53.7K</td>
         <td>34.3K</td>
-        <td>4</td>
         <td>29.0K</td>
-        <td>4</td>
     </tr>
 </table>
  */
