@@ -17,6 +17,7 @@ bytesremaining
 bytessent
 bytestorecv
 bytestosend
+calltlsrecvfunc
 cb
 cbmc
 chk
@@ -225,6 +226,7 @@ tcpsocketcontext
 tls
 tlscontext
 tlsrecv
+tlsrecvcount
 tlssend
 toascii
 totalreceived
