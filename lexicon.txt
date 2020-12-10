@@ -9,6 +9,7 @@ api
 apis
 ascii
 aws
+bool
 br
 bufferlen
 bufferlength
