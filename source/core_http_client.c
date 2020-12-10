@@ -37,6 +37,7 @@
  * @brief Send HTTP bytes over the transport send interface.
  *
  * @param[in] pTransport Transport interface.
+ * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
  * @param[in] pData HTTP request data to send.
  * @param[in] dataLen HTTP request data length.
  *
@@ -45,6 +46,7 @@
  * returned.
  */
 static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
+                                  HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                   const uint8_t * pData,
                                   size_t dataLen );
 
@@ -52,6 +54,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
  * @brief Send the HTTP headers over the transport send interface.
  *
  * @param[in] pTransport Transport interface.
+ * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
  * @param[in] pRequestHeaders Request headers to send, it includes the buffer
  * and length.
  * @param[in] reqBodyLen The length of the request body to be sent. This is
@@ -63,6 +66,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
  * returned.
  */
 static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
+                                     HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                      HTTPRequestHeaders_t * pRequestHeaders,
                                      size_t reqBodyLen,
                                      uint32_t sendFlags );
@@ -84,6 +88,7 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
  * @brief Send the HTTP body over the transport send interface.
  *
  * @param[in] pTransport Transport interface.
+ * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
  * @param[in] pRequestBodyBuf Request body buffer.
  * @param[in] reqBodyBufLen Length of the request body buffer.
  *
@@ -92,6 +97,7 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
  * returned.
  */
 static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
+                                  HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                   const uint8_t * pRequestBodyBuf,
                                   size_t reqBodyBufLen );
 
@@ -1699,55 +1705,75 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 /*-----------------------------------------------------------*/
 
 static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
+                                  HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                   const uint8_t * pData,
                                   size_t dataLen )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     const uint8_t * pIndex = pData;
-    int32_t transportStatus = 0;
+    int32_t bytesSent = 0;
     size_t bytesRemaining = dataLen;
+    uint32_t lastSendTimeMs = 0U, timeSinceLastSendMs = 0U;
 
     assert( pTransport != NULL );
     assert( pTransport->send != NULL );
     assert( pData != NULL );
 
+    /* Record the most recent time of successful transmission. */
+    lastSendTimeMs = getTimestampMs();
+
     /* Loop until all data is sent. */
     while( ( bytesRemaining > 0UL ) && ( returnStatus != HTTPNetworkError ) )
     {
-        transportStatus = pTransport->send( pTransport->pNetworkContext,
+        bytesSent = pTransport->send( pTransport->pNetworkContext,
                                             pIndex,
                                             bytesRemaining );
 
         /* A transport status of less than zero is an error. */
-        if( transportStatus < 0 )
+        if( bytesSent < 0 )
         {
             LogError( ( "Failed to send HTTP data: Transport send()"
                         " returned error: TransportStatus=%ld",
-                        ( long int ) transportStatus ) );
+                        ( long int ) bytesSent ) );
             returnStatus = HTTPNetworkError;
         }
-        else
+        else if( bytesSent > 0 )
         {
             /* It is a bug in the application's transport send implementation if
              * more bytes than expected are sent. To avoid a possible overflow
              * in converting bytesRemaining from unsigned to signed, this assert
              * must exist after the check for transportStatus being negative. */
-            assert( ( size_t ) transportStatus <= bytesRemaining );
+            assert( ( size_t ) bytesSent <= bytesRemaining );
 
-            bytesRemaining -= ( size_t ) transportStatus;
-            pIndex += transportStatus;
+            /* Record the most recent time of successful transmission. */
+            lastSendTimeMs = getTimestampMs();
+
+            bytesRemaining -= ( size_t ) bytesSent;
+            pIndex += bytesSent;
             LogDebug( ( "Sent HTTP data over the transport: "
                         "BytesSent=%ld, BytesRemaining=%lu, TotalBytesSent=%lu",
-                        ( long int ) transportStatus,
+                        ( long int ) bytesSent,
                         ( unsigned long ) bytesRemaining,
                         ( unsigned long ) ( dataLen - bytesRemaining ) ) );
         }
+        else
+        {
+            /* No bytes were sent over the network. */
+            timeSinceLastSendMs = calculateElapsedTime( getTimestampMs(), lastSendTimeMs );
+            /* Check for timeout if we have been waiting to send any data over
+             * the network. */
+            if( timeSinceLastSendMs >= HTTP_SEND_RETRY_TIMEOUT_MS )
+            {
+                LogError( ( "Unable to send packet: Timed out in transport send." ) );
+                returnStatus = HTTPNetworkError;
+            }
+        }
     }
 
-    if( returnStatus == HTTPSuccess )
+    if( bytesRemaining < dataLen )
     {
         LogDebug( ( "Sent HTTP data over the transport: BytesSent=%ld",
-                    ( long int ) transportStatus ) );
+                    ( unsigned long ) ( dataLen - bytesRemaining ) ) );
     }
 
     return returnStatus;
@@ -1788,6 +1814,7 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
 /*-----------------------------------------------------------*/
 
 static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
+                                     HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                      HTTPRequestHeaders_t * pRequestHeaders,
                                      size_t reqBodyLen,
                                      uint32_t sendFlags )
@@ -1813,7 +1840,10 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
     {
         LogDebug( ( "Sending HTTP request headers: HeaderBytes=%lu",
                     ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
-        returnStatus = sendHttpData( pTransport, pRequestHeaders->pBuffer, pRequestHeaders->headersLen );
+        returnStatus = sendHttpData( pTransport,
+                                     getTimestampMs,
+                                     pRequestHeaders->pBuffer, 
+                                     pRequestHeaders->headersLen );
     }
 
     return returnStatus;
@@ -1822,6 +1852,7 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
 /*-----------------------------------------------------------*/
 
 static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
+                                  HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                   const uint8_t * pRequestBodyBuf,
                                   size_t reqBodyBufLen )
 {
@@ -1834,7 +1865,7 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
     /* Send the request body. */
     LogDebug( ( "Sending the HTTP request body: BodyBytes=%lu",
                 ( unsigned long ) reqBodyBufLen ) );
-    returnStatus = sendHttpData( pTransport, pRequestBodyBuf, reqBodyBufLen );
+    returnStatus = sendHttpData( pTransport, getTimestampMs, pRequestBodyBuf, reqBodyBufLen );
 
     return returnStatus;
 }
@@ -2066,6 +2097,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
     if( returnStatus == HTTPSuccess )
     {
         returnStatus = sendHttpHeaders( pTransport,
+                                        pResponse->getTime,
                                         pRequestHeaders,
                                         reqBodyBufLen,
                                         sendFlags );
@@ -2077,6 +2109,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
         if( pRequestBodyBuf != NULL )
         {
             returnStatus = sendHttpBody( pTransport,
+                                         pResponse->getTime,
                                          pRequestBodyBuf,
                                          reqBodyBufLen );
         }
