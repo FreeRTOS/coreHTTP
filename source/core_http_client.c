@@ -34,6 +34,14 @@
 /*-----------------------------------------------------------*/
 
 /**
+ * @brief When #HTTPResponse_t.getTime is set to NULL in #HTTPClient_Send then
+ * this function will replace that field.
+ * 
+ * @return This function always returns zero.
+ */
+static uint32_t getZeroTimestampMs( void );
+
+/**
  * @brief Send HTTP bytes over the transport send interface.
  *
  * @param[in] pTransport Transport interface.
@@ -515,6 +523,13 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  * - #HTTPParserInternalError
  */
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
+
+/*-----------------------------------------------------------*/
+
+static uint32_t getZeroTimestampMs( void )
+{
+    return 0U;
+}
 
 /*-----------------------------------------------------------*/
 
@@ -1714,10 +1729,18 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
     int32_t bytesSent = 0;
     size_t bytesRemaining = dataLen;
     uint32_t lastSendTimeMs = 0U, timeSinceLastSendMs = 0U;
+    uint32_t retryTimeoutMs = HTTP_SEND_RETRY_TIMEOUT_MS;
 
     assert( pTransport != NULL );
     assert( pTransport->send != NULL );
     assert( pData != NULL );
+
+    /* If the timestamp function was undefined by the application, then do not
+     * retry the transport send. */
+    if( getTimestampMs == getZeroTimestampMs )
+    {
+        retryTimeoutMs = 0U;
+    }
 
     /* Record the most recent time of successful transmission. */
     lastSendTimeMs = getTimestampMs();
@@ -1762,7 +1785,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
             timeSinceLastSendMs = calculateElapsedTime( getTimestampMs(), lastSendTimeMs );
             /* Check for timeout if we have been waiting to send any data over
              * the network. */
-            if( timeSinceLastSendMs >= HTTP_SEND_RETRY_TIMEOUT_MS )
+            if( timeSinceLastSendMs >= retryTimeoutMs )
             {
                 LogError( ( "Unable to send packet: Timed out in transport send." ) );
                 returnStatus = HTTPNetworkError;
@@ -1928,7 +1951,8 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
     int32_t currentReceived = 0U;
     HTTPParsingContext_t parsingContext = { 0 };
     uint8_t shouldRecv = 1U, shouldParse = 1U;
-    uint32_t lastDataRecvTimeMs = 0U, timeSinceLastRecvMs = 0U;
+    uint32_t lastRecvTimeMs = 0U, timeSinceLastRecvMs = 0U;
+    uint32_t retryTimeoutMs = HTTP_RECV_RETRY_TIMEOUT_MS;
 
     assert( pTransport != NULL );
     assert( pTransport->recv != NULL );
@@ -1938,6 +1962,17 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
     /* Initialize the parsing context for parsing the response received from the
      * network. */
     initializeParsingContextForFirstResponse( &parsingContext, pRequestHeaders );
+
+    /* If the timestamp function was undefined by the application, then do not
+     * retry the transport receive. */
+    if( pResponse->getTime == getZeroTimestampMs )
+    {
+        retryTimeoutMs = 0U;
+    }
+
+    /* Start the last receive time to allow retries on the first zero data
+     * receive. */
+    lastRecvTimeMs = pResponse->getTime();
 
     while( shouldRecv == 1U )
     {
@@ -1960,7 +1995,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
         else if( currentReceived > 0 )
         {
             /* Reset the time of the last data received when data is received. */
-            lastDataRecvTimeMs = pResponse->getTime();
+            lastRecvTimeMs = pResponse->getTime();
 
             /* Parsing is done on data as soon as it is received from the network.
              * Because we cannot know how large the HTTP response will be in
@@ -1970,13 +2005,13 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
         }
         else
         {
-            timeSinceLastRecvMs = pResponse->getTime() - lastDataRecvTimeMs;
+            timeSinceLastRecvMs = pResponse->getTime() - lastRecvTimeMs;
             /* Do not invoke the response parsing for intermediate zero data. */
             shouldParse = 0U;
 
             /* Check if the allowed elapsed time between non-zero data has been
              * reached. */
-            if( timeSinceLastRecvMs >= HTTP_RECV_RETRY_TIMEOUT_MS )
+            if( timeSinceLastRecvMs >= retryTimeoutMs )
             {
                 /* Invoke the parsing upon this final zero data to indicate
                  * to the parser that there is no more data available from the
@@ -2087,6 +2122,12 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                     "reqBodyBufLen=%lu",
                     ( unsigned long ) reqBodyBufLen ) );
         returnStatus = HTTPInvalidParameter;
+    }
+    else if( pResponse->getTime == NULL )
+    {
+        /* Set a dummy timestamp function when the application did not configure
+         * one. */
+        pResponse->getTime = getZeroTimestampMs;
     }
     else
     {
