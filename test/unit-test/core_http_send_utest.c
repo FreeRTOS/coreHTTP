@@ -1122,7 +1122,7 @@ void test_HTTPClient_Send_null_response( void )
                                     HTTP_TEST_REQUEST_PUT_BODY_LENGTH,
                                     NULL,
                                     0U );
-    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
 }
 
 /*-----------------------------------------------------------*/

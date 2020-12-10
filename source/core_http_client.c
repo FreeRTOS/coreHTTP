@@ -1964,7 +1964,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
     size_t totalReceived = 0U;
     int32_t currentReceived = 0U;
     HTTPParsingContext_t parsingContext = { 0 };
-    uint8_t shouldRecv = 1U, shouldParse = 1U;
+    uint8_t shouldRecv = 1U, shouldParse = 1U, timeoutReached = 0U;
     uint32_t lastRecvTimeMs = 0U, timeSinceLastRecvMs = 0U;
     uint32_t retryTimeoutMs = HTTP_RECV_RETRY_TIMEOUT_MS;
 
@@ -2031,6 +2031,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
                  * to the parser that there is no more data available from the
                  * server. */
                 shouldParse = 1U;
+                timeoutReached = 1U;
             }
         }
 
@@ -2045,9 +2046,11 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
         }
 
         /* Reading should continue if there are no errors in the transport receive
-         * or parsing, the parser indicated the response message is not finished,
-         * and there is room in the response buffer. */
+         * or parsing, the retry on zero data timeout has not been reached, the
+         * parser indicated the response message is not finished, and there is
+         * room in the response buffer. */
         shouldRecv = ( ( returnStatus == HTTPSuccess ) &&
+                       ( timeoutReached == 0U ) &&
                        ( parsingContext.state != HTTP_PARSING_COMPLETE ) &&
                        ( totalReceived < pResponse->bufferLen ) ) ? 1U : 0U;
     }
@@ -2078,7 +2081,8 @@ HTTPStatus_t sendHttpRequest( const TransportInterface_t * pTransport,
 
     assert( pTransport != NULL );
     assert( pRequestHeaders != NULL );
-    assert( pRequestBodyBuf != NULL );
+    assert( ( pRequestBodyBuf != NULL ) ||
+            ( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen == 0 ) ) );
     assert( getTimestampMs != NULL );
 
     /* Send the headers, which are at one location in memory. */
@@ -2116,32 +2120,27 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                               HTTPResponse_t * pResponse,
                               uint32_t sendFlags )
 {
-    HTTPStatus_t returnStatus = HTTPSuccess;
+    HTTPStatus_t returnStatus = HTTPInvalidParameter;
 
     if( pTransport == NULL )
     {
         LogError( ( "Parameter check failed: pTransport interface is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
     }
     else if( pTransport->send == NULL )
     {
         LogError( ( "Parameter check failed: pTransport->send is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
     }
     else if( pTransport->recv == NULL )
     {
         LogError( ( "Parameter check failed: pTransport->recv is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->headersLen < HTTP_MINIMUM_REQUEST_LINE_LENGTH )
     {
@@ -2150,24 +2149,26 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                     "MinimumRequiredLength=%u, HeadersLength=%lu",
                     HTTP_MINIMUM_REQUEST_LINE_LENGTH,
                     ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
-        returnStatus = HTTPInvalidParameter;
     }
     else if( pRequestHeaders->headersLen > pRequestHeaders->bufferLen )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->headersLen > "
                     "pRequestHeaders->bufferLen." ) );
-        returnStatus = HTTPInvalidParameter;
     }
-    else if( ( pResponse != NULL ) && ( pResponse->pBuffer == NULL ) )
+    else if( pResponse == NULL )
+    {
+        LogError( ( "Parameter check failed: pResponse is NULL. " ) );
+    }
+    else if( pResponse->pBuffer == NULL )
     {
         LogError( ( "Parameter check failed: pResponse->pBuffer is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
     }
     else if( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen > 0U ) )
     {
+        /* If there is no body to send we must ensure that the reqBodyBufLen is
+         * zero so that no Content-Length header is automatically written. */
         LogError( ( "Parameter check failed: pRequestBodyBuf is NULL, but "
                     "reqBodyBufLen is greater than zero." ) );
-        returnStatus = HTTPInvalidParameter;
     }
     else if( reqBodyBufLen > ( size_t ) ( INT32_MAX ) )
     {
@@ -2176,17 +2177,13 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
         LogError( ( "Parameter check failed: reqBodyBufLen > INT32_MAX."
                     "reqBodyBufLen=%lu",
                     ( unsigned long ) reqBodyBufLen ) );
-        returnStatus = HTTPInvalidParameter;
     }
-    else if( pResponse->getTime == NULL )
+    else
     {
         /* Set a zero timestamp function when the application did not configure
          * one. */
         pResponse->getTime = getZeroTimestampMs;
-    }
-    else
-    {
-        /* Empty else for MISRA 15.7 compliance. */
+        returnStatus = HTTPSuccess;
     }
 
     if( returnStatus == HTTPSuccess )
@@ -2203,16 +2200,9 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
     {
         /* If the application chooses to receive a response, then pResponse
          * will not be NULL. */
-        if( pResponse != NULL )
-        {
-            returnStatus = receiveAndParseHttpResponse( pTransport,
-                                                        pResponse,
-                                                        pRequestHeaders );
-        }
-        else
-        {
-            LogDebug( ( "Response ignored: pResponse is NULL." ) );
-        }
+        returnStatus = receiveAndParseHttpResponse( pTransport,
+                                                    pResponse,
+                                                    pRequestHeaders );
     }
 
     return returnStatus;
