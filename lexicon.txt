@@ -9,6 +9,7 @@ api
 apis
 ascii
 aws
+bool
 br
 bufferlen
 bufferlength
@@ -17,6 +18,7 @@ bytesremaining
 bytessent
 bytestorecv
 bytestosend
+calltlsrecvfunc
 cb
 cbmc
 chk
@@ -52,6 +54,8 @@ findheaderonheadercompletecallback
 findheadervalueparsercallback
 firstpartbytes
 getfinalresponsestatus
+gettime
+gettimestampms
 github
 headercount
 headerslen
@@ -211,6 +215,8 @@ rfc
 sdk
 senderrorcall
 sendflags
+sendhttpbody
+sendhttpheaders
 sendpartialcall
 sizeof
 snprintf
@@ -225,6 +231,7 @@ tcpsocketcontext
 tls
 tlscontext
 tlsrecv
+tlsrecvcount
 tlssend
 toascii
 totalreceived
