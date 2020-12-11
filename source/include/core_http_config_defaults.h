@@ -78,10 +78,10 @@
  *
  * <b>Possible values:</b> Any positive 32 bit integer. A small timeout value
  * is recommended. <br>
- * <b>Default value:</b> `0`
+ * <b>Default value:</b> `10`
  */
 #ifndef HTTP_RECV_RETRY_TIMEOUT_MS
-    #define HTTP_RECV_RETRY_TIMEOUT_MS    ( 0U )
+    #define HTTP_RECV_RETRY_TIMEOUT_MS    ( 10U )
 #endif
 
 /**
@@ -97,10 +97,10 @@
  *
  * <b>Possible values:</b> Any positive 32 bit integer. A small timeout value
  * is recommended. <br>
- * <b>Default value:</b> `0`
+ * <b>Default value:</b> `10`
  */
 #ifndef HTTP_SEND_RETRY_TIMEOUT_MS
-    #define HTTP_SEND_RETRY_TIMEOUT_MS    ( 0U )
+    #define HTTP_SEND_RETRY_TIMEOUT_MS    ( 10U )
 #endif
 
 /**
