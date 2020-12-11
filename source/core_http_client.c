@@ -1786,7 +1786,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
             /* It is a bug in the application's transport send implementation if
              * more bytes than expected are sent. To avoid a possible overflow
              * in converting bytesRemaining from unsigned to signed, this assert
-             * must exist after the check for transportStatus being negative. */
+             * must exist after the check for bytesSent being negative. */
             assert( ( size_t ) bytesSent <= bytesRemaining );
 
             /* Record the most recent time of successful transmission. */
@@ -2002,7 +2002,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
         {
             LogError( ( "Failed to receive HTTP data: Transport recv() "
                         "returned error: TransportStatus=%ld",
-                        ( long int ) transportStatus ) );
+                        ( long int ) currentReceived ) );
             returnStatus = HTTPNetworkError;
 
             /* Do not invoke the parser on network errors. */
