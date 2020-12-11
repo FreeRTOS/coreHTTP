@@ -69,6 +69,7 @@ PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_Send_http_parser_execute.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/transport_interface_stubs.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/get_time_stub.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/strncpy.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/httpHeaderStrncpy.c
 

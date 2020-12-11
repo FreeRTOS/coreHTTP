@@ -28,6 +28,7 @@
 #include "core_http_client.h"
 #include "http_cbmc_state.h"
 #include "transport_interface_stubs.h"
+#include "get_time_stub.h"
 
 void HTTPClient_Send_harness()
 {
@@ -59,6 +60,11 @@ void HTTPClient_Send_harness()
          * but doing so makes CBMC run out of memory. */
         pTransportInterface->send = nondet_bool() ? NULL : TransportInterfaceSendStub;
         pTransportInterface->recv = nondet_bool() ? NULL : TransportInterfaceReceiveStub;
+    }
+
+    if( pResponse != NULL )
+    {
+        pResponse->getTime = nondet_boot() ? NULL : GetCurrentTimeStub;
     }
 
     HTTPClient_Send( pTransportInterface,
