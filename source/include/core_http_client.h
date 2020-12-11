@@ -412,6 +412,15 @@ typedef struct HTTPClient_ResponseHeaderParsingCallback
 } HTTPClient_ResponseHeaderParsingCallback_t;
 
 /**
+ * @ingroup http_callback_types
+ * @brief Application provided function to query the current time in
+ * milliseconds.
+ *
+ * @return The current time in milliseconds.
+ */
+typedef uint32_t (* HTTPClient_GetCurrentTimeFunc_t )( void );
+
+/**
  * @ingroup http_struct_types
  * @brief Represents an HTTP response.
  */
@@ -441,6 +450,22 @@ typedef struct HTTPResponse
      * Set to NULL to disable.
      */
     HTTPClient_ResponseHeaderParsingCallback_t * pHeaderParsingCallback;
+
+    /**
+     * @brief Optional callback for getting the system time.
+     *
+     * This is used to calculate the elapsed time when retrying network reads or
+     * sends that return zero bytes received or sent, respectively. If this
+     * field is set to NULL, then network send and receive won't be retried
+     * after a zero is returned.
+     *
+     * If this function is set, then the maximum time for retrying network reads
+     * that return zero bytes can be set through #HTTP_RECV_RETRY_TIMEOUT_MS.
+     *
+     * If this function is set, then the maximum elapsed time between network
+     * sends greater than zero is set in HTTP_SEND_RETRY_TIMEOUT_MS.
+     */
+    HTTPClient_GetCurrentTimeFunc_t getTime;
 
     /**
      * @brief The starting location of the response headers in pBuffer.

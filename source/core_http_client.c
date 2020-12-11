@@ -34,9 +34,18 @@
 /*-----------------------------------------------------------*/
 
 /**
+ * @brief When #HTTPResponse_t.getTime is set to NULL in #HTTPClient_Send then
+ * this function will replace that field.
+ *
+ * @return This function always returns zero.
+ */
+static uint32_t getZeroTimestampMs( void );
+
+/**
  * @brief Send HTTP bytes over the transport send interface.
  *
  * @param[in] pTransport Transport interface.
+ * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
  * @param[in] pData HTTP request data to send.
  * @param[in] dataLen HTTP request data length.
  *
@@ -45,6 +54,7 @@
  * returned.
  */
 static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
+                                  HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                   const uint8_t * pData,
                                   size_t dataLen );
 
@@ -52,6 +62,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
  * @brief Send the HTTP headers over the transport send interface.
  *
  * @param[in] pTransport Transport interface.
+ * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
  * @param[in] pRequestHeaders Request headers to send, it includes the buffer
  * and length.
  * @param[in] reqBodyLen The length of the request body to be sent. This is
@@ -63,6 +74,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
  * returned.
  */
 static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
+                                     HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                      HTTPRequestHeaders_t * pRequestHeaders,
                                      size_t reqBodyLen,
                                      uint32_t sendFlags );
@@ -84,6 +96,7 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
  * @brief Send the HTTP body over the transport send interface.
  *
  * @param[in] pTransport Transport interface.
+ * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
  * @param[in] pRequestBodyBuf Request body buffer.
  * @param[in] reqBodyBufLen Length of the request body buffer.
  *
@@ -92,6 +105,7 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
  * returned.
  */
 static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
+                                  HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                   const uint8_t * pRequestBodyBuf,
                                   size_t reqBodyBufLen );
 
@@ -153,23 +167,6 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                     int32_t rangeEnd );
 
 /**
- * @brief Receive HTTP response from the transport receive interface.
- *
- * @param[in] pTransport Transport interface.
- * @param[in] pBuffer Response buffer.
- * @param[in] bufferLen Length of the response buffer.
- * @param[out] pBytesReceived Bytes received from the transport interface.
- *
- * @return Returns #HTTPSuccess if successful. If there was a network error or
- * more bytes than what was specified were read, then #HTTPNetworkError is
- * returned.
- */
-static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
-                                     uint8_t * pBuffer,
-                                     size_t bufferLen,
-                                     size_t * pBytesReceived );
-
-/**
  * @brief Get the status of the HTTP response given the parsing state and how
  * much data is in the response buffer.
  *
@@ -195,12 +192,33 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
  * @param[in] pResponse Response message to receive data from the network.
  * @param[in] pRequestHeaders Request headers for the corresponding HTTP request.
  *
- * @return Returns #HTTPSuccess if successful. Please see #receiveHttpData,
- * #parseHttpResponse, and #getFinalResponseStatus for other statuses returned.
+ * @return Returns #HTTPSuccess if successful. #HTTPNetworkError for a transport
+ * receive error. Please see #parseHttpResponse and #getFinalResponseStatus for
+ * other statuses returned.
  */
 static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pTransport,
                                                  HTTPResponse_t * pResponse,
                                                  const HTTPRequestHeaders_t * pRequestHeaders );
+
+/**
+ * @brief Send the HTTP request over the network.
+ *
+ * @param[in] pTransport Transport interface.
+ * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
+ * @param[in] pRequestHeaders Request headers to send over the network.
+ * @param[in] pRequestBodyBuf Request body buffer to send over the network.
+ * @param[in] reqBodyBufLen Length of the request body buffer.
+ * @param[in] sendFlags Application provided flags to #HTTPClient_Send.
+ *
+ * @return Returns #HTTPSuccess if successful. Please see #sendHttpHeaders and
+ * #sendHttpBody for other statuses returned.
+ */
+static HTTPStatus_t sendHttpRequest( const TransportInterface_t * pTransport,
+                                     HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                     HTTPRequestHeaders_t * pRequestHeaders,
+                                     const uint8_t * pRequestBodyBuf,
+                                     size_t reqBodyBufLen,
+                                     uint32_t sendFlags );
 
 /**
  * @brief Converts an integer value to its ASCII representation in the passed
@@ -316,8 +334,10 @@ static int findHeaderOnHeaderCompleteCallback( http_parser * pHttpParser );
  * server.
  *
  * @param[in] pParsingContext The parsing context to initialize.
+ * @param[in] pRequestHeaders Request headers for the corresponding HTTP request.
  */
-static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pParsingContext );
+static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pParsingContext,
+                                                      const HTTPRequestHeaders_t * pRequestHeaders );
 
 /**
  * @brief Parses the response buffer in @p pResponse.
@@ -329,8 +349,6 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
  * @param[in,out] pParsingContext The response parsing state.
  * @param[in,out] pResponse The response information to be updated.
  * @param[in] parseLen The next length to parse in pResponse->pBuffer.
- * @param[in] isHeadResponse If the response is to a HEAD request this is set
- * to 1, otherwise this is set to 0.
  *
  * @return One of the following:
  * - #HTTPSuccess
@@ -339,8 +357,7 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
  */
 static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
                                        HTTPResponse_t * pResponse,
-                                       size_t parseLen,
-                                       uint8_t isHeadResponse );
+                                       size_t parseLen );
 
 /**
  * @brief Callback invoked during http_parser_execute() to indicate the start of
@@ -526,6 +543,13 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  * - #HTTPParserInternalError
  */
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
+
+/*-----------------------------------------------------------*/
+
+static uint32_t getZeroTimestampMs( void )
+{
+    return 0U;
+}
 
 /*-----------------------------------------------------------*/
 
@@ -926,13 +950,17 @@ static int httpParserOnMessageCompleteCallback( http_parser * pHttpParser )
 
 /*-----------------------------------------------------------*/
 
-static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pParsingContext )
+static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pParsingContext,
+                                                      const HTTPRequestHeaders_t * pRequestHeaders )
 {
     assert( pParsingContext != NULL );
+    assert( pRequestHeaders != NULL );
+    assert( pRequestHeaders->headersLen >= HTTP_MINIMUM_REQUEST_LINE_LENGTH );
 
     /* Initialize the third-party HTTP parser to parse responses. */
     http_parser_init( &( pParsingContext->httpParser ), HTTP_RESPONSE );
 
+    /* The parser will return an error if this header size limit is exceeded. */
     http_parser_set_max_header_size( HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES );
 
     /* No response has been parsed yet. */
@@ -940,6 +968,17 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
 
     /* No response to update is associated with this parsing context yet. */
     pParsingContext->pResponse = NULL;
+
+    /* The parsing context needs to know if the expected response is to a HEAD
+     * request. For a HEAD response, the third-party parser requires parsing is
+     * indicated to stop by returning a 1 from httpParserOnHeadersCompleteCallback().
+     * If this is not done, the parser will not indicate the message is complete. */
+    if( strncmp( ( const char * ) ( pRequestHeaders->pBuffer ),
+                 HTTP_METHOD_HEAD,
+                 sizeof( HTTP_METHOD_HEAD ) - 1U ) == 0 )
+    {
+        pParsingContext->isHeadResponse = 1U;
+    }
 }
 
 /*-----------------------------------------------------------*/
@@ -1060,8 +1099,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser )
 
 static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
                                        HTTPResponse_t * pResponse,
-                                       size_t parseLen,
-                                       uint8_t isHeadResponse )
+                                       size_t parseLen )
 {
     HTTPStatus_t returnStatus;
     http_parser_settings parserSettings = { 0 };
@@ -1073,7 +1111,6 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
 
     assert( pParsingContext != NULL );
     assert( pResponse != NULL );
-    assert( isHeadResponse <= 1 );
 
     /* If this is the first time this parsing context is used, then set the
      * response input. */
@@ -1081,8 +1118,6 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
     {
         pParsingContext->pResponse = pResponse;
         pParsingContext->pBufferCur = ( const char * ) pResponse->pBuffer;
-        /* Set if this response is for a HEAD request. */
-        pParsingContext->isHeadResponse = isHeadResponse;
 
         /* Initialize the status-code returned in the response. */
         pResponse->statusCode = 0U;
@@ -1706,55 +1741,78 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 /*-----------------------------------------------------------*/
 
 static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
+                                  HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                   const uint8_t * pData,
                                   size_t dataLen )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     const uint8_t * pIndex = pData;
-    int32_t transportStatus = 0;
+    int32_t bytesSent = 0;
     size_t bytesRemaining = dataLen;
+    uint32_t lastSendTimeMs = 0U, timeSinceLastSendMs = 0U;
+    uint32_t retryTimeoutMs = HTTP_SEND_RETRY_TIMEOUT_MS;
 
     assert( pTransport != NULL );
     assert( pTransport->send != NULL );
     assert( pData != NULL );
 
+    /* If the timestamp function was undefined by the application, then do not
+     * retry the transport send. */
+    if( getTimestampMs == getZeroTimestampMs )
+    {
+        retryTimeoutMs = 0U;
+    }
+
+    /* Initialize the last send time to allow retries, if 0 bytes are sent on
+     * the first try. */
+    lastSendTimeMs = getTimestampMs();
+
     /* Loop until all data is sent. */
     while( ( bytesRemaining > 0UL ) && ( returnStatus != HTTPNetworkError ) )
     {
-        transportStatus = pTransport->send( pTransport->pNetworkContext,
-                                            pIndex,
-                                            bytesRemaining );
+        bytesSent = pTransport->send( pTransport->pNetworkContext,
+                                      pIndex,
+                                      bytesRemaining );
 
-        /* A transport status of less than zero is an error. */
-        if( transportStatus < 0 )
+        /* BytesSent less than zero is an error. */
+        if( bytesSent < 0 )
         {
-            LogError( ( "Failed to send HTTP data: Transport send()"
-                        " returned error: TransportStatus=%ld",
-                        ( long int ) transportStatus ) );
+            LogError( ( "Failed to send data: Transport send error: "
+                        "TransportStatus=%ld", ( long int ) bytesSent ) );
             returnStatus = HTTPNetworkError;
         }
-        else
+        else if( bytesSent > 0 )
         {
             /* It is a bug in the application's transport send implementation if
              * more bytes than expected are sent. To avoid a possible overflow
              * in converting bytesRemaining from unsigned to signed, this assert
-             * must exist after the check for transportStatus being negative. */
-            assert( ( size_t ) transportStatus <= bytesRemaining );
+             * must exist after the check for bytesSent being negative. */
+            assert( ( size_t ) bytesSent <= bytesRemaining );
 
-            bytesRemaining -= ( size_t ) transportStatus;
-            pIndex += transportStatus;
-            LogDebug( ( "Sent HTTP data over the transport: "
+            /* Record the most recent time of successful transmission. */
+            lastSendTimeMs = getTimestampMs();
+
+            bytesRemaining -= ( size_t ) bytesSent;
+            pIndex += bytesSent;
+            LogDebug( ( "Sent data over the transport: "
                         "BytesSent=%ld, BytesRemaining=%lu, TotalBytesSent=%lu",
-                        ( long int ) transportStatus,
+                        ( long int ) bytesSent,
                         ( unsigned long ) bytesRemaining,
                         ( unsigned long ) ( dataLen - bytesRemaining ) ) );
         }
-    }
+        else
+        {
+            /* No bytes were sent over the network. */
+            timeSinceLastSendMs = getTimestampMs() - lastSendTimeMs;
 
-    if( returnStatus == HTTPSuccess )
-    {
-        LogDebug( ( "Sent HTTP data over the transport: BytesSent=%ld",
-                    ( long int ) transportStatus ) );
+            /* Check for timeout if we have been waiting to send any data over
+             * the network. */
+            if( timeSinceLastSendMs >= retryTimeoutMs )
+            {
+                LogError( ( "Unable to send packet: Timed out in transport send." ) );
+                returnStatus = HTTPNetworkError;
+            }
+        }
     }
 
     return returnStatus;
@@ -1795,6 +1853,7 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
 /*-----------------------------------------------------------*/
 
 static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
+                                     HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                      HTTPRequestHeaders_t * pRequestHeaders,
                                      size_t reqBodyLen,
                                      uint32_t sendFlags )
@@ -1820,7 +1879,10 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
     {
         LogDebug( ( "Sending HTTP request headers: HeaderBytes=%lu",
                     ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
-        returnStatus = sendHttpData( pTransport, pRequestHeaders->pBuffer, pRequestHeaders->headersLen );
+        returnStatus = sendHttpData( pTransport,
+                                     getTimestampMs,
+                                     pRequestHeaders->pBuffer,
+                                     pRequestHeaders->headersLen );
     }
 
     return returnStatus;
@@ -1829,6 +1891,7 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
 /*-----------------------------------------------------------*/
 
 static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
+                                  HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                   const uint8_t * pRequestBodyBuf,
                                   size_t reqBodyBufLen )
 {
@@ -1841,59 +1904,7 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
     /* Send the request body. */
     LogDebug( ( "Sending the HTTP request body: BodyBytes=%lu",
                 ( unsigned long ) reqBodyBufLen ) );
-    returnStatus = sendHttpData( pTransport, pRequestBodyBuf, reqBodyBufLen );
-
-    return returnStatus;
-}
-
-/*-----------------------------------------------------------*/
-
-static HTTPStatus_t receiveHttpData( const TransportInterface_t * pTransport,
-                                     uint8_t * pBuffer,
-                                     size_t bufferLen,
-                                     size_t * pBytesReceived )
-{
-    HTTPStatus_t returnStatus = HTTPSuccess;
-    int32_t transportStatus = 0;
-
-    assert( pTransport != NULL );
-    assert( pTransport->recv != NULL );
-    assert( pBuffer != NULL );
-    assert( pBytesReceived != NULL );
-
-    transportStatus = pTransport->recv( pTransport->pNetworkContext,
-                                        pBuffer,
-                                        bufferLen );
-
-    /* A transport status of less than zero is an error. */
-    if( transportStatus < 0 )
-    {
-        LogError( ( "Failed to receive HTTP data: Transport recv() "
-                    "returned error: TransportStatus=%ld",
-                    ( long int ) transportStatus ) );
-        returnStatus = HTTPNetworkError;
-    }
-    else if( transportStatus > 0 )
-    {
-        /* It is a bug in the application's transport receive implementation if
-         * more bytes than expected are received. To avoid a possible overflow
-         * in converting bytesRemaining from unsigned to signed, this assert
-         * must exist after the check for transportStatus being negative. */
-        assert( ( size_t ) transportStatus <= bufferLen );
-
-        /* Some or all of the specified data was received. */
-        *pBytesReceived = ( size_t ) ( transportStatus );
-        LogDebug( ( "Received data from the transport: BytesReceived=%ld",
-                    ( long int ) transportStatus ) );
-    }
-    else
-    {
-        /* When a zero is returned from the transport recv it will not be
-         * invoked again. */
-        *pBytesReceived = 0U;
-        LogDebug( ( "Received zero bytes from transport recv(). Receiving "
-                    "transport data is complete." ) );
-    }
+    returnStatus = sendHttpData( pTransport, getTimestampMs, pRequestBodyBuf, reqBodyBufLen );
 
     return returnStatus;
 }
@@ -1953,58 +1964,95 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     size_t totalReceived = 0U;
-    size_t currentReceived = 0U;
+    int32_t currentReceived = 0;
     HTTPParsingContext_t parsingContext = { 0 };
-    uint8_t shouldRecv = 1U;
-    uint8_t isHeadResponse = 0U;
+    uint8_t shouldRecv = 1U, shouldParse = 1U, timeoutReached = 0U;
+    uint32_t lastRecvTimeMs = 0U, timeSinceLastRecvMs = 0U;
+    uint32_t retryTimeoutMs = HTTP_RECV_RETRY_TIMEOUT_MS;
 
     assert( pTransport != NULL );
     assert( pTransport->recv != NULL );
     assert( pResponse != NULL );
     assert( pRequestHeaders != NULL );
-    assert( pRequestHeaders->headersLen >= HTTP_MINIMUM_REQUEST_LINE_LENGTH );
-
-    /* The parsing context needs to know if the response is for a HEAD request.
-     * The third-party parser requires parsing is manually indicated to stop
-     * in the httpParserOnHeadersCompleteCallback() for a HEAD response,
-     * otherwise the parser will not indicate the message was complete. */
-    if( strncmp( ( const char * ) ( pRequestHeaders->pBuffer ),
-                 HTTP_METHOD_HEAD,
-                 sizeof( HTTP_METHOD_HEAD ) - 1U ) == 0 )
-    {
-        isHeadResponse = 1U;
-    }
 
     /* Initialize the parsing context for parsing the response received from the
      * network. */
-    initializeParsingContextForFirstResponse( &parsingContext );
+    initializeParsingContextForFirstResponse( &parsingContext, pRequestHeaders );
+
+    /* If the timestamp function was undefined by the application, then do not
+     * retry the transport receive. */
+    if( pResponse->getTime == getZeroTimestampMs )
+    {
+        retryTimeoutMs = 0U;
+    }
+
+    /* Initialize the last send time to allow retries, if 0 bytes are sent on
+     * the first try. */
+    lastRecvTimeMs = pResponse->getTime();
 
     while( shouldRecv == 1U )
     {
         /* Receive the HTTP response data into the pResponse->pBuffer. */
-        returnStatus = receiveHttpData( pTransport,
-                                        pResponse->pBuffer + totalReceived,
-                                        pResponse->bufferLen - totalReceived,
-                                        &currentReceived );
+        currentReceived = pTransport->recv( pTransport->pNetworkContext,
+                                            pResponse->pBuffer + totalReceived,
+                                            pResponse->bufferLen - totalReceived );
 
-        if( returnStatus == HTTPSuccess )
+        /* Transport receive errors are negative. */
+        if( currentReceived < 0 )
         {
-            /* Data is received into the buffer and must be parsed. Parsing is
-             * invoked even with a length of zero. A length of zero indicates to
-             * the parser that there is no more data from the server (EOF). */
-            returnStatus = parseHttpResponse( &parsingContext,
-                                              pResponse,
-                                              currentReceived,
-                                              isHeadResponse );
+            LogError( ( "Failed to receive HTTP data: Transport recv() "
+                        "returned error: TransportStatus=%ld",
+                        ( long int ) currentReceived ) );
+            returnStatus = HTTPNetworkError;
+
+            /* Do not invoke the parser on network errors. */
+            shouldParse = 0U;
+        }
+        else if( currentReceived > 0 )
+        {
+            /* Reset the time of the last data received when data is received. */
+            lastRecvTimeMs = pResponse->getTime();
+
+            /* Parsing is done on data as soon as it is received from the network.
+             * Because we cannot know how large the HTTP response will be in
+             * total, parsing will tell us if the end of the message is reached.*/
+            shouldParse = 1U;
             totalReceived += currentReceived;
         }
+        else
+        {
+            timeSinceLastRecvMs = pResponse->getTime() - lastRecvTimeMs;
+            /* Do not invoke the response parsing for intermediate zero data. */
+            shouldParse = 0U;
 
-        /* Reading should continue if there are no errors in the transport recv
-         * or parsing, non-zero data was received from the network,
-         * the parser indicated the response message is not finished, and there
-         * is room in the response buffer. */
+            /* Check if the allowed elapsed time between non-zero data has been
+             * reached. */
+            if( timeSinceLastRecvMs >= retryTimeoutMs )
+            {
+                /* Invoke the parsing upon this final zero data to indicate
+                 * to the parser that there is no more data available from the
+                 * server. */
+                shouldParse = 1U;
+                timeoutReached = 1U;
+            }
+        }
+
+        if( shouldParse == 1U )
+        {
+            /* Data is received into the buffer is immediately parsed. Parsing
+             * is invoked even with a length of zero. A length of zero indicates
+             * to the parser that there is no more data from the server (EOF). */
+            returnStatus = parseHttpResponse( &parsingContext,
+                                              pResponse,
+                                              currentReceived );
+        }
+
+        /* Reading should continue if there are no errors in the transport receive
+         * or parsing, the retry on zero data timeout has not been reached, the
+         * parser indicated the response message is not finished, and there is
+         * room in the response buffer. */
         shouldRecv = ( ( returnStatus == HTTPSuccess ) &&
-                       ( currentReceived > 0U ) &&
+                       ( timeoutReached == 0U ) &&
                        ( parsingContext.state != HTTP_PARSING_COMPLETE ) &&
                        ( totalReceived < pResponse->bufferLen ) ) ? 1U : 0U;
     }
@@ -2024,88 +2072,27 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
 
 /*-----------------------------------------------------------*/
 
-HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
-                              HTTPRequestHeaders_t * pRequestHeaders,
-                              const uint8_t * pRequestBodyBuf,
-                              size_t reqBodyBufLen,
-                              HTTPResponse_t * pResponse,
-                              uint32_t sendFlags )
+static HTTPStatus_t sendHttpRequest( const TransportInterface_t * pTransport,
+                                     HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                     HTTPRequestHeaders_t * pRequestHeaders,
+                                     const uint8_t * pRequestBodyBuf,
+                                     size_t reqBodyBufLen,
+                                     uint32_t sendFlags )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
 
-    if( pTransport == NULL )
-    {
-        LogError( ( "Parameter check failed: pTransport interface is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
-    }
-    else if( pTransport->send == NULL )
-    {
-        LogError( ( "Parameter check failed: pTransport->send is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
-    }
-    else if( pTransport->recv == NULL )
-    {
-        LogError( ( "Parameter check failed: pTransport->recv is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
-    }
-    else if( pRequestHeaders == NULL )
-    {
-        LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
-    }
-    else if( pRequestHeaders->pBuffer == NULL )
-    {
-        LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
-    }
-    else if( pRequestHeaders->headersLen < HTTP_MINIMUM_REQUEST_LINE_LENGTH )
-    {
-        LogError( ( "Parameter check failed: pRequestHeaders->headersLen "
-                    "does not meet minimum the required length. "
-                    "MinimumRequiredLength=%u, HeadersLength=%lu",
-                    HTTP_MINIMUM_REQUEST_LINE_LENGTH,
-                    ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
-        returnStatus = HTTPInvalidParameter;
-    }
-    else if( pRequestHeaders->headersLen > pRequestHeaders->bufferLen )
-    {
-        LogError( ( "Parameter check failed: pRequestHeaders->headersLen > "
-                    "pRequestHeaders->bufferLen." ) );
-        returnStatus = HTTPInvalidParameter;
-    }
-    else if( ( pResponse != NULL ) && ( pResponse->pBuffer == NULL ) )
-    {
-        LogError( ( "Parameter check failed: pResponse->pBuffer is NULL." ) );
-        returnStatus = HTTPInvalidParameter;
-    }
-    else if( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen > 0U ) )
-    {
-        LogError( ( "Parameter check failed: pRequestBodyBuf is NULL, but "
-                    "reqBodyBufLen is greater than zero." ) );
-        returnStatus = HTTPInvalidParameter;
-    }
-    else if( reqBodyBufLen > ( size_t ) ( INT32_MAX ) )
-    {
-        /* This check is needed because convertInt32ToAscii() is used on the
-         * reqBodyBufLen to create a Content-Length header value string. */
-        LogError( ( "Parameter check failed: reqBodyBufLen > INT32_MAX."
-                    "reqBodyBufLen=%lu",
-                    ( unsigned long ) reqBodyBufLen ) );
-        returnStatus = HTTPInvalidParameter;
-    }
-    else
-    {
-        /* Empty else for MISRA 15.7 compliance. */
-    }
+    assert( pTransport != NULL );
+    assert( pRequestHeaders != NULL );
+    assert( ( pRequestBodyBuf != NULL ) ||
+            ( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen == 0 ) ) );
+    assert( getTimestampMs != NULL );
 
     /* Send the headers, which are at one location in memory. */
-    if( returnStatus == HTTPSuccess )
-    {
-        returnStatus = sendHttpHeaders( pTransport,
-                                        pRequestHeaders,
-                                        reqBodyBufLen,
-                                        sendFlags );
-    }
+    returnStatus = sendHttpHeaders( pTransport,
+                                    getTimestampMs,
+                                    pRequestHeaders,
+                                    reqBodyBufLen,
+                                    sendFlags );
 
     /* Send the body, which is at another location in memory. */
     if( returnStatus == HTTPSuccess )
@@ -2113,6 +2100,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
         if( pRequestBodyBuf != NULL )
         {
             returnStatus = sendHttpBody( pTransport,
+                                         getTimestampMs,
                                          pRequestBodyBuf,
                                          reqBodyBufLen );
         }
@@ -2122,20 +2110,103 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
         }
     }
 
+    return returnStatus;
+}
+
+/*-----------------------------------------------------------*/
+
+HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
+                              HTTPRequestHeaders_t * pRequestHeaders,
+                              const uint8_t * pRequestBodyBuf,
+                              size_t reqBodyBufLen,
+                              HTTPResponse_t * pResponse,
+                              uint32_t sendFlags )
+{
+    HTTPStatus_t returnStatus = HTTPInvalidParameter;
+
+    if( pTransport == NULL )
+    {
+        LogError( ( "Parameter check failed: pTransport interface is NULL." ) );
+    }
+    else if( pTransport->send == NULL )
+    {
+        LogError( ( "Parameter check failed: pTransport->send is NULL." ) );
+    }
+    else if( pTransport->recv == NULL )
+    {
+        LogError( ( "Parameter check failed: pTransport->recv is NULL." ) );
+    }
+    else if( pRequestHeaders == NULL )
+    {
+        LogError( ( "Parameter check failed: pRequestHeaders is NULL." ) );
+    }
+    else if( pRequestHeaders->pBuffer == NULL )
+    {
+        LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
+    }
+    else if( pRequestHeaders->headersLen < HTTP_MINIMUM_REQUEST_LINE_LENGTH )
+    {
+        LogError( ( "Parameter check failed: pRequestHeaders->headersLen "
+                    "does not meet minimum the required length. "
+                    "MinimumRequiredLength=%u, HeadersLength=%lu",
+                    HTTP_MINIMUM_REQUEST_LINE_LENGTH,
+                    ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
+    }
+    else if( pRequestHeaders->headersLen > pRequestHeaders->bufferLen )
+    {
+        LogError( ( "Parameter check failed: pRequestHeaders->headersLen > "
+                    "pRequestHeaders->bufferLen." ) );
+    }
+    else if( pResponse == NULL )
+    {
+        LogError( ( "Parameter check failed: pResponse is NULL. " ) );
+    }
+    else if( pResponse->pBuffer == NULL )
+    {
+        LogError( ( "Parameter check failed: pResponse->pBuffer is NULL." ) );
+    }
+    else if( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen > 0U ) )
+    {
+        /* If there is no body to send we must ensure that the reqBodyBufLen is
+         * zero so that no Content-Length header is automatically written. */
+        LogError( ( "Parameter check failed: pRequestBodyBuf is NULL, but "
+                    "reqBodyBufLen is greater than zero." ) );
+    }
+    else if( reqBodyBufLen > ( size_t ) ( INT32_MAX ) )
+    {
+        /* This check is needed because convertInt32ToAscii() is used on the
+         * reqBodyBufLen to create a Content-Length header value string. */
+        LogError( ( "Parameter check failed: reqBodyBufLen > INT32_MAX."
+                    "reqBodyBufLen=%lu",
+                    ( unsigned long ) reqBodyBufLen ) );
+    }
+    else
+    {
+        if( pResponse->getTime == NULL )
+        {
+            /* Set a zero timestamp function when the application did not configure
+             * one. */
+            pResponse->getTime = getZeroTimestampMs;
+        }
+
+        returnStatus = HTTPSuccess;
+    }
+
     if( returnStatus == HTTPSuccess )
     {
-        /* If the application chooses to receive a response, then pResponse
-         * will not be NULL. */
-        if( pResponse != NULL )
-        {
-            returnStatus = receiveAndParseHttpResponse( pTransport,
-                                                        pResponse,
-                                                        pRequestHeaders );
-        }
-        else
-        {
-            LogDebug( ( "Response ignored: pResponse is NULL." ) );
-        }
+        returnStatus = sendHttpRequest( pTransport,
+                                        pResponse->getTime,
+                                        pRequestHeaders,
+                                        pRequestBodyBuf,
+                                        reqBodyBufLen,
+                                        sendFlags );
+    }
+
+    if( returnStatus == HTTPSuccess )
+    {
+        returnStatus = receiveAndParseHttpResponse( pTransport,
+                                                    pResponse,
+                                                    pRequestHeaders );
     }
 
     return returnStatus;

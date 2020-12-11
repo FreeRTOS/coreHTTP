@@ -54,6 +54,8 @@ findheaderonheadercompletecallback
 findheadervalueparsercallback
 firstpartbytes
 getfinalresponsestatus
+gettime
+gettimestampms
 github
 headercount
 headerslen
@@ -199,6 +201,7 @@ receivehttpdata
 recv
 recvcurrentcall
 recvstopcall
+recvtimeoutcall
 reponse
 reqbodybuflen
 reqbodylen
@@ -213,6 +216,8 @@ rfc
 sdk
 senderrorcall
 sendflags
+sendhttpbody
+sendhttpheaders
 sendpartialcall
 sizeof
 snprintf
