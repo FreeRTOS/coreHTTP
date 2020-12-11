@@ -237,15 +237,16 @@ struct NetworkContext {
 
 @section http_porting_time Time Function
 @brief The HTTP library optionally relies on a function to generate millisecond
-timestamps, for the purpose of calculating the elapsed time between non-zero
-network sends and receives.
+timestamps, for the purpose of calculating the elapsed time when no data has
+been sent or received.
 
 @see @ref HTTPClient_GetCurrentTimeFunc_t
 
-Platforms can supply a function capable of generating 32-bit timestamps of
-millisecond resolution. These timestamps need not correspond with any real world
-clock; the only requirement is that the difference between two timestamps must
-be an accurate representation of the duration between them, in milliseconds.
+Applications can supply their platform-specific function capable of generating
+32-bit timestamps of millisecond resolution. These timestamps need not correspond
+with any real world clock; the only requirement is that the difference between two
+timestamps must be an accurate representation of the duration between them, in
+milliseconds.
 
 This function is used in conjunction with macros @ref HTTP_SEND_RETRY_TIMEOUT_MS
 and @ref HTTP_RECV_RETRY_TIMEOUT_MS.

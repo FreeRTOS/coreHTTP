@@ -32,8 +32,8 @@ uint32_t GetCurrentTimeStub( void )
 {
     /* The HTTP relies on this timestamp in order to complete the network send
      * and receive loops. Returning an unbounded timestamp does not add value to
-     * the proofs as the HTTP library uses this time stamp only in an arithmetic
-     * operation to get the difference. In C arithmetic operations on unsigned
+     * the proofs as the HTTP library uses this timestamp only in an arithmetic
+     * operation to get the difference. In C, arithmetic operations on unsigned
      * integers are guaranteed to reliably wrap around with no adverse side
      * effects. If the time returned was unbounded, the network send and receive
      * loops could be unwound a large number of times making the proof execution

@@ -39,6 +39,10 @@
  *
  * If the timeout expires, the #HTTPClient_Send function will return
  * #HTTPNetworkError.
+ *
+ * This is set to 1 to exit right away after a zero is received in the transport
+ * receive stub. There is no added value, in proving memory safety, to repeat
+ * the logic that checks if the retry timeout is reached.
  */
 #define HTTP_RECV_RETRY_TIMEOUT_MS    ( 1U )
 
@@ -52,6 +56,10 @@
  * transmission over the network through the transport send function.
  *
  * If the timeout expires, the #HTTPClient_Send function returns #HTTPNetworkError.
+ *
+ * This is set to 1 to exit right away after a zero is received in the transport
+ * send stub. There is no added value, in proving memory safety, to repeat
+ * the logic that checks if the retry timeout is reached.
  */
 #define HTTP_SEND_RETRY_TIMEOUT_MS    ( 1U )
 

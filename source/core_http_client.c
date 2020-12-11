@@ -193,7 +193,7 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
  * @param[in] pRequestHeaders Request headers for the corresponding HTTP request.
  *
  * @return Returns #HTTPSuccess if successful. #HTTPNetworkError for a transport
- * receive error. Please see #parseHttpResponse, and #getFinalResponseStatus for
+ * receive error. Please see #parseHttpResponse and #getFinalResponseStatus for
  * other statuses returned.
  */
 static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pTransport,
@@ -954,6 +954,7 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
                                                       const HTTPRequestHeaders_t * pRequestHeaders )
 {
     assert( pParsingContext != NULL );
+    assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->headersLen >= HTTP_MINIMUM_REQUEST_LINE_LENGTH );
 
     /* Initialize the third-party HTTP parser to parse responses. */
@@ -968,10 +969,10 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
     /* No response to update is associated with this parsing context yet. */
     pParsingContext->pResponse = NULL;
 
-    /* The parsing context needs to know if the response is for a HEAD request.
-     * The third-party parser requires parsing is manually indicated to stop
-     * in the httpParserOnHeadersCompleteCallback() for a HEAD response,
-     * otherwise the parser will not indicate the message was complete. */
+    /* The parsing context needs to know if the expected response is to a HEAD
+     * request. For a HEAD response, the third-party parser requires parsing is
+     * indicated to stop by returning a 1 from httpParserOnHeadersCompleteCallback().
+     * If this is not done, the parser will not indicate the message is complete. */
     if( strncmp( ( const char * ) ( pRequestHeaders->pBuffer ),
                  HTTP_METHOD_HEAD,
                  sizeof( HTTP_METHOD_HEAD ) - 1U ) == 0 )
@@ -1762,7 +1763,8 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
         retryTimeoutMs = 0U;
     }
 
-    /* Start the last send time to allow retries on the first zero data sent. */
+    /* Initialize the last send time to allow retries, if 0 bytes are sent on
+     * the first try. */
     lastSendTimeMs = getTimestampMs();
 
     /* Loop until all data is sent. */
@@ -1772,7 +1774,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
                                       pIndex,
                                       bytesRemaining );
 
-        /* A transport status of less than zero is an error. */
+        /* BytesSent less than zero is an error. */
         if( bytesSent < 0 )
         {
             LogError( ( "Failed to send data: Transport send error: "
@@ -1962,7 +1964,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     size_t totalReceived = 0U;
-    int32_t currentReceived = 0U;
+    int32_t currentReceived = 0;
     HTTPParsingContext_t parsingContext = { 0 };
     uint8_t shouldRecv = 1U, shouldParse = 1U, timeoutReached = 0U;
     uint32_t lastRecvTimeMs = 0U, timeSinceLastRecvMs = 0U;
@@ -1984,8 +1986,8 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
         retryTimeoutMs = 0U;
     }
 
-    /* Start the last receive time to allow retries on the first zero data
-     * receive. */
+    /* Initialize the last send time to allow retries, if 0 bytes are sent on
+     * the first try. */
     lastRecvTimeMs = pResponse->getTime();
 
     while( shouldRecv == 1U )
@@ -2070,12 +2072,12 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
 
 /*-----------------------------------------------------------*/
 
-HTTPStatus_t sendHttpRequest( const TransportInterface_t * pTransport,
-                              HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
-                              HTTPRequestHeaders_t * pRequestHeaders,
-                              const uint8_t * pRequestBodyBuf,
-                              size_t reqBodyBufLen,
-                              uint32_t sendFlags )
+static HTTPStatus_t sendHttpRequest( const TransportInterface_t * pTransport,
+                                     HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                     HTTPRequestHeaders_t * pRequestHeaders,
+                                     const uint8_t * pRequestBodyBuf,
+                                     size_t reqBodyBufLen,
+                                     uint32_t sendFlags )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
 

@@ -78,7 +78,7 @@
  *
  * If #HTTPResponse_t.getTime is set to NULL, then this HTTP_RECV_RETRY_TIMEOUT_MS
  * is unused. When this timeout is unused, #HTTPClient_Send will not retry the
- * transport receive when it returns zero.
+ * transport receive calls that return zero bytes read.
  *
  * <b>Possible values:</b> Any positive 32 bit integer. A small timeout value
  * is recommended. <br>
@@ -101,7 +101,7 @@
  *
  * If #HTTPResponse_t.getTime is set to NULL, then this HTTP_RECV_RETRY_TIMEOUT_MS
  * is unused. When this timeout is unused, #HTTPClient_Send will not retry the
- * transport send when it returns zero.
+ * transport send calls that return zero bytes sent.
  *
  * <b>Possible values:</b> Any positive 32 bit integer. A small timeout value
  * is recommended. <br>

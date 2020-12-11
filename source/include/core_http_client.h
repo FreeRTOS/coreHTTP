@@ -454,12 +454,13 @@ typedef struct HTTPResponse
     /**
      * @brief Optional callback for getting the system time.
      *
-     * This is used to calculate the elapsed time between network sends and
-     * receives greater than zero. If this field is set to NULL, then network
-     * send and receive won't be retries after a zero is returned.
+     * This is used to calculate the elapsed time when retrying network reads or
+     * sends that return zero bytes received or sent, respectively. If this
+     * field is set to NULL, then network send and receive won't be retried
+     * after a zero is returned.
      *
-     * If this function is set, then the maximum elapsed time between network
-     * receives greater than zero is set in HTTP_RECV_RETRY_TIMEOUT_MS.
+     * If this function is set, then the maximum time for retrying network reads
+     * that return zero bytes can be set through #HTTP_RECV_RETRY_TIMEOUT_MS.
      *
      * If this function is set, then the maximum elapsed time between network
      * sends greater than zero is set in HTTP_SEND_RETRY_TIMEOUT_MS.
