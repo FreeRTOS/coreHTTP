@@ -9,7 +9,6 @@ api
 apis
 ascii
 aws
-bool
 br
 bufferlen
 bufferlength
@@ -18,7 +17,6 @@ bytesremaining
 bytessent
 bytestorecv
 bytestosend
-calltlsrecvfunc
 cb
 cbmc
 chk
@@ -231,7 +229,6 @@ tcpsocketcontext
 tls
 tlscontext
 tlsrecv
-tlsrecvcount
 tlssend
 toascii
 totalreceived
