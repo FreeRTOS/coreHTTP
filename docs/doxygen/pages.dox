@@ -29,21 +29,21 @@ Feature of HTTP/1.1 not supported in this library:
     </tr>
     <tr>
         <td>core_http_client.c</td>
-        <td>15.3K</td>
-        <td>9.5K</td>
-        <td>8.2K</td>
+        <td>16.4K</td>
+        <td>4.7K</td>
+        <td>4.0K</td>
     </tr>
     <tr>
         <td>http_parser.c</td>
-        <td>38.4K</td>
-        <td>24.8K</td>
-        <td>20.8K</td>
+        <td>38.9K</td>
+        <td>22.2K</td>
+        <td>17.6K</td>
     </tr>
     <tr>
         <td><b>Total estimates</b></td>
-        <td>53.7K</td>
-        <td>34.3K</td>
-        <td>29.0K</td>
+        <td>55.3K</td>
+        <td>26.9K</td>
+        <td>21.6K</td>
     </tr>
 </table>
  */
