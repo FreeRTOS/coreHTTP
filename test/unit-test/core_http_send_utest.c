@@ -212,7 +212,7 @@ static uint8_t recvCurrentCall = 0;
 
 /* The test sets this variable to indicate which call count count of transport
  * receive to return an error from. */
-static uint8_t recvStopCall = 0;
+static uint8_t recvTimeoutCall = 0;
 /* The count of times a mocked http_parser_execute callback has been invoked. */
 static uint8_t httpParserExecuteCallCount;
 
@@ -228,6 +228,14 @@ static TransportInterface_t transportInterface = { 0 };
 static HTTPRequestHeaders_t requestHeaders = { 0 };
 /* Header parsing callback shared among the tests. */
 static HTTPClient_ResponseHeaderParsingCallback_t headerParsingCallback = { 0 };
+
+/* A mocked timer query function that increments on every call. */
+static uint32_t getTestTime( void )
+{
+    static entryTime = 0;
+
+    return entryTime++;
+}
 
 /* Application callback for intercepting the headers during the parse of a new
  * response from the mocked network interface. */
@@ -267,9 +275,11 @@ static int32_t transportSendSuccess( NetworkContext_t * pNetworkContext,
 {
     ( void ) pNetworkContext;
 
+    sendCurrentCall++;
+
     if( checkContentLength == 1U )
     {
-        if( sendCurrentCall == 0U )
+        if( sendCurrentCall == 1U )
         {
             size_t contentLengthAndHeaderEndLen = HTTP_TEST_REQUEST_PUT_CONTENT_LENGTH_EXPECTED_LENGTH;
             char * pContentLengthStart = ( ( ( char * ) pBuffer ) + bytesToWrite ) - contentLengthAndHeaderEndLen;
@@ -280,7 +290,6 @@ static int32_t transportSendSuccess( NetworkContext_t * pNetworkContext,
         }
     }
 
-    sendCurrentCall++;
     return bytesToWrite;
 }
 
@@ -295,12 +304,13 @@ static int32_t transportSendNetworkError( NetworkContext_t * pNetworkContext,
     ( void ) pBuffer;
     int32_t retVal = bytesToWrite;
 
+    sendCurrentCall++;
+
     if( sendErrorCall == sendCurrentCall )
     {
         retVal = -1;
     }
 
-    sendCurrentCall++;
     return retVal;
 }
 
@@ -316,12 +326,13 @@ static int32_t transportSendLessThanBytesToWrite( NetworkContext_t * pNetworkCon
     ( void ) pBuffer;
     int32_t retVal = bytesToWrite;
 
+    sendCurrentCall++;
+
     if( sendPartialCall == sendCurrentCall )
     {
         retVal -= 1;
     }
 
-    sendCurrentCall++;
     return retVal;
 }
 
@@ -329,7 +340,7 @@ static int32_t transportSendLessThanBytesToWrite( NetworkContext_t * pNetworkCon
  * firstPartBytes on the first call, then sends the rest of the response in the
  * second call. The response to send is set in pNetworkData and the current
  * call count is kept track of in recvCurrentCall. This function will return
- * zero (timeout condition) when recvStopCall matches recvCurrentCall. */
+ * zero (timeout condition) when recvTimeoutCall matches recvCurrentCall. */
 static int32_t transportRecvSuccess( NetworkContext_t * pNetworkContext,
                                      void * pBuffer,
                                      size_t bytesToRead )
@@ -337,15 +348,18 @@ static int32_t transportRecvSuccess( NetworkContext_t * pNetworkContext,
     ( void ) pNetworkContext;
     size_t bytesToCopy = 0;
 
+    /* Increment this call count. */
+    recvCurrentCall++;
+
     /* To test stopping in the middle of a response message, check that the
      * flags are set. */
-    if( recvStopCall == recvCurrentCall )
+    if( recvTimeoutCall == recvCurrentCall )
     {
         return 0;
     }
 
     /* If this is the first call, then copy the specific first bytes. */
-    if( recvCurrentCall == 0 )
+    if( recvCurrentCall == 1 )
     {
         bytesToCopy = firstPartBytes;
     }
@@ -363,7 +377,6 @@ static int32_t transportRecvSuccess( NetworkContext_t * pNetworkContext,
     memcpy( pBuffer, pNetworkData, bytesToCopy );
     pNetworkData += bytesToCopy;
     networkDataLen -= bytesToCopy;
-    recvCurrentCall++;
     return bytesToCopy;
 }
 
@@ -738,7 +751,7 @@ void setUp( void )
     networkDataLen = HTTP_TEST_RESPONSE_HEAD_LENGTH;
     firstPartBytes = networkDataLen;
     recvCurrentCall = 0;
-    recvStopCall = UINT8_MAX;
+    recvTimeoutCall = UINT8_MAX;
     httpParserExecuteCallCount = 0;
     httpParsingErrno = HPE_OK;
     transportInterface.recv = transportRecvSuccess;
@@ -1041,7 +1054,8 @@ void test_HTTPClient_Send_timeout_recv_immediate( void )
 
     http_parser_execute_ExpectAnyArgsAndReturn( 0 );
 
-    recvStopCall = 0;
+    /* Return a zero on the first call. */
+    recvTimeoutCall = 1;
     returnStatus = HTTPClient_Send( &transportInterface,
                                     &requestHeaders,
                                     NULL,
@@ -1063,7 +1077,8 @@ void test_HTTPClient_Send_timeout_partial_response( void )
     http_errno_description_IgnoreAndReturn( "Dummy unit test print." );
 
     firstPartBytes = HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_VALUE_LENGTH;
-    recvStopCall = 1;
+    /* Return a zero on the second transport receive call. */
+    recvTimeoutCall = 2;
 
     returnStatus = HTTPClient_Send( &transportInterface,
                                     &requestHeaders,
@@ -1072,6 +1087,36 @@ void test_HTTPClient_Send_timeout_partial_response( void )
                                     &response,
                                     0 );
     TEST_ASSERT_EQUAL( HTTPPartialResponse, returnStatus );
+}
+
+/*-----------------------------------------------------------*/
+
+/* Test a timeout is received from the first network read, but the read after
+ * the response is received fully. */
+void test_HTTPClient_Send_timeout_recv_immediately_but_success_after( void )
+{
+    HTTPStatus_t returnStatus = HTTPSuccess;
+
+    http_parser_execute_Stub( http_parser_execute_whole_response );
+    http_errno_description_IgnoreAndReturn( "Dummy unit test print." );
+
+    /* Set the optional time keeping function to retry the receive when zero
+     * data is read from the network. */
+    response.getTime = getTestTime;
+    /* On the first call to the transport recieve, return a zero. */
+    recvTimeoutCall = 1;
+
+    /* With HTTP_RECV_RETRY_TIMEOUT_MS set to greater than 1U in core_http_config.h
+     * we ensure that the retry timeout is not reached and the transport receive
+     * is called again. */
+
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
@@ -1132,7 +1177,8 @@ void test_HTTPClient_Send_network_error_request_headers( void )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
 
-    sendErrorCall = 0U;
+    /* An error is returned from the transport send on the first call. */
+    sendErrorCall = 1U;
     transportInterface.send = transportSendNetworkError;
     returnStatus = HTTPClient_Send( &transportInterface,
                                     &requestHeaders,
@@ -1152,9 +1198,9 @@ void test_HTTPClient_Send_network_error_request_body( void )
 
     transportInterface.send = transportSendNetworkError;
 
-    /* There is no Content-Length header written so the call to send an error on
-     * is call 1. */
-    sendErrorCall = 1U;
+    /* The library sends the HTTP request body in the second call to
+     * the transport receive, if there are no errors or timeouts. */
+    sendErrorCall = 2U;
     requestHeaders.pBuffer = ( uint8_t * ) ( HTTP_TEST_REQUEST_PUT_HEADERS );
     requestHeaders.bufferLen = HTTP_TEST_REQUEST_PUT_HEADERS_LENGTH;
     requestHeaders.headersLen = HTTP_TEST_REQUEST_PUT_HEADERS_LENGTH;
@@ -1178,7 +1224,8 @@ void test_HTTPClient_Send_less_bytes_request_headers( void )
     http_parser_execute_Stub( http_parser_execute_whole_response );
 
     transportInterface.send = transportSendLessThanBytesToWrite;
-    sendPartialCall = 0U;
+    /* Send the data partially in the first call to the transport send. */
+    sendPartialCall = 1U;
     memcpy( requestHeaders.pBuffer,
             HTTP_TEST_REQUEST_PUT_HEADERS,
             HTTP_TEST_REQUEST_PUT_HEADERS_LENGTH );
@@ -1218,7 +1265,9 @@ void test_HTTPClient_Send_less_bytes_request_body( void )
 
     transportInterface.send = transportSendLessThanBytesToWrite;
 
-    sendPartialCall = 1U;
+    /* The library will send the request body in the second call to transport
+     * write if there are no errors or timeouts. */
+    sendPartialCall = 2U;
     memcpy( requestHeaders.pBuffer,
             HTTP_TEST_REQUEST_PUT_HEADERS,
             HTTP_TEST_REQUEST_PUT_HEADERS_LENGTH );

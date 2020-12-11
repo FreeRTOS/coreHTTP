@@ -1762,7 +1762,7 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
         retryTimeoutMs = 0U;
     }
 
-    /* Record the most recent time of successful transmission. */
+    /* Start the last send time to allow retries on the first zero data sent. */
     lastSendTimeMs = getTimestampMs();
 
     /* Loop until all data is sent. */
@@ -2180,9 +2180,13 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
     }
     else
     {
-        /* Set a zero timestamp function when the application did not configure
-         * one. */
-        pResponse->getTime = getZeroTimestampMs;
+        if( pResponse->getTime == NULL )
+        {
+            /* Set a zero timestamp function when the application did not configure
+             * one. */
+            pResponse->getTime = getZeroTimestampMs;
+        }
+
         returnStatus = HTTPSuccess;
     }
 
@@ -2198,8 +2202,6 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
 
     if( returnStatus == HTTPSuccess )
     {
-        /* If the application chooses to receive a response, then pResponse
-         * will not be NULL. */
         returnStatus = receiveAndParseHttpResponse( pTransport,
                                                     pResponse,
                                                     pRequestHeaders );
