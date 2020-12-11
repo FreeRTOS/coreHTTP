@@ -1235,7 +1235,7 @@ void test_HTTPClient_Send_timeout_send_retry( void )
 
 /*-----------------------------------------------------------*/
 
-/* Test zero data is partially sent, but we receive zero data in the next
+/* Test data is partially sent, but we receive zero data in the next
  * call. */
 void test_HTTPClient_Send_timeout_send_retry_fail( void )
 {
