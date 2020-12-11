@@ -191,6 +191,8 @@ then the @ref HTTP_DO_NOT_USE_CUSTOM_CONFIG macro must be defined.
 The following macros can be configured for this library:
  - @ref HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
  - @ref HTTP_USER_AGENT_VALUE
+ - @ref HTTP_SEND_RETRY_TIMEOUT_MS
+ - @ref HTTP_RECV_RETRY_TIMEOUT_MS
 
 In addition, the following logging macros are used throughout this library:
  - @ref LogError
@@ -232,6 +234,21 @@ struct NetworkContext {
     // Fields necessary for the transport implementations, e.g. a TCP socket descriptor.
 };
 @endcode
+
+@section http_porting_time Time Function
+@brief The HTTP library optionally relies on a function to generate millisecond
+timestamps, for the purpose of calculating the elapsed time between non-zero
+network sends and receives.
+
+@see @ref HTTPClient_GetCurrentTimeFunc_t
+
+Platforms can supply a function capable of generating 32-bit timestamps of
+millisecond resolution. These timestamps need not correspond with any real world
+clock; the only requirement is that the difference between two timestamps must
+be an accurate representation of the duration between them, in milliseconds.
+
+This function is used in conjunction with macros @ref HTTP_SEND_RETRY_TIMEOUT_MS
+and @ref HTTP_RECV_RETRY_TIMEOUT_MS.
 */
 
 /**

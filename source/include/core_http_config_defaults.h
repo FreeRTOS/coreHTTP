@@ -75,6 +75,10 @@
  *
  * If the timeout expires, the #HTTPClient_Send function will return
  * #HTTPNetworkError.
+ * 
+ * If #HTTPResponse_t.getTime is set to NULL, then this HTTP_RECV_RETRY_TIMEOUT_MS
+ * is unused. When this timeout is unused, #HTTPClient_Send will not retry the
+ * transport receive when it returns zero.
  *
  * <b>Possible values:</b> Any positive 32 bit integer. A small timeout value
  * is recommended. <br>
@@ -94,6 +98,10 @@
  * transmission over the network through the transport send function.
  *
  * If the timeout expires, the #HTTPClient_Send function returns #HTTPNetworkError.
+ * 
+ * If #HTTPResponse_t.getTime is set to NULL, then this HTTP_RECV_RETRY_TIMEOUT_MS
+ * is unused. When this timeout is unused, #HTTPClient_Send will not retry the
+ * transport send when it returns zero.
  *
  * <b>Possible values:</b> Any positive 32 bit integer. A small timeout value
  * is recommended. <br>
