@@ -1099,7 +1099,7 @@ void test_HTTPClient_Send_timeout_recv_retry( void )
     /* Set the optional time keeping function to retry the receive when zero
      * data is read from the network. */
     response.getTime = getTestTime;
-    /* On the first call to the transport recieve, return a zero. */
+    /* On the first call to the transport receive, return a zero. */
     recvTimeoutCall = 1;
 
     /* With HTTP_RECV_RETRY_TIMEOUT_MS set to greater than 1U in core_http_config.h
