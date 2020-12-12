@@ -13,7 +13,6 @@
  - [#73](https://github.com/FreeRTOS/coreHTTP/pull/73), [#76](https://github.com/FreeRTOS/coreHTTP/pull/76) Github repo chores.
  - [#71](https://github.com/FreeRTOS/coreHTTP/pull/71) CBMC automation chore.
  - [#81](https://github.com/FreeRTOS/coreHTTP/pull/81), [#84](https://github.com/FreeRTOS/coreHTTP/pull/84) Doxygen memory estimates table update.
- 
 
 ## v1.0.0 November 2020
 
