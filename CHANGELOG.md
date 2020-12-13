@@ -4,7 +4,7 @@
 
 ### Updates
 
- - [#83](https://github.com/FreeRTOS/coreHTTP/pull/83) Implement transport send and receive timeouts in coreHTTP. Previously, a zero returned form the transport receive stopped the library from trying to receive more data. Now, the library can optionally retry transport receives, when zero is returned, up to a configured timeout. Also previously, the library had the potential to loop forever if the transport send returned zero indefinitely. Now, the library can optionally retry transport sends, when zero is returned, up to a configured timeout; if no timeout is configured, then sending will stop at the first zero returned. This change adds an optional callback to get the current timestamp in milliseconds. This change also adds configuration macros to set the timeout in milliseconds, for retrying the transport send and receive.
+ - [#83](https://github.com/FreeRTOS/coreHTTP/pull/83) Implement transport send and receive retry timeouts in coreHTTP. This change adds a timestamp callback function to the HTTPResponse_t struct, and new configuration macros to set the transport send and receive retry timeouts. Due to the HTTPResponse_t struct field addition, coreHTTP v2.0.0 is not backward compatible under certain conditions.
  - [#79](https://github.com/FreeRTOS/coreHTTP/pull/79), [#82](https://github.com/FreeRTOS/coreHTTP/pull/82) transport_interface.h documentation updates.
  - [#75](https://github.com/FreeRTOS/coreHTTP/pull/75) Small fix to cast logging arguments to types matching the format specifiers.
 
