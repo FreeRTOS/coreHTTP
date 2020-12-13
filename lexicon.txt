@@ -23,15 +23,19 @@ cb
 cbmc
 chk
 chunked
+colspan
 com
 config
+configpagestyle
 const
 contentlength
 convertint
 copybrief
+copydoc
 corehttp
 coverity
 cprover
+css
 datalen
 datelen
 defgroup
@@ -53,6 +57,7 @@ findheaderinresponse
 findheaderonheadercompletecallback
 findheadervalueparsercallback
 firstpartbytes
+gcc
 getfinalresponsestatus
 gettime
 gettimestampms
@@ -117,6 +122,11 @@ lastheadervaluelen
 latin
 len
 linux
+logdebug
+logerror
+loginfo
+logwarn
+mainpage
 malloc
 memcpy
 memmove
@@ -146,6 +156,7 @@ onmessagecomplete
 onstatus
 ored
 org
+os
 param
 parsehttpresponse
 parselen
@@ -162,6 +173,7 @@ pdest
 pfield
 pfieldloc
 pfindheadercontext
+pheaderparsingcallback
 pheaders
 phost
 phttpparser
@@ -177,6 +189,7 @@ pnetworkcontext
 pnetworkdata
 pnext
 pnextwriteloc
+png
 posix
 pparsingcontext
 pparsingstate
@@ -213,6 +226,7 @@ requestinfo
 respflags
 responsebufferlen
 rfc
+rm
 sdk
 senderrorcall
 sendflags
@@ -229,13 +243,16 @@ struct
 sublicense
 tcp
 tcpsocketcontext
+td
 tls
 tlscontext
 tlsrecv
 tlsrecvcount
 tlssend
 toascii
+toolchain
 totalreceived
+tr
 transportcallback
 transportinterface
 transportpage
@@ -249,6 +266,7 @@ tx
 txt
 uint
 uri
+url
 valuefound
 valuelen
 valueloc
