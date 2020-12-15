@@ -15,7 +15,7 @@ safety and data structure invariance through the
 
 See memory requirements for this library [here](https://docs.aws.amazon.com/embedded-csdk/202012.00/lib-ref/libraries/standard/coreHTTP/docs/doxygen/output/html/index.html#http_memory_requirements).
 
-**coreHTTP v2.0.0 [source code](https://github.com/FreeRTOS/coreHTTP/tree/v2.0.0/source) is part of the [FreeRTOS 202012.00 LTS](https://github.com/FreeRTOS/FreeRTOS-LTS/tree/202012.00_LTS) release.**
+**coreHTTP v2.0.0 [source code](https://github.com/FreeRTOS/coreHTTP/tree/v2.0.0/source) is part of the [FreeRTOS 202012.00 LTS](https://github.com/FreeRTOS/FreeRTOS-LTS/tree/202012.00-LTS) release.**
 
 ## coreHTTP Config File
 
