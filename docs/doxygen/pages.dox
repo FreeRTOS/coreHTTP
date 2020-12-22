@@ -19,7 +19,7 @@ Feature of HTTP/1.1 not supported in this library:
 
 <table>
     <tr>
-        <td colspan="3"><center><b>Code size of HTTP Client library(example generated with GCC for ARM Cortex-M)</b></center></td>
+        <td colspan="3"><center><b>Code size of HTTP Client library (example generated with GCC for ARM Cortex-M)</b></center></td>
     </tr>
     <tr>
         <td><b>File</b></td>
