@@ -32,12 +32,12 @@ Feature of HTTP/1.1 not supported in this library:
         <td><center>2.5K</center></td>
     </tr>
     <tr>
-        <td>http_parser.c</td>
+        <td>http_parser.c (third-party utility)</td>
         <td><center>15.7K</center></td>
         <td><center>13.0K</center></td>
     </tr>
     <tr>
-        <td><b>Total estimates</b></td>
+        <td><b>Total estimate</b></td>
         <td><center><b>18.8K</b></center></td>
         <td><center><b>15.5K</b></center></td>
     </tr>
