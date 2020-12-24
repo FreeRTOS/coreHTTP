@@ -61,6 +61,14 @@ jobs:
         uses: FreeRTOS/CI-CD-Github-Actions/spellings@main
         with:
           path: ./
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check formatting
+        uses: FreeRTOS/CI-CD-Github-Actions/formatting@main
+        with:
+          path: ./
   ssot-check:
     runs-on: ubuntu-latest
     steps:
