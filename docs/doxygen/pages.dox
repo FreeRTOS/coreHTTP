@@ -17,31 +17,7 @@ Feature of HTTP/1.1 not supported in this library:
 @section http_memory_requirements Memory Requirements
 @brief Memory requirements of the HTTP Client library.
 
-<table>
-    <tr>
-        <td colspan="3"><center><b>Code size of HTTP Client library (example generated with GCC for ARM Cortex-M)</b></center></td>
-    </tr>
-    <tr>
-        <td><b>File</b></td>
-        <td><b>With -O1 Optimization</b></td>
-        <td><b>With -Os Optimization</b></td>
-    </tr>
-    <tr>
-        <td>core_http_client.c</td>
-        <td><center>3.1K</center></td>
-        <td><center>2.5K</center></td>
-    </tr>
-    <tr>
-        <td>http_parser.c (third-party utility)</td>
-        <td><center>15.7K</center></td>
-        <td><center>13.0K</center></td>
-    </tr>
-    <tr>
-        <td><b>Total estimate</b></td>
-        <td><center><b>18.8K</b></center></td>
-        <td><center><b>15.5K</b></center></td>
-    </tr>
-</table>
+@include{doc} size_table.html
  */
 
 /**
