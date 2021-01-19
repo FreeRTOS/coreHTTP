@@ -1,0 +1,31 @@
+name: Memory statistics
+
+on:
+  workflow_dispatch:
+
+jobs:
+  memory_statistics:
+    name: Calculate object sizes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            submodules: 'recursive'
+      - name: Measure sizes
+        uses: FreeRTOS/CI-CD-Github-Actions/memory_statistics@main
+        with:
+          lib_name: coreHTTP
+          src: |
+            source/core_http_client.c
+            source/dependency/3rdparty/http_parser/http_parser.c
+          include: |
+            source/include
+            source/interface
+            source/dependency/3rdparty/http_parser
+          compiler_flags: |
+            HTTP_DO_NOT_USE_CUSTOM_CONFIG
+      - name: Upload table
+        uses: actions/upload-artifact@v2
+        with:
+          name: size_table
+          path: size_table.html
