@@ -109,3 +109,14 @@ jobs:
         run: |
           git-secrets --register-aws
           git-secrets --scan
+  memory_statistics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            submodules: 'recursive'
+      - name: Measure sizes
+        uses: FreeRTOS/CI-CD-Github-Actions/memory_statistics@main
+        with:
+            config: .github/memory_statistics_config.json
+            check_against: docs/doxygen/include/size_table.html
