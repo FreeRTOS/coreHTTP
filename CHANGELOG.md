@@ -1,6 +1,6 @@
 # Changelog for coreHTTP Client Library
 
-## v2.0.1 (March 2021)
+## v2.0.1 (February 2021)
 
 ### Other
 
