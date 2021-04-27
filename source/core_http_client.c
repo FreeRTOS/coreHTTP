@@ -110,23 +110,37 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
                                   size_t reqBodyBufLen );
 
 /**
- * @brief A strncpy replacement with HTTP header validation.
+ * @brief A strncpy replacement which works with char pointers and does not add
+ *  a NULL terminator to the output buffer.
+ *
+ * @param[in] pDest The destination buffer to copy to.
+ * @param[in] pSrc The source buffer to copy from.
+ * @param[in] maxLen The maximum number of chars to copy from pSrc to @p pDest
+ *
+ * @return the number of chars written to @p pDest
+ */
+static size_t copyCharsUntilNull( char * pDest,
+                                  const char * pSrc,
+                                  size_t maxLen );
+
+/**
+ * @brief A memcpy replacement with HTTP header validation.
  *
  * This function checks for `\r` and `\n` in the @p pSrc while copying.
  * This function checks for `:` in the @p pSrc, if @p isField is set to 1.
  *
  * @param[in] pDest The destination buffer to copy to.
  * @param[in] pSrc The source buffer to copy from.
- * @param[in] len The length of @p pSrc to copy to pDest.
+ * @param[in] len The maximum number of character to copy from pSrc to @p pDest
  * @param[in] isField Set to 0 to indicate that @p pSrc is a field. Set to 1 to
  * indicate that @p pSrc is a value.
  *
- * @return @p pDest if the copy was successful, NULL otherwise.
+ * @return the number of chars written to @p pDest
  */
-static char * httpHeaderStrncpy( char * pDest,
-                                 const char * pSrc,
-                                 size_t len,
-                                 uint8_t isField );
+static size_t httpHeaderCpy( char * pDest,
+                             const char * pSrc,
+                             size_t len,
+                             uint8_t isField );
 
 /**
  * @brief Write header based on parameters. This method also adds a trailing
@@ -221,7 +235,7 @@ static HTTPStatus_t sendHttpRequest( const TransportInterface_t * pTransport,
                                      uint32_t sendFlags );
 
 /**
- * @brief Converts an integer value to its ASCII representation in the passed
+ * @brief Converts an integer value to its ASCII representation in the given
  * buffer.
  *
  * @param[in] value The value to convert to ASCII.
@@ -638,7 +652,7 @@ static int httpParserOnStatusCallback( http_parser * pHttpParser,
     assert( pResponse != NULL );
 
     /* Set the location of what to parse next. */
-    pParsingContext->pBufferCur = pLoc + length;
+    pParsingContext->pBufferCur = &pLoc[ length ];
 
     /* Initialize the first header field and value to be passed to the user
      * callback. */
@@ -686,7 +700,7 @@ static int httpParserOnHeaderFieldCallback( http_parser * pHttpParser,
     }
 
     /* Set the location of what to parse next. */
-    pParsingContext->pBufferCur = pLoc + length;
+    pParsingContext->pBufferCur = &pLoc[ length ];
 
     /* The httpParserOnHeaderFieldCallback() always follows the
      * httpParserOnHeaderValueCallback() if there is another header field. When
@@ -705,7 +719,7 @@ static int httpParserOnHeaderFieldCallback( http_parser * pHttpParser,
     }
     else
     {
-        assert( pParsingContext->lastHeaderFieldLen <= SIZE_MAX - length );
+        assert( pParsingContext->lastHeaderFieldLen <= ( SIZE_MAX - length ) );
         pParsingContext->lastHeaderFieldLen += length;
     }
 
@@ -732,7 +746,7 @@ static int httpParserOnHeaderValueCallback( http_parser * pHttpParser,
     pParsingContext = ( HTTPParsingContext_t * ) ( pHttpParser->data );
 
     /* Set the location of what to parse next. */
-    pParsingContext->pBufferCur = pLoc + length;
+    pParsingContext->pBufferCur = &pLoc[ length ];
 
     /* If httpParserOnHeaderValueCallback() is invoked in succession, then the
      * last time http_parser_execute() was called only part of the header field
@@ -920,7 +934,7 @@ static int httpParserOnBodyCallback( http_parser * pHttpParser,
     pResponse->bodyLen += length;
 
     /* Set the next location of parsing. */
-    pParsingContext->pBufferCur = pLoc + length;
+    pParsingContext->pBufferCur = &pLoc[ length ];
 
     LogDebug( ( "Response parsing: Found the response body: "
                 "BodyLength=%lu",
@@ -1170,7 +1184,7 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
 
     /* The next location to parse will always be after what has already
      * been parsed. */
-    pParsingContext->pBufferCur = parsingStartLoc + bytesParsed;
+    pParsingContext->pBufferCur = &parsingStartLoc[ bytesParsed ];
 
     LogDebug( ( "Parsed HTTP Response buffer: BytesParsed=%lu, "
                 "ExpectedBytesParsed=%lu",
@@ -1237,21 +1251,49 @@ static uint8_t convertInt32ToAscii( int32_t value,
 
 /*-----------------------------------------------------------*/
 
-static char * httpHeaderStrncpy( char * pDest,
-                                 const char * pSrc,
-                                 size_t len,
-                                 uint8_t isField )
+static size_t copyCharsUntilNull( char * pDest,
+                                  const char * pSrc,
+                                  size_t maxLen )
 {
     size_t i = 0U;
-    char * pRet = pDest;
+    size_t charsWritten = 0U;
+
+    for( i = 0U; i < maxLen; i++ )
+    {
+        if( pSrc[ i ] == NULL_CHARACTER )
+        {
+            break;
+        }
+
+        pDest[ i ] = pSrc[ i ];
+        charsWritten++;
+    }
+
+    return charsWritten;
+}
+
+/*-----------------------------------------------------------*/
+
+static size_t httpHeaderCpy( char * pDest,
+                             const char * pSrc,
+                             size_t len,
+                             uint8_t isField )
+{
+    size_t i = 0U;
+    size_t charsWritten = 0U;
     uint8_t hasError = 0U;
+    uint8_t endOfInput = 0U;
 
     assert( pDest != NULL );
     assert( pSrc != NULL );
 
-    for( ; i < len; i++ )
+    for( i = 0; i < len; i++ )
     {
-        if( pSrc[ i ] == CARRIAGE_RETURN_CHARACTER )
+        if( pSrc[ i ] == NULL_CHARACTER )
+        {
+            endOfInput = 1U;
+        }
+        else if( pSrc[ i ] == CARRIAGE_RETURN_CHARACTER )
         {
             LogError( ( "Invalid character '\r' found in %.*s",
                         ( int ) len, pSrc ) );
@@ -1263,7 +1305,7 @@ static char * httpHeaderStrncpy( char * pDest,
                         ( int ) len, pSrc ) );
             hasError = 1U;
         }
-        else if( ( isField == 1U ) && ( pSrc[ i ] == COLON_CHARACTER ) )
+        else if( ( pSrc[ i ] == COLON_CHARACTER ) && ( isField == 1U ) )
         {
             LogError( ( "Invalid character ':' found in %.*s",
                         ( int ) len, pSrc ) );
@@ -1272,16 +1314,21 @@ static char * httpHeaderStrncpy( char * pDest,
         else
         {
             pDest[ i ] = pSrc[ i ];
+            charsWritten++;
         }
 
-        if( hasError == 1U )
+        if( ( endOfInput == 1U ) || ( hasError == 1U ) )
         {
-            pRet = NULL;
             break;
         }
     }
 
-    return pRet;
+    if( hasError == 1U )
+    {
+        charsWritten = 0U;
+    }
+
+    return charsWritten;
 }
 
 /*-----------------------------------------------------------*/
@@ -1293,9 +1340,9 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                size_t valueLen )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
-    char * pBufferCur = NULL;
+    char * pBufferStart = NULL;
     size_t toAddLen = 0U;
-    size_t backtrackHeaderLen = 0U;
+    size_t bufferBacktrackLen = 0;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
@@ -1304,66 +1351,67 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     assert( fieldLen != 0U );
     assert( valueLen != 0U );
 
-    pBufferCur = ( char * ) ( pRequestHeaders->pBuffer + pRequestHeaders->headersLen );
-    backtrackHeaderLen = pRequestHeaders->headersLen;
-
     /* Backtrack before trailing "\r\n" (HTTP header end) if it's already written.
      * Note that this method also writes trailing "\r\n" before returning.
      * The first condition prevents reading before start of the header. */
-    if( ( HTTP_HEADER_END_INDICATOR_LEN <= pRequestHeaders->headersLen ) &&
-        ( strncmp( ( char * ) pBufferCur - HTTP_HEADER_END_INDICATOR_LEN,
-                   HTTP_HEADER_END_INDICATOR, HTTP_HEADER_END_INDICATOR_LEN ) == 0 ) )
+    if( ( pRequestHeaders->headersLen >= HTTP_HEADER_END_INDICATOR_LEN ) &&
+        ( strncmp( ( char * ) &pRequestHeaders->pBuffer[ pRequestHeaders->headersLen - HTTP_HEADER_END_INDICATOR_LEN ],
+                   HTTP_HEADER_END_INDICATOR,
+                   HTTP_HEADER_END_INDICATOR_LEN ) == 0 ) )
     {
-        backtrackHeaderLen -= HTTP_HEADER_LINE_SEPARATOR_LEN;
-        pBufferCur -= HTTP_HEADER_LINE_SEPARATOR_LEN;
+        /* Decrease the headersLen field */
+        pBufferStart = ( char * ) &pRequestHeaders->pBuffer[ pRequestHeaders->headersLen - HTTP_HEADER_LINE_SEPARATOR_LEN ];
+        bufferBacktrackLen = HTTP_HEADER_LINE_SEPARATOR_LEN;
+    }
+    else
+    {
+        pBufferStart = ( char * ) &pRequestHeaders->pBuffer[ pRequestHeaders->headersLen ];
     }
 
-    /* Check if there is enough space in buffer for additional header. */
-    toAddLen = fieldLen + HTTP_HEADER_FIELD_SEPARATOR_LEN + valueLen +
+    /* Check if there is enough space in buffer for the additional header. */
+    toAddLen = fieldLen + HTTP_HEADER_FIELD_SEPARATOR_LEN +
+               valueLen +
                HTTP_HEADER_LINE_SEPARATOR_LEN +
                HTTP_HEADER_LINE_SEPARATOR_LEN;
 
-    /* If we have enough room for the new header line, then write it to the
-     * header buffer. */
-    if( ( backtrackHeaderLen + toAddLen ) <= pRequestHeaders->bufferLen )
+    /* If we have enough room for the additional header, then write it to the
+     * buffer. */
+    if( ( pRequestHeaders->headersLen + toAddLen - bufferBacktrackLen ) <= pRequestHeaders->bufferLen )
     {
+        size_t outBytesWritten = 0U;
         /* Write "<Field>: <Value> \r\n" to the headers buffer. */
 
         /* Copy the header name into the buffer. */
-        if( httpHeaderStrncpy( pBufferCur, pField, fieldLen, HTTP_HEADER_STRNCPY_IS_FIELD ) == NULL )
+        outBytesWritten += httpHeaderCpy( &pBufferStart[ outBytesWritten ],
+                                          pField,
+                                          fieldLen,
+                                          HTTP_HEADER_STRNCPY_IS_FIELD );
+
+        /* Copy the field separator, ": ", into the buffer. */
+        outBytesWritten += copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
+                                               HTTP_HEADER_FIELD_SEPARATOR,
+                                               HTTP_HEADER_FIELD_SEPARATOR_LEN );
+
+
+        /* Copy the header value into the buffer. */
+        outBytesWritten += httpHeaderCpy( &pBufferStart[ outBytesWritten ],
+                                          pValue,
+                                          valueLen,
+                                          HTTP_HEADER_STRNCPY_IS_VALUE );
+
+        /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
+        outBytesWritten += copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
+                                               HTTP_HEADER_END_INDICATOR,
+                                               HTTP_HEADER_END_INDICATOR_LEN );
+
+        if( outBytesWritten == toAddLen )
+        {
+            /* Update the headers length value only when everything is successful. */
+            pRequestHeaders->headersLen += ( outBytesWritten - bufferBacktrackLen );
+        }
+        else
         {
             returnStatus = HTTPSecurityAlertInvalidCharacter;
-        }
-
-        if( returnStatus == HTTPSuccess )
-        {
-            pBufferCur += fieldLen;
-
-            /* Copy the field separator, ": ", into the buffer. */
-            ( void ) strncpy( pBufferCur,
-                              HTTP_HEADER_FIELD_SEPARATOR,
-                              HTTP_HEADER_FIELD_SEPARATOR_LEN );
-
-            pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
-
-            /* Copy the header value into the buffer. */
-            if( httpHeaderStrncpy( pBufferCur, pValue, valueLen, HTTP_HEADER_STRNCPY_IS_VALUE ) == NULL )
-            {
-                returnStatus = HTTPSecurityAlertInvalidCharacter;
-            }
-        }
-
-        if( returnStatus == HTTPSuccess )
-        {
-            pBufferCur += valueLen;
-
-            /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
-            ( void ) strncpy( pBufferCur,
-                              HTTP_HEADER_END_INDICATOR,
-                              HTTP_HEADER_END_INDICATOR_LEN );
-
-            /* Update the headers length value only when everything is successful. */
-            pRequestHeaders->headersLen = backtrackHeaderLen + toAddLen;
         }
     }
     else
@@ -1399,15 +1447,18 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     /* Generate the value data for the Range Request header.*/
 
     /* Write the range value prefix in the buffer. */
-    ( void ) strncpy( rangeValueBuffer,
-                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
-                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
-    rangeValueLength += HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN;
+    rangeValueLength += copyCharsUntilNull( rangeValueBuffer,
+                                            HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
+                                            HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
+
+    assert( rangeValueLength <= HTTP_MAX_RANGE_REQUEST_VALUE_LEN );
 
     /* Write the range start value in the buffer. */
     rangeValueLength += convertInt32ToAscii( rangeStartOrlastNbytes,
-                                             rangeValueBuffer + rangeValueLength,
+                                             &rangeValueBuffer[ rangeValueLength ],
                                              sizeof( rangeValueBuffer ) - rangeValueLength );
+
+    assert( rangeValueLength <= HTTP_MAX_RANGE_REQUEST_VALUE_LEN );
 
     /* Add remaining value data depending on the range specification type. */
 
@@ -1415,19 +1466,23 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     if( rangeEnd != HTTP_RANGE_REQUEST_END_OF_FILE )
     {
         /* Write the "-" character to the buffer.*/
-        *( rangeValueBuffer + rangeValueLength ) = DASH_CHARACTER;
+        rangeValueBuffer[ rangeValueLength ] = DASH_CHARACTER;
         rangeValueLength += DASH_CHARACTER_LEN;
+
+        assert( rangeValueLength <= HTTP_MAX_RANGE_REQUEST_VALUE_LEN );
 
         /* Write the rangeEnd value of the request range to the buffer. */
         rangeValueLength += convertInt32ToAscii( rangeEnd,
-                                                 rangeValueBuffer + rangeValueLength,
+                                                 &rangeValueBuffer[ rangeValueLength ],
                                                  sizeof( rangeValueBuffer ) - rangeValueLength );
+
+        assert( rangeValueLength <= HTTP_MAX_RANGE_REQUEST_VALUE_LEN );
     }
     /* Case when request is for bytes in the range [rangeStart, EoF). */
     else if( rangeStartOrlastNbytes >= 0 )
     {
         /* Write the "-" character to the buffer.*/
-        *( rangeValueBuffer + rangeValueLength ) = DASH_CHARACTER;
+        rangeValueBuffer[ rangeValueLength ] = DASH_CHARACTER;
         rangeValueLength += DASH_CHARACTER_LEN;
     }
     else
@@ -1456,6 +1511,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferCur = NULL;
     size_t toAddLen = 0U;
+    size_t outBytesWritten = 0U;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
@@ -1479,38 +1535,43 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     if( returnStatus == HTTPSuccess )
     {
         /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. */
-        ( void ) strncpy( pBufferCur, pMethod, methodLen );
-        pBufferCur += methodLen;
 
-        *pBufferCur = SPACE_CHARACTER;
-        pBufferCur += SPACE_CHARACTER_LEN;
+        outBytesWritten += copyCharsUntilNull( &pBufferCur[ outBytesWritten ], pMethod, methodLen );
+
+        pBufferCur[ outBytesWritten ] = SPACE_CHARACTER;
+        outBytesWritten += SPACE_CHARACTER_LEN;
 
         /* Use "/" as default value if <PATH> is NULL. */
         if( ( pPath == NULL ) || ( pathLen == 0U ) )
         {
-            ( void ) strncpy( pBufferCur,
-                              HTTP_EMPTY_PATH,
-                              HTTP_EMPTY_PATH_LEN );
-            pBufferCur += HTTP_EMPTY_PATH_LEN;
+            outBytesWritten += copyCharsUntilNull( &pBufferCur[ outBytesWritten ],
+                                                   HTTP_EMPTY_PATH,
+                                                   HTTP_EMPTY_PATH_LEN );
         }
         else
         {
-            ( void ) strncpy( pBufferCur, pPath, pathLen );
-            pBufferCur += pathLen;
+            outBytesWritten += copyCharsUntilNull( &pBufferCur[ outBytesWritten ], pPath, pathLen );
         }
 
-        *pBufferCur = SPACE_CHARACTER;
-        pBufferCur += SPACE_CHARACTER_LEN;
+        pBufferCur[ outBytesWritten ] = SPACE_CHARACTER;
+        outBytesWritten += SPACE_CHARACTER_LEN;
 
-        ( void ) strncpy( pBufferCur,
-                          HTTP_PROTOCOL_VERSION,
-                          HTTP_PROTOCOL_VERSION_LEN );
-        pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
+        outBytesWritten += copyCharsUntilNull( &pBufferCur[ outBytesWritten ],
+                                               HTTP_PROTOCOL_VERSION,
+                                               HTTP_PROTOCOL_VERSION_LEN );
 
-        ( void ) strncpy( pBufferCur,
-                          HTTP_HEADER_LINE_SEPARATOR,
-                          HTTP_HEADER_LINE_SEPARATOR_LEN );
-        pRequestHeaders->headersLen = toAddLen;
+        outBytesWritten += copyCharsUntilNull( &pBufferCur[ outBytesWritten ],
+                                               HTTP_HEADER_LINE_SEPARATOR,
+                                               HTTP_HEADER_LINE_SEPARATOR_LEN );
+
+        if( outBytesWritten == toAddLen )
+        {
+            pRequestHeaders->headersLen = outBytesWritten;
+        }
+        else
+        {
+            returnStatus = HTTPInvalidParameter;
+        }
     }
 
     return returnStatus;
@@ -1746,10 +1807,10 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
                                   size_t dataLen )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
-    const uint8_t * pIndex = pData;
+    size_t dataIndex = 0U;
     int32_t bytesSent = 0;
-    size_t bytesRemaining = dataLen;
-    uint32_t lastSendTimeMs = 0U, timeSinceLastSendMs = 0U;
+    uint32_t lastSendTimeMs = 0U;
+    uint32_t timeSinceLastSendMs = 0U;
     uint32_t retryTimeoutMs = HTTP_SEND_RETRY_TIMEOUT_MS;
 
     assert( pTransport != NULL );
@@ -1768,11 +1829,11 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
     lastSendTimeMs = getTimestampMs();
 
     /* Loop until all data is sent. */
-    while( ( bytesRemaining > 0UL ) && ( returnStatus != HTTPNetworkError ) )
+    while( ( ( dataLen - dataIndex ) > 0UL ) && ( returnStatus != HTTPNetworkError ) )
     {
         bytesSent = pTransport->send( pTransport->pNetworkContext,
-                                      pIndex,
-                                      bytesRemaining );
+                                      &pData[ dataIndex ],
+                                      ( dataLen - dataIndex ) );
 
         /* BytesSent less than zero is an error. */
         if( bytesSent < 0 )
@@ -1785,20 +1846,20 @@ static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
         {
             /* It is a bug in the application's transport send implementation if
              * more bytes than expected are sent. To avoid a possible overflow
-             * in converting bytesRemaining from unsigned to signed, this assert
-             * must exist after the check for bytesSent being negative. */
-            assert( ( size_t ) bytesSent <= bytesRemaining );
+             * in converting the third argument from unsigned to signed, this
+             * assert must exist after the check for bytesSent overflowing when
+             * cast to a size_t. */
+            assert( ( size_t ) bytesSent <= ( dataLen - dataIndex ) );
 
             /* Record the most recent time of successful transmission. */
             lastSendTimeMs = getTimestampMs();
 
-            bytesRemaining -= ( size_t ) bytesSent;
-            pIndex += bytesSent;
+            dataIndex += ( size_t ) bytesSent;
             LogDebug( ( "Sent data over the transport: "
                         "BytesSent=%ld, BytesRemaining=%lu, TotalBytesSent=%lu",
                         ( long int ) bytesSent,
-                        ( unsigned long ) bytesRemaining,
-                        ( unsigned long ) ( dataLen - bytesRemaining ) ) );
+                        ( unsigned long ) ( dataLen - dataIndex ),
+                        ( unsigned long ) dataIndex ) );
         }
         else
         {
@@ -1917,8 +1978,8 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
 
-    assert( parsingState >= HTTP_PARSING_NONE &&
-            parsingState <= HTTP_PARSING_COMPLETE );
+    assert( ( parsingState >= HTTP_PARSING_NONE ) &&
+            ( parsingState <= HTTP_PARSING_COMPLETE ) );
     assert( totalReceived <= responseBufferLen );
 
     /* If no parsing occurred, that means network data was never received. */
@@ -1966,8 +2027,11 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
     size_t totalReceived = 0U;
     int32_t currentReceived = 0;
     HTTPParsingContext_t parsingContext = { 0 };
-    uint8_t shouldRecv = 1U, shouldParse = 1U, timeoutReached = 0U;
-    uint32_t lastRecvTimeMs = 0U, timeSinceLastRecvMs = 0U;
+    uint8_t shouldRecv = 1U;
+    uint8_t shouldParse = 1U;
+    uint8_t timeoutReached = 0U;
+    uint32_t lastRecvTimeMs = 0U;
+    uint32_t timeSinceLastRecvMs = 0U;
     uint32_t retryTimeoutMs = HTTP_RECV_RETRY_TIMEOUT_MS;
 
     assert( pTransport != NULL );
@@ -2017,7 +2081,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
              * Because we cannot know how large the HTTP response will be in
              * total, parsing will tell us if the end of the message is reached.*/
             shouldParse = 1U;
-            totalReceived += currentReceived;
+            totalReceived += ( size_t ) currentReceived;
         }
         else
         {
@@ -2084,7 +2148,7 @@ static HTTPStatus_t sendHttpRequest( const TransportInterface_t * pTransport,
     assert( pTransport != NULL );
     assert( pRequestHeaders != NULL );
     assert( ( pRequestBodyBuf != NULL ) ||
-            ( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen == 0 ) ) );
+            ( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen == 0U ) ) );
     assert( getTimestampMs != NULL );
 
     /* Send the headers, which are at one location in memory. */

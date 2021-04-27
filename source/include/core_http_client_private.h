@@ -59,6 +59,7 @@
 #define CARRIAGE_RETURN_CHARACTER          '\r' /**< A carriage return character to help with header validation. */
 #define LINEFEED_CHARACTER                 '\n' /**< A linefeed character to help with header validation. */
 #define COLON_CHARACTER                    ':'  /**< A colon character to help with header validation. */
+#define NULL_CHARACTER                     '\0' /**< A NULL character to help with header validation. */
 
 /**
  * @brief Indicator for function #httpHeaderStrncpy that the pSrc parameter is a
