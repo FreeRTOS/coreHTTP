@@ -1,5 +1,11 @@
 # Changelog for coreHTTP Client Library
 
+## v2.0.1 (February 2021)
+
+### Other
+
+- [#89](https://github.com/FreeRTOS/coreHTTP/pull/89) Fix documentation of memory size estimates of the library.
+
 ## v2.0.0 (December 2020)
 
 ### Updates

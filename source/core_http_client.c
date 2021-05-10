@@ -1,5 +1,5 @@
 /*
- * coreHTTP v2.0.0
+ * coreHTTP v2.0.1
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -2235,8 +2235,9 @@ static int findHeaderFieldParserCallback( http_parser * pHttpParser,
     assert( pContext->valueFound == 0U );
 
     /* Check whether the parsed header matches the header we are looking for. */
+    /* Each header field consists of a case-insensitive field name (RFC 7230, section 3.2). */
     if( ( fieldLen == pContext->fieldLen ) &&
-        ( strncmp( pContext->pField, pFieldLoc, fieldLen ) == 0 ) )
+        ( strncasecmp( pContext->pField, pFieldLoc, fieldLen ) == 0 ) )
     {
         LogDebug( ( "Found header field in response: "
                     "HeaderName=%.*s, HeaderLocation=0x%p",

@@ -109,3 +109,18 @@ jobs:
         run: |
           git-secrets --register-aws
           git-secrets --scan
+  memory_statistics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            submodules: 'recursive'
+      - name: Install Python3
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7.10'
+      - name: Measure sizes
+        uses: FreeRTOS/CI-CD-Github-Actions/memory_statistics@main
+        with:
+            config: .github/memory_statistics_config.json
+            check_against: docs/doxygen/include/size_table.html
