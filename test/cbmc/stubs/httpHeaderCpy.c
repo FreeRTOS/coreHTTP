@@ -32,12 +32,12 @@
 #include <string.h>
 #include <stdint.h>
 
-void * httpHeaderCpy( char * pDest,
+size_t httpHeaderCpy( char * pDest,
                       const char * pSrc,
                       size_t len,
                       uint8_t isField )
 {
     __CPROVER_assert( __CPROVER_w_ok( pDest, len ), "write" );
     __CPROVER_assert( __CPROVER_r_ok( pSrc, len ), "read" );
-    return pDest;
+    return strnlen( pSrc, len );
 }
