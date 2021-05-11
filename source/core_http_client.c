@@ -1372,7 +1372,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     }
 
     /* Check if there is enough space in buffer for the additional header. */
-    toAddLen = fieldLen + HTTP_HEADER_FIELD_SEPARATOR_LEN +
+    toAddLen = ( uintptr_t ) fieldLen + HTTP_HEADER_FIELD_SEPARATOR_LEN +
                valueLen +
                HTTP_HEADER_LINE_SEPARATOR_LEN +
                HTTP_HEADER_LINE_SEPARATOR_LEN;
@@ -1524,10 +1524,10 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     assert( pMethod != NULL );
     assert( methodLen != 0U );
 
-    toAddLen = methodLen +                 \
-               SPACE_CHARACTER_LEN +       \
-               SPACE_CHARACTER_LEN +       \
-               HTTP_PROTOCOL_VERSION_LEN + \
+    toAddLen = ( uintptr_t ) methodLen +
+               SPACE_CHARACTER_LEN +
+               SPACE_CHARACTER_LEN +
+               HTTP_PROTOCOL_VERSION_LEN +
                HTTP_HEADER_LINE_SEPARATOR_LEN;
 
     pBufferCur = ( char * ) ( pRequestHeaders->pBuffer );
