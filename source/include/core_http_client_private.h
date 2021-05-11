@@ -55,10 +55,13 @@
 #define DASH_CHARACTER                     '-'                                            /**< A dash character macro to help with serializing a request. */
 #define DASH_CHARACTER_LEN                 ( 1U )                                         /**< The length of #DASH_CHARACTER. */
 
+/* TestComment. */
 /* Constants for HTTP header copy checks. */
 #define CARRIAGE_RETURN_CHARACTER          '\r' /**< A carriage return character to help with header validation. */
 #define LINEFEED_CHARACTER                 '\n' /**< A linefeed character to help with header validation. */
 #define COLON_CHARACTER                    ':'  /**< A colon character to help with header validation. */
+
+/* IsThisCaught? */
 
 /**
  * @brief Indicator for function #httpHeaderStrncpy that the pSrc parameter is a
