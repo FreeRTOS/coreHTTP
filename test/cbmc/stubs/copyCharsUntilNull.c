@@ -38,5 +38,5 @@ size_t copyCharsUntilNull( char * pDest,
 {
     __CPROVER_assert( __CPROVER_w_ok( pDest, maxLen ), "write" );
     __CPROVER_assert( __CPROVER_r_ok( pSrc, maxLen ), "read" );
-    return strnlen( pSrc, maxLen );
+    return maxLen;
 }

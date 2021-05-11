@@ -39,5 +39,5 @@ size_t httpHeaderCpy( char * pDest,
 {
     __CPROVER_assert( __CPROVER_w_ok( pDest, len ), "write" );
     __CPROVER_assert( __CPROVER_r_ok( pSrc, len ), "read" );
-    return strnlen( pSrc, len );
+    return len;
 }
