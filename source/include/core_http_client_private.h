@@ -65,7 +65,7 @@
 
 /**
  * @brief Indicator for function #httpHeaderStrncpy that the pSrc parameter is a
- * header value.
+ * header value. AddOneMoreSpellingError.
  */
 #define HTTP_HEADER_STRNCPY_IS_VALUE       0U
 
