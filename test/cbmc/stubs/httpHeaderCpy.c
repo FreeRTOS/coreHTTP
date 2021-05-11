@@ -21,8 +21,8 @@
  */
 
 /**
- * @file httpHeaderStrncpy.c
- * @brief Creates a stub for httpHeaderStrncpy so that the proofs for
+ * @file httpHeaderCpy.c
+ * @brief Creates a stub for httpHeaderCpy so that the proofs for
  * HTTPClient_AddHeader, HTTPClient_AddRangeHeader, and
  * HTTPClient_InitializeRequestHeaders run much faster. This stub checks if, for
  * the input copy length, the destination and source are valid accessible
@@ -32,10 +32,10 @@
 #include <string.h>
 #include <stdint.h>
 
-void * httpHeaderStrncpy( char * pDest,
-                          const char * pSrc,
-                          size_t len,
-                          uint8_t isField )
+void * httpHeaderCpy( char * pDest,
+                      const char * pSrc,
+                      size_t len,
+                      uint8_t isField )
 {
     __CPROVER_assert( __CPROVER_w_ok( pDest, len ), "write" );
     __CPROVER_assert( __CPROVER_r_ok( pSrc, len ), "read" );

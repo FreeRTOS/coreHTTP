@@ -32,7 +32,7 @@ INCLUDES +=
 # because HTTPClient_AddRangeHeader does not use the results of the copy later
 # in the function.
 REMOVE_FUNCTION_BODY += strncpy
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpHeaderCpy
 
 # strncmp is used to find if there exists "\r\n\r\n" at the end of the header
 # buffer. Therefore, we need to unwind strncmp the length of "\r\n\r\n" + 1.
@@ -44,7 +44,7 @@ UNWINDSET += __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1:11
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/strncpy.c
-PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/httpHeaderStrncpy.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/httpHeaderCpy.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 

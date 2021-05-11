@@ -62,13 +62,13 @@
 #define NULL_CHARACTER                     '\0' /**< A NULL character to help with header validation. */
 
 /**
- * @brief Indicator for function #httpHeaderStrncpy that the pSrc parameter is a
+ * @brief Indicator for function #httpHeaderCpy that the pSrc parameter is a
  * header value.
  */
 #define HTTP_HEADER_STRNCPY_IS_VALUE       0U
 
 /**
- * @brief Indicator for function #httpHeaderStrncpy that the pSrc parameter is a
+ * @brief Indicator for function #httpHeaderCpy that the pSrc parameter is a
  * header field.
  */
 #define HTTP_HEADER_STRNCPY_IS_FIELD       1U

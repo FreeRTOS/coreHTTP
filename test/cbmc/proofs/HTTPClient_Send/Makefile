@@ -52,7 +52,7 @@ REMOVE_FUNCTION_BODY += http_parser_settings_init
 # because all of the functions, in HTTPClient_Send, that would have used the
 # results of the copy are stubbed out to be proven separately.
 REMOVE_FUNCTION_BODY += strncpy
-REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy
+REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpHeaderCpy
 
 # There is a total of 10 digits in INT32_MAX. These loops are unwound once more
 # than the total possible iterations in the int32_t to ASCII converation.
@@ -71,7 +71,7 @@ PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_Send_http_parser_execute.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/transport_interface_stubs.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/get_time_stub.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/strncpy.c
-PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/httpHeaderStrncpy.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/httpHeaderCpy.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
