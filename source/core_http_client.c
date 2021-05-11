@@ -1383,9 +1383,9 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
     /* If we have enough room for the additional header, then write it to the
      * buffer. */
-    if( ( pRequestHeaders->headersLen - bufferBacktrackLen + toAddLen ) <= pRequestHeaders->bufferLen )
+    if( ( toAddLen + pRequestHeaders->headersLen - bufferBacktrackLen ) <= pRequestHeaders->bufferLen )
     {
-        size_t outBytesWritten = 0U;
+        uintptr_t outBytesWritten = 0U;
         /* Write "<Field>: <Value> \r\n" to the headers buffer. */
 
         /* Copy the header name into the buffer. */
@@ -1394,14 +1394,10 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                           fieldLen,
                                           HTTP_HEADER_STRNCPY_IS_FIELD );
 
-        assert( outBytesWritten < pRequestHeaders->bufferLen );
-
         /* Copy the field separator, ": ", into the buffer. */
         outBytesWritten += copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
                                                HTTP_HEADER_FIELD_SEPARATOR,
                                                HTTP_HEADER_FIELD_SEPARATOR_LEN );
-
-        assert( outBytesWritten <= pRequestHeaders->bufferLen );
 
         /* Copy the header value into the buffer. */
         outBytesWritten += httpHeaderCpy( &pBufferStart[ outBytesWritten ],
@@ -1409,14 +1405,10 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                           valueLen,
                                           HTTP_HEADER_STRNCPY_IS_VALUE );
 
-        assert( outBytesWritten <= pRequestHeaders->bufferLen );
-
         /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
         outBytesWritten += copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
                                                HTTP_HEADER_END_INDICATOR,
                                                HTTP_HEADER_END_INDICATOR_LEN );
-
-        assert( outBytesWritten <= pRequestHeaders->bufferLen );
 
         if( outBytesWritten == toAddLen )
         {
@@ -1525,7 +1517,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferCur = NULL;
     uintptr_t toAddLen = 0U;
-    size_t outBytesWritten = 0U;
+    uintptr_t outBytesWritten = 0U;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
