@@ -31,6 +31,7 @@
 #include <stdint.h>
 #include <stddef.h>
 
+/* SpellingError */
 /**
  * @transportpage
  * @brief The transport interface definition.
