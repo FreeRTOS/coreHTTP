@@ -1344,7 +1344,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferStart = NULL;
-    size_t toAddLen = 0U;
+    uintptr_t toAddLen = 0U;
     size_t bufferBacktrackLen = 0;
 
     assert( pRequestHeaders != NULL );
@@ -1449,7 +1449,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char rangeValueBuffer[ HTTP_MAX_RANGE_REQUEST_VALUE_LEN ];
-    size_t rangeValueLength = 0U;
+    uintptr_t rangeValueLength = 0U;
 
     assert( pRequestHeaders != NULL );
 
@@ -1524,7 +1524,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferCur = NULL;
-    size_t toAddLen = 0U;
+    uintptr_t toAddLen = 0U;
     size_t outBytesWritten = 0U;
 
     assert( pRequestHeaders != NULL );
