@@ -1258,6 +1258,9 @@ static size_t copyCharsUntilNull( char * pDest,
     size_t i = 0U;
     size_t charsWritten = 0U;
 
+    assert( pDest != NULL );
+    assert( pSrc != NULL );
+
     for( i = 0U; i < maxLen; i++ )
     {
         if( pSrc[ i ] == NULL_CHARACTER )
