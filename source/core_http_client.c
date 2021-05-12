@@ -1344,7 +1344,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferStart = NULL;
-    uintptr_t toAddLen = 0U;
+    intptr_t toAddLen = 0U;
     size_t bufferBacktrackLen = 0;
 
     assert( pRequestHeaders != NULL );
@@ -1372,11 +1372,13 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     }
 
     /* Check if there is enough space in buffer for the additional header. */
-    toAddLen = ( uintptr_t ) fieldLen + HTTP_HEADER_FIELD_SEPARATOR_LEN +
-               valueLen +
+    toAddLen = ( intptr_t ) fieldLen +
+               HTTP_HEADER_FIELD_SEPARATOR_LEN +
+               ( intptr_t ) valueLen +
                HTTP_HEADER_LINE_SEPARATOR_LEN +
                HTTP_HEADER_LINE_SEPARATOR_LEN;
 
+    assert(sizeof(intptr_t) == 64 );
     assert( toAddLen > fieldLen );
     assert( toAddLen > valueLen );
     assert( toAddLen > ( HTTP_HEADER_LINE_SEPARATOR_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN ) );
@@ -1385,28 +1387,28 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
      * buffer. */
     if( ( toAddLen + pRequestHeaders->headersLen - bufferBacktrackLen ) <= pRequestHeaders->bufferLen )
     {
-        uintptr_t outBytesWritten = 0U;
+        intptr_t outBytesWritten = 0U;
         /* Write "<Field>: <Value> \r\n" to the headers buffer. */
 
         /* Copy the header name into the buffer. */
-        outBytesWritten += httpHeaderCpy( &pBufferStart[ outBytesWritten ],
+        outBytesWritten += (intptr_t) httpHeaderCpy( &pBufferStart[ outBytesWritten ],
                                           pField,
                                           fieldLen,
                                           HTTP_HEADER_STRNCPY_IS_FIELD );
 
         /* Copy the field separator, ": ", into the buffer. */
-        outBytesWritten += copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
+        outBytesWritten += (intptr_t) copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
                                                HTTP_HEADER_FIELD_SEPARATOR,
                                                HTTP_HEADER_FIELD_SEPARATOR_LEN );
 
         /* Copy the header value into the buffer. */
-        outBytesWritten += httpHeaderCpy( &pBufferStart[ outBytesWritten ],
+        outBytesWritten += (intptr_t) httpHeaderCpy( &pBufferStart[ outBytesWritten ],
                                           pValue,
                                           valueLen,
                                           HTTP_HEADER_STRNCPY_IS_VALUE );
 
         /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
-        outBytesWritten += copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
+        outBytesWritten += (intptr_t) copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
                                                HTTP_HEADER_END_INDICATOR,
                                                HTTP_HEADER_END_INDICATOR_LEN );
 
@@ -1441,7 +1443,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char rangeValueBuffer[ HTTP_MAX_RANGE_REQUEST_VALUE_LEN ];
-    uintptr_t rangeValueLength = 0U;
+    intptr_t rangeValueLength = 0U;
 
     assert( pRequestHeaders != NULL );
 
@@ -1516,15 +1518,15 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferCur = NULL;
-    uintptr_t toAddLen = 0U;
-    uintptr_t outBytesWritten = 0U;
+    intptr_t toAddLen = 0U;
+    intptr_t outBytesWritten = 0U;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
     assert( pMethod != NULL );
     assert( methodLen != 0U );
 
-    toAddLen = ( uintptr_t ) methodLen +
+    toAddLen = ( intptr_t ) methodLen +
                SPACE_CHARACTER_LEN +
                SPACE_CHARACTER_LEN +
                HTTP_PROTOCOL_VERSION_LEN +
