@@ -1344,7 +1344,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferStart = NULL;
-    intptr_t toAddLen = 0U;
+    ptrdiff_t toAddLen = 0U;
     size_t bufferBacktrackLen = 0;
 
     assert( pRequestHeaders != NULL );
@@ -1372,13 +1372,13 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     }
 
     /* Check if there is enough space in buffer for the additional header. */
-    toAddLen = ( intptr_t ) fieldLen +
+    toAddLen = ( ptrdiff_t ) fieldLen +
                HTTP_HEADER_FIELD_SEPARATOR_LEN +
-               ( intptr_t ) valueLen +
+               ( ptrdiff_t ) valueLen +
                HTTP_HEADER_LINE_SEPARATOR_LEN +
                HTTP_HEADER_LINE_SEPARATOR_LEN;
 
-    assert(sizeof(intptr_t) == 64 );
+    assert(sizeof(ptrdiff_t) == 64 );
     assert( toAddLen > fieldLen );
     assert( toAddLen > valueLen );
     assert( toAddLen > ( HTTP_HEADER_LINE_SEPARATOR_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN ) );
@@ -1387,28 +1387,28 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
      * buffer. */
     if( ( toAddLen + pRequestHeaders->headersLen - bufferBacktrackLen ) <= pRequestHeaders->bufferLen )
     {
-        intptr_t outBytesWritten = 0U;
+        ptrdiff_t outBytesWritten = 0U;
         /* Write "<Field>: <Value> \r\n" to the headers buffer. */
 
         /* Copy the header name into the buffer. */
-        outBytesWritten += (intptr_t) httpHeaderCpy( &pBufferStart[ outBytesWritten ],
+        outBytesWritten += (ptrdiff_t) httpHeaderCpy( &pBufferStart[ outBytesWritten ],
                                           pField,
                                           fieldLen,
                                           HTTP_HEADER_STRNCPY_IS_FIELD );
 
         /* Copy the field separator, ": ", into the buffer. */
-        outBytesWritten += (intptr_t) copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
+        outBytesWritten += (ptrdiff_t) copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
                                                HTTP_HEADER_FIELD_SEPARATOR,
                                                HTTP_HEADER_FIELD_SEPARATOR_LEN );
 
         /* Copy the header value into the buffer. */
-        outBytesWritten += (intptr_t) httpHeaderCpy( &pBufferStart[ outBytesWritten ],
+        outBytesWritten += (ptrdiff_t) httpHeaderCpy( &pBufferStart[ outBytesWritten ],
                                           pValue,
                                           valueLen,
                                           HTTP_HEADER_STRNCPY_IS_VALUE );
 
         /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
-        outBytesWritten += (intptr_t) copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
+        outBytesWritten += (ptrdiff_t) copyCharsUntilNull( &pBufferStart[ outBytesWritten ],
                                                HTTP_HEADER_END_INDICATOR,
                                                HTTP_HEADER_END_INDICATOR_LEN );
 
@@ -1443,7 +1443,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char rangeValueBuffer[ HTTP_MAX_RANGE_REQUEST_VALUE_LEN ];
-    intptr_t rangeValueLength = 0U;
+    ptrdiff_t rangeValueLength = 0U;
 
     assert( pRequestHeaders != NULL );
 
@@ -1518,15 +1518,15 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     char * pBufferCur = NULL;
-    intptr_t toAddLen = 0U;
-    intptr_t outBytesWritten = 0U;
+    ptrdiff_t toAddLen = 0U;
+    ptrdiff_t outBytesWritten = 0U;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
     assert( pMethod != NULL );
     assert( methodLen != 0U );
 
-    toAddLen = ( intptr_t ) methodLen +
+    toAddLen = ( ptrdiff_t ) methodLen +
                SPACE_CHARACTER_LEN +
                SPACE_CHARACTER_LEN +
                HTTP_PROTOCOL_VERSION_LEN +
