@@ -116,10 +116,13 @@ HTTPResponse_t * allocateHttpResponse( HTTPResponse_t * pResponse )
 
         __CPROVER_assume( headerOffset <= pResponse->bufferLen );
 
-        /* It is possible to have no headers in the response so set to NULL or
-         * an offset in the response buffer. */
-        pResponse->pHeaders = nondet_bool() ? NULL :
-                              pResponse->pBuffer + headerOffset;
+        if( pResponse->pBuffer != NULL )
+        {
+            /* It is possible to have no headers in the response so set to NULL or
+             * an offset in the response buffer. */
+            pResponse->pHeaders = nondet_bool() ? NULL :
+                                  pResponse->pBuffer + headerOffset;
+        }
 
         if( pResponse->pHeaders != NULL )
         {
@@ -137,8 +140,11 @@ HTTPResponse_t * allocateHttpResponse( HTTPResponse_t * pResponse )
             __CPROVER_assume( bodyOffset <= pResponse->bufferLen );
         }
 
-        pResponse->pBody = nondet_bool() ? NULL :
-                           pResponse->pBuffer + bodyOffset;
+        if( pResponse->pBuffer != NULL )
+        {
+            pResponse->pBody = nondet_bool() ? NULL :
+                               pResponse->pBuffer + bodyOffset;
+        }
 
         /* The length of the body MUST be between the start of body and the end
          * of the buffer. */

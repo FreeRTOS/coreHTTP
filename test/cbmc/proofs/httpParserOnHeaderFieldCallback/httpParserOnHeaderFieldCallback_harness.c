@@ -47,8 +47,8 @@ void httpParserOnHeaderFieldCallback_harness()
     pResponse = pParsingContext->pResponse;
     pResponse->pHeaderParsingCallback = &headerParserCallback;
 
-    __CPROVER_assume( length <= pResponse->bufferLen );
-    __CPROVER_assume( locOffset < length );
+    __CPROVER_assume( locOffset <= pResponse->bufferLen );
+    __CPROVER_assume( length <= pResponse->bufferLen - locOffset );
     pLoc = pResponse->pBuffer + locOffset;
 
     /* This assumption suppresses an overflow error when incrementing pResponse->headerCount. */
