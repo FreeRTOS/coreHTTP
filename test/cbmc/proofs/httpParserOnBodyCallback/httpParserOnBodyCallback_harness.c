@@ -45,8 +45,8 @@ void httpParserOnBodyCallback_harness()
     __CPROVER_assume( length < pResponse->bufferLen );
     pLoc = pResponse->pBuffer + length;
 
-    __CPROVER_assume( pLoc + length <
-                      ( pResponse->pBuffer + pResponse->bufferLen ) );
+    __CPROVER_assume( pLoc <
+                      ( pResponse->pBuffer + pResponse->bufferLen - length ) );
 
     __CPROVER_file_local_core_http_client_c_httpParserOnBodyCallback( pHttpParser, pLoc, length );
 }

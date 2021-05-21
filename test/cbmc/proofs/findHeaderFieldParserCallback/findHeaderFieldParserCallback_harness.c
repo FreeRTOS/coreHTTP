@@ -47,9 +47,8 @@ void findHeaderFieldParserCallback_harness()
                       pResponse->bufferLen > 0 );
 
     __CPROVER_assume( 0 < fieldLen && fieldLen <= MAX_HEADER_FIELD_LENGTH && fieldLen <= pResponse->bufferLen );
-    __CPROVER_assume( fieldOffset < fieldLen );
+    __CPROVER_assume( fieldOffset <= pResponse->bufferLen - fieldLen );
     pFieldLoc = pResponse->pBuffer + fieldOffset;
-    __CPROVER_assume( pFieldLoc + fieldLen < pResponse->pBuffer + pResponse->bufferLen );
 
     __CPROVER_assume( 0 < fieldContextLen && fieldContextLen < CBMC_MAX_OBJECT_SIZE );
     pFindHeaderContext->pField = ( char * ) malloc( fieldContextLen );

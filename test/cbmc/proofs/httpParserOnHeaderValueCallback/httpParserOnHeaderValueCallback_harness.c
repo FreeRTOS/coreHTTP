@@ -43,8 +43,8 @@ void httpParserOnHeaderValueCallback_harness()
     __CPROVER_assume( pParsingContext->pLastHeaderField != NULL );
 
     pResponse = pParsingContext->pResponse;
-    __CPROVER_assume( length <= pResponse->bufferLen );
-    __CPROVER_assume( locOffset < length );
+    __CPROVER_assume( locOffset <= pResponse->bufferLen );
+    __CPROVER_assume( length <= pResponse->bufferLen - locOffset );
     pLoc = pResponse->pBuffer + locOffset;
 
     __CPROVER_file_local_core_http_client_c_httpParserOnHeaderValueCallback( pHttpParser, pLoc, length );
