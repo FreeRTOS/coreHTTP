@@ -2,7 +2,10 @@
   "lib_name": "coreHTTP",
   "src": [
     "source/core_http_client.c",
-    "source/dependency/3rdparty/http_parser/http_parser.c"
+    {
+      "file": "source/dependency/3rdparty/http_parser/http_parser.c",
+      "tag": "http-parser"
+    }
   ],
   "include": [
     "source/include",
