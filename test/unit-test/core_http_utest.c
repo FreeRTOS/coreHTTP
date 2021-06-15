@@ -592,6 +592,33 @@ void test_Http_InitializeRequestHeaders_Insufficient_Memory()
                                HTTP_TEST_REQUEST_LINE_LEN ) != 0 );
 }
 
+/**
+ * @brief Test HTTPInsufficientMemory with a path containing a null byte.
+ */
+void test_Http_InitializeRequestHeaders_NullByteInPath()
+{
+    HTTPStatus_t httpStatus = HTTPSuccess;
+    HTTPRequestHeaders_t requestHeaders = { 0 };
+    HTTPRequestInfo_t requestInfo = { 0 };
+    const char * const pathWithNullByte = "/AB\0CDEF/";
+
+    expectedHeaders.dataLen = HTTP_TEST_PREFIX_HEADER_LEN -
+                              HTTP_TEST_REQUEST_PATH_LEN +
+                              HTTP_EMPTY_PATH_LEN;
+
+    setupRequestInfo( &requestInfo );
+    setupBuffer( &requestHeaders );
+
+    requestInfo.pPath = pathWithNullByte;
+    requestInfo.pathLen = ( sizeof( pathWithNullByte ) - 1 );
+    requestInfo.reqFlags = 0U;
+
+    requestHeaders.pBuffer = testBuffer;
+    requestHeaders.bufferLen = expectedHeaders.dataLen;
+    httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, httpStatus );
+}
+
 /* ===================== Testing HTTPClient_AddHeader ======================= */
 
 /**
@@ -827,6 +854,7 @@ void test_Http_AddHeader_Invalid_Fields()
     const char * colonInField = "head:er-field";
     const char * linefeedInField = "head\ner-field";
     const char * carriageReturnInField = "head\rer-field";
+    const char * nullInField = "head\0er-field";
 
     setupBuffer( &requestHeaders );
 
@@ -851,6 +879,11 @@ void test_Http_AddHeader_Invalid_Fields()
                                        carriageReturnInField, strlen( carriageReturnInField ),
                                        HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
     TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, httpStatus );
+
+    httpStatus = HTTPClient_AddHeader( &requestHeaders,
+                                       nullInField, sizeof( nullInField ),
+                                       HTTP_TEST_HEADER_VALUE, HTTP_TEST_HEADER_VALUE_LEN );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, httpStatus );
 }
 
 /**
@@ -865,6 +898,7 @@ void test_Http_AddHeader_Invalid_Values()
     const char * colonInValue = "head:er-value";
     const char * linefeedInValue = "head\ner-Value";
     const char * carriageReturnInValue = "head\rer-Value";
+    const char * nullInValue = "head\0er-Value";
 
     setupBuffer( &requestHeaders );
 
@@ -908,6 +942,11 @@ void test_Http_AddHeader_Invalid_Values()
     httpStatus = HTTPClient_AddHeader( &requestHeaders,
                                        HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
                                        carriageReturnInValue, strlen( carriageReturnInValue ) );
+    TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, httpStatus );
+
+    httpStatus = HTTPClient_AddHeader( &requestHeaders,
+                                       HTTP_TEST_HEADER_FIELD, HTTP_TEST_HEADER_FIELD_LEN,
+                                       carriageReturnInValue, sizeof( nullInValue ) - 1 );
     TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidCharacter, httpStatus );
 }
 
@@ -996,6 +1035,7 @@ void test_Http_AddRangeHeader_Insufficient_Memory( void )
                                        &expectedHeaders,
                                        PREEXISTING_HEADER_DATA );
     size_t preHeadersLen = testHeaders.headersLen;
+
     testRangeStart = 5;
     testRangeEnd = 10;
 

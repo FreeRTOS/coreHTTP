@@ -8,34 +8,68 @@ on:
   workflow_dispatch:
 
 jobs:
-  unittest:
+  unittests-sanitizer:
     runs-on: ubuntu-latest
     steps:
       - name: Clone This Repo
         uses: actions/checkout@v2
-      - name: Build
+      - name: Build with Sanitizers
         run: |
-          sudo apt-get install -y lcov
-          cmake -S test -B build/ \
+          sudo apt-get install -y cmake lcov
+          CFLAGS="  -O0 -Wall -Wextra"
+          CFLAGS+=" -Werror -Wno-error=pedantic"
+          CFLAGS+=" -D_FORTIFY_SOURCE=2"
+          CFLAGS+=" -Wformat"
+          CLFAGS+=" -Wformat-security"
+          CFLAGS+=" -Warray-bounds"
+          CFLAGS+=" -fsanitize=address,undefined"
+          CFLAGS+=" -fsanitize=pointer-compare -fsanitize=pointer-subtract"
+          CFLAGS+=" -fsanitize-recover=undefined"
+          CFLAGS+=" -fsanitize-address-use-after-scope"
+          CFLAGS+=" -fsanitize-undefined-trap-on-error"
+          CFLAGS_=" -fstack-protector-all"
+          cmake -S test -B build \
           -G "Unix Makefiles" \
           -DCMAKE_BUILD_TYPE=Debug \
-          -DCMAKE_C_FLAGS='--coverage -Wall -Wextra -DNDEBUG'
-          make -C build/ all
-      - name: Test
+          -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+          -DCMAKE_C_FLAGS="${CFLAGS}"
+          make -C build all
+      - name: Run Tests with Sanitizers
         run: |
-          cd build/
+          cd build
+          make coverage
           ctest -E system --output-on-failure
           cd ..
-      - name: Run Coverage
+  unittests-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone This Repo
+        uses: actions/checkout@v2
+      - name: Build Tests for Coverage
         run: |
-          make -C build/ coverage
+          sudo apt-get install -y cmake lcov
+          CFLAGS="  --coverage -O0 -Wall -Wextra"
+          CFLAGS+=" -Werror -Wno-error=pedantic"
+          CFLAGS+=" -DNDEBUG"
+          cmake -S test -B build_cov \
+          -G "Unix Makefiles" \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+          -DCMAKE_C_FLAGS="${CFLAGS}"
+          make -C build_cov all
+      - name: Run Tests for Coverage
+        run: |
+          cd build_cov
+          make coverage
+          ctest -E system --output-on-failure
+          cd ..
           declare -a EXCLUDE=("\*test\*" "\*CMakeCCompilerId\*" "\*mocks\*" "\*3rdparty\*")
-          echo ${EXCLUDE[@]} | xargs lcov --rc lcov_branch_coverage=1 -r build/coverage.info -o build/coverage.info
-          lcov --rc lcov_branch_coverage=1 --list build/coverage.info
+          echo ${EXCLUDE[@]} | xargs lcov --rc lcov_branch_coverage=1 -r build_cov/coverage.info -o build_cov/coverage.info
+          lcov --rc lcov_branch_coverage=1 --list build_cov/coverage.info
       - name: Check Coverage
         uses: FreeRTOS/CI-CD-Github-Actions/coverage-cop@main
         with:
-          path: ./build/coverage.info
+          path: ./build_cov/coverage.info
   complexity:
     runs-on: ubuntu-latest
     steps:
