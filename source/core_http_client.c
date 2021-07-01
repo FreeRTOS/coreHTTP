@@ -27,6 +27,7 @@
 
 #include <assert.h>
 #include <string.h>
+#include <strings.h>
 
 #include "core_http_client.h"
 #include "core_http_client_private.h"
