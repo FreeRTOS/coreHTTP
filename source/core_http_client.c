@@ -27,7 +27,6 @@
 
 #include <assert.h>
 #include <string.h>
-#include <strings.h>
 
 #include "core_http_client.h"
 #include "core_http_client_private.h"
@@ -545,11 +544,39 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  */
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
 
+/**
+ * @brief Compares at most the first n bytes of str1 and str2.
+ *
+ * @param[in] str1 first string to be compared.
+ * @param[in] str2 second string to be compared.
+ * @param[in] n  The maximum number of characters to be compared.
+ * 
+ * @return One of the following:
+ * 0 if str1 is equal to str2
+ * 1 if str2 is less than str1.
+ * -1 if str1 is less than str2.
+ */
+static int strncasecmp(const char* str1, const char* str2, size_t n)
+
 /*-----------------------------------------------------------*/
 
 static uint32_t getZeroTimestampMs( void )
 {
     return 0U;
+}
+
+/*-----------------------------------------------------------*/
+
+static int strncasecmp(const char* s1, const char* s2, size_t n) {
+    for (; sz > 0; sz--, s1++, s2++) {
+        if (toupper(*s1) < toupper(*s2)) {
+            return -1;
+        }
+        if (toupper(*s1) > toupper(*s2)) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 /*-----------------------------------------------------------*/
