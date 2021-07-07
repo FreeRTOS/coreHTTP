@@ -233,6 +233,7 @@ sendflags
 sendhttpbody
 sendhttpheaders
 sendpartialcall
+sensitivity
 sizeof
 snprintf
 statuscode

@@ -545,7 +545,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
 
 /**
- * @brief Compares at most the first n bytes of str1 and str2 without case senstivity.
+ * @brief Compares at most the first n bytes of str1 and str2 without case sensitivity.
  *
  * @param[in] str1 first string to be compared.
  * @param[in] str2 second string to be compared.
@@ -556,7 +556,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
  * 1 if str2 is less than str1.
  * -1 if str1 is less than str2.
  */
-static int strncasecmp(const char* str1, const char* str2, size_t n);
+//static int strncasecmp(const char* str1, const char* str2, size_t n);
 
 /*-----------------------------------------------------------*/
 
@@ -567,7 +567,7 @@ static uint32_t getZeroTimestampMs( void )
 
 /*-----------------------------------------------------------*/
 
-static int strncasecmp(const char* s1, const char* s2, size_t n) {
+int strncasecmp(const char* s1, const char* s2, size_t n) {
     for (; n > 0; n--, s1++, s2++) {
         if (toupper(*s1) < toupper(*s2)) {
             return -1;
