@@ -550,13 +550,15 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
  * @param[in] str1 first string to be compared.
  * @param[in] str2 second string to be compared.
  * @param[in] n  The maximum number of characters to be compared.
- * 
+ *
  * @return One of the following:
  * 0 if str1 is equal to str2
  * 1 if str2 is less than str1.
  * -1 if str1 is less than str2.
  */
-static int stringCaseCmp(const char* str1, const char* str2, size_t n);
+static int stringCaseCmp( const char * str1,
+                          const char * str2,
+                          size_t n );
 
 /*-----------------------------------------------------------*/
 
@@ -567,15 +569,23 @@ static uint32_t getZeroTimestampMs( void )
 
 /*-----------------------------------------------------------*/
 
-int stringCaseCmp(const char* s1, const char* s2, size_t n) {
-    for (; n > 0; n--, s1++, s2++) {
-        if (toupper(*s1) < toupper(*s2)) {
+static int stringCaseCmp( const char * str1,
+                          const char * str2,
+                          size_t n )
+{
+    for( ; n > 0; n--, str1++, str2++ )
+    {
+        if( toupper( *str1 ) < toupper( *str2 ) )
+        {
             return -1;
         }
-        if (toupper(*s1) > toupper(*s2)) {
+
+        if( toupper( *str1 ) > toupper( *str2 ) )
+        {
             return 1;
         }
     }
+
     return 0;
 }
 
@@ -2265,7 +2275,7 @@ static int findHeaderFieldParserCallback( http_parser * pHttpParser,
     /* Check whether the parsed header matches the header we are looking for. */
     /* Each header field consists of a case-insensitive field name (RFC 7230, section 3.2). */
     if( ( fieldLen == pContext->fieldLen ) &&
-        (stringCaseCmp( pContext->pField, pFieldLoc, fieldLen ) == 0 ) )
+        ( stringCaseCmp( pContext->pField, pFieldLoc, fieldLen ) == 0 ) )
     {
         LogDebug( ( "Found header field in response: "
                     "HeaderName=%.*s, HeaderLocation=0x%p",
