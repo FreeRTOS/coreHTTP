@@ -568,7 +568,7 @@ static uint32_t getZeroTimestampMs( void )
 /*-----------------------------------------------------------*/
 
 static int strncasecmp(const char* s1, const char* s2, size_t n) {
-    for (; sz > 0; sz--, s1++, s2++) {
+    for (; n > 0; n--, s1++, s2++) {
         if (toupper(*s1) < toupper(*s2)) {
             return -1;
         }
