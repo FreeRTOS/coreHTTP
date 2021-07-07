@@ -557,8 +557,8 @@ static HTTPStatus_t processHttpParserError(const http_parser* pHttpParser);
  * -1 if str1 is less than str2.
  */
 static int stringCaseCmp( const char* str1,
-    `              const char* str2,
-                   size_t n);
+    `                     const char* str2,
+                          size_t n);
 
 /*-----------------------------------------------------------*/
 
@@ -569,9 +569,9 @@ static uint32_t getZeroTimestampMs(void)
 
 /*-----------------------------------------------------------*/
 
-int stringCaseCmp( const char* str1,
-                   const char* str2,
-                   size_t n )
+static int stringCaseCmp( const char* str1,
+                          const char* str2,
+                          size_t n )
 {
     for ( ; n > 0; n--, str1++, str2++ )
     {
