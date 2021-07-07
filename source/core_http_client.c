@@ -545,7 +545,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
 
 /**
- * @brief Compares at most the first n bytes of str1 and str2.
+ * @brief Compares at most the first n bytes of str1 and str2 without case senstivity.
  *
  * @param[in] str1 first string to be compared.
  * @param[in] str2 second string to be compared.
