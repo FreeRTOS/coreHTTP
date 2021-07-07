@@ -556,7 +556,7 @@ static HTTPStatus_t processHttpParserError(const http_parser* pHttpParser);
  * 1 if str2 is less than str1.
  * -1 if str1 is less than str2.
  */
-int stringCaseCmp( const char* str1,
+static int stringCaseCmp( const char* str1,
     `              const char* str2,
                    size_t n);
 
