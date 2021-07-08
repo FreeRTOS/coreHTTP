@@ -1379,7 +1379,7 @@ void test_Http_ReadHeader_Header_Not_In_Response_1( void )
     /* Call the function under test. */
     testResponse.bufferLen = strlen( pTestResponse );
     retCode = HTTPClient_ReadHeader( &testResponse,
-                                     "zeader-not-in-buffer",
+                                     "beader-not-in-buffer",
                                      HEADER_NOT_IN_BUFFER_LEN,
                                      &pValueLoc,
                                      &valueLen );
