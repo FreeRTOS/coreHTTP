@@ -13,7 +13,7 @@ DEFINES += -DMAX_HEADER_FIELD_LENGTH=$(MAX_HEADER_FIELD_LENGTH)
 INCLUDES +=
 
 REMOVE_FUNCTION_BODY +=
-UNWINDSET += __CPROVER_file_local_core_http_client_c_stringCaseCmp.0:$(MAX_HEADER_FIELD_LENGTH)
+UNWINDSET += __CPROVER_file_local_core_http_client_c_caseInsensitiveStringCmp.0:$(MAX_HEADER_FIELD_LENGTH)
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c

@@ -239,7 +239,6 @@ snprintf
 statuscode
 strchr
 strerror
-strncasecmp
 strncpy
 struct
 sublicense

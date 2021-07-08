@@ -996,7 +996,6 @@ void test_Http_AddRangeHeader_Insufficient_Memory( void )
                                        &expectedHeaders,
                                        PREEXISTING_HEADER_DATA );
     size_t preHeadersLen = testHeaders.headersLen;
-
     testRangeStart = 5;
     testRangeEnd = 10;
 

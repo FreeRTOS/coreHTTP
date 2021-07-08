@@ -555,8 +555,7 @@ static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
  *
  * @return One of the following:
  * 0 if str1 is equal to str2
- * 1 if str2 is less than str1.
- * -1 if str1 is less than str2.
+ * 1 if str1 is not equal to str2.
  */
 static int8_t caseInsensitiveStringCmp( const char * str1,
                                         const char * str2,
