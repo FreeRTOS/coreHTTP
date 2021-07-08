@@ -575,11 +575,6 @@ static int8_t stringCaseCmp( const char * str1,
                              const char * str2,
                              size_t n )
 {
-    if( ( str1 == NULL ) || ( str2 == NULL ) )
-    {
-        return 0;
-    }
-
     assert( str1 != NULL );
     assert( str2 != NULL );
 
