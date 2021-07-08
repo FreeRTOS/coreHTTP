@@ -27,6 +27,7 @@
 
 #include <assert.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "core_http_client.h"
 #include "core_http_client_private.h"
@@ -545,20 +546,21 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
 
 /**
- * @brief Compares at most the first n bytes of str1 and str2 without case sensitivity.
+ * @brief Compares at most the first n bytes of str1 and str2 without case sensitivity
+ * and n must be less than the actual size of either string.
  *
- * @param[in] str1 first string to be compared.
- * @param[in] str2 second string to be compared.
- * @param[in] n  The maximum number of characters to be compared.
+ * @param[in] str1 First string to be compared.
+ * @param[in] str2 Second string to be compared.
+ * @param[in] n The maximum number of characters to be compared.
  *
  * @return One of the following:
  * 0 if str1 is equal to str2
  * 1 if str2 is less than str1.
  * -1 if str1 is less than str2.
  */
-static int stringCaseCmp( const char * str1,
-                          const char * str2,
-                          size_t n );
+static int8_t stringCaseCmp( const char * str1,
+                             const char * str2,
+                             size_t n );
 
 /*-----------------------------------------------------------*/
 
@@ -569,10 +571,18 @@ static uint32_t getZeroTimestampMs( void )
 
 /*-----------------------------------------------------------*/
 
-static int stringCaseCmp( const char * str1,
-                          const char * str2,
-                          size_t n )
+static int8_t stringCaseCmp( const char * str1,
+                             const char * str2,
+                             size_t n )
 {
+    if( ( str1 == NULL ) || ( str2 == NULL ) )
+    {
+        return 0;
+    }
+
+    assert( str1 != NULL );
+    assert( str2 != NULL );
+
     for( ; n > 0; n--, str1++, str2++ )
     {
         if( toupper( *str1 ) < toupper( *str2 ) )

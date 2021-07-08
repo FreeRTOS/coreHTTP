@@ -46,7 +46,7 @@ void findHeaderFieldParserCallback_harness()
                       pResponse->pBuffer != NULL &&
                       pResponse->bufferLen > 0 );
 
-    __CPROVER_assume( 0 < fieldLen && fieldLen <= MAX_HEADER_FIELD_LENGTH && fieldLen <= pResponse->bufferLen );
+    __CPROVER_assume( 0 < fieldLen && fieldLen < MAX_HEADER_FIELD_LENGTH && fieldLen <= pResponse->bufferLen );
     __CPROVER_assume( fieldOffset <= pResponse->bufferLen - fieldLen );
     pFieldLoc = pResponse->pBuffer + fieldOffset;
 
