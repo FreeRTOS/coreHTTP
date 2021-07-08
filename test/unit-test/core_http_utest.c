@@ -996,6 +996,7 @@ void test_Http_AddRangeHeader_Insufficient_Memory( void )
                                        &expectedHeaders,
                                        PREEXISTING_HEADER_DATA );
     size_t preHeadersLen = testHeaders.headersLen;
+
     testRangeStart = 5;
     testRangeEnd = 10;
 
@@ -1357,34 +1358,6 @@ void test_Http_ReadHeader_Header_Not_In_Response( void )
                                      &valueLen );
     TEST_ASSERT_EQUAL( HTTPHeaderNotFound, retCode );
 }
-
-// void test_Http_ReadHeader_Header_Not_In_Response_1( void )
-// {
-//     /* Add expectations for http_parser dependencies. */
-//     http_parser_init_ExpectAnyArgs();
-//     http_parser_settings_init_ExpectAnyArgs();
-
-//     /* Configure the http_parser_execute mock. */
-//     invokeHeaderFieldCallback = 1U;
-//     invokeHeaderValueCallback = 1U;
-//     pFieldLocToReturn = &pTestResponse[ headerFieldInRespLoc ];
-//     fieldLenToReturn = headerFieldInRespLen;
-//     pValueLocToReturn = &pTestResponse[ headerValInRespLoc ];
-//     valueLenToReturn = headerValInRespLen;
-//     expectedValCbRetVal = HTTP_PARSER_CONTINUE_PARSING;
-//     invokeHeaderCompleteCallback = 1U;
-//     parserErrNo = HPE_OK;
-//     http_parser_execute_ExpectAnyArgsAndReturn( strlen( pTestResponse ) );
-
-//     /* Call the function under test. */
-//     testResponse.bufferLen = strlen( pTestResponse );
-//     retCode = HTTPClient_ReadHeader( &testResponse,
-//                                      "beader-not-in-buffer",
-//                                      HEADER_NOT_IN_BUFFER_LEN,
-//                                      &pValueLoc,
-//                                      &valueLen );
-//     TEST_ASSERT_EQUAL( HTTPHeaderNotFound, retCode );
-// }
 
 /**
  * @brief Test with an invalid HTTP response containing only the field name the
