@@ -579,7 +579,7 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
 
     for( ; n > 0; n--, str1++, str2++ )
     {
-        if( str1 && str2 && ( toupper( *str1 ) != toupper( *str2 ) ) )
+        if( ( str1 != NULL ) && ( str2 != NULL ) && ( toupper( *str1 ) != toupper( *str2 ) ) )
         {
             return 1;
         }
