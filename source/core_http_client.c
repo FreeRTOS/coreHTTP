@@ -574,21 +574,20 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
                                         const char * str2,
                                         size_t n )
 {
+    size_t i = 0U;
+
     assert( str1 != NULL );
     assert( str2 != NULL );
 
-    for( ; n > 0; n--, str1++, str2++ )
+    for( i = 0U; i < n; i++ )
     {
-        assert( str1 != NULL );
-        assert( str2 != NULL );
-
-        if( ( toupper( *str1 ) != toupper( *str2 ) ) )
+        if( toupper( str1[ i ] ) != toupper( str2[ i ] ) )
         {
-            return 1;
+            break;
         }
     }
 
-    return 0;
+    return ( i == n ) ? 0 : 1;
 }
 
 /*-----------------------------------------------------------*/
