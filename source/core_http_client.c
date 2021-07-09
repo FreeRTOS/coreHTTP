@@ -2277,7 +2277,7 @@ static int findHeaderFieldParserCallback( http_parser * pHttpParser,
     /* Check whether the parsed header matches the header we are looking for. */
     /* Each header field consists of a case-insensitive field name (RFC 7230, section 3.2). */
     if( ( fieldLen == pContext->fieldLen ) &&
-        ( caseInsensitiveStringCmp( pContext->pField, pFieldLoc, fieldLen ) == 0 ) )
+        ( strncmp( strlwr( pContext->pField ), strlwr( pFieldLoc ), fieldLen ) == 0 ) )
     {
         LogDebug( ( "Found header field in response: "
                     "HeaderName=%.*s, HeaderLocation=0x%p",
