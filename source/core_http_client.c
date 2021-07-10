@@ -27,6 +27,7 @@
 
 #include <assert.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "core_http_client.h"
 #include "core_http_client_private.h"
@@ -544,11 +545,46 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  */
 static HTTPStatus_t processHttpParserError( const http_parser * pHttpParser );
 
+/**
+ * @brief Compares at most the first n bytes of str1 and str2 without case sensitivity
+ * and n must be less than the actual size of either string.
+ *
+ * @param[in] str1 First string to be compared.
+ * @param[in] str2 Second string to be compared.
+ * @param[in] n The maximum number of characters to be compared.
+ *
+ * @return One of the following:
+ * 0 if str1 is equal to str2
+ * 1 if str1 is not equal to str2.
+ */
+static int8_t caseInsensitiveStringCmp( const char * str1,
+                                        const char * str2,
+                                        size_t n );
+
 /*-----------------------------------------------------------*/
 
 static uint32_t getZeroTimestampMs( void )
 {
     return 0U;
+}
+
+/*-----------------------------------------------------------*/
+
+static int8_t caseInsensitiveStringCmp( const char * str1,
+                                        const char * str2,
+                                        size_t n )
+{
+    size_t i = 0U;
+
+    for( i = 0U; i < n; i++ )
+    {
+        if( toupper( str1[ i ] ) != toupper( str2[ i ] ) )
+        {
+            break;
+        }
+    }
+
+    return ( i == n ) ? 0 : 1;
 }
 
 /*-----------------------------------------------------------*/
@@ -2237,7 +2273,7 @@ static int findHeaderFieldParserCallback( http_parser * pHttpParser,
     /* Check whether the parsed header matches the header we are looking for. */
     /* Each header field consists of a case-insensitive field name (RFC 7230, section 3.2). */
     if( ( fieldLen == pContext->fieldLen ) &&
-        ( strncasecmp( pContext->pField, pFieldLoc, fieldLen ) == 0 ) )
+        ( caseInsensitiveStringCmp( pContext->pField, pFieldLoc, fieldLen ) == 0 ) )
     {
         LogDebug( ( "Found header field in response: "
                     "HeaderName=%.*s, HeaderLocation=0x%p",
