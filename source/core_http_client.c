@@ -576,9 +576,6 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
 {
     size_t i = 0U;
 
-    assert( str1 != NULL );
-    assert( str2 != NULL );
-
     for( i = 0U; i < n; i++ )
     {
         if( toupper( str1[ i ] ) != toupper( str2[ i ] ) )
