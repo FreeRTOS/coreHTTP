@@ -1,6 +1,6 @@
 # MISRA Compliance
 
-The HTTP Client library files conform to the [MISRA C:2012](https://www.misra.org.uk/MISRAHome/MISRAC2012/tabid/196/Default.aspx)
+The HTTP Client library files conform to the [MISRA C:2012](https://www.misra.org.uk)
 guidelines, with some noted exceptions. Compliance is checked with Coverity static analysis.
 Deviations from the MISRA standard are listed below. The deviations below do not
 include the third-party [http-parser source code](https://github.com/nodejs/http-parser/tree/v2.9.3):
