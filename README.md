@@ -13,7 +13,7 @@ score over 8. This library has also undergone both static code analysis from
 safety and data structure invariance through the
 [CBMC automated reasoning tool](https://www.cprover.org/cbmc/).
 
-See memory requirements for this library [here](https://docs.aws.amazon.com/embedded-csdk/202103.00/lib-ref/libraries/standard/coreHTTP/docs/doxygen/output/html/index.html#http_memory_requirements).
+See memory requirements for this library [here](./docs/doxygen/include/size_table.md).
 
 **coreHTTP v2.0.0 [source code](https://github.com/FreeRTOS/coreHTTP/tree/v2.0.0/source) is part of the [FreeRTOS 202012.00 LTS](https://github.com/FreeRTOS/FreeRTOS-LTS/tree/202012.00-LTS) release.**
 
@@ -82,8 +82,19 @@ The AWS IoT Device SDK for Embedded C repository contains demos of using the HTT
 library [here](https://github.com/aws/aws-iot-device-sdk-embedded-C/tree/main/demos/http)
 on a POSIX platform. These can be used as reference examples for the library API.
 
-## Generating documentation
+## Documentation
 
+### Existing Documentation
+For pre-generated documentation, please see the documentation linked in the locations below:
+
+| Location |
+| :-: |
+| [AWS IoT Device SDK for Embedded C](https://github.com/aws/aws-iot-device-sdk-embedded-C#releases-and-documentation) |
+| [FreeRTOS.org](https://freertos.org/Documentation/api-ref/coreHTTP/docs/doxygen/output/html/index.html) |
+
+Note that the latest included version of coreHTTP may differ across repositories.
+
+### Generating Documentation
 The Doxygen references were created using Doxygen version 1.8.20. To generate the
 Doxygen pages, please run the following command from the root of this repository:
 
