@@ -128,6 +128,7 @@ loginfo
 logwarn
 mainpage
 malloc
+md
 memcpy
 memmove
 methodlen
