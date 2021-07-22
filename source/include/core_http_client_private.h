@@ -1,5 +1,5 @@
 /*
- * coreHTTP v2.0.1
+ * coreHTTP v2.0.2
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -30,6 +30,12 @@
 
 /* Third-party http-parser include. */
 #include "http_parser.h"
+
+/* *INDENT-OFF* */
+#ifdef __cplusplus
+    extern "C" {
+#endif
+/* *INDENT-ON* */
 
 /**
  * @brief The HTTP protocol version of this library is HTTP/1.1.
@@ -266,5 +272,11 @@ typedef struct HTTPParsingContext
     const char * pLastHeaderValue; /**< Holds the last part of the header value parsed. */
     size_t lastHeaderValueLen;     /**< The length of the last value field parsed. */
 } HTTPParsingContext_t;
+
+/* *INDENT-OFF* */
+#ifdef __cplusplus
+    }
+#endif
+/* *INDENT-ON* */
 
 #endif /* ifndef CORE_HTTP_CLIENT_PRIVATE_H_ */
