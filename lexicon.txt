@@ -31,6 +31,7 @@ const
 contentlength
 convertint
 copybrief
+copycharsuntilnull
 copydoc
 corehttp
 coverity
@@ -70,7 +71,7 @@ html
 http
 httpclient
 httpheadernotfound
-httpheaderstrncpy
+httpheadercpy
 httpinsufficientmemory
 httpinvalidparameter
 httpinvalidresponse
@@ -128,6 +129,7 @@ loginfo
 logwarn
 mainpage
 malloc
+maxlen
 memcpy
 memmove
 methodlen
