@@ -17,7 +17,7 @@ Feature of HTTP/1.1 not supported in this library:
 @section http_memory_requirements Memory Requirements
 @brief Memory requirements of the HTTP Client library.
 
-@include{doc} size_table.html
+@include{doc} size_table.md
  */
 
 /**

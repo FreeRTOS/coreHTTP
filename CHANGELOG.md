@@ -1,5 +1,13 @@
 # Changelog for coreHTTP Client Library
 
+## v2.0.2 (July 2021)
+
+### Updates
+
+- [#109](https://github.com/FreeRTOS/coreHTTP/pull/109) Add C++ header guards
+- [#106](https://github.com/FreeRTOS/coreHTTP/pull/106) Update case-insensitive compare function for header-field parser
+- [#104](https://github.com/FreeRTOS/coreHTTP/pull/104) Update CBMC proofs to work with the latest version of CBMC
+
 ## v2.0.1 (February 2021)
 
 ### Other

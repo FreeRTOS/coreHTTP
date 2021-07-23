@@ -1,5 +1,5 @@
 /*
- * coreHTTP v2.0.1
+ * coreHTTP v2.0.2
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -34,6 +34,12 @@
 
 #ifndef CORE_HTTP_CONFIG_DEFAULTS_
 #define CORE_HTTP_CONFIG_DEFAULTS_
+
+/* *INDENT-OFF* */
+#ifdef __cplusplus
+    extern "C" {
+#endif
+/* *INDENT-ON* */
 
 /**
  * @brief Maximum size, in bytes, of headers allowed from the server.
@@ -190,5 +196,11 @@
 #ifndef LogDebug
     #define LogDebug( message )
 #endif
+
+/* *INDENT-OFF* */
+#ifdef __cplusplus
+    }
+#endif
+/* *INDENT-ON* */
 
 #endif /* ifndef CORE_HTTP_CONFIG_DEFAULTS_ */

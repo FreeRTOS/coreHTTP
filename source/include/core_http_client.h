@@ -1,5 +1,5 @@
 /*
- * coreHTTP v2.0.1
+ * coreHTTP v2.0.2
  * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -30,6 +30,12 @@
 
 #include <stdint.h>
 #include <stddef.h>
+
+/* *INDENT-OFF* */
+#ifdef __cplusplus
+    extern "C" {
+#endif
+/* *INDENT-ON* */
 
 /* HTTP_DO_NOT_USE_CUSTOM_CONFIG allows building the HTTP Client library
  * without a config file. If a config file is provided, the
@@ -892,5 +898,11 @@ HTTPStatus_t HTTPClient_ReadHeader( const HTTPResponse_t * pResponse,
 /* @[declare_httpclient_strerror] */
 const char * HTTPClient_strerror( HTTPStatus_t status );
 /* @[declare_httpclient_strerror] */
+
+/* *INDENT-OFF* */
+#ifdef __cplusplus
+    }
+#endif
+/* *INDENT-ON* */
 
 #endif /* ifndef CORE_HTTP_CLIENT_H_ */
