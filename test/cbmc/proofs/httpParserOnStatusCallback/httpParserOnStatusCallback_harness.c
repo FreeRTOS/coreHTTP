@@ -29,6 +29,10 @@
 #include "http_parser.h"
 #include "core_http_client.h"
 
+int __CPROVER_file_local_core_http_client_c_httpParserOnStatusCallback( http_parser * pHttpParser,
+                                                                        const char * pLoc,
+                                                                        size_t length );
+
 void httpParserOnStatusCallback_harness()
 {
     http_parser * pHttpParser;
