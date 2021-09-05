@@ -29,6 +29,10 @@
 #include "http_parser.h"
 #include "core_http_client.h"
 
+int __CPROVER_file_local_core_http_client_c_findHeaderFieldParserCallback( http_parser * pHttpParser,
+                                                                           const char * pFieldLoc,
+                                                                           size_t fieldLen );
+
 
 void findHeaderFieldParserCallback_harness()
 {

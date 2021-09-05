@@ -29,6 +29,7 @@
 #include "http_parser.h"
 #include "core_http_client.h"
 
+int __CPROVER_file_local_core_http_client_c_findHeaderOnHeaderCompleteCallback( http_parser * pHttpParser );
 
 void findHeaderOnHeaderCompleteCallback_harness()
 {

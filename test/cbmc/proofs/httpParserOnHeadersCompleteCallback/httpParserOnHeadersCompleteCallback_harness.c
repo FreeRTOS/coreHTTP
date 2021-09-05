@@ -29,6 +29,7 @@
 #include "http_parser.h"
 #include "callback_stubs.h"
 
+int __CPROVER_file_local_core_http_client_c_httpParserOnHeadersCompleteCallback( http_parser * pHttpParser );
 
 void httpParserOnHeadersCompleteCallback_harness()
 {

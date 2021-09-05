@@ -28,6 +28,9 @@
 #include "http_cbmc_state.h"
 #include "http_parser.h"
 
+int __CPROVER_file_local_core_http_client_c_httpParserOnHeaderValueCallback( http_parser * pHttpParser,
+                                                                             const char * pLoc,
+                                                                             size_t length );
 
 void httpParserOnHeaderValueCallback_harness()
 {
