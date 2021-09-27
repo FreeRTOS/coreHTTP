@@ -4,7 +4,7 @@ description: |
   "Client implementation of the HTTP/1.1 specification for embedded devices.\n"
 dependencies:
   - name : "http-parser"
-    version: "v2.9.3"
+    version: "v2.9.4"
     repository:
       type: "git"
       url: "https://github.com/nodejs/http-parser"
