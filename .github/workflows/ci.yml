@@ -49,7 +49,6 @@ jobs:
           -DCMAKE_C_FLAGS='-Wall -Wextra -Werror -DHTTP_DO_NOT_USE_CUSTOM_CONFIG'
           make -C build/ all
   complexity:
-  complexity:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
