@@ -29,6 +29,7 @@ list(APPEND real_source_files
 list(APPEND real_include_directories
             .
             ${HTTP_INCLUDE_PUBLIC_DIRS}
+            "${CMAKE_CURRENT_LIST_DIR}/../include"
         )
 
 # =====================  Create UnitTest Code here (edit)  =====================

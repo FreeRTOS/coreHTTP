@@ -39,11 +39,11 @@ include( ${MODULE_ROOT_DIR}/httpFilePaths.cmake )
 add_library( coverity_analysis
              ${HTTP_SOURCES} )
 
-# Build HTTP library target without custom config dependency.
-target_compile_definitions( coverity_analysis PUBLIC HTTP_DO_NOT_USE_CUSTOM_CONFIG=1 )
-
-# HTTP public include path.
-target_include_directories( coverity_analysis PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
+# HTTP public include path and test config file
+target_compile_definitions( coverity_analysis
+                            PUBLIC
+                            ${HTTP_INCLUDE_PUBLIC_DIRS}
+                            "${CMAKE_CURRENT_LIST_DIR}/include" )
 
 # ===================== Clone needed third-party libraries ======================
 
