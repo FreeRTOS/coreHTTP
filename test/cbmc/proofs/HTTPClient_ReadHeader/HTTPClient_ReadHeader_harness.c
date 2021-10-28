@@ -38,12 +38,10 @@ void HTTPClient_ReadHeader_harness()
     size_t valueLen;
 
     /* Initialize and make assumptions for header field. */
-    __CPROVER_assume( fieldLen < CBMC_MAX_OBJECT_SIZE );
-    pField = mallocCanFail( fieldLen );
+    pField = malloc( fieldLen );
 
     /* Initialize and make assumptions for header value. */
-    __CPROVER_assume( valueLen < CBMC_MAX_OBJECT_SIZE );
-    pValue = mallocCanFail( sizeof( char * ) );
+    pValue = malloc( sizeof( char * ) );
 
     /* Initialize and make assumptions for response object. */
     pResponse = allocateHttpResponse( NULL );

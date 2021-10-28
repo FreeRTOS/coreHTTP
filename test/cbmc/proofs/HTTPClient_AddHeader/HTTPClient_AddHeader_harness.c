@@ -42,12 +42,10 @@ void HTTPClient_AddHeader_harness()
     __CPROVER_assume( isValidHttpRequestHeaders( pRequestHeaders ) );
 
     /* Initialize and make assumptions for header field. */
-    __CPROVER_assume( fieldLen < CBMC_MAX_OBJECT_SIZE );
-    pField = mallocCanFail( fieldLen );
+    pField = malloc( fieldLen );
 
     /* Initialize and make assumptions for header value. */
-    __CPROVER_assume( valueLen < CBMC_MAX_OBJECT_SIZE );
-    pValue = mallocCanFail( valueLen );
+    pValue = malloc( valueLen );
 
     HTTPClient_AddHeader( pRequestHeaders,
                           pField, fieldLen, pValue, valueLen );

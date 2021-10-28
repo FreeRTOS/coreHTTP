@@ -1727,6 +1727,11 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
         LogError( ( "Parameter check failed: pRequestHeaders->pBuffer is NULL." ) );
         returnStatus = HTTPInvalidParameter;
     }
+    else if( pRequestHeaders->bufferLen > UINT32_MAX )
+    {
+        LogError( ( "Parameter check failed: pRequestHeaders->bufferLen > UINT32_MAX." ) );
+        returnStatus = HTTPInvalidParameter;
+    }
     else if( pRequestHeaders->headersLen > pRequestHeaders->bufferLen )
     {
         LogError( ( "Parameter check failed: pRequestHeaders->headersLen > pRequestHeaders->bufferLen." ) );
