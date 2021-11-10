@@ -1,5 +1,13 @@
 # Changelog for coreHTTP Client Library
 
+## v2.1.0 (Nov 2021)
+
+### Updates
+
+- [#114](https://github.com/FreeRTOS/coreHTTP/pull/114) Update http-parser version in manifest to reflect commit
+- [#112](https://github.com/FreeRTOS/coreHTTP/pull/112) Add function prototypes for exported functions to CBMC proof harnesses
+- [#111](https://github.com/FreeRTOS/coreHTTP/pull/111) Update Doxygen version to 1.9.2
+
 ## v2.0.2 (July 2021)
 
 ### Updates
