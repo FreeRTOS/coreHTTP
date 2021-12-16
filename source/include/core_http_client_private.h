@@ -28,8 +28,13 @@
 #ifndef CORE_HTTP_CLIENT_PRIVATE_H_
 #define CORE_HTTP_CLIENT_PRIVATE_H_
 
-/* Third-party http-parser include. */
-#include "http_parser.h"
+/* http-parser defaults this to 1, llhttp to 0. */
+#ifndef LLHTTP_STRICT_MODE
+    #define LLHTTP_STRICT_MODE 1
+#endif
+
+/* Third-party llhttp include. */
+#include "llhttp.h"
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus
@@ -155,6 +160,10 @@
  */
 #define HTTP_PARSER_STOP_PARSING            1
 
+#define LLHTTP_STOP_PARSING                 HPE_USER
+#define LLHTTP_CONTINUE_PARSING             0 //HPE_OK
+#define LLHTTP_NO_BODY                      1
+
 /**
  * @brief Return value for http_parser registered callback to signal
  * continuation of HTTP response parsing.
@@ -261,7 +270,8 @@ typedef struct findHeaderContext
  */
 typedef struct HTTPParsingContext
 {
-    http_parser httpParser;        /**< Third-party http-parser context. */
+    llhttp_t llhttpParser;         /**< Third-party llhttp context. */
+    llhttp_settings_t llhttpSettings; /**< Third-party parser settings. */
     HTTPParsingState_t state;      /**< The current state of the HTTP response parsed. */
     HTTPResponse_t * pResponse;    /**< HTTP response associated with this parsing context. */
     uint8_t isHeadResponse;        /**< HTTP response is for a HEAD request. */
