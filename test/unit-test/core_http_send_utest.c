@@ -31,7 +31,10 @@
 /* Private includes for internal macros. */
 #include "core_http_client_private.h"
 
-#include "mock_http_parser.h"
+#include "mock_llhttp.h"
+
+#define http_parser llhttp_t
+#define http_parser_settings llhttp_settings_t
 
 /* Template HTTP request for a HEAD request. */
 #define HTTP_TEST_REQUEST_HEAD_HEADERS         \

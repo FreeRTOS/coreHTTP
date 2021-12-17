@@ -2,7 +2,7 @@
 
 This repository contains a C language HTTP client library designed for embedded
 platforms. It has no dependencies on any additional libraries other than the
-standard C library, [http-parser](https://github.com/nodejs/http-parser), and
+standard C library, [llhttp](https://github.com/nodejs/llhttp), and
 a customer-implemented transport interface. This library is distributed under
 the [MIT Open Source License](LICENSE).
 

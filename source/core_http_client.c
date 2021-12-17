@@ -32,8 +32,6 @@
 #include "core_http_client.h"
 #include "core_http_client_private.h"
 
-#define http_parser llhttp_t
-
 /*-----------------------------------------------------------*/
 
 /**
@@ -291,10 +289,10 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
  * buffer.
  * @param[in] fieldLen The length of the header field.
  *
- * @return Returns #HTTP_PARSER_CONTINUE_PARSING to indicate continuation with
+ * @return Returns #LLHTTP_CONTINUE_PARSING to indicate continuation with
  * parsing.
  */
-static int findHeaderFieldParserCallback( http_parser * pHttpParser,
+static int findHeaderFieldParserCallback( llhttp_t * pHttpParser,
                                           const char * pFieldLoc,
                                           size_t fieldLen );
 
@@ -310,9 +308,9 @@ static int findHeaderFieldParserCallback( http_parser * pHttpParser,
  * @param[in] valueLen The length of the header value.
  *
  * @return Returns #HTTP_PARSER_STOP_PARSING, if the header field/value pair are
- * found, otherwise #HTTP_PARSER_CONTINUE_PARSING is returned.
+ * found, otherwise #LLHTTP_CONTINUE_PARSING is returned.
  */
-static int findHeaderValueParserCallback( http_parser * pHttpParser,
+static int findHeaderValueParserCallback( llhttp_t * pHttpParser,
                                           const char * pValueLoc,
                                           size_t valueLen );
 
@@ -329,7 +327,7 @@ static int findHeaderValueParserCallback( http_parser * pHttpParser,
  * @return Returns #HTTP_PARSER_STOP_PARSING for the parser to halt further
  * execution, as all headers have been parsed in the response.
  */
-static int findHeaderOnHeaderCompleteCallback( http_parser * pHttpParser );
+static int findHeaderOnHeaderCompleteCallback( llhttp_t * pHttpParser );
 
 
 /**
@@ -363,7 +361,7 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
                                        size_t parseLen );
 
 /**
- * @brief Callback invoked during http_parser_execute() to indicate the start of
+ * @brief Callback invoked during llhttp_execute() to indicate the start of
  * the HTTP response message.
  *
  * This callback is invoked when an "H" in the "HTTP/1.1" that starts a response
@@ -371,12 +369,12 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
  *
  * @param[in] pHttpParser Parsing object containing state and callback context.
  *
- * @return #HTTP_PARSER_CONTINUE_PARSING to continue parsing.
+ * @return #LLHTTP_CONTINUE_PARSING to continue parsing.
  */
-static int httpParserOnMessageBeginCallback( http_parser * pHttpParser );
+static int httpParserOnMessageBeginCallback( llhttp_t * pHttpParser );
 
 /**
- * @brief Callback invoked during http_parser_execute() when the HTTP response
+ * @brief Callback invoked during llhttp_execute() when the HTTP response
  * status-code and its associated reason-phrase are found.
  *
  * @param[in] pHttpParser Parsing object containing state and callback context.
@@ -384,14 +382,14 @@ static int httpParserOnMessageBeginCallback( http_parser * pHttpParser );
  * response message buffer.
  * @param[in] length Length of the HTTP response status code string.
  *
- * @return #HTTP_PARSER_CONTINUE_PARSING to continue parsing.
+ * @return #LLHTTP_CONTINUE_PARSING to continue parsing.
  */
-static int httpParserOnStatusCallback( http_parser * pHttpParser,
+static int httpParserOnStatusCallback( llhttp_t * pHttpParser,
                                        const char * pLoc,
                                        size_t length );
 
 /**
- * @brief Callback invoked during http_parser_execute() when an HTTP response
+ * @brief Callback invoked during llhttp_execute() when an HTTP response
  * header field is found.
  *
  * If only part of the header field was found, then parsing of the next part of
@@ -402,14 +400,14 @@ static int httpParserOnStatusCallback( http_parser * pHttpParser,
  * message buffer.
  * @param[in] length Length of the header field.
  *
- * @return #HTTP_PARSER_CONTINUE_PARSING to continue parsing.
+ * @return #LLHTTP_CONTINUE_PARSING to continue parsing.
  */
-static int httpParserOnHeaderFieldCallback( http_parser * pHttpParser,
+static int httpParserOnHeaderFieldCallback( llhttp_t * pHttpParser,
                                             const char * pLoc,
                                             size_t length );
 
 /**
- * @brief Callback invoked during http_parser_execute() when an HTTP response
+ * @brief Callback invoked during llhttp_execute() when an HTTP response
  * header value is found.
  *
  * This header value corresponds to the header field that was found in the
@@ -422,14 +420,14 @@ static int httpParserOnHeaderFieldCallback( http_parser * pHttpParser,
  * @param[in] pLoc Location of the header value in the response message buffer.
  * @param[in] length Length of the header value.
  *
- * @return #HTTP_PARSER_CONTINUE_PARSING to continue parsing.
+ * @return #LLHTTP_CONTINUE_PARSING to continue parsing.
  */
-static int httpParserOnHeaderValueCallback( http_parser * pHttpParser,
+static int httpParserOnHeaderValueCallback( llhttp_t * pHttpParser,
                                             const char * pLoc,
                                             size_t length );
 
 /**
- * @brief Callback invoked during http_parser_execute() when the end of the
+ * @brief Callback invoked during llhttp_execute() when the end of the
  * headers are found.
  *
  * The end of the headers is signaled in a HTTP response message by another
@@ -437,13 +435,13 @@ static int httpParserOnHeaderValueCallback( http_parser * pHttpParser,
  *
  * @param[in] pHttpParser Parsing object containing state and callback context.
  *
- * @return #HTTP_PARSER_CONTINUE_PARSING to continue parsing.
- * #HTTP_PARSER_STOP_PARSING is returned if the response is for a HEAD request.
+ * @return #LLHTTP_CONTINUE_PARSING to continue parsing.
+ * #LLHTTP_STOP_PARSING_NO_BODY is returned if the response is for a HEAD request.
  */
-static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser );
+static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser );
 
 /**
- * @brief Callback invoked during http_parser_execute() when the HTTP response
+ * @brief Callback invoked during llhttp_execute() when the HTTP response
  * body is found.
  *
  * If only part of the response body was found, then parsing of the next part of
@@ -482,14 +480,14 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser );
  * @param[in] length - The length of the body found.
  *
  * @return Zero to continue parsing. All other return values will stop parsing
- * and http_parser_execute() will return with status HPE_CB_body.
+ * and llhttp_execute() will return with the same value.
  */
-static int httpParserOnBodyCallback( http_parser * pHttpParser,
+static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
                                      const char * pLoc,
                                      size_t length );
 
 /**
- * @brief Callback invoked during http_parser_execute() to indicate the the
+ * @brief Callback invoked during llhttp_execute() to indicate the the
  * completion of an HTTP response message.
  *
  * When there is no response body, the end of the response message is when the
@@ -497,7 +495,7 @@ static int httpParserOnBodyCallback( http_parser * pHttpParser,
  *
  * When there is response body, the end of the response message is when the
  * full "Content-Length" value is parsed following the end of the headers. If
- * there is no Content-Length header, then http_parser_execute() expects a
+ * there is no Content-Length header, then llhttp_execute() expects a
  * zero length-ed parsing data to indicate the end of the response.
  *
  * For a "Transfer-Encoding: chunked" type of response message, the complete
@@ -508,9 +506,9 @@ static int httpParserOnBodyCallback( http_parser * pHttpParser,
  * @param[in] pHttpParser Parsing object containing state and callback context.
  *
  * @return Zero to continue parsing. All other return values will stop parsing
- * and http_parser_execute() will return with status HPE_CB_message_complete.
+ * and llhttp_execute() will return with the same value.
  */
-static int httpParserOnMessageCompleteCallback( http_parser * pHttpParser );
+static int httpParserOnMessageCompleteCallback( llhttp_t * pHttpParser );
 
 /**
  * @brief When a complete header is found the HTTP response header count
@@ -536,7 +534,6 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext );
  *
  * @return One of the following:
  * - #HTTPSuccess
- * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTPSecurityAlertExtraneousResponseData
  * - #HTTPSecurityAlertInvalidChunkHeader
  * - #HTTPSecurityAlertInvalidProtocolVersion
@@ -640,7 +637,7 @@ static void processCompleteHeader( HTTPParsingContext_t * pParsingContext )
 
 /*-----------------------------------------------------------*/
 
-static int httpParserOnMessageBeginCallback( http_parser * pHttpParser )
+static int httpParserOnMessageBeginCallback( llhttp_t * pHttpParser )
 {
     HTTPParsingContext_t * pParsingContext = NULL;
 
@@ -654,12 +651,12 @@ static int httpParserOnMessageBeginCallback( http_parser * pHttpParser )
 
     LogDebug( ( "Response parsing: Found the start of the response message." ) );
 
-    return HTTP_PARSER_CONTINUE_PARSING;
+    return LLHTTP_CONTINUE_PARSING;
 }
 
 /*-----------------------------------------------------------*/
 
-static int httpParserOnStatusCallback( http_parser * pHttpParser,
+static int httpParserOnStatusCallback( llhttp_t * pHttpParser,
                                        const char * pLoc,
                                        size_t length )
 {
@@ -685,7 +682,7 @@ static int httpParserOnStatusCallback( http_parser * pHttpParser,
     pParsingContext->pLastHeaderValue = NULL;
     pParsingContext->lastHeaderValueLen = 0U;
 
-    /* httpParserOnStatusCallback() is reached because http_parser_execute() has
+    /* httpParserOnStatusCallback() is reached because llhttp_execute() has
      * successfully read the HTTP response status code. */
     pResponse->statusCode = ( uint16_t ) ( pHttpParser->status_code );
 
@@ -695,12 +692,12 @@ static int httpParserOnStatusCallback( http_parser * pHttpParser,
                 ( int ) length,
                 pLoc ) );
 
-    return HTTP_PARSER_CONTINUE_PARSING;
+    return LLHTTP_CONTINUE_PARSING;
 }
 
 /*-----------------------------------------------------------*/
 
-static int httpParserOnHeaderFieldCallback( http_parser * pHttpParser,
+static int httpParserOnHeaderFieldCallback( llhttp_t * pHttpParser,
                                             const char * pLoc,
                                             size_t length )
 {
@@ -733,7 +730,7 @@ static int httpParserOnHeaderFieldCallback( http_parser * pHttpParser,
     processCompleteHeader( pParsingContext );
 
     /* If httpParserOnHeaderFieldCallback() is invoked in succession, then the
-     * last time http_parser_execute() was called only part of the header field
+     * last time llhttp_execute() was called only part of the header field
      * was parsed. The indication of successive invocations is a non-NULL
      * pParsingContext->pLastHeaderField. */
     if( pParsingContext->pLastHeaderField == NULL )
@@ -752,12 +749,12 @@ static int httpParserOnHeaderFieldCallback( http_parser * pHttpParser,
                 ( int ) length,
                 pLoc ) );
 
-    return HTTP_PARSER_CONTINUE_PARSING;
+    return LLHTTP_CONTINUE_PARSING;
 }
 
 /*-----------------------------------------------------------*/
 
-static int httpParserOnHeaderValueCallback( http_parser * pHttpParser,
+static int httpParserOnHeaderValueCallback( llhttp_t * pHttpParser,
                                             const char * pLoc,
                                             size_t length )
 {
@@ -773,7 +770,7 @@ static int httpParserOnHeaderValueCallback( http_parser * pHttpParser,
     pParsingContext->pBufferCur = pLoc + length;
 
     /* If httpParserOnHeaderValueCallback() is invoked in succession, then the
-     * last time http_parser_execute() was called only part of the header field
+     * last time llhttp_execute() was called only part of the header field
      * was parsed. The indication of successive invocations is a non-NULL
      * pParsingContext->pLastHeaderField. */
     if( pParsingContext->pLastHeaderValue == NULL )
@@ -788,8 +785,7 @@ static int httpParserOnHeaderValueCallback( http_parser * pHttpParser,
 
     /* Given that httpParserOnHeaderFieldCallback() is ALWAYS invoked before
      * httpParserOnHeaderValueCallback() is invoked, then the last header field
-     * should never be NULL. This would indicate a bug in the http-parser
-     * library. */
+     * should never be NULL. This would indicate a bug in the llhttp library. */
     assert( pParsingContext->pLastHeaderField != NULL );
 
     LogDebug( ( "Response parsing: Found a header value: "
@@ -797,14 +793,14 @@ static int httpParserOnHeaderValueCallback( http_parser * pHttpParser,
                 ( int ) length,
                 pLoc ) );
 
-    return HTTP_PARSER_CONTINUE_PARSING;
+    return LLHTTP_CONTINUE_PARSING;
 }
 
 /*-----------------------------------------------------------*/
 
-static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser )
+static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
 {
-    int shouldContinueParse = HTTP_PARSER_CONTINUE_PARSING;
+    int shouldContinueParse = LLHTTP_CONTINUE_PARSING;
     HTTPParsingContext_t * pParsingContext = NULL;
     HTTPResponse_t * pResponse = NULL;
 
@@ -868,14 +864,14 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser )
         pResponse->respFlags |= HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG;
     }
 
-    /* http_parser_execute() requires that callback implementations must
+    /* llhttp_execute() requires that callback implementations must
      * indicate that parsing stops on headers complete, if response is to a HEAD
      * request. A HEAD response will contain Content-Length, but no body. If
      * the parser is not stopped here, then it will try to keep parsing past the
      * end of the headers up to the Content-Length found. */
     if( pParsingContext->isHeadResponse == 1U )
     {
-        shouldContinueParse = HTTP_PARSER_STOP_PARSING;
+        shouldContinueParse = LLHTTP_STOP_PARSING_NO_BODY;
     }
 
     /* If headers are present in the response, then
@@ -892,11 +888,11 @@ static int httpParserOnHeadersCompleteCallback( http_parser * pHttpParser )
 
 /*-----------------------------------------------------------*/
 
-static int httpParserOnBodyCallback( http_parser * pHttpParser,
+static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
                                      const char * pLoc,
                                      size_t length )
 {
-    int shouldContinueParse = HTTP_PARSER_CONTINUE_PARSING;
+    int shouldContinueParse = LLHTTP_CONTINUE_PARSING;
     HTTPParsingContext_t * pParsingContext = NULL;
     HTTPResponse_t * pResponse = NULL;
     char * pNextWriteLoc = NULL;
@@ -969,7 +965,7 @@ static int httpParserOnBodyCallback( http_parser * pHttpParser,
 
 /*-----------------------------------------------------------*/
 
-static int httpParserOnMessageCompleteCallback( http_parser * pHttpParser )
+static int httpParserOnMessageCompleteCallback( llhttp_t * pHttpParser )
 {
     HTTPParsingContext_t * pParsingContext = NULL;
 
@@ -983,7 +979,7 @@ static int httpParserOnMessageCompleteCallback( http_parser * pHttpParser )
 
     LogDebug( ( "Response parsing: Response message complete." ) );
 
-    return HTTP_PARSER_CONTINUE_PARSING;
+    return LLHTTP_CONTINUE_PARSING;
 }
 
 /*-----------------------------------------------------------*/
@@ -995,6 +991,7 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->headersLen >= HTTP_MINIMUM_REQUEST_LINE_LENGTH );
 
+    /* Initialize the callbacks that llhttp_execute will invoke. */
     llhttp_settings_init( &( pParsingContext->llhttpSettings ) );
     pParsingContext->llhttpSettings.on_message_begin = httpParserOnMessageBeginCallback;
     pParsingContext->llhttpSettings.on_status = httpParserOnStatusCallback;
@@ -1146,7 +1143,6 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
                                        size_t parseLen )
 {
     HTTPStatus_t returnStatus;
-    //http_parser_settings parserSettings = { 0 };
     const char * parsingStartLoc = NULL;
     llhttp_errno_t parserStatus;
 
@@ -1182,16 +1178,6 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
         assert( pParsingContext->pResponse == pResponse );
     }
 
-    /* Initialize the callbacks that http_parser_execute will invoke. */
-    // http_parser_settings_init( &parserSettings );
-    // parserSettings.on_message_begin = httpParserOnMessageBeginCallback;
-    // parserSettings.on_status = httpParserOnStatusCallback;
-    // parserSettings.on_header_field = httpParserOnHeaderFieldCallback;
-    // parserSettings.on_header_value = httpParserOnHeaderValueCallback;
-    // parserSettings.on_headers_complete = httpParserOnHeadersCompleteCallback;
-    // parserSettings.on_body = httpParserOnBodyCallback;
-    // parserSettings.on_message_complete = httpParserOnMessageCompleteCallback;
-
     /* Setting this allows the parsing context and response to be carried to
      * each of the callbacks that llhttp_execute() will invoke. */
     pParsingContext->llhttpParser.data = pParsingContext;
@@ -1204,10 +1190,6 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
     /* This will begin the parsing. Each of the callbacks set in
      * parserSettings will be invoked as parts of the HTTP response are
      * reached. */
-    // bytesParsed = http_parser_execute( &( pParsingContext->httpParser ),
-    //                                    &parserSettings,
-    //                                    parsingStartLoc,
-    //                                    parseLen );
     parserStatus = llhttp_execute( &( pParsingContext->llhttpParser ), parsingStartLoc, parseLen );
 
     if( parserStatus == HPE_OK )
@@ -2261,7 +2243,7 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
 
 /*-----------------------------------------------------------*/
 
-static int findHeaderFieldParserCallback( http_parser * pHttpParser,
+static int findHeaderFieldParserCallback( llhttp_t * pHttpParser,
                                           const char * pFieldLoc,
                                           size_t fieldLen )
 {
@@ -2298,16 +2280,16 @@ static int findHeaderFieldParserCallback( http_parser * pHttpParser,
         /* Empty else for MISRA 15.7 compliance. */
     }
 
-    return HTTP_PARSER_CONTINUE_PARSING;
+    return LLHTTP_CONTINUE_PARSING;
 }
 
 /*-----------------------------------------------------------*/
 
-static int findHeaderValueParserCallback( http_parser * pHttpParser,
+static int findHeaderValueParserCallback( llhttp_t * pHttpParser,
                                           const char * pValueLoc,
                                           size_t valueLen )
 {
-    int retCode = HTTP_PARSER_CONTINUE_PARSING;
+    int retCode = LLHTTP_CONTINUE_PARSING;
     findHeaderContext_t * pContext = NULL;
 
     assert( pHttpParser != NULL );
@@ -2362,7 +2344,7 @@ static int findHeaderValueParserCallback( http_parser * pHttpParser,
 
 /*-----------------------------------------------------------*/
 
-static int findHeaderOnHeaderCompleteCallback( http_parser * pHttpParser )
+static int findHeaderOnHeaderCompleteCallback( llhttp_t * pHttpParser )
 {
     findHeaderContext_t * pContext = NULL;
 
@@ -2396,11 +2378,9 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                                           size_t * pValueLen )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
-    http_parser parser = { 0 };
-    //http_parser_settings parserSettings = { 0 };
-    llhttp_t lParser = { 0 };
-    llhttp_settings_t lParserSettings = { 0 };
-    llhttp_errno_t lParserErrno;
+    llhttp_t parser = { 0 };
+    llhttp_settings_t parserSettings = { 0 };
+    llhttp_errno_t parserErrno;
     findHeaderContext_t context = { 0 };
     size_t numOfBytesParsed = 0U;
 
@@ -2411,39 +2391,20 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     context.fieldFound = 0U;
     context.valueFound = 0U;
 
-    /* Disable unused variable warning. This variable is used only in logging. */
-    ( void ) numOfBytesParsed;
-
-    // http_parser_init( &parser, HTTP_RESPONSE );
-
-    /* Set the context for the parser. */
-    // parser.data = &context;
-
     /* The intention here to define callbacks just for searching the headers. We will
-     * need to create a private context in httpParser->data that has the field and
+     * need to create a private context in llhttp->data that has the field and
      * value to update and pass back. */
-    // http_parser_settings_init( &parserSettings );
-    // parserSettings.on_header_field = findHeaderFieldParserCallback;
-    // parserSettings.on_header_value = findHeaderValueParserCallback;
-    // parserSettings.on_headers_complete = findHeaderOnHeaderCompleteCallback;
-    llhttp_settings_init( &( lParserSettings ) );
-    lParserSettings.on_header_field = findHeaderFieldParserCallback;
-    lParserSettings.on_header_value = findHeaderValueParserCallback;
-    lParserSettings.on_headers_complete = findHeaderOnHeaderCompleteCallback;
-    llhttp_init( &lParser, HTTP_RESPONSE, &lParserSettings );
+    llhttp_settings_init( &( parserSettings ) );
+    parserSettings.on_header_field = findHeaderFieldParserCallback;
+    parserSettings.on_header_value = findHeaderValueParserCallback;
+    parserSettings.on_headers_complete = findHeaderOnHeaderCompleteCallback;
+    llhttp_init( &parser, HTTP_RESPONSE, &parserSettings );
 
     /* Set the context for the parser. */
-    lParser.data = &context;
+    parser.data = &context;
 
     /* Start parsing for the header! */
-    // numOfBytesParsed = http_parser_execute( &parser,
-    //                                         &parserSettings,
-    //                                         ( const char * ) pBuffer,
-    //                                         bufferLen );
-    lParserErrno = llhttp_execute( &lParser, ( const char * ) pBuffer, bufferLen );
-
-    // LogDebug( ( "Parsed response for header search: NumBytesParsed=%lu",
-    //             ( unsigned long ) numOfBytesParsed ) );
+    parserErrno = llhttp_execute( &parser, ( const char * ) pBuffer, bufferLen );
 
     if( context.fieldFound == 0U )
     {
@@ -2466,14 +2427,8 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
                     "RequestedHeader=%.*s, ParserError=%s %s",
                     ( int ) fieldLen,
                     pField,
-                    llhttp_errno_name( lParserErrno ),
-                    llhttp_get_error_reason( &lParser ) ) );
-        // LogError( ( "Unable to find header value in response: "
-        //             "Response data is invalid: "
-        //             "RequestedHeader=%.*s, ParserError=%s",
-        //             ( int ) fieldLen,
-        //             pField,
-        //             http_errno_description( HTTP_PARSER_ERRNO( &( parser ) ) ) ) );
+                    llhttp_errno_name( parserErrno ),
+                    llhttp_get_error_reason( &parser ) ) );
         returnStatus = HTTPInvalidResponse;
     }
     else
@@ -2492,29 +2447,27 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
 
     /* If the header field-value pair is found in response, then the return
      * value of "on_header_value" callback (related to the header value) should
-     * cause the http_parser.http_errno to be "CB_header_value". */
-    // if( ( returnStatus == HTTPSuccess ) &&
-    //     ( parser.http_errno != ( unsigned int ) HPE_CB_header_value ) )
+     * cause the llhttp.error to be "USER". */
     if( ( returnStatus == HTTPSuccess ) &&
-        ( lParserErrno != HPE_USER ) )
+        ( parserErrno != HPE_USER ) )
     {
         LogError( ( "Header found in response but llhttp returned error: "
                     "ParserError=%s %s",
-                    llhttp_errno_name( lParserErrno ),
-                    llhttp_get_error_reason( &lParser ) ) );
+                    llhttp_errno_name( parserErrno ),
+                    llhttp_get_error_reason( &parser ) ) );
         returnStatus = HTTPParserInternalError;
     }
 
     /* If header was not found, then the "on_header_complete" callback is
-     * expected to be called which should cause the http_parser.http_errno to be
+     * expected to be called which should cause the llhttp.error to be
      * "OK" */
     else if( ( returnStatus == HTTPHeaderNotFound ) &&
-             ( lParserErrno != HPE_OK ) )
+             ( parserErrno != HPE_OK ) )
     {
         LogError( ( "Header not found in response: llhttp returned error: "
                     "ParserError=%s %s",
-                    llhttp_errno_name( lParserErrno ),
-                    llhttp_get_error_reason( &lParser ) ) );
+                    llhttp_errno_name( parserErrno ),
+                    llhttp_get_error_reason( &parser ) ) );
         returnStatus = HTTPInvalidResponse;
     }
     else
