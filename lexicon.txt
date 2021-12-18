@@ -122,6 +122,9 @@ lastheadervaluelen
 latin
 len
 linux
+llhttp
+llhttpparser
+llhttpsettings
 logdebug
 logerror
 loginfo
@@ -201,7 +204,7 @@ prequestbodybuf
 prequestheaders
 prequestinfo
 presponse
-processhttpparsererror
+processllhttperror
 ptransport
 ptransportinterface
 pvalue

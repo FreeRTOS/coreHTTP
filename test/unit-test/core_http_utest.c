@@ -33,8 +33,8 @@
 /* Include mock implementation of llhttp dependency. */
 #include "mock_llhttp.h"
 
-#define http_parser llhttp_t
-#define http_parser_settings llhttp_settings_t
+#define http_parser                     llhttp_t
+#define http_parser_settings            llhttp_settings_t
 
 /* Default size for request buffer. */
 #define HTTP_TEST_BUFFER_SIZE           ( 100 )

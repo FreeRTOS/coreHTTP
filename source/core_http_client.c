@@ -1002,10 +1002,10 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
     pParsingContext->llhttpSettings.on_message_complete = httpParserOnMessageCompleteCallback;
 
     /* Initialize the third-party HTTP parser to parse responses. */
-    llhttp_init( &( pParsingContext->llhttpParser), HTTP_RESPONSE, &( pParsingContext->llhttpSettings ) );
+    llhttp_init( &( pParsingContext->llhttpParser ), HTTP_RESPONSE, &( pParsingContext->llhttpSettings ) );
 
     /* The parser will return an error if this header size limit is exceeded. */
-    //http_parser_set_max_header_size( HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES );
+    /*http_parser_set_max_header_size( HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES ); */
 
     /* No response has been parsed yet. */
     pParsingContext->state = HTTP_PARSING_NONE;
@@ -1033,7 +1033,7 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser )
 
     assert( pHttpParser != NULL );
 
-    switch ( llhttp_get_errno( pHttpParser ) )
+    switch( llhttp_get_errno( pHttpParser ) )
     {
         case HPE_OK:
             /* There were no errors. */
@@ -1046,7 +1046,7 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser )
              * This case is already handled by checking HTTPParsingContext_t.state. */
             break;
 
-        // No header overflow in llhttp since no header size was set.
+        /* No header overflow in llhttp since no header size was set. */
 
         case HPE_CLOSED_CONNECTION:
             LogError( ( "Response parsing error: Data received past complete "

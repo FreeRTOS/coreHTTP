@@ -30,7 +30,7 @@
 
 /* http-parser defaults this to 1, llhttp to 0. */
 #ifndef LLHTTP_STRICT_MODE
-    #define LLHTTP_STRICT_MODE 1
+    #define LLHTTP_STRICT_MODE    1
 #endif
 
 /* Third-party llhttp include. */
@@ -274,17 +274,17 @@ typedef struct findHeaderContext
  */
 typedef struct HTTPParsingContext
 {
-    llhttp_t llhttpParser;         /**< Third-party llhttp context. */
+    llhttp_t llhttpParser;            /**< Third-party llhttp context. */
     llhttp_settings_t llhttpSettings; /**< Third-party parser settings. */
-    HTTPParsingState_t state;      /**< The current state of the HTTP response parsed. */
-    HTTPResponse_t * pResponse;    /**< HTTP response associated with this parsing context. */
-    uint8_t isHeadResponse;        /**< HTTP response is for a HEAD request. */
+    HTTPParsingState_t state;         /**< The current state of the HTTP response parsed. */
+    HTTPResponse_t * pResponse;       /**< HTTP response associated with this parsing context. */
+    uint8_t isHeadResponse;           /**< HTTP response is for a HEAD request. */
 
-    const char * pBufferCur;       /**< The current location of the parser in the response buffer. */
-    const char * pLastHeaderField; /**< Holds the last part of the header field parsed. */
-    size_t lastHeaderFieldLen;     /**< The length of the last header field parsed. */
-    const char * pLastHeaderValue; /**< Holds the last part of the header value parsed. */
-    size_t lastHeaderValueLen;     /**< The length of the last value field parsed. */
+    const char * pBufferCur;          /**< The current location of the parser in the response buffer. */
+    const char * pLastHeaderField;    /**< Holds the last part of the header field parsed. */
+    size_t lastHeaderFieldLen;        /**< The length of the last header field parsed. */
+    const char * pLastHeaderValue;    /**< Holds the last part of the header value parsed. */
+    size_t lastHeaderValueLen;        /**< The length of the last value field parsed. */
 } HTTPParsingContext_t;
 
 /* *INDENT-OFF* */
