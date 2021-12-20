@@ -1069,7 +1069,7 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser )
              * character and location. */
             LogError( ( "Response parsing error: Invalid character found in "
                         "HTTP protocol version." ) );
-            llhttp_get_error_pos( pHttpParser );
+            //llhttp_get_error_pos( pHttpParser );
             returnStatus = HTTPSecurityAlertInvalidProtocolVersion;
             break;
 
