@@ -1192,17 +1192,10 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
      * reached. */
     parserStatus = llhttp_execute( &( pParsingContext->llhttpParser ), parsingStartLoc, parseLen );
 
-    if( parserStatus == HPE_OK )
-    {
-        /* The next location to parse will always be after what has already
-         * been parsed. */
-        pParsingContext->pBufferCur = parsingStartLoc + parseLen;
-        returnStatus = HTTPSuccess;
-    }
-    else
-    {
-        returnStatus = processLlhttpError( &( pParsingContext->llhttpParser ) );
-    }
+    /* The next location to parse will always be after what has already
+     * been parsed. */
+    pParsingContext->pBufferCur = parsingStartLoc + parseLen;
+    returnStatus = processLlhttpError( &( pParsingContext->llhttpParser ) );
 
     return returnStatus;
 }

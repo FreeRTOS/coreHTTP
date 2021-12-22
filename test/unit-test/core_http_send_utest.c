@@ -401,6 +401,7 @@ static llhttp_init_setup( llhttp_t * parser,
 
     parser->type = type;
     parser->settings = settings;
+    parser->error = HPE_OK;
 }
 
 /* llhttp_get_errno callback that returns the errno value. */
