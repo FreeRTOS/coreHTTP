@@ -1,6 +1,12 @@
 {
-  "name": "coreHTTP",
-  "releases": [],
+  "name": "coreHTTP Library",
+  "releases": [
+    "v2.1.0",
+    "v2.0.2",
+    "v2.0.1",
+    "v2.0.0",
+    "v1.0.0"
+  ],
   "branches": [
     "main"
   ]
