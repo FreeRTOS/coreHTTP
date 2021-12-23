@@ -159,7 +159,6 @@
  * continuation of HTTP response parsing. Equal to HPE_OK.
  */
 #define LLHTTP_CONTINUE_PARSING             0
-#define HTTP_PARSER_CONTINUE_PARSING        LLHTTP_CONTINUE_PARSING
 
 /**
  * @brief Return value for llhttp registered callback to signal halting

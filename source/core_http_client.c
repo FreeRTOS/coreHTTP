@@ -307,7 +307,7 @@ static int findHeaderFieldParserCallback( llhttp_t * pHttpParser,
  * buffer.
  * @param[in] valueLen The length of the header value.
  *
- * @return Returns #HTTP_PARSER_STOP_PARSING, if the header field/value pair are
+ * @return Returns #LLHTTP_STOP_PARSING, if the header field/value pair are
  * found, otherwise #LLHTTP_CONTINUE_PARSING is returned.
  */
 static int findHeaderValueParserCallback( llhttp_t * pHttpParser,
@@ -2325,7 +2325,7 @@ static int findHeaderValueParserCallback( llhttp_t * pHttpParser,
 
         /* As we have found the value associated with the header, we don't need
          * to parse the response any further. */
-        retCode = HTTP_PARSER_STOP_PARSING;
+        retCode = LLHTTP_STOP_PARSING;
     }
     else
     {
@@ -2358,7 +2358,8 @@ static int findHeaderOnHeaderCompleteCallback( llhttp_t * pHttpParser )
                 pContext->pField ) );
 
     /* No further parsing is required; thus, indicate the parser to stop parsing. */
-    return HTTP_PARSER_STOP_PARSING;
+    //return HTTP_PARSER_STOP_PARSING;
+    return -1;
 }
 
 /*-----------------------------------------------------------*/
