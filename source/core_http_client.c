@@ -2201,6 +2201,10 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
     {
         LogError( ( "Parameter check failed: pResponse->pBuffer is NULL." ) );
     }
+    else if( pResponse->bufferLen == 0U )
+    {
+        LogError( ( "Parameter check failed: pResponse->bufferLen is zero." ) );
+    }
     else if( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen > 0U ) )
     {
         /* If there is no body to send we must ensure that the reqBodyBufLen is
