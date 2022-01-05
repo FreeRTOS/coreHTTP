@@ -1489,7 +1489,7 @@ void test_HTTPClient_Send_null_response_buffer( void )
 
 /*-----------------------------------------------------------*/
 
-/* Test a NULL response buffer passed to the API. */
+/* Test a 0 response buffer length passed to the API. */
 void test_HTTPClient_Send_zero_response_buffer_len( void )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
