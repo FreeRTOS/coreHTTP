@@ -1489,6 +1489,25 @@ void test_HTTPClient_Send_null_response_buffer( void )
 
 /*-----------------------------------------------------------*/
 
+/* Test a 0 response buffer length passed to the API. */
+void test_HTTPClient_Send_zero_response_buffer_len( void )
+{
+    HTTPStatus_t returnStatus = HTTPSuccess;
+
+    response.pBuffer = httpBuffer;
+    response.bufferLen = 0U;
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+
+    TEST_ASSERT_EQUAL( HTTPInvalidParameter, returnStatus );
+}
+
+/*-----------------------------------------------------------*/
+
 /* Test when reqBodyBufLen is greater than the max value of a 32-bit integer. */
 void test_HTTPClient_Send_request_body_buffer_length_gt_max( void )
 {
