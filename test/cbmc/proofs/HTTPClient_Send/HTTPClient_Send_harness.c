@@ -44,8 +44,7 @@ void HTTPClient_Send_harness()
     __CPROVER_assume( isValidHttpRequestHeaders( pRequestHeaders ) );
 
     /* Initialize and make assumptions for buffer to receive request body. */
-    __CPROVER_assume( reqBodyBufLen < CBMC_MAX_OBJECT_SIZE );
-    pRequestBodyBuf = mallocCanFail( reqBodyBufLen );
+    pRequestBodyBuf = malloc( reqBodyBufLen );
 
     /* Initialize and make assumptions for response object. */
     pResponse = allocateHttpResponse( NULL );

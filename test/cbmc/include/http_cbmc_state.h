@@ -47,19 +47,6 @@ struct NetworkContext
 bool nondet_bool();
 
 /**
- * @brief Calls malloc based on given size or returns NULL for coverage.
- *
- * Implementation of safe malloc which returns NULL if the requested size is 0.
- * The behavior of malloc(0) is platform dependent.
- * It is possible for malloc(0) to return an address without allocating memory.
- *
- * @param[in] size Requested size to malloc.
- *
- * @return Requested memory or NULL.
- */
-void * mallocCanFail( size_t size );
-
-/**
  * @brief Allocates an #HTTPRequestHeaders_t object.
  *
  * @param[in] pRequestHeaders #HTTPRequestHeaders_t object to allocate.
