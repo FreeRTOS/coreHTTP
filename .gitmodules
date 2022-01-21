@@ -10,9 +10,6 @@
 	path = test/cbmc/litani
 	url = https://github.com/awslabs/aws-build-accumulator
 	update = none
-[submodule "source/dependency/3rdparty/http_parser"]
-	path = source/dependency/3rdparty/http_parser
-	url = https://github.com/nodejs/http-parser.git
 [submodule "source/dependency/3rdparty/llhttp"]
 	path = source/dependency/3rdparty/llhttp
 	url = https://github.com/nodejs/llhttp.git
