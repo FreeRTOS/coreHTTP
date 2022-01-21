@@ -28,10 +28,14 @@
 #ifndef CORE_HTTP_CLIENT_PRIVATE_H_
 #define CORE_HTTP_CLIENT_PRIVATE_H_
 
-/* http-parser defaults this to 1, llhttp to 0. */
+/**
+ * @cond DOXYGEN_IGNORE
+ * http-parser defaults this to 1, llhttp to 0.
+ */
 #ifndef LLHTTP_STRICT_MODE
-    #define LLHTTP_STRICT_MODE    1
+    #define LLHTTP_STRICT_MODE    0
 #endif
+/** @endcond */
 
 /* Third-party llhttp include. */
 #include "llhttp.h"
@@ -165,13 +169,21 @@
  * further execution.
  */
 #define LLHTTP_STOP_PARSING                 HPE_USER
-#define HTTP_PARSER_STOP_PARSING            1
 
 /**
  * @brief Return value for llhttp_t.on_headers_complete to signal
  * that the HTTP response has no body and to halt further execution.
  */
 #define LLHTTP_STOP_PARSING_NO_BODY         1
+
+/**
+ * @brief Return value for llhttp_t.on_headers_complete to signal
+ * halting further execution. This is the same return value that
+ * indicates the HTTP response has no body, but unlike the -1 error
+ * code, gives consistent return values for llhttp_execute in both
+ * strict and non-strict modes.
+ */
+#define LLHTTP_STOP_PARSING_NO_HEADER       1
 
 /**
  * @brief The minimum request-line in the headers has a possible one character

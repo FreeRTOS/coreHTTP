@@ -388,21 +388,25 @@ static int32_t transportRecvNetworkError( NetworkContext_t * pNetworkContext,
 }
 
 /* llhttp_init callback that sets the parser settings field. */
-static llhttp_init_setup( llhttp_t * parser,
-                          enum llhttp_type type,
-                          llhttp_settings_t * settings,
-                          int cmock_num_calls )
+static void llhttp_init_setup( llhttp_t * parser,
+                               enum llhttp_type type,
+                               const llhttp_settings_t * settings,
+                               int cmock_num_calls )
 {
     ( void ) cmock_num_calls;
 
     parser->type = type;
-    parser->settings = settings;
+    /* Remove const qualifier. llhttp does this too. */
+    parser->settings = ( llhttp_settings_t * ) settings;
     parser->error = HPE_OK;
 }
 
 /* llhttp_get_errno callback that returns the errno value. */
-llhttp_errno_t llhttp_get_errno_cb( const llhttp_t * parser )
+llhttp_errno_t llhttp_get_errno_cb( const llhttp_t * parser,
+                                    int cmock_num_calls )
 {
+    ( void ) cmock_num_calls;
+
     return parser->error;
 }
 
@@ -786,7 +790,6 @@ void setUp( void )
     llhttp_init_Stub( llhttp_init_setup );
     llhttp_get_errno_Stub( llhttp_get_errno_cb );
     llhttp_settings_init_Ignore();
-    //http_parser_set_max_header_size_Ignore();
     llhttp_errno_name_IgnoreAndReturn( "Dummy" );
     llhttp_get_error_reason_IgnoreAndReturn( "Dummy unit test print." );
 }
@@ -1713,7 +1716,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0 );
     TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidContentLength, returnStatus );
 
-    //httpParsingErrno = HPE_UNKNOWN;
+    /* Use -1 to indicate an unknown error. */
     httpParsingErrno = -1;
     returnStatus = HTTPClient_Send( &transportInterface,
                                     &requestHeaders,

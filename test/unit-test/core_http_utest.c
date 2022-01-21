@@ -192,13 +192,13 @@ static unsigned int parserErrNo = 0;
 /* ============================ Helper Functions ============================== */
 
 /**
- * @brief Callback that is passed to the mock of http_parse_init function
+ * @brief Callback that is passed to the mock of llhttp_init function
  * to set test expectations on input arguments sent by the HTTP API function under
  * test.
  */
 void parserInitExpectationCb( llhttp_t * parser,
                               enum llhttp_type type,
-                              llhttp_settings_t * settings,
+                              const llhttp_settings_t * settings,
                               int cmock_num_calls )
 {
     /* Disable unused parameter warning. */
@@ -208,13 +208,13 @@ void parserInitExpectationCb( llhttp_t * parser,
     pCapturedParser = parser;
     TEST_ASSERT_EQUAL( pCapturedSettings, settings );
     /* Set the settings member expected by calls to llhttp_execute(). */
-    parser->settings = settings;
+    parser->settings = ( llhttp_settings_t * ) settings;
 
     TEST_ASSERT_EQUAL( HTTP_RESPONSE, type );
 }
 
 /**
- * @brief Callback that is passed to the mock of http_parse_settings_init function
+ * @brief Callback that is passed to the mock of llhttp_settings_init function
  * to set test expectations on input arguments sent by the HTTP API function under
  * test.
  */
@@ -229,9 +229,9 @@ void parserSettingsInitExpectationCb( llhttp_settings_t * settings,
 }
 
 /**
- * @brief Callback that is passed to the mock of http_parse_execute() function
+ * @brief Callback that is passed to the mock of llhttp_execute() function
  * to set test expectations on input arguments, and inject behavior of invoking
- * http-parser callbacks depending on test-case specific configuration of the
+ * llhttp callbacks depending on test-case specific configuration of the
  * function.
  */
 llhttp_errno_t parserExecuteExpectationsCb( llhttp_t * parser,
@@ -267,7 +267,7 @@ llhttp_errno_t parserExecuteExpectationsCb( llhttp_t * parser,
 
     if( invokeHeaderCompleteCallback == 1U )
     {
-        TEST_ASSERT_EQUAL( -1,
+        TEST_ASSERT_EQUAL( LLHTTP_STOP_PARSING_NO_HEADER,
                            ( ( llhttp_settings_t * ) ( parser->settings ) )->on_headers_complete( parser ) );
     }
 
@@ -1415,7 +1415,7 @@ void test_Http_ReadHeader_Invalid_Response_No_Headers_Complete_Ending()
     /* Configure the llhttp_execute mock. */
     pExpectedBuffer = &pResponseWithoutHeaders[ 0 ];
     expectedBufferSize = strlen( pResponseWithoutHeaders );
-    //parserErrNo = HPE_UNKNOWN;
+    /* Use -1 for an unknown error. */
     parserErrNo = -1;
     llhttp_execute_ExpectAnyArgsAndReturn( -1 );
     /* Call the function under test. */
@@ -1448,7 +1448,6 @@ void test_Http_ReadHeader_With_HttpParser_Internal_Error()
     pValueLocToReturn = &pTestResponse[ headerValInRespLoc ];
     valueLenToReturn = headerValInRespLen;
     expectedValCbRetVal = LLHTTP_STOP_PARSING;
-    //parserErrNo = HPE_CB_chunk_complete;
     parserErrNo = HPE_CB_CHUNK_COMPLETE;
     llhttp_execute_ExpectAnyArgsAndReturn( HPE_CB_CHUNK_COMPLETE );
 
@@ -1478,7 +1477,7 @@ void test_Http_ReadHeader_Happy_Path()
     valueLenToReturn = headerValInRespLen;
     invokeHeaderFieldCallback = 1U;
     invokeHeaderValueCallback = 1U;
-    //parserErrNo = HPE_CB_header_value;
+    /* Use HPE_USER to indicate the header value callback returns an error. */
     parserErrNo = HPE_USER;
     llhttp_execute_ExpectAnyArgsAndReturn( HPE_USER );
 
@@ -1509,11 +1508,11 @@ void test_Http_ReadHeader_EmptyHeaderValue()
     fieldLenToReturn = headerFieldInRespLen;
     /* Add two characters past the empty value to point to the next field. */
     pValueLocToReturn = &pTestResponseEmptyValue[ headerValInRespLoc + HTTP_HEADER_LINE_SEPARATOR_LEN ];
-    /* http-parser will pass in a value of zero for an empty value. */
+    /* llhttp will pass in a value of zero for an empty value. */
     valueLenToReturn = 0U;
     invokeHeaderFieldCallback = 1U;
     invokeHeaderValueCallback = 1U;
-    //parserErrNo = HPE_CB_header_value;
+    /* Use HPE_USER to indicate the header value callback returns an error. */
     parserErrNo = HPE_USER;
     llhttp_execute_ExpectAnyArgsAndReturn( HPE_USER );
 

@@ -25,6 +25,7 @@ chk
 chunked
 colspan
 com
+cond
 config
 configpagestyle
 const
@@ -42,6 +43,7 @@ defgroup
 doesn
 doxygen
 endcode
+endcond
 endif
 enums
 eof

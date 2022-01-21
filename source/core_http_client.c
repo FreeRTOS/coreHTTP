@@ -324,7 +324,7 @@ static int findHeaderValueParserCallback( llhttp_t * pHttpParser,
  *
  * @param[in] pHttpParser Parsing object containing state and callback context.
  *
- * @return Returns #HTTP_PARSER_STOP_PARSING for the parser to halt further
+ * @return Returns #LLHTTP_STOP_PARSING_NO_HEADER for the parser to halt further
  * execution, as all headers have been parsed in the response.
  */
 static int findHeaderOnHeaderCompleteCallback( llhttp_t * pHttpParser );
@@ -1033,6 +1033,9 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser )
 
     assert( pHttpParser != NULL );
 
+    /* llhttp_get_err_pos() may be used to get exact error locations, which was
+     * not possible with the previous http-parser. */
+
     switch( llhttp_get_errno( pHttpParser ) )
     {
         case HPE_OK:
@@ -1069,7 +1072,7 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser )
              * character and location. */
             LogError( ( "Response parsing error: Invalid character found in "
                         "HTTP protocol version." ) );
-            //llhttp_get_error_pos( pHttpParser );
+
             returnStatus = HTTPSecurityAlertInvalidProtocolVersion;
             break;
 
@@ -2357,9 +2360,14 @@ static int findHeaderOnHeaderCompleteCallback( llhttp_t * pHttpParser )
                 ( int ) ( pContext->fieldLen ),
                 pContext->pField ) );
 
-    /* No further parsing is required; thus, indicate the parser to stop parsing. */
-    //return HTTP_PARSER_STOP_PARSING;
-    return -1;
+    /* No further parsing is required; thus, indicate the parser to stop parsing.
+     * The documentation for on_headers_complete states that this function can
+     * return 1 to indicate the response has no body, or -1 to indicate error.
+     * Returning 1 causes llhttp_execute() to exit with success, while -1
+     * causes it to return the HPE_CB_HEADERS_COMPLETE error code (in strict
+     * mode) or success (in non-strict mode). We are fine with the success
+     * return value, as llhttp_execute will not be invoked again in the same call.*/
+    return LLHTTP_STOP_PARSING_NO_HEADER;
 }
 
 /*-----------------------------------------------------------*/
