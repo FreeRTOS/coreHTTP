@@ -26,7 +26,7 @@ INCLUDES += -I$(SRCDIR)/test/cbmc/include
 INCLUDES += -I$(SRCDIR)/source/include
 INCLUDES += -I$(SRCDIR)/source/interface
 INCLUDES += -I$(SRCDIR)/source
-INCLUDES += -I$(SRCDIR)/source/dependency/3rdparty/http_parser
+INCLUDES += -I$(SRCDIR)/source/dependency/3rdparty/llhttp/include
 
 # Preprocessor definitions -D...
 DEFINES += -Dhttp_EXPORTS

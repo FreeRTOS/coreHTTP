@@ -26,17 +26,17 @@
  */
 
 #include "http_cbmc_state.h"
-#include "http_parser.h"
+#include "llhttp.h"
 #include "core_http_client.h"
 
-int __CPROVER_file_local_core_http_client_c_findHeaderFieldParserCallback( http_parser * pHttpParser,
+int __CPROVER_file_local_core_http_client_c_findHeaderFieldParserCallback( llhttp_t * pHttpParser,
                                                                            const char * pFieldLoc,
                                                                            size_t fieldLen );
 
 
 void findHeaderFieldParserCallback_harness()
 {
-    http_parser * pHttpParser;
+    llhttp_t * pHttpParser;
     HTTPResponse_t * pResponse;
     findHeaderContext_t * pFindHeaderContext;
     size_t fieldLen, fieldContextLen, fieldOffset, valueLen, valueOffset;
@@ -50,7 +50,8 @@ void findHeaderFieldParserCallback_harness()
                       pResponse->pBuffer != NULL &&
                       pResponse->bufferLen > 0 );
 
-    __CPROVER_assume( 0 < fieldLen && fieldLen < MAX_HEADER_FIELD_LENGTH && fieldLen <= pResponse->bufferLen );
+    /* __CPROVER_assume( 0 < fieldLen && fieldLen < MAX_HEADER_FIELD_LENGTH && fieldLen <= pResponse->bufferLen );*/
+    __CPROVER_assume( 0 < fieldLen && fieldLen <= pResponse->bufferLen );
     __CPROVER_assume( fieldOffset <= pResponse->bufferLen - fieldLen );
     pFieldLoc = pResponse->pBuffer + fieldOffset;
 

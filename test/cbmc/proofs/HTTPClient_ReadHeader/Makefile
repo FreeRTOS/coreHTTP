@@ -32,9 +32,8 @@ REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderValueP
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderOnHeaderCompleteCallback
 
 # Remove any unused functions for http parser
-REMOVE_FUNCTION_BODY += http_parser_init
-REMOVE_FUNCTION_BODY += http_parser_set_max_header_size
-REMOVE_FUNCTION_BODY += http_parser_settings_init
+REMOVE_FUNCTION_BODY += llhttp_init
+REMOVE_FUNCTION_BODY += llhttp_settings_init
 
 UNWINDSET +=
 

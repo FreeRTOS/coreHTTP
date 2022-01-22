@@ -42,9 +42,9 @@ REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMess
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMessageCompleteCallback
 
 # Remove any unused functions for http parser
-REMOVE_FUNCTION_BODY += http_parser_init
+REMOVE_FUNCTION_BODY += llhttp_init
 REMOVE_FUNCTION_BODY += http_parser_set_max_header_size
-REMOVE_FUNCTION_BODY += http_parser_settings_init
+REMOVE_FUNCTION_BODY += llhttp_settings_init
 
 # These functions are removed and replace with stubs that check that the
 # destination parameter is writeable and that the source parameter is readable.
