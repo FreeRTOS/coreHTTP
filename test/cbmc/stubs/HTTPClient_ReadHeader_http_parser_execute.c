@@ -38,26 +38,25 @@
  */
 bool nondet_bool();
 
-size_t http_parser_execute( http_parser * parser,
-                            const http_parser_settings * settings,
-                            const char * data,
-                            size_t len )
+llhttp_errno_t llhttp_execute( llhttp_t * parser,
+                               const char * data,
+                               size_t len )
 {
     char * pValue;
     size_t fieldLength, fieldOffset, valueLength, valueOffset;
-    unsigned int http_errno;
+    int http_errno;
     findHeaderContext_t * pParsingContext;
 
     __CPROVER_assert( parser != NULL,
                       "http_parser_execute parser is NULL" );
-    __CPROVER_assert( settings != NULL,
-                      "http_parser_execute settings is NULL" );
+    // __CPROVER_assert( parser->settings != NULL,
+    //                   "http_parser_execute settings is NULL" );
     __CPROVER_assert( data != NULL,
                       "http_parser_execute data is NULL" );
     __CPROVER_assert( len < CBMC_MAX_OBJECT_SIZE,
                       "http_parser_execute len >= CBMC_MAX_OBJECT_SIZE" );
 
-    parser->http_errno = http_errno;
+    parser->error = http_errno;
 
     __CPROVER_assume( fieldLength <= len );
     __CPROVER_assume( fieldOffset < fieldLength );
@@ -87,5 +86,5 @@ size_t http_parser_execute( http_parser * parser,
         pParsingContext->pValueLoc = &pValue;
     }
 
-    return pParsingContext->fieldFound ? valueLength : 0;
+    return pParsingContext->fieldFound ? HPE_OK : HPE_USER;
 }
