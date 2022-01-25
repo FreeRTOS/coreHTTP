@@ -228,7 +228,7 @@ typedef enum HTTPStatus
      * #HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES.
      *
      * Functions that may return this value:
-     * - #HTTPClient_Send
+     * - None
      */
     HTTPSecurityAlertResponseHeadersSizeLimitExceeded,
 

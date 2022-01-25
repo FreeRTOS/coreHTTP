@@ -7,7 +7,7 @@ This HTTP Client library implements a subset of the HTTP/1.1 protocol. Features
 of this library include:
 - Fully synchronous API, to allow applications to completely manage their concurrency and multi-threading.
 - Operations on user supplied buffers, so that applications have complete control of their memory allocation strategy.
-- Integration with [http-parser](https://github.com/nodejs/http-parser) to handle chunked encoding.
+- Integration with [llhttp](https://github.com/nodejs/llhttp) to handle chunked encoding.
 
 Feature of HTTP/1.1 not supported in this library:
 - Streaming uploads and downloads. Range requests for partial content responses are highly encouraged with this API.
@@ -110,7 +110,7 @@ If the request has a body it is passed as a parameter to @ref HTTPClient_Send.
 As soon as the response is received from the network it is parsed. The final
 parsed response is represented by the @ref HTTPResponse_t returned from
 @ref HTTPClient_Send. Parsing the HTTP response is done using
-[http-parser](https://github.com/nodejs/http-parser). http-parser invokes
+[llhttp](https://github.com/nodejs/llhttp). llhttp invokes
 callbacks for each section in the HTTP response it finds. Using these callbacks
 the HTTP client library sets the members of @ref HTTPResponse_t to return from
 @ref HTTPClient_Send. The overall flow of @ref HTTPClient_Send is
@@ -125,14 +125,14 @@ can be read from the headers found in @ref HTTPResponse_t.pHeaders. The function
 @ref HTTPClient_ReadHeader reads the headers from an @ref HTTPResponse_t.
 @ref HTTPClient_ReadHeader will re-parse the response in
 @ref HTTPResponse_t.pBuffer, looking for the header field of interest.
-Re-parsing involves using http-parser to look at each character starting from
+Re-parsing involves using llhttp to look at each character starting from
 the beginning of @ref HTTPResponse_t.pBuffer until the header field of interest
 is found.
 
 If the user application wants to avoid re-parsing @ref HTTPResponse_t.pBuffer,
 then the user application may register a callback in
 @ref HTTPResponse_t.pHeaderParsingCallback. When the HTTP response message is
-first received from the network, in @ref HTTPClient_Send, http-parser is invoked
+first received from the network, in @ref HTTPClient_Send, llhttp is invoked
 to parse the response. This first parsing in @ref HTTPClient_Send will invoke
 @ref HTTPResponse_t.pHeaderParsingCallback for each header that is found
 in response. Please see the sequence diagram below for an illustration of when
