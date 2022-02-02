@@ -26,13 +26,13 @@
  */
 
 #include "http_cbmc_state.h"
-#include "http_parser.h"
+#include "llhttp.h"
 
-int __CPROVER_file_local_core_http_client_c_httpParserOnMessageBeginCallback( http_parser * pHttpParser );
+int __CPROVER_file_local_core_http_client_c_httpParserOnMessageBeginCallback( llhttp_t * pHttpParser );
 
 void httpParserOnMessageBeginCallback_harness()
 {
-    http_parser * pHttpParser;
+    llhttp_t * pHttpParser;
 
     pHttpParser = allocateHttpSendParser( NULL );
 

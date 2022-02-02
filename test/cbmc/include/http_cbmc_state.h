@@ -33,7 +33,7 @@
 
 #include "core_http_client.h"
 #include "core_http_client_private.h"
-#include "http_parser.h"
+#include "llhttp.h"
 #include "transport_interface_stubs.h"
 
 struct NetworkContext
@@ -132,14 +132,14 @@ TransportInterface_t * allocateTransportInterface( TransportInterface_t * pTrans
 bool isValidTransportInterface( TransportInterface_t * pTransportInterface );
 
 /**
- * @brief Allocate an #http_parser object that is valid in the context of the
+ * @brief Allocate an #llhttp_t object that is valid in the context of the
  * HTTPClient_Send() function.
  *
- * @param[in] pHttpParser #http_parser object to allocate.
+ * @param[in] pHttpParser #llhttp_t object to allocate.
  *
- * @return NULL or pointer to allocated #http_parser object.
+ * @return NULL or pointer to allocated #llhttp_t object.
  */
-http_parser * allocateHttpSendParser( http_parser * pHttpParser );
+llhttp_t * allocateHttpSendParser( llhttp_t * pHttpParser );
 
 /**
  * @brief Allocate an #HTTPParsingContext_t object.
@@ -160,14 +160,14 @@ HTTPParsingContext_t * allocateHttpSendParsingContext( HTTPParsingContext_t * pH
 bool isValidHttpSendParsingContext( const HTTPParsingContext_t * pHttpParsingContext );
 
 /**
- * @brief Allocate an #http_parser object that is valid in the context of the
+ * @brief Allocate an #llhttp_t object that is valid in the context of the
  * HTTPClient_ReadHeader() function.
  *
- * @param[in] pHttpParser #http_parser object to allocate.
+ * @param[in] pHttpParser #llhttp_t object to allocate.
  *
- * @return NULL or pointer to allocated #http_parser object.
+ * @return NULL or pointer to allocated #llhttp_t object.
  */
-http_parser * allocateHttpReadHeaderParser( http_parser * pHttpParser );
+llhttp_t * allocateHttpReadHeaderParser( llhttp_t * pHttpParser );
 
 /**
  * @brief Allocate an #findHeaderContext_t object.

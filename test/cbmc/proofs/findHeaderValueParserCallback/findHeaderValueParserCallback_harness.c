@@ -26,16 +26,16 @@
  */
 
 #include "http_cbmc_state.h"
-#include "http_parser.h"
+#include "llhttp.h"
 #include "core_http_client.h"
 
-int __CPROVER_file_local_core_http_client_c_findHeaderValueParserCallback( http_parser * pHttpParser,
+int __CPROVER_file_local_core_http_client_c_findHeaderValueParserCallback( llhttp_t * pHttpParser,
                                                                            const char * pValueLoc,
                                                                            size_t valueLen );
 
 void findHeaderValueParserCallback_harness()
 {
-    http_parser * pHttpParser;
+    llhttp_t * pHttpParser;
     HTTPResponse_t * pResponse;
     findHeaderContext_t * pFindHeaderContext;
     size_t fieldLen, fieldOffset, valueLen, valueOffset;

@@ -42,9 +42,8 @@ REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMess
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpParserOnMessageCompleteCallback
 
 # Remove any unused functions for http parser
-REMOVE_FUNCTION_BODY += http_parser_init
-REMOVE_FUNCTION_BODY += http_parser_set_max_header_size
-REMOVE_FUNCTION_BODY += http_parser_settings_init
+REMOVE_FUNCTION_BODY += llhttp_init
+REMOVE_FUNCTION_BODY += llhttp_settings_init
 
 # These functions are removed and replace with stubs that check that the
 # destination parameter is writeable and that the source parameter is readable.
@@ -67,7 +66,7 @@ UNWINDSET += strncmp.0:5
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
-PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_Send_http_parser_execute.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_Send_llhttp_execute.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/transport_interface_stubs.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/get_time_stub.c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/strncpy.c
