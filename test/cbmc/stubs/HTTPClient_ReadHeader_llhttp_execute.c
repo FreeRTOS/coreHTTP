@@ -84,5 +84,5 @@ llhttp_errno_t llhttp_execute( llhttp_t * parser,
         pParsingContext->pValueLoc = &pValue;
     }
 
-    return pParsingContext->fieldFound ? HPE_OK : HPE_USER;
+    return parser->error;
 }

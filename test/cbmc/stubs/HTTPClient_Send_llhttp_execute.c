@@ -44,6 +44,7 @@ llhttp_errno_t llhttp_execute( llhttp_t * parser,
 {
     size_t fieldLength, valueLength;
     HTTPParsingContext_t * pParsingContext;
+    int http_errno;
 
     __CPROVER_assert( parser != NULL,
                       "llhttp_execute parser is NULL" );
@@ -54,6 +55,8 @@ llhttp_errno_t llhttp_execute( llhttp_t * parser,
 
     __CPROVER_assume( fieldLength <= len );
     __CPROVER_assume( valueLength <= len );
+
+    parser->error = http_errno;
 
     pParsingContext = ( HTTPParsingContext_t * ) ( parser->data );
     /* Choose whether the parser found the header */
@@ -75,5 +78,5 @@ llhttp_errno_t llhttp_execute( llhttp_t * parser,
         pParsingContext->lastHeaderValueLen = 0U;
     }
 
-    return ( pParsingContext->lastHeaderValueLen == 0U ) ? HPE_USER : HPE_OK;
+    return parser->error;
 }
