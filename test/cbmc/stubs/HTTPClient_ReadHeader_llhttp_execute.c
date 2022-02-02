@@ -21,9 +21,9 @@
  */
 
 /**
- * @file HTTPClient_Send_http_parser_execute.c
- * @brief A stub function for http_parser_execute for coverage of
- * #HTTPClient_Send.
+ * @file HTTPClient_ReadHeader_llhttp_execute.c
+ * @brief A stub function for llhttp_execute for coverage of
+ * #HTTPClient_ReadHeader.
  */
 
 #include <stdbool.h>
@@ -42,40 +42,47 @@ llhttp_errno_t llhttp_execute( llhttp_t * parser,
                                const char * data,
                                size_t len )
 {
-    size_t fieldLength, valueLength;
-    HTTPParsingContext_t * pParsingContext;
+    char * pValue;
+    size_t fieldLength, fieldOffset, valueLength, valueOffset;
+    int http_errno;
+    findHeaderContext_t * pParsingContext;
 
     __CPROVER_assert( parser != NULL,
-                      "http_parser_execute parser is NULL" );
-    // __CPROVER_assert( parser->settings != NULL,
-    //                   "http_parser_execute settings is NULL" );
+                      "llhttp_execute parser is NULL" );
     __CPROVER_assert( data != NULL,
-                      "http_parser_execute data is NULL" );
+                      "llhttp_execute data is NULL" );
     __CPROVER_assert( len < CBMC_MAX_OBJECT_SIZE,
-                      "http_parser_execute len >= CBMC_MAX_OBJECT_SIZE" );
+                      "llhttp_execute len >= CBMC_MAX_OBJECT_SIZE" );
+
+    parser->error = http_errno;
 
     __CPROVER_assume( fieldLength <= len );
+    __CPROVER_assume( fieldOffset < fieldLength );
     __CPROVER_assume( valueLength <= len );
+    __CPROVER_assume( valueOffset < valueLength );
 
-    pParsingContext = ( HTTPParsingContext_t * ) ( parser->data );
-    /* Choose whether the parser found the header */
-    pParsingContext->pLastHeaderField = malloc( fieldLength );
-    __CPROVER_assume( pParsingContext->pLastHeaderField != NULL );
-    pParsingContext->state = HTTP_PARSING_COMPLETE;
+    pParsingContext = ( findHeaderContext_t * ) ( parser->data );
+    pParsingContext->pField = data + fieldOffset;
+    pParsingContext->fieldLen = fieldLength;
+    pParsingContext->pValueLoc = NULL;
+    pParsingContext->pValueLen = 0;
+    pParsingContext->fieldFound = nondet_bool() ? 0 : 1;
 
-    if( pParsingContext->pLastHeaderField )
+    if( pParsingContext->fieldFound )
     {
-        pParsingContext->lastHeaderFieldLen = fieldLength;
-        pParsingContext->pLastHeaderValue = malloc( valueLength );
-        __CPROVER_assume( pParsingContext->pLastHeaderValue != NULL );
-        pParsingContext->lastHeaderValueLen = valueLength;
+        pParsingContext->valueFound = nondet_bool() ? 0 : 1;
     }
     else
     {
-        pParsingContext->lastHeaderFieldLen = 0U;
-        pParsingContext->pLastHeaderValue = NULL;
-        pParsingContext->lastHeaderValueLen = 0U;
+        pParsingContext->valueFound = 0;
     }
 
-    return ( pParsingContext->lastHeaderValueLen == 0U ) ? HPE_USER : HPE_OK;
+    if( pParsingContext->valueFound )
+    {
+        pValue = data + valueOffset;
+        pParsingContext->pValueLen = &valueLength;
+        pParsingContext->pValueLoc = &pValue;
+    }
+
+    return pParsingContext->fieldFound ? HPE_OK : HPE_USER;
 }
