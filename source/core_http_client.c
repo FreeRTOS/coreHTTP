@@ -2384,7 +2384,6 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     llhttp_settings_t parserSettings = { 0 };
     llhttp_errno_t parserErrno;
     findHeaderContext_t context = { 0 };
-    size_t numOfBytesParsed = 0U;
 
     context.pField = pField;
     context.fieldLen = fieldLen;
