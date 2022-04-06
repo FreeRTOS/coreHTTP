@@ -104,7 +104,6 @@ httpsecurityalertinvalidcharacter
 httpsecurityalertinvalidchunkheader
 httpsecurityalertinvalidprotocolversion
 httpsecurityalertinvalidstatuscode
-httpsecurityalertresponseheaderssizelimitexceeded
 httpstatus
 httpsuccess
 ietf

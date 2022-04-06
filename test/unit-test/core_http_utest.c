@@ -1559,10 +1559,6 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPInsufficientMemory", str );
 
-    status = HTTPSecurityAlertResponseHeadersSizeLimitExceeded;
-    str = HTTPClient_strerror( status );
-    TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertResponseHeadersSizeLimitExceeded", str );
-
     status = HTTPSecurityAlertExtraneousResponseData;
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertExtraneousResponseData", str );

@@ -1004,9 +1004,6 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
     /* Initialize the third-party HTTP parser to parse responses. */
     llhttp_init( &( pParsingContext->llhttpParser ), HTTP_RESPONSE, &( pParsingContext->llhttpSettings ) );
 
-    /* The parser will return an error if this header size limit is exceeded. */
-    /*http_parser_set_max_header_size( HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES ); */
-
     /* No response has been parsed yet. */
     pParsingContext->state = HTTP_PARSING_NONE;
 
@@ -1130,7 +1127,7 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser )
             break;
     }
 
-    /* Errors with HPE_CB_ prepending are manual returns of non-zero in the
+    /* Errors with HPE_CB_ prepended are manual returns of non-zero in the
      * response parsing callback. */
     LogDebug( ( "llhttp errno description: %s %s",
                 llhttp_errno_name( llhttp_get_errno( pHttpParser ) ),
@@ -2394,7 +2391,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     /* The intention here to define callbacks just for searching the headers. We will
      * need to create a private context in llhttp->data that has the field and
      * value to update and pass back. */
-    llhttp_settings_init( &( parserSettings ) );
+    llhttp_settings_init( &parserSettings );
     parserSettings.on_header_field = findHeaderFieldParserCallback;
     parserSettings.on_header_value = findHeaderValueParserCallback;
     parserSettings.on_headers_complete = findHeaderOnHeaderCompleteCallback;
@@ -2403,7 +2400,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     /* Set the context for the parser. */
     parser.data = &context;
 
-    /* Start parsing for the header! */
+    /* Search for the desired header. */
     parserErrno = llhttp_execute( &parser, ( const char * ) pBuffer, bufferLen );
 
     if( context.fieldFound == 0U )
@@ -2446,8 +2443,8 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     }
 
     /* If the header field-value pair is found in response, then the return
-     * value of "on_header_value" callback (related to the header value) should
-     * cause the llhttp.error to be "USER". */
+     * value of the on_header_value callback should set the llhttp.error to
+     * HPE_USER. */
     if( ( returnStatus == HTTPSuccess ) &&
         ( parserErrno != HPE_USER ) )
     {
@@ -2459,8 +2456,7 @@ static HTTPStatus_t findHeaderInResponse( const uint8_t * pBuffer,
     }
 
     /* If header was not found, then the "on_header_complete" callback is
-     * expected to be called which should cause the llhttp.error to be
-     * "OK" */
+     * expected to be called which should set the llhttp.error to HPE_OK. */
     else if( ( returnStatus == HTTPHeaderNotFound ) &&
              ( parserErrno != HPE_OK ) )
     {
@@ -2573,10 +2569,6 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
 
         case HTTPInsufficientMemory:
             str = "HTTPInsufficientMemory";
-            break;
-
-        case HTTPSecurityAlertResponseHeadersSizeLimitExceeded:
-            str = "HTTPSecurityAlertResponseHeadersSizeLimitExceeded";
             break;
 
         case HTTPSecurityAlertExtraneousResponseData:

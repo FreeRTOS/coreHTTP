@@ -224,15 +224,6 @@ typedef enum HTTPStatus
     HTTPInsufficientMemory,
 
     /**
-     * @brief The server sent more headers than the configured
-     * #HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES.
-     *
-     * Functions that may return this value:
-     * - None
-     */
-    HTTPSecurityAlertResponseHeadersSizeLimitExceeded,
-
-    /**
      * @brief A response contained the "Connection: close" header, but there
      * was more data at the end of the complete message.
      *
@@ -741,7 +732,6 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  *
  * The application should close the connection with the server if any of the
  * following errors are returned:
- * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTPSecurityAlertExtraneousResponseData
  * - #HTTPSecurityAlertInvalidChunkHeader
  * - #HTTPSecurityAlertInvalidProtocolVersion
@@ -773,7 +763,6 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * or extra headers could not be sent in the request.)
  * - #HTTPParserInternalError (Internal parsing error.)\n\n
  * Security alerts are listed below, please see #HTTPStatus_t for more information:
- * - #HTTPSecurityAlertResponseHeadersSizeLimitExceeded
  * - #HTTPSecurityAlertExtraneousResponseData
  * - #HTTPSecurityAlertInvalidChunkHeader
  * - #HTTPSecurityAlertInvalidProtocolVersion

@@ -161,7 +161,6 @@ then the @ref HTTP_DO_NOT_USE_CUSTOM_CONFIG macro must be defined.
 @see [Configurations](@ref http_config)
 
 The following macros can be configured for this library:
- - @ref HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
  - @ref HTTP_USER_AGENT_VALUE
  - @ref HTTP_SEND_RETRY_TIMEOUT_MS
  - @ref HTTP_RECV_RETRY_TIMEOUT_MS
@@ -242,9 +241,6 @@ config macros defined in core_http_config_defaults.h file.
 
 If a custom config is provided, then HTTP_DO_NOT_USE_CUSTOM_CONFIG should not be
 defined.
-
-@section HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
-@copydoc HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
 
 @section HTTP_USER_AGENT_VALUE
 @copydoc HTTP_USER_AGENT_VALUE
