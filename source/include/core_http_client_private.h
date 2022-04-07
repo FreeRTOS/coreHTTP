@@ -28,8 +28,17 @@
 #ifndef CORE_HTTP_CLIENT_PRIVATE_H_
 #define CORE_HTTP_CLIENT_PRIVATE_H_
 
-/* Third-party http-parser include. */
-#include "http_parser.h"
+/**
+ * @cond DOXYGEN_IGNORE
+ * http-parser defaults this to 1, llhttp to 0.
+ */
+#ifndef LLHTTP_STRICT_MODE
+    #define LLHTTP_STRICT_MODE    0
+#endif
+/** @endcond */
+
+/* Third-party llhttp include. */
+#include "llhttp.h"
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus
@@ -150,16 +159,31 @@
       1U /* Dash character '-' */ + MAX_INT32_NO_OF_DECIMAL_DIGITS )
 
 /**
- * @brief Return value for the http-parser registered callback to signal halting
- * further execution.
+ * @brief Return value for llhttp registered callback to signal
+ * continuation of HTTP response parsing. Equal to HPE_OK.
  */
-#define HTTP_PARSER_STOP_PARSING            1
+#define LLHTTP_CONTINUE_PARSING             0
 
 /**
- * @brief Return value for http_parser registered callback to signal
- * continuation of HTTP response parsing.
+ * @brief Return value for llhttp registered callback to signal halting
+ * further execution.
  */
-#define HTTP_PARSER_CONTINUE_PARSING        0
+#define LLHTTP_STOP_PARSING                 HPE_USER
+
+/**
+ * @brief Return value for llhttp_t.on_headers_complete to signal
+ * that the HTTP response has no body and to halt further execution.
+ */
+#define LLHTTP_STOP_PARSING_NO_BODY         1
+
+/**
+ * @brief Return value for llhttp_t.on_headers_complete to signal
+ * halting further execution. This is the same return value that
+ * indicates the HTTP response has no body, but unlike the -1 error
+ * code, gives consistent return values for llhttp_execute in both
+ * strict and non-strict modes.
+ */
+#define LLHTTP_STOP_PARSING_NO_HEADER       1
 
 /**
  * @brief The minimum request-line in the headers has a possible one character
@@ -261,16 +285,17 @@ typedef struct findHeaderContext
  */
 typedef struct HTTPParsingContext
 {
-    http_parser httpParser;        /**< Third-party http-parser context. */
-    HTTPParsingState_t state;      /**< The current state of the HTTP response parsed. */
-    HTTPResponse_t * pResponse;    /**< HTTP response associated with this parsing context. */
-    uint8_t isHeadResponse;        /**< HTTP response is for a HEAD request. */
+    llhttp_t llhttpParser;            /**< Third-party llhttp context. */
+    llhttp_settings_t llhttpSettings; /**< Third-party parser settings. */
+    HTTPParsingState_t state;         /**< The current state of the HTTP response parsed. */
+    HTTPResponse_t * pResponse;       /**< HTTP response associated with this parsing context. */
+    uint8_t isHeadResponse;           /**< HTTP response is for a HEAD request. */
 
-    const char * pBufferCur;       /**< The current location of the parser in the response buffer. */
-    const char * pLastHeaderField; /**< Holds the last part of the header field parsed. */
-    size_t lastHeaderFieldLen;     /**< The length of the last header field parsed. */
-    const char * pLastHeaderValue; /**< Holds the last part of the header value parsed. */
-    size_t lastHeaderValueLen;     /**< The length of the last value field parsed. */
+    const char * pBufferCur;          /**< The current location of the parser in the response buffer. */
+    const char * pLastHeaderField;    /**< Holds the last part of the header field parsed. */
+    size_t lastHeaderFieldLen;        /**< The length of the last header field parsed. */
+    const char * pLastHeaderValue;    /**< Holds the last part of the header value parsed. */
+    size_t lastHeaderValueLen;        /**< The length of the last value field parsed. */
 } HTTPParsingContext_t;
 
 /* *INDENT-OFF* */

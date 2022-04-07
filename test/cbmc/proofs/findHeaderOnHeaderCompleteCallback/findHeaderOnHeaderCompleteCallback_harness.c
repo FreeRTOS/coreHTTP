@@ -26,14 +26,14 @@
  */
 
 #include "http_cbmc_state.h"
-#include "http_parser.h"
+#include "llhttp.h"
 #include "core_http_client.h"
 
-int __CPROVER_file_local_core_http_client_c_findHeaderOnHeaderCompleteCallback( http_parser * pHttpParser );
+int __CPROVER_file_local_core_http_client_c_findHeaderOnHeaderCompleteCallback( llhttp_t * pHttpParser );
 
 void findHeaderOnHeaderCompleteCallback_harness()
 {
-    http_parser * pHttpParser;
+    llhttp_t * pHttpParser;
 
     pHttpParser = allocateHttpReadHeaderParser( NULL );
 

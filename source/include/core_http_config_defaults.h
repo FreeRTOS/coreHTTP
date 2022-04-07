@@ -42,21 +42,6 @@
 /* *INDENT-ON* */
 
 /**
- * @brief Maximum size, in bytes, of headers allowed from the server.
- *
- * If the total size in bytes of the headers received from the server exceeds
- * this configuration, then the status code
- * #HTTPSecurityAlertResponseHeadersSizeLimitExceeded is returned from
- * #HTTPClient_Send.
- *
- * <b>Possible values:</b> Any positive 32 bit integer. <br>
- * <b>Default value:</b> `2048`
- */
-#ifndef HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES
-    #define HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES    2048U
-#endif
-
-/**
  * @brief The HTTP header "User-Agent" value.
  *
  * The following header line is automatically written to

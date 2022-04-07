@@ -3,14 +3,22 @@
   "src": [
     "source/core_http_client.c",
     {
-      "file": "source/dependency/3rdparty/http_parser/http_parser.c",
-      "tag": "http-parser"
+      "file": "source/dependency/3rdparty/llhttp/src/api.c",
+      "tag": "llhttp"
+    },
+    {
+      "file": "source/dependency/3rdparty/llhttp/src/http.c",
+      "tag": "llhttp"
+    },
+    {
+      "file": "source/dependency/3rdparty/llhttp/src/llhttp.c",
+      "tag": "llhttp"
     }
   ],
   "include": [
     "source/include",
     "source/interface",
-    "source/dependency/3rdparty/http_parser"
+    "source/dependency/3rdparty/llhttp/include"
   ],
   "compiler_flags": [
     "HTTP_DO_NOT_USE_CUSTOM_CONFIG"

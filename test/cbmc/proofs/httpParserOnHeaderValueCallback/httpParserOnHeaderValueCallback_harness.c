@@ -26,15 +26,15 @@
  */
 
 #include "http_cbmc_state.h"
-#include "http_parser.h"
+#include "llhttp.h"
 
-int __CPROVER_file_local_core_http_client_c_httpParserOnHeaderValueCallback( http_parser * pHttpParser,
+int __CPROVER_file_local_core_http_client_c_httpParserOnHeaderValueCallback( llhttp_t * pHttpParser,
                                                                              const char * pLoc,
                                                                              size_t length );
 
 void httpParserOnHeaderValueCallback_harness()
 {
-    http_parser * pHttpParser;
+    llhttp_t * pHttpParser;
     HTTPParsingContext_t * pParsingContext;
     HTTPResponse_t * pResponse;
     size_t length, locOffset;

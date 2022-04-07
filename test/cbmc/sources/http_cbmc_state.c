@@ -200,13 +200,13 @@ bool isValidTransportInterface( TransportInterface_t * pTransportInterface )
     }
 }
 
-http_parser * allocateHttpSendParser( http_parser * pHttpParser )
+llhttp_t * allocateHttpSendParser( llhttp_t * pHttpParser )
 {
     HTTPParsingContext_t * pHttpParsingContext;
 
     if( pHttpParser == NULL )
     {
-        pHttpParser = malloc( sizeof( http_parser ) );
+        pHttpParser = malloc( sizeof( llhttp_t ) );
         __CPROVER_assume( pHttpParser != NULL );
     }
 
@@ -251,13 +251,13 @@ bool isValidHttpSendParsingContext( const HTTPParsingContext_t * pHttpParsingCon
     return isValid;
 }
 
-http_parser * allocateHttpReadHeaderParser( http_parser * pHttpParser )
+llhttp_t * allocateHttpReadHeaderParser( llhttp_t * pHttpParser )
 {
     HTTPParsingContext_t * pFindHeaderContext;
 
     if( pHttpParser == NULL )
     {
-        pHttpParser = malloc( sizeof( http_parser ) );
+        pHttpParser = malloc( sizeof( llhttp_t ) );
         __CPROVER_assume( pHttpParser != NULL );
     }
 

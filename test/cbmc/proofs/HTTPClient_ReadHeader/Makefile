@@ -32,15 +32,14 @@ REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderValueP
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_findHeaderOnHeaderCompleteCallback
 
 # Remove any unused functions for http parser
-REMOVE_FUNCTION_BODY += http_parser_init
-REMOVE_FUNCTION_BODY += http_parser_set_max_header_size
-REMOVE_FUNCTION_BODY += http_parser_settings_init
+REMOVE_FUNCTION_BODY += llhttp_init
+REMOVE_FUNCTION_BODY += llhttp_settings_init
 
 UNWINDSET +=
 
 PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
-PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_ReadHeader_http_parser_execute.c
+PROOF_SOURCES += $(SRCDIR)/test/cbmc/stubs/HTTPClient_ReadHeader_llhttp_execute.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
