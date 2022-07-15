@@ -45,6 +45,7 @@ target_compile_definitions( coverity_analysis PUBLIC HTTP_DO_NOT_USE_CUSTOM_CONF
 # HTTP public include path.
 target_include_directories( coverity_analysis PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
 
+ target_compile_options(coverity_analysis PUBLIC -DDISABLE_LOGGING )
 # ===================== Clone needed third-party libraries ======================
 
 # Define an llhttp paser resource path.

@@ -24,8 +24,11 @@
  * @file core_http_client.c
  * @brief Implements the user-facing functions in core_http_client.h.
  */
-
-#include <assert.h>
+#ifdef DISABLE_LOGGING
+    #define assert( x )
+#else /* !DISABLE_LOGGING */
+    #include <assert.h>
+#endif
 #include <string.h>
 #include <ctype.h>
 
@@ -577,7 +580,9 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
 
     for( i = 0U; i < n; i++ )
     {
-        if( toupper( str1[ i ] ) != toupper( str2[ i ] ) )
+        /* coverity[misra_c_2012_rule_10_3_violation] */
+        /* coverity[misra_c_2012_rule_13_2_violation] */
+        if( ( toupper( ( (unsigned char) str1[ i ] ) ) ) != ( toupper( ( (unsigned char) str2[ i ] ) ) ) )
         {
             break;
         }
@@ -843,6 +848,7 @@ static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
 
     /* If the Content-Length header was found, then pHttpParser->content_length
      * will not be equal to the maximum 64 bit integer. */
+    /* coverity[misra_c_2012_rule_14_3_violation] */
     if( pHttpParser->content_length != UINT64_MAX )
     {
         pResponse->contentLength = ( size_t ) ( pHttpParser->content_length );
@@ -1980,7 +1986,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
                                                  const HTTPRequestHeaders_t * pRequestHeaders )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
-    size_t totalReceived = 0U;
+    uint64_t totalReceived = 0U;
     int32_t currentReceived = 0;
     HTTPParsingContext_t parsingContext = { 0 };
     uint8_t shouldRecv = 1U, shouldParse = 1U, timeoutReached = 0U;
@@ -2034,7 +2040,9 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
              * Because we cannot know how large the HTTP response will be in
              * total, parsing will tell us if the end of the message is reached.*/
             shouldParse = 1U;
-            totalReceived += currentReceived;
+            /* Coverity compliance requires the cast to an unsigned type, since we've checked that
+             * the value of currentReceived is greater than 0 we don't need to worry about int overflow. */
+            totalReceived += (size_t) currentReceived;
         }
         else
         {
@@ -2058,10 +2066,12 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
         {
             /* Data is received into the buffer is immediately parsed. Parsing
              * is invoked even with a length of zero. A length of zero indicates
-             * to the parser that there is no more data from the server (EOF). */
+             * to the parser that there is no more data from the server (EOF).
+             * Additionally coverity compliance requires the cast to a larger type, but since we
+             * know that the value is greater than 0 we don't need to worry about int overflow. */
             returnStatus = parseHttpResponse( &parsingContext,
                                               pResponse,
-                                              currentReceived );
+                                              (uint64_t) currentReceived );
         }
 
         /* Reading should continue if there are no errors in the transport receive
@@ -2324,7 +2334,7 @@ static int findHeaderValueParserCallback( llhttp_t * pHttpParser,
 
         /* As we have found the value associated with the header, we don't need
          * to parse the response any further. */
-        retCode = LLHTTP_STOP_PARSING;
+        retCode = (int) LLHTTP_STOP_PARSING;
     }
     else
     {
@@ -2338,7 +2348,7 @@ static int findHeaderValueParserCallback( llhttp_t * pHttpParser,
 
 static int findHeaderOnHeaderCompleteCallback( llhttp_t * pHttpParser )
 {
-    findHeaderContext_t * pContext = NULL;
+    const findHeaderContext_t * pContext = NULL;
 
     /* Disable unused parameter warning. */
     ( void ) pHttpParser;
