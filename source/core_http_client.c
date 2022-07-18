@@ -2040,8 +2040,8 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
              * Because we cannot know how large the HTTP response will be in
              * total, parsing will tell us if the end of the message is reached.*/
             shouldParse = 1U;
-            /* Coverity compliance requires the cast to an unsigned type, since we've checked that
-             * the value of currentReceived is greater than 0 we don't need to worry about int overflow. */
+            /* Coverity compliance requires the cast to an unsigned type, since we have checked that
+             * the value of current received is greater than 0 we don't need to worry about int overflow. */
             totalReceived += (size_t) currentReceived;
         }
         else
