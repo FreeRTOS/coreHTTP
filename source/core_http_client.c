@@ -1375,9 +1375,9 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
             pBufferCur += valueLen;
 
             /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
-            ( void ) memcpy(  pBufferCur,
-                              HTTP_HEADER_END_INDICATOR,
-                              HTTP_HEADER_END_INDICATOR_LEN );
+            ( void ) memcpy( pBufferCur,
+                             HTTP_HEADER_END_INDICATOR,
+                             HTTP_HEADER_END_INDICATOR_LEN );
 
             /* Update the headers length value only when everything is successful. */
             pRequestHeaders->headersLen = backtrackHeaderLen + toAddLen;
@@ -1525,8 +1525,8 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
         pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
 
         ( void ) memcpy( pBufferCur,
-                          HTTP_HEADER_LINE_SEPARATOR,
-                          HTTP_HEADER_LINE_SEPARATOR_LEN );
+                         HTTP_HEADER_LINE_SEPARATOR,
+                         HTTP_HEADER_LINE_SEPARATOR_LEN );
         pRequestHeaders->headersLen = toAddLen;
     }
 
