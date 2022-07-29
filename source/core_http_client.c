@@ -2036,7 +2036,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
             shouldParse = 1U;
             /* Coverity compliance requires the cast to an unsigned type, since we have checked that
              * the value of current received is greater than 0 we don't need to worry about int overflow. */
-            totalReceived += (size_t) currentReceived;
+            totalReceived += ( size_t ) currentReceived;
         }
         else
         {
@@ -2065,7 +2065,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
              * know that the value is greater than 0 we don't need to worry about int overflow. */
             returnStatus = parseHttpResponse( &parsingContext,
                                               pResponse,
-                                              (uint64_t) currentReceived );
+                                              ( uint64_t ) currentReceived );
         }
 
         /* Reading should continue if there are no errors in the transport receive
@@ -2328,7 +2328,7 @@ static int findHeaderValueParserCallback( llhttp_t * pHttpParser,
 
         /* As we have found the value associated with the header, we don't need
          * to parse the response any further. */
-        retCode = (int) LLHTTP_STOP_PARSING;
+        retCode = ( int ) LLHTTP_STOP_PARSING;
     }
     else
     {
