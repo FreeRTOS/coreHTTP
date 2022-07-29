@@ -580,11 +580,13 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
     /* Inclusion of inbetween variables for coverity rule 13.2 compliance */
     uint32_t firstChar;
     uint32_t secondChar;
+
     for( i = 0U; i < n; i++ )
     {
         firstChar = ( uint32_t ) toupper( ( ( int32_t ) ( unsigned char ) str1[ i ] ) );
         secondChar = ( uint32_t ) toupper( ( ( int32_t ) ( unsigned char ) str2[ i ] ) );
-        if( firstChar != secondChar)
+
+        if( firstChar != secondChar )
         {
             break;
         }
