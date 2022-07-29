@@ -578,15 +578,22 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
 {
     size_t i = 0U;
     /* Inclusion of inbetween variables for coverity rule 13.2 compliance */
-    uint32_t firstChar;
-    uint32_t secondChar;
+    int32_t firstChar;
+    int32_t secondChar;
 
     for( i = 0U; i < n; i++ )
     {
-        firstChar = ( uint32_t ) toupper( ( ( int32_t ) ( unsigned char ) str1[ i ] ) );
-        secondChar = ( uint32_t ) toupper( ( ( int32_t ) ( unsigned char ) str2[ i ] ) );
+        /* MISRA Ref 21.13.1 [Essential type casting] */
+        /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-2113 */
+        /* coverity[misra_c_2012_rule_21_13_violation] */
+        firstChar  = ( int32_t ) toupper( ( ( int32_t ) str1[ i ] ) );
 
-        if( firstChar != secondChar )
+        /* MISRA Ref 21.13.1 [Essential Type Casting] */
+        /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-2113 */
+        /* coverity[misra_c_2012_rule_21_13_violation] */
+        secondChar = ( int32_t ) toupper( ( ( int32_t ) str2[ i ] ) );
+
+        if(  firstChar != secondChar )
         {
             break;
         }
@@ -594,6 +601,7 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
 
     return ( i == n ) ? 0 : 1;
 }
+
 
 /*-----------------------------------------------------------*/
 

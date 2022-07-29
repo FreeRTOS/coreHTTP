@@ -84,4 +84,12 @@ _Ref 18.3.1_
 
 -  MISRA Rule 18.3 flags pLoc and pNextWriteLoc as pointing to two different
        objects. This rule is suppressed because both pNextWriteLoc and pLoc
-       point to a location in the response buffer. */
+       point to a location in the response buffer.
+
+#### Rule 21.13
+_Ref 21.13.1_
+
+-  MISRA Rule 21.13 flags any value passed into a ctype.h function that isn't cast
+        as an unsigned char. Thorough testing by use of our CBMC proofs shows that adding
+        the cast to ( unsigned char ) inside of the toupper() call has potential to lead
+        to errors. Due to this we supress this warning for our use case.
