@@ -577,12 +577,14 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
                                         size_t n )
 {
     size_t i = 0U;
-
+    /* Inclusion of inbetween variables for coverity rule 13.2 compliance */
+    uint32_t firstChar;
+    uint32_t secondChar;
     for( i = 0U; i < n; i++ )
     {
-        /* coverity[misra_c_2012_rule_10_3_violation] */
-        /* coverity[misra_c_2012_rule_13_2_violation] */
-        if( ( toupper( ( (unsigned char) str1[ i ] ) ) ) != ( toupper( ( (unsigned char) str2[ i ] ) ) ) )
+        firstChar = ( uint32_t ) toupper( ( ( int32_t ) ( unsigned char ) str1[ i ] ) );
+        secondChar = ( uint32_t ) toupper( ( ( int32_t ) ( unsigned char ) str2[ i ] ) );
+        if( firstChar != secondChar)
         {
             break;
         }
@@ -834,10 +836,8 @@ static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
         /* The start of the headers ALWAYS come before the the end of the headers. */
         assert( ( const char * ) ( pResponse->pHeaders ) < pParsingContext->pBufferCur );
 
-        /* MISRA Rule 10.8 flags the following line for casting from a signed
-         * pointer difference to a size_t. This rule is suppressed because in
-         * in the previous statement it is asserted that the pointer difference
-         * will never be negative. */
+        /* MISRA Ref 10.8.1 [Essential type casting] */
+        /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-108 */
         /* coverity[misra_c_2012_rule_10_8_violation] */
         pResponse->headersLen = ( size_t ) ( pParsingContext->pBufferCur - ( const char * ) ( pResponse->pHeaders ) );
     }
@@ -846,8 +846,8 @@ static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
         pResponse->headersLen = 0U;
     }
 
-    /* If the Content-Length header was found, then pHttpParser->content_length
-     * will not be equal to the maximum 64 bit integer. */
+    /* MISRA Ref 14.3.1 [Configuration dependent invariant] */
+    /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-143 */
     /* coverity[misra_c_2012_rule_14_3_violation] */
     if( pHttpParser->content_length != UINT64_MAX )
     {
@@ -930,12 +930,8 @@ static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
 
     /* The next location to write. */
 
-    /* MISRA Rule 11.8 flags casting away the const qualifier in the pointer
-     * type. This rule is suppressed because when the body is of transfer
-     * encoding chunked, the body must be copied over the chunk headers that
-     * precede it. This is done to have a contiguous response body. This does
-     * affect future parsing as the changed segment will always be before the
-     * next place to parse. */
+    /* MISRA Ref 11.8.1 [Function pointer and use of const pointer] */
+    /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-118 */
     /* coverity[misra_c_2012_rule_11_8_violation] */
     pNextWriteLoc = ( char * ) ( pResponse->pBody + pResponse->bodyLen );
 
@@ -944,9 +940,7 @@ static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
      * and must be moved up in the buffer. When pLoc is greater than the current
      * end of the body, that signals the parser found a chunk header. */
 
-    /* MISRA Rule 18.3 flags pLoc and pNextWriteLoc as pointing to two different
-     * objects. This rule is suppressed because both pNextWriteLoc and pLoc
-     * point to a location in the response buffer. */
+    /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-183 */
     /* coverity[pointer_parameter] */
     /* coverity[misra_c_2012_rule_18_3_violation] */
     if( pLoc > pNextWriteLoc )

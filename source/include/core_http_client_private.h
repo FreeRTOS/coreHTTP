@@ -103,41 +103,35 @@
 
 /* Constants for header values added based on flags. */
 
-/* MISRA Rule 5.4 flags the following macro's name as ambiguous from the
- * one postfixed with _LEN. This rule is suppressed for naming consistency with
- * other HTTP header field and value string and length macros in this file.*/
+/* MISRA Ref 5.4.1 [Macro identifiers] */
+/* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-54 */
 /* coverity[other_declaration] */
 #define HTTP_CONNECTION_KEEP_ALIVE_VALUE    "keep-alive" /**< HTTP header value "keep-alive" for the "Connection" header field. */
 
-/* MISRA Rule 5.4 flags the following macro's name as ambiguous from the one
- * above it. This rule is suppressed for naming consistency with other HTTP
- * header field and value string and length macros in this file.*/
+/* MISRA Ref 5.4.2 [Macro identifiers] */
+/* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-54 */
 /* coverity[misra_c_2012_rule_5_4_violation] */
 #define HTTP_CONNECTION_KEEP_ALIVE_VALUE_LEN    ( sizeof( HTTP_CONNECTION_KEEP_ALIVE_VALUE ) - 1U ) /**< The length of #HTTP_CONNECTION_KEEP_ALIVE_VALUE. */
 
 /* Constants relating to Range Requests. */
 
-/* MISRA Rule 5.4 flags the following macro's name as ambiguous from the
- * one postfixed with _LEN. This rule is suppressed for naming consistency with
- * other HTTP header field and value string and length macros in this file.*/
+/* MISRA Ref 5.4.3 [Macro identifiers] */
+/* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-54 */
 /* coverity[other_declaration] */
 #define HTTP_RANGE_REQUEST_HEADER_FIELD    "Range" /**< HTTP header field "Range". */
 
-/* MISRA Rule 5.4 flags the following macro's name as ambiguous from the one
- * above it. This rule is suppressed for naming consistency with other HTTP
- * header field and value string and length macros in this file.*/
+/* MISRA Ref 5.4.4 [Macro identifiers] */
+/* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-54 */
 /* coverity[misra_c_2012_rule_5_4_violation] */
 #define HTTP_RANGE_REQUEST_HEADER_FIELD_LEN    ( sizeof( HTTP_RANGE_REQUEST_HEADER_FIELD ) - 1U ) /**< The length of #HTTP_RANGE_REQUEST_HEADER_FIELD. */
 
-/* MISRA Rule 5.4 flags the following macro's name as ambiguous from the
- * one postfixed with _LEN. This rule is suppressed for naming consistency with
- * other HTTP header field and value string and length macros in this file.*/
+/* MISRA Ref 5.4.5 [Macro identifiers] */
+/* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-54 */
 /* coverity[other_declaration] */
 #define HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX    "bytes=" /**< HTTP required header value prefix when specifying a byte range for partial content. */
 
-/* MISRA Rule 5.4 flags the following macro's name as ambiguous from the one
- * above it. This rule is suppressed for naming consistency with other HTTP
- * header field and value string and length macros in this file.*/
+/* MISRA Ref 5.4.6 [Macro identifiers] */
+/* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-54 */
 /* coverity[misra_c_2012_rule_5_4_violation] */
 #define HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN    ( sizeof( HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX ) - 1U ) /**< The length of #HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX. */
 
