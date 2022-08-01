@@ -24,9 +24,9 @@
  * @file core_http_client.c
  * @brief Implements the user-facing functions in core_http_client.h.
  */
-#ifdef DISABLE_LOGGING
+#ifdef DISABLE_ASSERT
     #define assert( x )
-#else /* !DISABLE_LOGGING */
+#else /* !DISABLE_ASSERT */
     #include <assert.h>
 #endif
 #include <string.h>
