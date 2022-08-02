@@ -586,12 +586,12 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
         /* MISRA Ref 21.13.1 [Essential type casting] */
         /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-2113 */
         /* coverity[misra_c_2012_rule_21_13_violation] */
-        firstChar = ( int32_t ) toupper( ( ( int32_t ) str1[ i ] ) );
+        firstChar = toupper( ( ( int32_t ) str1[ i ] ) );
 
         /* MISRA Ref 21.13.1 [Essential Type Casting] */
         /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-2113 */
         /* coverity[misra_c_2012_rule_21_13_violation] */
-        secondChar = ( int32_t ) toupper( ( ( int32_t ) str2[ i ] ) );
+        secondChar = toupper( ( ( int32_t ) str2[ i ] ) );
 
         if( firstChar != secondChar )
         {
