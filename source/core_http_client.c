@@ -1268,19 +1268,19 @@ static char * httpHeaderStrncpy( char * pDest,
 
     for( ; i < len; i++ )
     {
-        if( pSrc[ i ] == CARRIAGE_RETURN_CHARACTER )
+        if( pSrc[ i ] == '\r' )
         {
             LogError( ( "Invalid character '\r' found in %.*s",
                         ( int ) len, pSrc ) );
             hasError = 1U;
         }
-        else if( pSrc[ i ] == LINEFEED_CHARACTER )
+        else if( pSrc[ i ] == '\n' )
         {
             LogError( ( "Invalid character '\n' found in %.*s",
                         ( int ) len, pSrc ) );
             hasError = 1U;
         }
-        else if( ( isField == 1U ) && ( pSrc[ i ] == COLON_CHARACTER ) )
+        else if( ( isField == 1U ) && ( pSrc[ i ] == ':' ) )
         {
             LogError( ( "Invalid character ':' found in %.*s",
                         ( int ) len, pSrc ) );
@@ -1327,18 +1327,18 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     /* Backtrack before trailing "\r\n" (HTTP header end) if it's already written.
      * Note that this method also writes trailing "\r\n" before returning.
      * The first condition prevents reading before start of the header. */
-    if( ( HTTP_HEADER_END_INDICATOR_LEN <= pRequestHeaders->headersLen ) &&
-        ( strncmp( ( char * ) pBufferCur - HTTP_HEADER_END_INDICATOR_LEN,
-                   HTTP_HEADER_END_INDICATOR, HTTP_HEADER_END_INDICATOR_LEN ) == 0 ) )
+    if( ( 4U <= pRequestHeaders->headersLen ) &&
+        ( strncmp( ( char * ) pBufferCur - 4U,
+                   "\r\n\r\n", 4U ) == 0 ) )
     {
-        backtrackHeaderLen -= HTTP_HEADER_LINE_SEPARATOR_LEN;
-        pBufferCur -= HTTP_HEADER_LINE_SEPARATOR_LEN;
+        backtrackHeaderLen -= 2U;
+        pBufferCur -= 2U;
     }
 
     /* Check if there is enough space in buffer for additional header. */
-    toAddLen = fieldLen + HTTP_HEADER_FIELD_SEPARATOR_LEN + valueLen +
-               HTTP_HEADER_LINE_SEPARATOR_LEN +
-               HTTP_HEADER_LINE_SEPARATOR_LEN;
+    toAddLen = fieldLen + 2U + valueLen +
+               2U +
+               2U;
 
     /* If we have enough room for the new header line, then write it to the
      * header buffer. */
@@ -1358,10 +1358,10 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
             /* Copy the field separator, ": ", into the buffer. */
             ( void ) memcpy( pBufferCur,
-                             HTTP_HEADER_FIELD_SEPARATOR,
-                             HTTP_HEADER_FIELD_SEPARATOR_LEN );
+                             ": ",
+                             2U );
 
-            pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
+            pBufferCur += 2U;
 
             /* Copy the header value into the buffer. */
             if( httpHeaderStrncpy( pBufferCur, pValue, valueLen, HTTP_HEADER_STRNCPY_IS_VALUE ) == NULL )
@@ -1376,8 +1376,8 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
             /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
             ( void ) memcpy( pBufferCur,
-                             HTTP_HEADER_END_INDICATOR,
-                             HTTP_HEADER_END_INDICATOR_LEN );
+                             "\r\n\r\n",
+                             4U );
 
             /* Update the headers length value only when everything is successful. */
             pRequestHeaders->headersLen = backtrackHeaderLen + toAddLen;
@@ -1417,9 +1417,9 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
     /* Write the range value prefix in the buffer. */
     ( void ) strncpy( rangeValueBuffer,
-                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
-                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
-    rangeValueLength += HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN;
+                      "bytes=",
+                      sizeof( "bytes=" ) - 1U );
+    rangeValueLength += sizeof( "bytes=" ) - 1U;
 
     /* Write the range start value in the buffer. */
     rangeValueLength += convertInt32ToAscii( rangeStartOrlastNbytes,
@@ -1432,8 +1432,8 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     if( rangeEnd != HTTP_RANGE_REQUEST_END_OF_FILE )
     {
         /* Write the "-" character to the buffer.*/
-        *( rangeValueBuffer + rangeValueLength ) = DASH_CHARACTER;
-        rangeValueLength += DASH_CHARACTER_LEN;
+        *( rangeValueBuffer + rangeValueLength ) = '-';
+        rangeValueLength += 1U;
 
         /* Write the rangeEnd value of the request range to the buffer. */
         rangeValueLength += convertInt32ToAscii( rangeEnd,
@@ -1444,8 +1444,8 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     else if( rangeStartOrlastNbytes >= 0 )
     {
         /* Write the "-" character to the buffer.*/
-        *( rangeValueBuffer + rangeValueLength ) = DASH_CHARACTER;
-        rangeValueLength += DASH_CHARACTER_LEN;
+        *( rangeValueBuffer + rangeValueLength ) = '-';
+        rangeValueLength += 1U;
     }
     else
     {
@@ -1454,8 +1454,8 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
     /* Add the Range Request header field and value to the buffer. */
     returnStatus = addHeader( pRequestHeaders,
-                              HTTP_RANGE_REQUEST_HEADER_FIELD,
-                              HTTP_RANGE_REQUEST_HEADER_FIELD_LEN,
+                              "Range",
+                              sizeof( "Range" ) - 1U,
                               rangeValueBuffer,
                               rangeValueLength );
 
@@ -1480,13 +1480,13 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     assert( methodLen != 0U );
 
     toAddLen = methodLen +                 \
-               SPACE_CHARACTER_LEN +       \
-               SPACE_CHARACTER_LEN +       \
-               HTTP_PROTOCOL_VERSION_LEN + \
-               HTTP_HEADER_LINE_SEPARATOR_LEN;
+               1U +                        \
+               1U +                        \
+               sizeof( "HTTP/1.1" ) - 1U + \
+               2U;
 
     pBufferCur = ( char * ) ( pRequestHeaders->pBuffer );
-    toAddLen += ( ( pPath == NULL ) || ( pathLen == 0U ) ) ? HTTP_EMPTY_PATH_LEN : pathLen;
+    toAddLen += ( ( pPath == NULL ) || ( pathLen == 0U ) ) ? 1U : pathLen;
 
     if( ( toAddLen + pRequestHeaders->headersLen ) > pRequestHeaders->bufferLen )
     {
@@ -1499,16 +1499,16 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
         ( void ) strncpy( pBufferCur, pMethod, methodLen );
         pBufferCur += methodLen;
 
-        *pBufferCur = SPACE_CHARACTER;
-        pBufferCur += SPACE_CHARACTER_LEN;
+        *pBufferCur = ' ';
+        pBufferCur += 1U;
 
         /* Use "/" as default value if <PATH> is NULL. */
         if( ( pPath == NULL ) || ( pathLen == 0U ) )
         {
             ( void ) strncpy( pBufferCur,
-                              HTTP_EMPTY_PATH,
-                              HTTP_EMPTY_PATH_LEN );
-            pBufferCur += HTTP_EMPTY_PATH_LEN;
+                              "/",
+                              1U );
+            pBufferCur += 1U;
         }
         else
         {
@@ -1516,17 +1516,17 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
             pBufferCur += pathLen;
         }
 
-        *pBufferCur = SPACE_CHARACTER;
-        pBufferCur += SPACE_CHARACTER_LEN;
+        *pBufferCur = ' ';
+        pBufferCur += 1U;
 
         ( void ) strncpy( pBufferCur,
-                          HTTP_PROTOCOL_VERSION,
-                          HTTP_PROTOCOL_VERSION_LEN );
-        pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
+                          "HTTP/1.1",
+                          sizeof( "HTTP/1.1" ) - 1U );
+        pBufferCur += sizeof( "HTTP/1.1" ) - 1U;
 
         ( void ) memcpy( pBufferCur,
-                         HTTP_HEADER_LINE_SEPARATOR,
-                         HTTP_HEADER_LINE_SEPARATOR_LEN );
+                         "\r\n",
+                         2U );
         pRequestHeaders->headersLen = toAddLen;
     }
 
@@ -1598,18 +1598,18 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
     {
         /* Write "User-Agent: <Value>". */
         returnStatus = addHeader( pRequestHeaders,
-                                  HTTP_USER_AGENT_FIELD,
-                                  HTTP_USER_AGENT_FIELD_LEN,
+                                  "User-Agent",
+                                  sizeof( "User-Agent" ) - 1U,
                                   HTTP_USER_AGENT_VALUE,
-                                  HTTP_USER_AGENT_VALUE_LEN );
+                                  sizeof( HTTP_USER_AGENT_VALUE ) - 1U );
     }
 
     if( returnStatus == HTTPSuccess )
     {
         /* Write "Host: <Value>". */
         returnStatus = addHeader( pRequestHeaders,
-                                  HTTP_HOST_FIELD,
-                                  HTTP_HOST_FIELD_LEN,
+                                  "Host",
+                                  sizeof( "Host" ) - 1U,
                                   pRequestInfo->pHost,
                                   pRequestInfo->hostLen );
     }
@@ -1620,10 +1620,10 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
         {
             /* Write "Connection: keep-alive". */
             returnStatus = addHeader( pRequestHeaders,
-                                      HTTP_CONNECTION_FIELD,
-                                      HTTP_CONNECTION_FIELD_LEN,
-                                      HTTP_CONNECTION_KEEP_ALIVE_VALUE,
-                                      HTTP_CONNECTION_KEEP_ALIVE_VALUE_LEN );
+                                      "Connection",
+                                      sizeof( "Connection" ) - 1U,
+                                      "keep-alive",
+                                      sizeof( "keep-alive" ) - 1U );
         }
     }
 
@@ -1852,8 +1852,8 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
                                                       sizeof( pContentLengthValue ) );
 
     returnStatus = addHeader( pRequestHeaders,
-                              HTTP_CONTENT_LENGTH_FIELD,
-                              HTTP_CONTENT_LENGTH_FIELD_LEN,
+                              "Content-Length",
+                              sizeof( "Content-Length" ) - 1U,
                               pContentLengthValue,
                               contentLengthValueNumBytes );
 

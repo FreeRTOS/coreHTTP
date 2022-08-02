@@ -57,7 +57,7 @@
 #define HTTP_TEST_REQUEST_PUT_HEADERS_LENGTH                    ( sizeof( HTTP_TEST_REQUEST_PUT_HEADERS ) - 1U )
 #define HTTP_TEST_REQUEST_PUT_BODY                              "abcdefghijklmnopqrstuvwxyz"
 #define HTTP_TEST_REQUEST_PUT_BODY_LENGTH                       ( sizeof( HTTP_TEST_REQUEST_PUT_BODY ) - 1U )
-#define HTTP_TEST_REQUEST_PUT_CONTENT_LENGTH_EXPECTED           "Content-Length: 26\r\n" HTTP_HEADER_LINE_SEPARATOR
+#define HTTP_TEST_REQUEST_PUT_CONTENT_LENGTH_EXPECTED           "Content-Length: 26\r\n" "\r\n"
 #define HTTP_TEST_REQUEST_PUT_CONTENT_LENGTH_EXPECTED_LENGTH    ( sizeof( HTTP_TEST_REQUEST_PUT_CONTENT_LENGTH_EXPECTED ) - 1U )
 
 /* Template HTTP request for a GET request. */
@@ -100,7 +100,7 @@
     HTTP_TEST_ETAG_HEADER_LINE             \
     HTTP_TEST_VARY_HEADER_LINE             \
     HTTP_TEST_P3P_HEADER_LINE              \
-    HTTP_TEST_XSERVER_HEADER_LINE HTTP_HEADER_LINE_SEPARATOR
+    HTTP_TEST_XSERVER_HEADER_LINE "\r\n"
 #define HTTP_TEST_RESPONSE_HEAD_LENGTH                         ( sizeof( HTTP_TEST_RESPONSE_HEAD ) - 1U )
 #define HTTP_TEST_RESPONSE_HEAD_HEADER_COUNT                   7
 #define HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH                 43
@@ -115,7 +115,7 @@
     HTTP_TEST_ETAG_HEADER_LINE                  \
     HTTP_TEST_VARY_HEADER_LINE                  \
     HTTP_TEST_P3P_HEADER_LINE                   \
-    HTTP_TEST_XSERVER_HEADER_LINE HTTP_HEADER_LINE_SEPARATOR
+    HTTP_TEST_XSERVER_HEADER_LINE "\r\n"
 #define HTTP_TEST_RESPONSE_PUT_LENGTH          ( sizeof( HTTP_TEST_RESPONSE_PUT ) - 1U )
 #define HTTP_TEST_RESPONSE_PUT_HEADER_COUNT    6
 
@@ -131,23 +131,23 @@
 #define HTTP_TEST_RESPONSE_GET_PARTIAL_BODY_LENGTH    ( HTTP_TEST_RESPONSE_GET_LENGTH - 13U )
 
 /* Template HTTP transfer-encoding chunked response. */
-#define HTTP_TEST_RESPONSE_CHUNKED                           \
-    HTTP_STATUS_LINE_OK                                      \
-    HTTP_TEST_TRANSFER_ENCODING_CHUNKED_HEADER_LINE          \
-    HTTP_TEST_CONNECTION_KEEP_ALIVE_HEADER_LINE              \
-    HTTP_TEST_DATE_HEADER_LINE                               \
-    HTTP_TEST_ETAG_HEADER_LINE                               \
-    HTTP_TEST_VARY_HEADER_LINE                               \
-    HTTP_TEST_P3P_HEADER_LINE                                \
-    HTTP_TEST_XSERVER_HEADER_LINE HTTP_HEADER_LINE_SEPARATOR \
-    "b\r\n"                                                  \
-    "abcdefghijk\r\n"                                        \
-    "c\r\n"                                                  \
-    "lmnopqrstuvw\r\n"                                       \
-    "3\r\n"                                                  \
-    "xyz\r\n"                                                \
-    "0\r\n"                                                  \
-    "\r\n"
+#define HTTP_TEST_RESPONSE_CHUNKED                   \
+    HTTP_STATUS_LINE_OK                              \
+    HTTP_TEST_TRANSFER_ENCODING_CHUNKED_HEADER_LINE  \
+    HTTP_TEST_CONNECTION_KEEP_ALIVE_HEADER_LINE      \
+    HTTP_TEST_DATE_HEADER_LINE                       \
+    HTTP_TEST_ETAG_HEADER_LINE                       \
+    HTTP_TEST_VARY_HEADER_LINE                       \
+    HTTP_TEST_P3P_HEADER_LINE                        \
+    HTTP_TEST_XSERVER_HEADER_LINE "\r\n"             \
+                                  "b\r\n"            \
+                                  "abcdefghijk\r\n"  \
+                                  "c\r\n"            \
+                                  "lmnopqrstuvw\r\n" \
+                                  "3\r\n"            \
+                                  "xyz\r\n"          \
+                                  "0\r\n"            \
+                                  "\r\n"
 #define HTTP_TEST_RESPONSE_CHUNKED_LENGTH          ( sizeof( HTTP_TEST_RESPONSE_CHUNKED ) - 1U )
 #define HTTP_TEST_RESPONSE_CHUNKED_HEADER_COUNT    7
 #define HTTP_TEST_RESPONSE_CHUNKED_BODY_LENGTH     26
@@ -159,11 +159,11 @@
     sizeof( HTTP_TEST_VARY_HEADER_LINE ) +                      \
     sizeof( HTTP_TEST_P3P_HEADER_LINE ) +                       \
     sizeof( HTTP_TEST_XSERVER_HEADER_LINE ) +                   \
-    HTTP_HEADER_LINE_SEPARATOR_LEN - 7U
+    2U - 7U
 
 /* Template HTTP response with no headers. */
 #define HTTP_TEST_RESPONSE_NO_HEADERS \
-    HTTP_STATUS_LINE_OK HTTP_HEADER_LINE_SEPARATOR
+    HTTP_STATUS_LINE_OK "\r\n"
 #define HTTP_TEST_RESPONSE_NO_HEADERS_LENGTH    ( sizeof( HTTP_TEST_RESPONSE_NO_HEADERS ) - 1U )
 
 /* Test buffer to share among the test. */
@@ -436,19 +436,19 @@ static void helper_parse_status_line( const char ** pNext,
      * cases, so the reason-phrase is always after HTTP/1.1 and the three digit
      * status code. strchr() is used only for unit testing where test input are
      * always string literals. strchr() should not be used in application code. */
-    *pNext = strchr( *pNext, SPACE_CHARACTER ); /* Get the space before the status-code. */
-    *pNext += SPACE_CHARACTER_LEN;
-    *pNext = strchr( *pNext, SPACE_CHARACTER ); /* Get the space before the reason-phrase. */
-    *pNext += SPACE_CHARACTER_LEN;
+    *pNext = strchr( *pNext, ' ' ); /* Get the space before the status-code. */
+    *pNext += 1U;
+    *pNext = strchr( *pNext, ' ' ); /* Get the space before the reason-phrase. */
+    *pNext += 1U;
     pReasonPhraseStart = *pNext;
-    *pNext = strstr( *pNext, HTTP_HEADER_LINE_SEPARATOR );
+    *pNext = strstr( *pNext, "\r\n" );
     reasonPhraseStartLen = ( size_t ) ( *pNext - pReasonPhraseStart );
     pParser->status_code = 200;
     pSettings->on_status( pParser,
                           pReasonPhraseStart,
                           reasonPhraseStartLen );
 
-    *pNext += HTTP_HEADER_LINE_SEPARATOR_LEN;
+    *pNext += 2U;
 }
 
 /* Mock helper that parses all of the headers starting from pNext. */
@@ -464,18 +464,18 @@ static void helper_parse_headers( const char ** pNext,
     while( **pNext != '\r' )
     {
         pHeaderFieldStart = *pNext;
-        *pNext = strstr( *pNext, HTTP_HEADER_FIELD_SEPARATOR );
+        *pNext = strstr( *pNext, ": " );
         headerFieldLen = ( size_t ) ( *pNext - pHeaderFieldStart );
         pSettings->on_header_field( pParser, pHeaderFieldStart, headerFieldLen );
 
-        *pNext += HTTP_HEADER_FIELD_SEPARATOR_LEN;
+        *pNext += 2U;
 
         pHeaderValueStart = *pNext;
-        *pNext = strstr( *pNext, HTTP_HEADER_LINE_SEPARATOR );
+        *pNext = strstr( *pNext, "\r\n" );
         headerValueLen = ( size_t ) ( *pNext - pHeaderValueStart );
         pSettings->on_header_value( pParser, pHeaderValueStart, headerValueLen );
 
-        *pNext += HTTP_HEADER_LINE_SEPARATOR_LEN;
+        *pNext += 2U;
     }
 }
 
@@ -507,7 +507,7 @@ static void helper_parse_headers_finish( const char ** pNext,
         *isHeadResponse = isHeadResponseReturned;
     }
 
-    *pNext += HTTP_HEADER_LINE_SEPARATOR_LEN;
+    *pNext += 2U;
 }
 
 /* Mock helper that parses the response body starting from pNext. */
@@ -633,11 +633,11 @@ static llhttp_errno_t llhttp_execute_partial_header_value( llhttp_t * pParser,
 
         /* Get the first header field. */
         pHeaderFieldStart = pNext;
-        pNext = strstr( pNext, HTTP_HEADER_FIELD_SEPARATOR );
+        pNext = strstr( pNext, ": " );
         headerFieldLen = ( size_t ) ( pNext - pHeaderFieldStart );
         pSettings->on_header_field( pParser, pHeaderFieldStart, headerFieldLen );
 
-        pNext += HTTP_HEADER_FIELD_SEPARATOR_LEN;
+        pNext += 2U;
 
         /* pNext now points to the start of the partial header value. */
         pHeaderValueStart = pNext;
@@ -649,11 +649,11 @@ static llhttp_errno_t llhttp_execute_partial_header_value( llhttp_t * pParser,
         /* In this second call to llhttp_execute mock, pData now starts
          * at the partial header value. */
         pHeaderValueStart = pNext;
-        pNext = strstr( pNext, HTTP_HEADER_LINE_SEPARATOR );
+        pNext = strstr( pNext, "\r\n" );
         headerValueLen = ( size_t ) ( pNext - pHeaderValueStart );
         pSettings->on_header_value( pParser, pHeaderValueStart, headerValueLen );
 
-        pNext += HTTP_HEADER_FIELD_SEPARATOR_LEN;
+        pNext += 2U;
 
         helper_parse_headers( &pNext, pParser, pSettings );
         helper_parse_headers_finish( &pNext, pParser, pSettings, &isHeadResponse );
@@ -730,16 +730,16 @@ static llhttp_errno_t llhttp_execute_chunked_body( llhttp_t * pParser,
         pChunkHeader = pNext;
         bodyLen = ( size_t ) strtoul( pChunkHeader, NULL, 16 );
 
-        pNext = strstr( pNext, HTTP_HEADER_LINE_SEPARATOR );
-        pNext += HTTP_HEADER_LINE_SEPARATOR_LEN;
+        pNext = strstr( pNext, "\r\n" );
+        pNext += 2U;
 
         pBody = pNext;
 
         if( bodyLen > 0 )
         {
             pSettings->on_body( pParser, pBody, bodyLen );
-            pNext = strstr( pNext, HTTP_HEADER_LINE_SEPARATOR );
-            pNext += HTTP_HEADER_LINE_SEPARATOR_LEN;
+            pNext = strstr( pNext, "\r\n" );
+            pNext += 2U;
         }
     }
 
@@ -814,7 +814,7 @@ void test_HTTPClient_Send_HEAD_request_parse_whole_response( void )
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0U, response.bodyLen );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - HTTP_HEADER_END_INDICATOR_LEN,
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - 4U,
                        response.headersLen );
     TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH, response.contentLength );
@@ -851,7 +851,7 @@ void test_HTTPClient_Send_PUT_request_parse_whole_response( void )
 
     TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ) - HTTP_HEADER_END_INDICATOR_LEN,
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ) - 4U,
                        response.headersLen );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0, response.bodyLen );
@@ -888,7 +888,7 @@ void test_HTTPClient_Send_GET_request_parse_whole_response( void )
 
     TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH - HTTP_HEADER_END_INDICATOR_LEN,
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH - 4U,
                        response.headersLen );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_BODY_LENGTH, response.bodyLen );
     TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
@@ -952,7 +952,7 @@ void test_HTTPClient_Send_parse_partial_header_field( void )
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0, response.bodyLen );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - HTTP_HEADER_END_INDICATOR_LEN,
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - 4U,
                        response.headersLen );
     TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH, response.contentLength );
@@ -983,7 +983,7 @@ void test_HTTPClient_Send_parse_partial_header_value( void )
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0, response.bodyLen );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - HTTP_HEADER_END_INDICATOR_LEN,
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - 4U,
                        response.headersLen );
     TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH, response.contentLength );
@@ -1018,7 +1018,7 @@ void test_HTTPClient_Send_parse_partial_body( void )
                                     0 );
     TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH - HTTP_HEADER_END_INDICATOR_LEN,
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH - 4U,
                        response.headersLen );
     TEST_ASSERT_EQUAL( response.pHeaders + HTTP_TEST_RESPONSE_GET_HEADERS_LENGTH, response.pBody );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_GET_BODY_LENGTH, response.bodyLen );
@@ -1054,7 +1054,7 @@ void test_HTTPClient_Send_parse_chunked_body( void )
 
     TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_CHUNKED_HEADERS_LENGTH - HTTP_HEADER_END_INDICATOR_LEN,
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_CHUNKED_HEADERS_LENGTH - 4U,
                        response.headersLen );
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_CHUNKED_BODY_LENGTH, response.bodyLen );
     TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
@@ -1317,7 +1317,7 @@ void test_HTTPClient_Send_less_bytes_request_headers( void )
 
     TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ) - HTTP_HEADER_END_INDICATOR_LEN,
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ) - 4U,
                        response.headersLen );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0, response.bodyLen );
@@ -1359,7 +1359,7 @@ void test_HTTPClient_Send_less_bytes_request_body( void )
 
     TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
     TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ), response.pHeaders );
-    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ) - HTTP_HEADER_END_INDICATOR_LEN,
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1 ) - 4U,
                        response.headersLen );
     TEST_ASSERT_EQUAL( NULL, response.pBody );
     TEST_ASSERT_EQUAL( 0, response.bodyLen );

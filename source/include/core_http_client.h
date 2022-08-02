@@ -534,7 +534,7 @@ typedef struct HTTPResponse
  * of bytes written.
  *
  * Each line in the header is listed below and written in this order:
- *     <#HTTPRequestInfo_t.pMethod> <#HTTPRequestInfo_t.pPath> <#HTTP_PROTOCOL_VERSION>
+ *     <#HTTPRequestInfo_t.pMethod> <#HTTPRequestInfo_t.pPath> HTTP/1.1
  *     User-Agent: <#HTTP_USER_AGENT_VALUE>
  *     Host: <#HTTPRequestInfo_t.pHost>
  *
