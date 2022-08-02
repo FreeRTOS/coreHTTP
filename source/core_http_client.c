@@ -1328,17 +1328,17 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
      * Note that this method also writes trailing "\r\n" before returning.
      * The first condition prevents reading before start of the header. */
     if( ( 4U <= pRequestHeaders->headersLen ) &&
-        ( strncmp( ( char * ) pBufferCur - 4U,
-                   "\r\n\r\n", 4U ) == 0 ) )
+        ( strcmp( "\r\n\r\n", ( char * ) pBufferCur - 4U ) == 0 ) )
     {
         backtrackHeaderLen -= 2U;
         pBufferCur -= 2U;
     }
 
-    /* Check if there is enough space in buffer for additional header. */
-    toAddLen = fieldLen + 2U + valueLen +
-               2U +
-               2U;
+    /*
+     * Check if there is enough space in buffer for additional header.
+     * "<field>: <value>\r\n\r\n"
+     */
+    toAddLen = fieldLen + 2U + valueLen + 2U + 2U;
 
     /* If we have enough room for the new header line, then write it to the
      * header buffer. */
@@ -1357,9 +1357,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
             pBufferCur += fieldLen;
 
             /* Copy the field separator, ": ", into the buffer. */
-            ( void ) memcpy( pBufferCur,
-                             ": ",
-                             2U );
+            ( void ) strcpy( pBufferCur, ": " );
 
             pBufferCur += 2U;
 
@@ -1375,9 +1373,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
             pBufferCur += valueLen;
 
             /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
-            ( void ) memcpy( pBufferCur,
-                             "\r\n\r\n",
-                             4U );
+            ( void ) strcpy( pBufferCur, "\r\n\r\n" );
 
             /* Update the headers length value only when everything is successful. */
             pRequestHeaders->headersLen = backtrackHeaderLen + toAddLen;
@@ -1416,9 +1412,8 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     /* Generate the value data for the Range Request header.*/
 
     /* Write the range value prefix in the buffer. */
-    ( void ) strncpy( rangeValueBuffer,
-                      "bytes=",
-                      sizeof( "bytes=" ) - 1U );
+    ( void ) strcpy( rangeValueBuffer, "bytes=" );
+
     rangeValueLength += sizeof( "bytes=" ) - 1U;
 
     /* Write the range start value in the buffer. */
@@ -1479,14 +1474,21 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     assert( pMethod != NULL );
     assert( methodLen != 0U );
 
-    toAddLen = methodLen +                 \
-               1U +                        \
-               1U +                        \
-               sizeof( "HTTP/1.1" ) - 1U + \
-               2U;
+    if( ( pPath == NULL ) || ( pathLen == 0U ) )
+    {
+        /* "<METHOD> / " */
+        toAddLen = methodLen + 1U + 1U + 1U;
+    }
+    else
+    {
+        /* "<METHOD> <PATH> " */
+        toAddLen = methodLen + 1U + pathLen + 1U;
+    }
+
+    /* "HTTP/1.1\r\n" */
+    toAddLen += sizeof( "HTTP/1.1" ) - 1U + 2U;
 
     pBufferCur = ( char * ) ( pRequestHeaders->pBuffer );
-    toAddLen += ( ( pPath == NULL ) || ( pathLen == 0U ) ) ? 1U : pathLen;
 
     if( ( toAddLen + pRequestHeaders->headersLen ) > pRequestHeaders->bufferLen )
     {
@@ -1505,9 +1507,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
         /* Use "/" as default value if <PATH> is NULL. */
         if( ( pPath == NULL ) || ( pathLen == 0U ) )
         {
-            ( void ) strncpy( pBufferCur,
-                              "/",
-                              1U );
+            ( void ) strcpy( pBufferCur, "/" );
             pBufferCur += 1U;
         }
         else
@@ -1519,14 +1519,9 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
         *pBufferCur = ' ';
         pBufferCur += 1U;
 
-        ( void ) strncpy( pBufferCur,
-                          "HTTP/1.1",
-                          sizeof( "HTTP/1.1" ) - 1U );
-        pBufferCur += sizeof( "HTTP/1.1" ) - 1U;
+        ( void ) strcpy( pBufferCur, "HTTP/1.1\r\n" );
+        pBufferCur += sizeof( "HTTP/1.1\r\n" ) - 1U;
 
-        ( void ) memcpy( pBufferCur,
-                         "\r\n",
-                         2U );
         pRequestHeaders->headersLen = toAddLen;
     }
 
