@@ -576,6 +576,7 @@ static int8_t caseInsensitiveStringCmp( const unsigned char * str1,
     /* Inclusion of inbetween variables for coverity rule 13.2 compliance */
     int32_t firstChar;
     int32_t secondChar;
+
     for( i = 0U; i < n; i++ )
     {
         firstChar = toupper( ( int32_t ) ( str1[ i ] ) );
