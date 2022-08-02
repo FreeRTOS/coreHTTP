@@ -46,7 +46,7 @@ target_compile_definitions( coverity_analysis PUBLIC HTTP_DO_NOT_USE_CUSTOM_CONF
 target_include_directories( coverity_analysis PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
 
 # Build HTTP library target without logging
-target_compile_options(coverity_analysis PUBLIC -DDISABLE_ASSERT )
+target_compile_options(coverity_analysis PUBLIC -DNDEBUG )
 # ===================== Clone needed third-party libraries ======================
 
 # Define an llhttp paser resource path.

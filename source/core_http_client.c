@@ -24,11 +24,7 @@
  * @file core_http_client.c
  * @brief Implements the user-facing functions in core_http_client.h.
  */
-#ifdef DISABLE_ASSERT
-    #define assert( x )
-#else /* !DISABLE_ASSERT */
-    #include <assert.h>
-#endif
+#include <assert.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -559,8 +555,8 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser );
  * 0 if str1 is equal to str2
  * 1 if str1 is not equal to str2.
  */
-static int8_t caseInsensitiveStringCmp( const char * str1,
-                                        const char * str2,
+static int8_t caseInsensitiveStringCmp( const unsigned char * str1,
+                                        const unsigned char * str2,
                                         size_t n );
 
 /*-----------------------------------------------------------*/
@@ -572,28 +568,20 @@ static uint32_t getZeroTimestampMs( void )
 
 /*-----------------------------------------------------------*/
 
-static int8_t caseInsensitiveStringCmp( const char * str1,
-                                        const char * str2,
+static int8_t caseInsensitiveStringCmp( const unsigned char * str1,
+                                        const unsigned char * str2,
                                         size_t n )
 {
     size_t i = 0U;
     /* Inclusion of inbetween variables for coverity rule 13.2 compliance */
     int32_t firstChar;
     int32_t secondChar;
-
     for( i = 0U; i < n; i++ )
     {
-        /* MISRA Ref 21.13.1 [Essential type casting] */
-        /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-2113 */
-        /* coverity[misra_c_2012_rule_21_13_violation] */
-        firstChar = toupper( ( ( int32_t ) str1[ i ] ) );
-
-        /* MISRA Ref 21.13.1 [Essential Type Casting] */
-        /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-2113 */
-        /* coverity[misra_c_2012_rule_21_13_violation] */
+        firstChar = toupper( ( int32_t ) ( str1[ i ] ) );
         secondChar = toupper( ( ( int32_t ) str2[ i ] ) );
 
-        if( firstChar != secondChar )
+        if( ( firstChar ) != ( secondChar ) )
         {
             break;
         }
@@ -1990,7 +1978,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
                                                  const HTTPRequestHeaders_t * pRequestHeaders )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
-    uint64_t totalReceived = 0U;
+    size_t totalReceived = 0U;
     int32_t currentReceived = 0;
     HTTPParsingContext_t parsingContext = { 0 };
     uint8_t shouldRecv = 1U, shouldParse = 1U, timeoutReached = 0U;
