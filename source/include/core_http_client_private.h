@@ -47,6 +47,13 @@
 /* *INDENT-ON* */
 
 /**
+ * @brief Preprocessor macro to calculate the length of a const char * string.
+ * @note It is intended that this function-like macro be evaluated by the c
+ *  preprocessor to the actual length of the constant string argument.
+ */
+#define CONST_STRLEN( string )    ( sizeof( string ) - 1U )
+
+/**
  * @brief Indicator for function #httpHeaderStrncpy that the pSrc parameter is a
  * header value.
  */
