@@ -61,7 +61,7 @@ typedef struct _headers
 #define HTTP_TEST_REQUEST_LINE   \
     ( HTTP_METHOD_GET " "        \
       HTTP_TEST_REQUEST_PATH " " \
-      HTTP_PROTOCOL_VERSION "\r\n" )
+                             "HTTP/1.1" "\r\n" )
 #define HTTP_TEST_REQUEST_LINE_LEN    ( sizeof( HTTP_TEST_REQUEST_LINE ) - 1 )
 
 /* Used for format parameter in snprintf(...). */
@@ -77,20 +77,20 @@ typedef struct _headers
     "%s: %s\r\n\r\n"
 
 /* Length of the following template HTTP header.
- *   <HTTP_METHOD_GET> <HTTP_TEST_REQUEST_PATH> <HTTP_PROTOCOL_VERSION> \r\n
- *   <HTTP_USER_AGENT_FIELD>: <HTTP_USER_AGENT_FIELD_LEN> \r\n
- *   <HTTP_HOST_FIELD>: <HTTP_TEST_HOST_VALUE> \r\n
+ *   <HTTP_METHOD_GET> <HTTP_TEST_REQUEST_PATH> <"HTTP/1.1"> \r\n
+ *   <"User-Agent">: <sizeof( "User-Agent" ) - 1U> \r\n
+ *   <"Host">: <HTTP_TEST_HOST_VALUE> \r\n
  *   \r\n
  * This is used to initialize the expectedHeader string. */
-#define HTTP_TEST_PREFIX_HEADER_LEN                                 \
-    ( HTTP_METHOD_GET_LEN + SPACE_CHARACTER_LEN +                   \
-      HTTP_TEST_REQUEST_PATH_LEN + SPACE_CHARACTER_LEN +            \
-      HTTP_PROTOCOL_VERSION_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +  \
-      HTTP_USER_AGENT_FIELD_LEN + HTTP_HEADER_FIELD_SEPARATOR_LEN + \
-      HTTP_USER_AGENT_VALUE_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +  \
-      HTTP_HOST_FIELD_LEN + HTTP_HEADER_FIELD_SEPARATOR_LEN +       \
-      HTTP_TEST_HOST_VALUE_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +   \
-      HTTP_HEADER_LINE_SEPARATOR_LEN )
+#define HTTP_TEST_PREFIX_HEADER_LEN               \
+    ( HTTP_METHOD_GET_LEN + 1U +                  \
+      HTTP_TEST_REQUEST_PATH_LEN + 1U +           \
+      sizeof( "HTTP/1.1" ) - 1U + 2U +            \
+      sizeof( "User-Agent" ) - 1U + 2U +          \
+      sizeof( HTTP_USER_AGENT_VALUE ) - 1U + 2U + \
+      sizeof( "Host" ) - 1U + 2U +                \
+      HTTP_TEST_HOST_VALUE_LEN + 2U +             \
+      2U )
 
 /* Add 1 because snprintf(...) writes a null byte at the end. */
 #define HTTP_TEST_INITIALIZED_HEADER_BUFFER_LEN \
@@ -117,18 +117,18 @@ typedef struct _headers
 #define HTTP_TEST_SINGLE_HEADER_LEN       \
     ( HTTP_TEST_HEADER_REQUEST_LINE_LEN + \
       HTTP_TEST_HEADER_FIELD_LEN +        \
-      HTTP_HEADER_FIELD_SEPARATOR_LEN +   \
+      2U +                                \
       HTTP_TEST_HEADER_VALUE_LEN +        \
-      HTTP_HEADER_LINE_SEPARATOR_LEN +    \
-      HTTP_HEADER_LINE_SEPARATOR_LEN )
+      2U +                                \
+      2U )
 
 /* The longest possible header used for these unit tests. */
-#define HTTP_TEST_DOUBLE_HEADER_LEN     \
-    ( HTTP_TEST_SINGLE_HEADER_LEN +     \
-      HTTP_TEST_HEADER_FIELD_LEN +      \
-      HTTP_HEADER_FIELD_SEPARATOR_LEN + \
-      HTTP_TEST_HEADER_VALUE_LEN +      \
-      HTTP_HEADER_LINE_SEPARATOR_LEN )
+#define HTTP_TEST_DOUBLE_HEADER_LEN \
+    ( HTTP_TEST_SINGLE_HEADER_LEN + \
+      HTTP_TEST_HEADER_FIELD_LEN +  \
+      2U +                          \
+      HTTP_TEST_HEADER_VALUE_LEN +  \
+      2U )
 
 #define HTTP_TEST_DOUBLE_HEADER_BUFFER_LEN \
     ( HTTP_TEST_DOUBLE_HEADER_LEN + 1 )
@@ -316,21 +316,21 @@ static void addRangeToExpectedHeaders( _headers_t * expectedHeaders,
                                        const char * expectedRange,
                                        bool terminatorExists )
 {
-    size_t expectedRangeLen = HTTP_RANGE_REQUEST_HEADER_FIELD_LEN +
-                              HTTP_HEADER_FIELD_SEPARATOR_LEN +
-                              HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN +
+    size_t expectedRangeLen = sizeof( "Range" ) - 1U +
+                              2U +
+                              sizeof( "bytes=" ) - 1U +
                               strlen( expectedRange ) +
-                              2 * HTTP_HEADER_LINE_SEPARATOR_LEN;
+                              2 * 2U;
 
     int numBytes =
         snprintf( ( char * ) expectedHeaders->buffer +
                   expectedHeaders->dataLen -
-                  ( terminatorExists ? HTTP_HEADER_LINE_SEPARATOR_LEN : 0 ),
+                  ( terminatorExists ? 2U : 0 ),
                   sizeof( expectedHeaders->buffer ) - expectedHeaders->dataLen,
                   "%s%s%s%s\r\n\r\n",
-                  HTTP_RANGE_REQUEST_HEADER_FIELD,
-                  HTTP_HEADER_FIELD_SEPARATOR,
-                  HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
+                  "Range",
+                  ": ",
+                  "bytes=",
                   expectedRange );
 
     /* Make sure that the Range request was printed to the buffer. */
@@ -338,7 +338,7 @@ static void addRangeToExpectedHeaders( _headers_t * expectedHeaders,
     TEST_ASSERT_LESS_THAN( sizeof( expectedHeaders->buffer ), ( size_t ) numBytes );
 
     expectedHeaders->dataLen += expectedRangeLen -
-                                ( terminatorExists ? HTTP_HEADER_LINE_SEPARATOR_LEN : 0 );
+                                ( terminatorExists ? 2U : 0 );
 }
 
 /* ============================ UNITY FIXTURES ============================== */
@@ -445,9 +445,9 @@ void test_Http_InitializeRequestHeaders_Happy_Path()
     numBytes = snprintf( ( char * ) expectedHeaders.buffer, sizeof( expectedHeaders.buffer ),
                          HTTP_TEST_HEADER_FORMAT,
                          HTTP_METHOD_GET, HTTP_TEST_REQUEST_PATH,
-                         HTTP_PROTOCOL_VERSION,
-                         HTTP_USER_AGENT_FIELD, HTTP_USER_AGENT_VALUE,
-                         HTTP_HOST_FIELD, HTTP_TEST_HOST_VALUE );
+                         "HTTP/1.1",
+                         "User-Agent", HTTP_USER_AGENT_VALUE,
+                         "Host", HTTP_TEST_HOST_VALUE );
     /* Make sure that the entire pre-existing data was printed to the buffer. */
     TEST_ASSERT_GREATER_THAN( 0, numBytes );
     TEST_ASSERT_LESS_THAN( sizeof( expectedHeaders.buffer ), ( size_t ) numBytes );
@@ -513,14 +513,14 @@ void test_Http_InitializeRequestHeaders_ReqInfo()
     HTTPRequestHeaders_t requestHeaders = { 0 };
     HTTPRequestInfo_t requestInfo = { 0 };
     int numBytes = 0;
-    size_t connectionKeepAliveHeaderLen = HTTP_CONNECTION_FIELD_LEN +
-                                          HTTP_HEADER_FIELD_SEPARATOR_LEN +
-                                          HTTP_CONNECTION_KEEP_ALIVE_VALUE_LEN +
-                                          HTTP_HEADER_LINE_SEPARATOR_LEN;
+    size_t connectionKeepAliveHeaderLen = sizeof( "Connection" ) - 1U +
+                                          2U +
+                                          sizeof( "keep-alive" ) - 1U +
+                                          2U;
 
     expectedHeaders.dataLen = HTTP_TEST_PREFIX_HEADER_LEN -
                               HTTP_TEST_REQUEST_PATH_LEN +
-                              HTTP_EMPTY_PATH_LEN +
+                              1U +
                               connectionKeepAliveHeaderLen;
 
     setupRequestInfo( &requestInfo );
@@ -530,11 +530,11 @@ void test_Http_InitializeRequestHeaders_ReqInfo()
     requestInfo.reqFlags = HTTP_REQUEST_KEEP_ALIVE_FLAG;
     numBytes = snprintf( ( char * ) expectedHeaders.buffer, sizeof( expectedHeaders.buffer ),
                          HTTP_TEST_EXTRA_HEADER_FORMAT,
-                         HTTP_METHOD_GET, HTTP_EMPTY_PATH,
-                         HTTP_PROTOCOL_VERSION,
-                         HTTP_USER_AGENT_FIELD, HTTP_USER_AGENT_VALUE,
-                         HTTP_HOST_FIELD, HTTP_TEST_HOST_VALUE,
-                         HTTP_CONNECTION_FIELD, HTTP_CONNECTION_KEEP_ALIVE_VALUE );
+                         HTTP_METHOD_GET, "/",
+                         "HTTP/1.1",
+                         "User-Agent", HTTP_USER_AGENT_VALUE,
+                         "Host", HTTP_TEST_HOST_VALUE,
+                         "Connection", "keep-alive" );
     /* Make sure that the entire pre-existing data was printed to the buffer. */
     TEST_ASSERT_GREATER_THAN( 0, numBytes );
     TEST_ASSERT_LESS_THAN( sizeof( expectedHeaders.buffer ), ( size_t ) numBytes );
@@ -548,16 +548,16 @@ void test_Http_InitializeRequestHeaders_ReqInfo()
                               expectedHeaders.dataLen );
 
     /* Repeat the test above but with length of path == 0 for coverage. */
-    requestInfo.pPath = HTTP_EMPTY_PATH;
+    requestInfo.pPath = "/";
     requestInfo.pathLen = 0;
     requestInfo.reqFlags = HTTP_REQUEST_KEEP_ALIVE_FLAG;
     numBytes = snprintf( ( char * ) expectedHeaders.buffer, sizeof( expectedHeaders.buffer ),
                          HTTP_TEST_EXTRA_HEADER_FORMAT,
-                         HTTP_METHOD_GET, HTTP_EMPTY_PATH,
-                         HTTP_PROTOCOL_VERSION,
-                         HTTP_USER_AGENT_FIELD, HTTP_USER_AGENT_VALUE,
-                         HTTP_HOST_FIELD, HTTP_TEST_HOST_VALUE,
-                         HTTP_CONNECTION_FIELD, HTTP_CONNECTION_KEEP_ALIVE_VALUE );
+                         HTTP_METHOD_GET, "/",
+                         "HTTP/1.1",
+                         "User-Agent", HTTP_USER_AGENT_VALUE,
+                         "Host", HTTP_TEST_HOST_VALUE,
+                         "Connection", "keep-alive" );
     /* Make sure that the entire pre-existing data was printed to the buffer. */
     TEST_ASSERT_GREATER_THAN( 0, numBytes );
     TEST_ASSERT_LESS_THAN( sizeof( expectedHeaders.buffer ), ( size_t ) numBytes );
@@ -1507,7 +1507,7 @@ void test_Http_ReadHeader_EmptyHeaderValue()
     pFieldLocToReturn = &pTestResponseEmptyValue[ headerFieldInRespLoc ];
     fieldLenToReturn = headerFieldInRespLen;
     /* Add two characters past the empty value to point to the next field. */
-    pValueLocToReturn = &pTestResponseEmptyValue[ headerValInRespLoc + HTTP_HEADER_LINE_SEPARATOR_LEN ];
+    pValueLocToReturn = &pTestResponseEmptyValue[ headerValInRespLoc + 2U ];
     /* llhttp will pass in a value of zero for an empty value. */
     valueLenToReturn = 0U;
     invokeHeaderFieldCallback = 1U;
