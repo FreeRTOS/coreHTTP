@@ -11,8 +11,8 @@ on:
         required: true
 
 jobs:
-  generate-sbom-and-tag-commit:
-    name: Tag commit
+  tag-commit:
+    name: Generate SBOM and tag commit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
