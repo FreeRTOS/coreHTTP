@@ -939,7 +939,7 @@ static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
      * and must be moved up in the buffer. When pLoc is greater than the current
      * end of the body, that signals the parser found a chunk header. */
 
-	/* MISRA Ref 18.3.1 [Pointer comparison] */
+    /* MISRA Ref 18.3.1 [Pointer comparison] */
     /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-183 */
     /* coverity[pointer_parameter] */
     /* coverity[misra_c_2012_rule_18_3_violation] */
