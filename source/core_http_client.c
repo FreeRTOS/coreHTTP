@@ -929,7 +929,7 @@ static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
 
     /* The next location to write. */
 
-    /* MISRA Ref 11.8.1 [Function pointer and use of const pointer] */
+    /* MISRA Ref 11.8.1 [Removal of const from pointer] */
     /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-118 */
     /* coverity[misra_c_2012_rule_11_8_violation] */
     pNextWriteLoc = ( char * ) ( pResponse->pBody + pResponse->bodyLen );
