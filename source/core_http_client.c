@@ -939,6 +939,7 @@ static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
      * and must be moved up in the buffer. When pLoc is greater than the current
      * end of the body, that signals the parser found a chunk header. */
 
+	/* MISRA Ref 18.3.1 [Pointer comparison] */
     /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-183 */
     /* coverity[pointer_parameter] */
     /* coverity[misra_c_2012_rule_18_3_violation] */
@@ -1356,6 +1357,9 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
             pBufferCur += fieldLen;
 
             /* Copy the field separator, ": ", into the buffer. */
+            /* MISRA Ref 7.4.1 [String literals] */
+            /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-74 */
+            /* coverity[misra_c_2012_rule_7_4_violation] */
             ( void ) memcpy( pBufferCur,
                              HTTP_HEADER_FIELD_SEPARATOR,
                              HTTP_HEADER_FIELD_SEPARATOR_LEN );
@@ -1374,6 +1378,9 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
             pBufferCur += valueLen;
 
             /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
+            /* MISRA Ref 7.4.1 [String literals] */
+            /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-74 */
+            /* coverity[misra_c_2012_rule_7_4_violation] */
             ( void ) memcpy( pBufferCur,
                              HTTP_HEADER_END_INDICATOR,
                              HTTP_HEADER_END_INDICATOR_LEN );
@@ -1523,6 +1530,9 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
                           HTTP_PROTOCOL_VERSION_LEN );
         pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
 
+        /* MISRA Ref 7.4.1 [String literals] */
+        /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-74 */
+        /* coverity[misra_c_2012_rule_7_4_violation] */
         ( void ) memcpy( pBufferCur,
                          HTTP_HEADER_LINE_SEPARATOR,
                          HTTP_HEADER_LINE_SEPARATOR_LEN );
@@ -2034,7 +2044,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
              * total, parsing will tell us if the end of the message is reached.*/
             shouldParse = 1U;
 
-            /* Coverity compliance requires the cast to an unsigned type, since we have checked that
+            /* MISRA compliance requires the cast to an unsigned type, since we have checked that
              * the value of current received is greater than 0 we don't need to worry about int overflow. */
             totalReceived += ( size_t ) currentReceived;
         }
@@ -2061,7 +2071,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
             /* Data is received into the buffer is immediately parsed. Parsing
              * is invoked even with a length of zero. A length of zero indicates
              * to the parser that there is no more data from the server (EOF).
-             * Additionally coverity compliance requires the cast to a larger type, but since we
+             * Additionally MISRA compliance requires the cast to a larger type, but since we
              * know that the value is greater than 0 we don't need to worry about int overflow. */
             returnStatus = parseHttpResponse( &parsingContext,
                                               pResponse,
