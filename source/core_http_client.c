@@ -1314,6 +1314,10 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     size_t toAddLen = 0U;
     size_t backtrackHeaderLen = 0U;
 
+    /* These variables are here to pass into memcpy for MISRA compliance */
+    const char *  pHeaderEndIndicator = HTTP_HEADER_END_INDICATOR;
+    const char * httpFieldSeparator = HTTP_HEADER_FIELD_SEPARATOR;
+
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
     assert( pField != NULL );
@@ -1357,11 +1361,8 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
             pBufferCur += fieldLen;
 
             /* Copy the field separator, ": ", into the buffer. */
-            /* MISRA Ref 7.4.1 [String literals] */
-            /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-74 */
-            /* coverity[misra_c_2012_rule_7_4_violation] */
             ( void ) memcpy( pBufferCur,
-                             HTTP_HEADER_FIELD_SEPARATOR,
+                             httpFieldSeparator,
                              HTTP_HEADER_FIELD_SEPARATOR_LEN );
 
             pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
@@ -1378,11 +1379,8 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
             pBufferCur += valueLen;
 
             /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
-            /* MISRA Ref 7.4.1 [String literals] */
-            /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-74 */
-            /* coverity[misra_c_2012_rule_7_4_violation] */
             ( void ) memcpy( pBufferCur,
-                             HTTP_HEADER_END_INDICATOR,
+                             pHeaderEndIndicator,
                              HTTP_HEADER_END_INDICATOR_LEN );
 
             /* Update the headers length value only when everything is successful. */
@@ -1480,6 +1478,9 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     char * pBufferCur = NULL;
     size_t toAddLen = 0U;
 
+    /* This variable is here to pass into memcpy for MISRA compliance */
+    const char * pHeaderLineSeparator = HTTP_HEADER_LINE_SEPARATOR;
+
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
     assert( pMethod != NULL );
@@ -1529,12 +1530,8 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
                           HTTP_PROTOCOL_VERSION,
                           HTTP_PROTOCOL_VERSION_LEN );
         pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
-
-        /* MISRA Ref 7.4.1 [String literals] */
-        /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-74 */
-        /* coverity[misra_c_2012_rule_7_4_violation] */
         ( void ) memcpy( pBufferCur,
-                         HTTP_HEADER_LINE_SEPARATOR,
+                         pHeaderLineSeparator,
                          HTTP_HEADER_LINE_SEPARATOR_LEN );
         pRequestHeaders->headersLen = toAddLen;
     }

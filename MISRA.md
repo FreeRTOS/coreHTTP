@@ -50,15 +50,6 @@ _Ref 5.4-6_
         above it. This rule is suppressed for naming consistency with other HTTP
         header field and value string and length macros in this file.
 
-#### Rule 7.4
-_Ref 7.4.1_
-- MISRA Rule 7.4 flags the strings being passed into memcpy() as not being of type
-        'void const * restrict' the strings are defined as literals using macros
-        and as such will not be able to change. Attempting to cast the strings as defined
-        to a different type leads to different violations. For further information
-        on why memcpy() is being used here instead of strncpy() refer to
-        [this](https://github.com/FreeRTOS/coreHTTP/issues/133) compiler warning.
-
 #### Rule 10.8
 _Ref 10.8.1_
 
