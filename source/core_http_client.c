@@ -1315,7 +1315,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     size_t backtrackHeaderLen = 0U;
 
     /* These variables are here to pass into memcpy for MISRA compliance */
-    const char *  pHeaderEndIndicator = HTTP_HEADER_END_INDICATOR;
+    const char * pHeaderEndIndicator = HTTP_HEADER_END_INDICATOR;
     const char * httpFieldSeparator = HTTP_HEADER_FIELD_SEPARATOR;
 
     assert( pRequestHeaders != NULL );
