@@ -1,0 +1,1066 @@
+CBMC version 5.63.0 (cbmc-5.63.0-41-g5a7a0a8801-dirty) 64-bit x86_64 macos
+Reading GOTO program from file main-contracts.o
+Generating GOTO Program
+Adding CPROVER library (x86_64)
+Removal of function pointers and virtual functions
+Generic Property Instrumentation
+Running with 11 object bits, 53 offset bits (user-specified)
+Starting Bounded Model Checking
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 1 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 2 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 3 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 4 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 5 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 6 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 7 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 8 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 9 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 10 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Not unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0 iteration 11 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1241 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 1 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 2 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 3 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 4 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 5 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 6 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 7 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 8 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 9 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 10 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Not unwinding loop __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1 iteration 11 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1245 function convertInt32ToAscii thread 0
+Unwinding loop strncmp.0 iteration 1 file <builtin-library-strncmp> line 42 function strncmp thread 0
+Unwinding loop strncmp.0 iteration 2 file <builtin-library-strncmp> line 42 function strncmp thread 0
+Unwinding loop strncmp.0 iteration 3 file <builtin-library-strncmp> line 42 function strncmp thread 0
+**** WARNING: no body for function __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 1 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 2 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 3 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 4 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 5 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 6 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 1 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 2 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 3 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 4 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 5 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 6 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 7 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 8 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 9 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Not unwinding loop __CPROVER_file_local_core_http_client_c_sendHttpData.0 iteration 10 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1788 function sendHttpData thread 0
+**** WARNING: no body for function llhttp_settings_init
+**** WARNING: no body for function llhttp_init
+Unwinding loop strncmp.0 iteration 1 file <builtin-library-strncmp> line 42 function strncmp thread 0
+Unwinding loop strncmp.0 iteration 2 file <builtin-library-strncmp> line 42 function strncmp thread 0
+Unwinding loop strncmp.0 iteration 3 file <builtin-library-strncmp> line 42 function strncmp thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+**** WARNING: no body for function llhttp_get_errno
+Unwinding loop __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0 iteration 1 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2010 function receiveAndParseHttpResponse thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0 iteration 2 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2010 function receiveAndParseHttpResponse thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0 iteration 3 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2010 function receiveAndParseHttpResponse thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0 iteration 4 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2010 function receiveAndParseHttpResponse thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0 iteration 5 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2010 function receiveAndParseHttpResponse thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0 iteration 6 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2010 function receiveAndParseHttpResponse thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0 iteration 7 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2010 function receiveAndParseHttpResponse thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0 iteration 8 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2010 function receiveAndParseHttpResponse thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0 iteration 9 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2010 function receiveAndParseHttpResponse thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Unwinding loop __CPROVER_contracts_write_set_check_assigns_clause_inclusion.0 iteration 1 file <builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> line 90 function __CPROVER_contracts_write_set_check_assigns_clause_inclusion thread 0
+Not unwinding loop __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0 iteration 10 file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2010 function receiveAndParseHttpResponse thread 0
+Runtime Symex: 18.2451s
+size of program expression: 116981 steps
+simple slicing removed 61 assignments
+Generated 7178 VCC(s), 4359 remaining after simplification
+Runtime Postprocess Equation: 0.032923s
+Passing problem to propositional reduction
+converting SSA
+Runtime Convert SSA: 10.8625s
+Running propositional reduction
+Post-processing
+Runtime Post-process: 0.171748s
+Solving with MiniSAT 2.2.1 with simplifier
+2711066 variables, 4668955 clauses
+SAT checker: instance is UNSATISFIABLE
+Runtime Solver: 10.7543s
+Runtime decision procedure: 21.6287s
+
+** Results:
+[1] only a single top-level call to 'HTTPClient_Send' is allowed when checking contract 'HTTPClient_Send': SUCCESS
+function GetCurrentTimeContract
+[GetCurrentTimeContract.1] Check that requires do not allocate or deallocate memory: SUCCESS
+[GetCurrentTimeContract.2] Check that ensures do not allocate or deallocate memory: SUCCESS
+[GetCurrentTimeContract.assigns.1] Check that the assigns clause of contract::GetCurrentTimeContract is included in the caller's assigns clause: SUCCESS
+[GetCurrentTimeContract.frees.1] Check that the frees clause of contract::GetCurrentTimeContract is included in the caller's frees clause: SUCCESS
+
+function HTTPClient_Send
+[HTTPClient_Send.1] Check that requires do not allocate or deallocate memory: SUCCESS
+[HTTPClient_Send.2] Check that ensures do not allocate or deallocate memory: SUCCESS
+
+function TransportInterfaceRecvContract
+[TransportInterfaceRecvContract.1] Check that requires do not allocate or deallocate memory: SUCCESS
+[TransportInterfaceRecvContract.2] Check that ensures do not allocate or deallocate memory: SUCCESS
+[TransportInterfaceRecvContract.assigns.1] Check that the assigns clause of contract::TransportInterfaceRecvContract is included in the caller's assigns clause: SUCCESS
+[TransportInterfaceRecvContract.frees.1] Check that the frees clause of contract::TransportInterfaceRecvContract is included in the caller's frees clause: SUCCESS
+
+function TransportInterfaceSendContract
+[TransportInterfaceSendContract.1] Check that requires do not allocate or deallocate memory: SUCCESS
+[TransportInterfaceSendContract.2] Check that ensures do not allocate or deallocate memory: SUCCESS
+[TransportInterfaceSendContract.assigns.1] Check that the assigns clause of contract::TransportInterfaceSendContract is included in the caller's assigns clause: SUCCESS
+[TransportInterfaceSendContract.frees.1] Check that the frees clause of contract::TransportInterfaceSendContract is included in the caller's frees clause: SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function __isctype
+[__isctype.assigns.1] line 169 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[__isctype.assigns.2] line 169 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function __istype
+[__istype.assigns.1] line 158 Assignment to local symbol return_value_isascii (always allowed): SUCCESS
+[__istype.assigns.2] line 158 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[__istype.assigns.4] line 158 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[__istype.assigns.3] line 159 Assignment to local symbol return_value___maskrune (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function __wcwidth
+[__wcwidth.assigns.1] line 200 Assignment to local symbol return_value___maskrune (always allowed): SUCCESS
+[__wcwidth.assigns.2] line 200 Assignment to local symbol _x (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function digittoint
+[digittoint.assigns.1] line 307 Assignment to local symbol return_value___maskrune (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isalnum
+[isalnum.assigns.1] line 214 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isalpha
+[isalpha.assigns.1] line 220 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isblank
+[isblank.assigns.1] line 226 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function iscntrl
+[iscntrl.assigns.1] line 232 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isdigit
+[isdigit.assigns.1] line 239 Assignment to local symbol return_value___isctype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isgraph
+[isgraph.assigns.1] line 245 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function ishexnumber
+[ishexnumber.assigns.1] line 313 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isideogram
+[isideogram.assigns.1] line 319 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function islower
+[islower.assigns.1] line 251 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isnumber
+[isnumber.assigns.1] line 325 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isphonogram
+[isphonogram.assigns.1] line 331 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isprint
+[isprint.assigns.1] line 257 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function ispunct
+[ispunct.assigns.1] line 263 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isrune
+[isrune.assigns.1] line 337 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isspace
+[isspace.assigns.1] line 269 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isspecial
+[isspecial.assigns.1] line 343 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isupper
+[isupper.assigns.1] line 275 Assignment to local symbol return_value___istype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function isxdigit
+[isxdigit.assigns.1] line 282 Assignment to local symbol return_value___isctype (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function tolower
+[tolower.assigns.1] line 294 Assignment to local symbol return_value___tolower (always allowed): SUCCESS
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h function toupper
+[toupper.assigns.1] line 300 Assignment to local symbol return_value___toupper (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function HTTPClient_AddHeader
+[HTTPClient_AddHeader.assigns.1] line 1641 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddHeader.assigns.2] line 1647 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddHeader.assigns.3] line 1652 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddHeader.assigns.4] line 1657 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddHeader.assigns.5] line 1662 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddHeader.assigns.6] line 1667 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddHeader.assigns.7] line 1672 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddHeader.assigns.8] line 1677 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddHeader.assigns.9] line 1686 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function HTTPClient_AddRangeHeader
+[HTTPClient_AddRangeHeader.assigns.1] line 1699 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddRangeHeader.assigns.2] line 1704 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddRangeHeader.assigns.3] line 1709 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddRangeHeader.assigns.4] line 1714 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddRangeHeader.assigns.5] line 1720 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddRangeHeader.assigns.6] line 1729 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddRangeHeader.assigns.7] line 1738 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddRangeHeader.assigns.8] line 1746 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_AddRangeHeader.assigns.9] line 1750 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function HTTPClient_InitializeRequestHeaders
+[HTTPClient_InitializeRequestHeaders.assigns.1] line 1541 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.2] line 1547 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.3] line 1552 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.4] line 1557 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.5] line 1562 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.6] line 1567 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.7] line 1572 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.8] line 1577 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.9] line 1587 Check that pRequestHeaders->headersLen is allowed by the assigns clause: SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.10] line 1590 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.11] line 1600 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.12] line 1610 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_InitializeRequestHeaders.assigns.13] line 1622 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function HTTPClient_ReadHeader
+[HTTPClient_ReadHeader.assigns.1] line 2485 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_ReadHeader.assigns.2] line 2490 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_ReadHeader.assigns.3] line 2495 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_ReadHeader.assigns.4] line 2501 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_ReadHeader.assigns.5] line 2506 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_ReadHeader.assigns.6] line 2512 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_ReadHeader.assigns.7] line 2517 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_ReadHeader.assigns.8] line 2522 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_ReadHeader.assigns.9] line 2531 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function HTTPClient_Send
+[HTTPClient_Send.assigns.1] line 2142 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_Send.assigns.2] line 2210 Check that pResponse->getTime is allowed by the assigns clause: SUCCESS
+[HTTPClient_Send.assigns.3] line 2213 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_Send.assigns.4] line 2218 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[HTTPClient_Send.assigns.5] line 2228 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function HTTPClient_strerror
+[HTTPClient_strerror.assigns.1] line 2546 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.2] line 2551 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.3] line 2555 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.4] line 2559 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.5] line 2563 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.6] line 2567 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.7] line 2571 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.8] line 2575 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.9] line 2579 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.10] line 2583 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.11] line 2587 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.12] line 2591 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.13] line 2595 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.14] line 2599 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.15] line 2603 Assignment to local symbol str (always allowed): SUCCESS
+[HTTPClient_strerror.assigns.16] line 2607 Assignment to local symbol str (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function addContentLengthHeader
+[addContentLengthHeader.assigns.1] line 1843 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[addContentLengthHeader.assigns.2] line 1844 Assignment to local symbol pContentLengthValue (always allowed): SUCCESS
+[addContentLengthHeader.assigns.3] line 1845 Assignment to local symbol contentLengthValueNumBytes (always allowed): SUCCESS
+[addContentLengthHeader.assertion.1] line 1847 assertion pRequestHeaders != NULL: SUCCESS
+[addContentLengthHeader.assertion.2] line 1848 assertion contentLength > 0U: SUCCESS
+[addContentLengthHeader.assigns.4] line 1850 Assignment to local symbol contentLengthValueNumBytes (always allowed): SUCCESS
+[addContentLengthHeader.assigns.5] line 1854 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function addHeader
+[addHeader.assigns.1] line 1312 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[addHeader.assigns.2] line 1313 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[addHeader.assigns.3] line 1314 Assignment to local symbol toAddLen (always allowed): SUCCESS
+[addHeader.assigns.4] line 1315 Assignment to local symbol backtrackHeaderLen (always allowed): SUCCESS
+[addHeader.assertion.1] line 1317 assertion pRequestHeaders != NULL: SUCCESS
+[addHeader.assertion.2] line 1318 assertion pRequestHeaders->pBuffer != NULL: SUCCESS
+[addHeader.assertion.3] line 1319 assertion pField != NULL: SUCCESS
+[addHeader.assertion.4] line 1320 assertion pValue != NULL: SUCCESS
+[addHeader.assertion.5] line 1321 assertion fieldLen != 0U: SUCCESS
+[addHeader.assertion.6] line 1322 assertion valueLen != 0U: SUCCESS
+[addHeader.assigns.5] line 1324 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[addHeader.assigns.6] line 1325 Assignment to local symbol backtrackHeaderLen (always allowed): SUCCESS
+[addHeader.assigns.7] line 1331 Assignment to local symbol return_value_strncmp (always allowed): SUCCESS
+[addHeader.assigns.8] line 1334 Assignment to local symbol backtrackHeaderLen (always allowed): SUCCESS
+[addHeader.assigns.9] line 1335 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[addHeader.assigns.10] line 1339 Assignment to local symbol toAddLen (always allowed): SUCCESS
+[addHeader.assigns.11] line 1350 Assignment to local symbol return_value_httpHeaderStrncpy (always allowed): SUCCESS
+[addHeader.assigns.12] line 1352 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[addHeader.assigns.13] line 1357 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[addHeader.precondition_instance.1] line 1360 memcpy src/dst overlap: SUCCESS
+[addHeader.precondition_instance.2] line 1360 memcpy source region readable: SUCCESS
+[addHeader.precondition_instance.3] line 1360 memcpy destination region writeable: SUCCESS
+[addHeader.assigns.14] line 1364 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[addHeader.assigns.15] line 1367 Assignment to local symbol return_value_httpHeaderStrncpy$0 (always allowed): SUCCESS
+[addHeader.assigns.16] line 1369 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[addHeader.assigns.17] line 1375 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[addHeader.precondition_instance.4] line 1378 memcpy src/dst overlap: SUCCESS
+[addHeader.precondition_instance.5] line 1378 memcpy source region readable: SUCCESS
+[addHeader.precondition_instance.6] line 1378 memcpy destination region writeable: SUCCESS
+[addHeader.assigns.18] line 1383 Check that pRequestHeaders->headersLen is allowed by the assigns clause: SUCCESS
+[addHeader.assigns.19] line 1393 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function addRangeHeader
+[addRangeHeader.assigns.1] line 1405 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[addRangeHeader.assigns.2] line 1407 Assignment to local symbol rangeValueLength (always allowed): SUCCESS
+[addRangeHeader.assertion.1] line 1409 assertion pRequestHeaders != NULL: SUCCESS
+[addRangeHeader.assigns.3] line 1422 Assignment to local symbol rangeValueLength (always allowed): SUCCESS
+[addRangeHeader.assigns.4] line 1425 Assignment to local symbol return_value_convertInt32ToAscii (always allowed): SUCCESS
+[addRangeHeader.assigns.5] line 1425 Assignment to local symbol rangeValueLength (always allowed): SUCCESS
+[addRangeHeader.assigns.6] line 1435 Check that rangeValueBuffer[(signed long int)rangeValueLength] is allowed by the assigns clause: SUCCESS
+[addRangeHeader.assigns.7] line 1436 Assignment to local symbol rangeValueLength (always allowed): SUCCESS
+[addRangeHeader.assigns.8] line 1439 Assignment to local symbol return_value_convertInt32ToAscii$0 (always allowed): SUCCESS
+[addRangeHeader.assigns.9] line 1439 Assignment to local symbol rangeValueLength (always allowed): SUCCESS
+[addRangeHeader.assigns.10] line 1447 Check that rangeValueBuffer[(signed long int)rangeValueLength] is allowed by the assigns clause: SUCCESS
+[addRangeHeader.assigns.11] line 1448 Assignment to local symbol rangeValueLength (always allowed): SUCCESS
+[addRangeHeader.assigns.12] line 1456 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function caseInsensitiveStringCmp
+[caseInsensitiveStringCmp.assigns.1] line 576 Assignment to local symbol i (always allowed): SUCCESS
+[caseInsensitiveStringCmp.assigns.2] line 578 Assignment to local symbol i (always allowed): SUCCESS
+[caseInsensitiveStringCmp.assigns.5] line 578 Assignment to local symbol i (always allowed): SUCCESS
+[caseInsensitiveStringCmp.assigns.3] line 580 Assignment to local symbol return_value_toupper (always allowed): SUCCESS
+[caseInsensitiveStringCmp.assigns.4] line 580 Assignment to local symbol return_value_toupper$0 (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function convertInt32ToAscii
+[convertInt32ToAscii.assigns.1] line 1214 Assignment to local symbol absoluteValue (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.2] line 1215 Assignment to local symbol numOfDigits (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.3] line 1216 Assignment to local symbol index (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.4] line 1217 Assignment to local symbol isNegative (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.5] line 1218 Assignment to local symbol temp (always allowed): SUCCESS
+[convertInt32ToAscii.assertion.1] line 1220 assertion pBuffer != NULL: SUCCESS
+[convertInt32ToAscii.assertion.2] line 1221 assertion bufferLength >= MAX_INT32_NO_OF_DECIMAL_DIGITS: SUCCESS
+[convertInt32ToAscii.assigns.6] line 1227 Assignment to local symbol isNegative (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.7] line 1229 Check that *pBuffer is allowed by the assigns clause: SUCCESS
+[convertInt32ToAscii.assigns.8] line 1232 Assignment to local symbol absoluteValue (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.9] line 1238 Check that pBuffer[(signed long int)((signed int)isNegative + (signed int)numOfDigits)] is allowed by the assigns clause: SUCCESS
+[convertInt32ToAscii.assigns.10] line 1239 Assignment to local symbol numOfDigits (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.11] line 1240 Assignment to local symbol absoluteValue (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.12] line 1245 Assignment to local symbol index (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.16] line 1245 Assignment to local symbol index (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.13] line 1247 Assignment to local symbol temp (always allowed): SUCCESS
+[convertInt32ToAscii.assigns.14] line 1248 Check that pBuffer[(signed long int)((signed int)isNegative + (signed int)index)] is allowed by the assigns clause: SUCCESS
+[convertInt32ToAscii.assigns.15] line 1249 Check that pBuffer[(signed long int)((unsigned int)(((signed int)isNegative + (signed int)numOfDigits) - (signed int)index) - 1u)] is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function findHeaderInResponse
+[findHeaderInResponse.assigns.1] line 2378 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[findHeaderInResponse.assigns.2] line 2379 Assignment to local symbol parser (always allowed): SUCCESS
+[findHeaderInResponse.assigns.3] line 2380 Assignment to local symbol parserSettings (always allowed): SUCCESS
+[findHeaderInResponse.assigns.4] line 2382 Assignment to local symbol context (always allowed): SUCCESS
+[findHeaderInResponse.assigns.5] line 2384 Assignment to local symbol composite member context.pField implicitly allowed: SUCCESS
+[findHeaderInResponse.assigns.6] line 2385 Assignment to local symbol composite member context.fieldLen implicitly allowed: SUCCESS
+[findHeaderInResponse.assigns.7] line 2386 Assignment to local symbol composite member context.pValueLoc implicitly allowed: SUCCESS
+[findHeaderInResponse.assigns.8] line 2387 Assignment to local symbol composite member context.pValueLen implicitly allowed: SUCCESS
+[findHeaderInResponse.assigns.9] line 2388 Assignment to local symbol composite member context.fieldFound implicitly allowed: SUCCESS
+[findHeaderInResponse.assigns.10] line 2389 Assignment to local symbol composite member context.valueFound implicitly allowed: SUCCESS
+[findHeaderInResponse.assigns.11] line 2395 Assignment to local symbol composite member parserSettings.on_header_field implicitly allowed: SUCCESS
+[findHeaderInResponse.assigns.12] line 2396 Assignment to local symbol composite member parserSettings.on_header_value implicitly allowed: SUCCESS
+[findHeaderInResponse.assigns.13] line 2397 Assignment to local symbol composite member parserSettings.on_headers_complete implicitly allowed: SUCCESS
+[findHeaderInResponse.assigns.14] line 2401 Assignment to local symbol composite member parser.data implicitly allowed: SUCCESS
+[findHeaderInResponse.assigns.15] line 2404 Assignment to local symbol parserErrno (always allowed): SUCCESS
+[findHeaderInResponse.assertion.1] line 2409 assertion context.valueFound == 0U: SUCCESS
+[findHeaderInResponse.assigns.16] line 2416 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[findHeaderInResponse.assigns.17] line 2429 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[findHeaderInResponse.assertion.2] line 2434 assertion ( context.fieldFound == 1U ) && ( context.valueFound == 1U ): SUCCESS
+[findHeaderInResponse.assigns.18] line 2442 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[findHeaderInResponse.assigns.19] line 2455 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[findHeaderInResponse.assigns.20] line 2467 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function findHeaderOnHeaderCompleteCallback
+[findHeaderOnHeaderCompleteCallback.assigns.1] line 2341 Assignment to local symbol pContext (always allowed): SUCCESS
+[findHeaderOnHeaderCompleteCallback.assertion.1] line 2348 assertion pHttpParser != NULL: SUCCESS
+[findHeaderOnHeaderCompleteCallback.assigns.2] line 2350 Assignment to local symbol pContext (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function getFinalResponseStatus
+[getFinalResponseStatus.assigns.1] line 1935 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[getFinalResponseStatus.assertion.1] line 1937 assertion parsingState >= HTTP_PARSING_NONE && parsingState <= HTTP_PARSING_COMPLETE: SUCCESS
+[getFinalResponseStatus.assertion.2] line 1939 assertion totalReceived <= responseBufferLen: SUCCESS
+[getFinalResponseStatus.assigns.2] line 1947 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[getFinalResponseStatus.assigns.3] line 1957 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[getFinalResponseStatus.assigns.4] line 1965 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function initializeParsingContextForFirstResponse
+[initializeParsingContextForFirstResponse.assertion.1] line 990 assertion pParsingContext != NULL: SUCCESS
+[initializeParsingContextForFirstResponse.assertion.2] line 991 assertion pRequestHeaders != NULL: SUCCESS
+[initializeParsingContextForFirstResponse.assertion.3] line 992 assertion pRequestHeaders->headersLen >= HTTP_MINIMUM_REQUEST_LINE_LENGTH: SUCCESS
+[initializeParsingContextForFirstResponse.assigns.1] line 996 Check that pParsingContext->llhttpSettings.on_message_begin is allowed by the assigns clause: SUCCESS
+[initializeParsingContextForFirstResponse.assigns.2] line 997 Check that pParsingContext->llhttpSettings.on_status is allowed by the assigns clause: SUCCESS
+[initializeParsingContextForFirstResponse.assigns.3] line 998 Check that pParsingContext->llhttpSettings.on_header_field is allowed by the assigns clause: SUCCESS
+[initializeParsingContextForFirstResponse.assigns.4] line 999 Check that pParsingContext->llhttpSettings.on_header_value is allowed by the assigns clause: SUCCESS
+[initializeParsingContextForFirstResponse.assigns.5] line 1000 Check that pParsingContext->llhttpSettings.on_headers_complete is allowed by the assigns clause: SUCCESS
+[initializeParsingContextForFirstResponse.assigns.6] line 1001 Check that pParsingContext->llhttpSettings.on_body is allowed by the assigns clause: SUCCESS
+[initializeParsingContextForFirstResponse.assigns.7] line 1002 Check that pParsingContext->llhttpSettings.on_message_complete is allowed by the assigns clause: SUCCESS
+[initializeParsingContextForFirstResponse.assigns.8] line 1008 Check that pParsingContext->state is allowed by the assigns clause: SUCCESS
+[initializeParsingContextForFirstResponse.assigns.9] line 1011 Check that pParsingContext->pResponse is allowed by the assigns clause: SUCCESS
+[initializeParsingContextForFirstResponse.assigns.10] line 1017 Assignment to local symbol return_value_strncmp (always allowed): SUCCESS
+[initializeParsingContextForFirstResponse.assigns.11] line 1021 Check that pParsingContext->isHeadResponse is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function parseHttpResponse
+[parseHttpResponse.assigns.1] line 1146 Assignment to local symbol parsingStartLoc (always allowed): SUCCESS
+[parseHttpResponse.assertion.1] line 1148 assertion pParsingContext != NULL: SUCCESS
+[parseHttpResponse.assertion.2] line 1149 assertion pResponse != NULL: SUCCESS
+[parseHttpResponse.assigns.2] line 1155 Check that pParsingContext->pResponse is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assigns.3] line 1156 Check that pParsingContext->pBufferCur is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assigns.4] line 1159 Check that pResponse->statusCode is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assigns.5] line 1161 Check that pResponse->pBody is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assigns.6] line 1162 Check that pResponse->bodyLen is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assigns.7] line 1166 Check that pResponse->pHeaders is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assigns.8] line 1167 Check that pResponse->headersLen is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assigns.9] line 1168 Check that pResponse->headerCount is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assigns.10] line 1170 Check that pResponse->respFlags is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assertion.3] line 1177 assertion pParsingContext->pResponse == pResponse: SUCCESS
+[parseHttpResponse.assigns.11] line 1182 Check that pParsingContext->llhttpParser.data is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assigns.12] line 1187 Assignment to local symbol parsingStartLoc (always allowed): SUCCESS
+[parseHttpResponse.assigns.13] line 1196 Check that pParsingContext->pBufferCur is allowed by the assigns clause: SUCCESS
+[parseHttpResponse.assigns.14] line 1197 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function processCompleteHeader
+[processCompleteHeader.assigns.1] line 593 Assignment to local symbol pResponse (always allowed): SUCCESS
+[processCompleteHeader.assertion.1] line 595 assertion pParsingContext != NULL: SUCCESS
+[processCompleteHeader.assertion.2] line 596 assertion pParsingContext->pResponse != NULL: SUCCESS
+[processCompleteHeader.assigns.2] line 598 Assignment to local symbol pResponse (always allowed): SUCCESS
+[processCompleteHeader.assertion.3] line 605 assertion pResponse->headerCount < SIZE_MAX: SUCCESS
+[processCompleteHeader.assigns.3] line 607 Check that pResponse->headerCount is allowed by the assigns clause: SUCCESS
+[processCompleteHeader.assigns.4] line 619 Assignment to local symbol __CPROVER_file_local_core_http_client_c_processCompleteHeader_function_pointer_call_1 (always allowed): SUCCESS
+[processCompleteHeader.pointer_dereference.1] line 619 no candidates for dereferenced function pointer: SUCCESS
+[processCompleteHeader.assigns.5] line 631 Check that pParsingContext->pLastHeaderField is allowed by the assigns clause: SUCCESS
+[processCompleteHeader.assigns.6] line 632 Check that pParsingContext->lastHeaderFieldLen is allowed by the assigns clause: SUCCESS
+[processCompleteHeader.assigns.7] line 633 Check that pParsingContext->pLastHeaderValue is allowed by the assigns clause: SUCCESS
+[processCompleteHeader.assigns.8] line 634 Check that pParsingContext->lastHeaderValueLen is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function processLlhttpError
+[processLlhttpError.assigns.1] line 1029 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[processLlhttpError.assertion.1] line 1031 assertion pHttpParser != NULL: SUCCESS
+[processLlhttpError.assigns.2] line 1036 Assignment to local symbol return_value_llhttp_get_errno (always allowed): SUCCESS
+[processLlhttpError.assigns.3] line 1054 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[processLlhttpError.assigns.4] line 1063 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[processLlhttpError.assigns.5] line 1073 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[processLlhttpError.assigns.6] line 1082 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[processLlhttpError.assigns.7] line 1089 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[processLlhttpError.assigns.8] line 1095 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[processLlhttpError.assigns.9] line 1104 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[processLlhttpError.assigns.10] line 1113 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[processLlhttpError.assigns.11] line 1119 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[processLlhttpError.assigns.12] line 1126 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function receiveAndParseHttpResponse
+[receiveAndParseHttpResponse.assigns.1] line 1982 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.2] line 1983 Assignment to local symbol totalReceived (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.3] line 1984 Assignment to local symbol currentReceived (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.4] line 1985 Assignment to local symbol parsingContext (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.5] line 1986 Assignment to local symbol shouldRecv (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.6] line 1986 Assignment to local symbol shouldParse (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.7] line 1986 Assignment to local symbol timeoutReached (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.8] line 1987 Assignment to local symbol lastRecvTimeMs (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.9] line 1987 Assignment to local symbol timeSinceLastRecvMs (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.10] line 1988 Assignment to local symbol retryTimeoutMs (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assertion.1] line 1990 assertion pTransport != NULL: SUCCESS
+[receiveAndParseHttpResponse.assertion.2] line 1991 assertion pTransport->recv != NULL: SUCCESS
+[receiveAndParseHttpResponse.assertion.3] line 1992 assertion pResponse != NULL: SUCCESS
+[receiveAndParseHttpResponse.assertion.4] line 1993 assertion pRequestHeaders != NULL: SUCCESS
+[receiveAndParseHttpResponse.assigns.11] line 2003 Assignment to local symbol retryTimeoutMs (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.12] line 2008 Assignment to local symbol __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse_function_pointer_call_1 (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.13] line 2008 Assignment to local symbol lastRecvTimeMs (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.14] line 2008 Assignment to local symbol lastRecvTimeMs (always allowed): SUCCESS
+[receiveAndParseHttpResponse.pointer_dereference.1] line 2008 dereferenced function pointer must be one of [__CPROVER_file_local_core_http_client_c_getZeroTimestampMs, GetCurrentTimeContract]: SUCCESS
+[receiveAndParseHttpResponse.assigns.15] line 2013 Assignment to local symbol __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse_function_pointer_call_2 (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.16] line 2013 Assignment to local symbol currentReceived (always allowed): SUCCESS
+[receiveAndParseHttpResponse.pointer_dereference.2] line 2013 dereferenced function pointer must be TransportInterfaceRecvContract: SUCCESS
+[receiveAndParseHttpResponse.assigns.17] line 2023 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.18] line 2026 Assignment to local symbol shouldParse (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.19] line 2031 Assignment to local symbol __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse_function_pointer_call_3 (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.20] line 2031 Assignment to local symbol lastRecvTimeMs (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.21] line 2031 Assignment to local symbol lastRecvTimeMs (always allowed): SUCCESS
+[receiveAndParseHttpResponse.pointer_dereference.3] line 2031 dereferenced function pointer must be one of [__CPROVER_file_local_core_http_client_c_getZeroTimestampMs, GetCurrentTimeContract]: SUCCESS
+[receiveAndParseHttpResponse.assigns.22] line 2036 Assignment to local symbol shouldParse (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.23] line 2037 Assignment to local symbol totalReceived (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.24] line 2041 Assignment to local symbol __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse_function_pointer_call_4 (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.25] line 2041 Assignment to local symbol return_value (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.26] line 2041 Assignment to local symbol return_value (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.27] line 2041 Assignment to local symbol timeSinceLastRecvMs (always allowed): SUCCESS
+[receiveAndParseHttpResponse.pointer_dereference.4] line 2041 dereferenced function pointer must be one of [__CPROVER_file_local_core_http_client_c_getZeroTimestampMs, GetCurrentTimeContract]: SUCCESS
+[receiveAndParseHttpResponse.assigns.28] line 2043 Assignment to local symbol shouldParse (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.29] line 2052 Assignment to local symbol shouldParse (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.30] line 2053 Assignment to local symbol timeoutReached (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.31] line 2062 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.34] line 2071 Assignment to local symbol shouldRecv (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.32] line 2072 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.33] line 2072 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[receiveAndParseHttpResponse.assigns.35] line 2082 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function sendHttpBody
+[sendHttpBody.assigns.1] line 1915 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[sendHttpBody.assertion.1] line 1917 assertion pTransport != NULL: SUCCESS
+[sendHttpBody.assertion.2] line 1918 assertion pTransport->send != NULL: SUCCESS
+[sendHttpBody.assertion.3] line 1919 assertion pRequestBodyBuf != NULL: SUCCESS
+[sendHttpBody.assigns.2] line 1924 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function sendHttpData
+[sendHttpData.assigns.1] line 1765 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[sendHttpData.assigns.2] line 1766 Assignment to local symbol pIndex (always allowed): SUCCESS
+[sendHttpData.assigns.3] line 1767 Assignment to local symbol bytesSent (always allowed): SUCCESS
+[sendHttpData.assigns.4] line 1768 Assignment to local symbol bytesRemaining (always allowed): SUCCESS
+[sendHttpData.assigns.5] line 1769 Assignment to local symbol lastSendTimeMs (always allowed): SUCCESS
+[sendHttpData.assigns.6] line 1769 Assignment to local symbol timeSinceLastSendMs (always allowed): SUCCESS
+[sendHttpData.assigns.7] line 1770 Assignment to local symbol retryTimeoutMs (always allowed): SUCCESS
+[sendHttpData.assertion.1] line 1772 assertion pTransport != NULL: SUCCESS
+[sendHttpData.assertion.2] line 1773 assertion pTransport->send != NULL: SUCCESS
+[sendHttpData.assertion.3] line 1774 assertion pData != NULL: SUCCESS
+[sendHttpData.assigns.8] line 1780 Assignment to local symbol retryTimeoutMs (always allowed): SUCCESS
+[sendHttpData.assigns.9] line 1785 Assignment to local symbol __CPROVER_file_local_core_http_client_c_sendHttpData_function_pointer_call_1 (always allowed): SUCCESS
+[sendHttpData.assigns.10] line 1785 Assignment to local symbol lastSendTimeMs (always allowed): SUCCESS
+[sendHttpData.assigns.11] line 1785 Assignment to local symbol lastSendTimeMs (always allowed): SUCCESS
+[sendHttpData.pointer_dereference.1] line 1785 dereferenced function pointer must be one of [__CPROVER_file_local_core_http_client_c_getZeroTimestampMs, GetCurrentTimeContract]: SUCCESS
+[sendHttpData.assigns.12] line 1790 Assignment to local symbol __CPROVER_file_local_core_http_client_c_sendHttpData_function_pointer_call_2 (always allowed): SUCCESS
+[sendHttpData.assigns.13] line 1790 Assignment to local symbol bytesSent (always allowed): SUCCESS
+[sendHttpData.pointer_dereference.2] line 1790 dereferenced function pointer must be TransportInterfaceSendContract: SUCCESS
+[sendHttpData.assigns.14] line 1799 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[sendHttpData.assertion.4] line 1807 assertion ( size_t ) bytesSent <= bytesRemaining: SUCCESS
+[sendHttpData.assigns.15] line 1810 Assignment to local symbol __CPROVER_file_local_core_http_client_c_sendHttpData_function_pointer_call_3 (always allowed): SUCCESS
+[sendHttpData.assigns.16] line 1810 Assignment to local symbol lastSendTimeMs (always allowed): SUCCESS
+[sendHttpData.assigns.17] line 1810 Assignment to local symbol lastSendTimeMs (always allowed): SUCCESS
+[sendHttpData.pointer_dereference.3] line 1810 dereferenced function pointer must be one of [__CPROVER_file_local_core_http_client_c_getZeroTimestampMs, GetCurrentTimeContract]: SUCCESS
+[sendHttpData.assigns.18] line 1812 Assignment to local symbol bytesRemaining (always allowed): SUCCESS
+[sendHttpData.assigns.19] line 1813 Assignment to local symbol pIndex (always allowed): SUCCESS
+[sendHttpData.assigns.20] line 1823 Assignment to local symbol __CPROVER_file_local_core_http_client_c_sendHttpData_function_pointer_call_4 (always allowed): SUCCESS
+[sendHttpData.assigns.21] line 1823 Assignment to local symbol return_value (always allowed): SUCCESS
+[sendHttpData.assigns.22] line 1823 Assignment to local symbol return_value (always allowed): SUCCESS
+[sendHttpData.assigns.23] line 1823 Assignment to local symbol timeSinceLastSendMs (always allowed): SUCCESS
+[sendHttpData.pointer_dereference.4] line 1823 dereferenced function pointer must be one of [__CPROVER_file_local_core_http_client_c_getZeroTimestampMs, GetCurrentTimeContract]: SUCCESS
+[sendHttpData.assigns.24] line 1830 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function sendHttpHeaders
+[sendHttpHeaders.assigns.1] line 1878 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[sendHttpHeaders.assigns.2] line 1879 Assignment to local symbol shouldSendContentLength (always allowed): SUCCESS
+[sendHttpHeaders.assertion.1] line 1881 assertion pTransport != NULL: SUCCESS
+[sendHttpHeaders.assertion.2] line 1882 assertion pTransport->send != NULL: SUCCESS
+[sendHttpHeaders.assertion.3] line 1883 assertion pRequestHeaders != NULL: SUCCESS
+[sendHttpHeaders.assigns.3] line 1887 Assignment to local symbol shouldSendContentLength (always allowed): SUCCESS
+[sendHttpHeaders.assigns.4] line 1892 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[sendHttpHeaders.assigns.5] line 1899 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function sendHttpRequest
+[sendHttpRequest.assigns.1] line 2099 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[sendHttpRequest.assertion.1] line 2101 assertion pTransport != NULL: SUCCESS
+[sendHttpRequest.assertion.2] line 2102 assertion pRequestHeaders != NULL: SUCCESS
+[sendHttpRequest.assertion.3] line 2103 assertion ( pRequestBodyBuf != NULL ) || ( ( pRequestBodyBuf == NULL ) && ( reqBodyBufLen == 0 ) ): SUCCESS
+[sendHttpRequest.assertion.4] line 2105 assertion getTimestampMs != NULL: SUCCESS
+[sendHttpRequest.assigns.2] line 2108 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[sendHttpRequest.assigns.3] line 2119 Assignment to local symbol returnStatus (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/source/core_http_client.c function writeRequestLine
+[writeRequestLine.assigns.1] line 1473 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[writeRequestLine.assigns.2] line 1474 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[writeRequestLine.assigns.3] line 1475 Assignment to local symbol toAddLen (always allowed): SUCCESS
+[writeRequestLine.assertion.1] line 1477 assertion pRequestHeaders != NULL: SUCCESS
+[writeRequestLine.assertion.2] line 1478 assertion pRequestHeaders->pBuffer != NULL: SUCCESS
+[writeRequestLine.assertion.3] line 1479 assertion pMethod != NULL: SUCCESS
+[writeRequestLine.assertion.4] line 1480 assertion methodLen != 0U: SUCCESS
+[writeRequestLine.assigns.4] line 1482 Assignment to local symbol toAddLen (always allowed): SUCCESS
+[writeRequestLine.assigns.5] line 1488 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[writeRequestLine.assigns.6] line 1489 Assignment to local symbol toAddLen (always allowed): SUCCESS
+[writeRequestLine.assigns.7] line 1493 Assignment to local symbol returnStatus (always allowed): SUCCESS
+[writeRequestLine.assigns.8] line 1500 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[writeRequestLine.assigns.9] line 1502 Check that *pBufferCur is allowed by the assigns clause: SUCCESS
+[writeRequestLine.assigns.10] line 1503 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[writeRequestLine.assigns.11] line 1511 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[writeRequestLine.assigns.12] line 1516 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[writeRequestLine.assigns.13] line 1519 Check that *pBufferCur is allowed by the assigns clause: SUCCESS
+[writeRequestLine.assigns.14] line 1520 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[writeRequestLine.assigns.15] line 1525 Assignment to local symbol pBufferCur (always allowed): SUCCESS
+[writeRequestLine.precondition_instance.1] line 1527 memcpy src/dst overlap: SUCCESS
+[writeRequestLine.precondition_instance.2] line 1527 memcpy source region readable: SUCCESS
+[writeRequestLine.precondition_instance.3] line 1527 memcpy destination region writeable: SUCCESS
+[writeRequestLine.assigns.16] line 1530 Check that pRequestHeaders->headersLen is allowed by the assigns clause: SUCCESS
+
+[assigns.3] file /Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c line 125 Assignment to local symbol pTransport (always allowed): SUCCESS
+[assigns.4] file /Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c line 125 Assignment to local symbol pRequestHeaders (always allowed): SUCCESS
+[assigns.5] file /Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c line 125 Assignment to local symbol pRequestBodyBuf (always allowed): SUCCESS
+[assigns.6] file /Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c line 125 Assignment to local symbol reqBodyBufLen (always allowed): SUCCESS
+[assigns.7] file /Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c line 125 Assignment to local symbol pResponse (always allowed): SUCCESS
+[assigns.8] file /Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c line 125 Assignment to local symbol sendFlags (always allowed): SUCCESS
+[assigns.1] file /Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c line 138 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[assigns.2] file /Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c line 138 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+/Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c function GetCurrentTimeContract
+[GetCurrentTimeContract.precondition.1] line 82 Check requires clause of contract contract::GetCurrentTimeContract for function GetCurrentTimeContract_wrapped_for_replacement_with_contract: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c function HTTPClient_Send
+[HTTPClient_Send.postcondition.1] line 117 Check ensures clause of contract contract::HTTPClient_Send for function HTTPClient_Send: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c function TransportInterfaceRecvContract
+[TransportInterfaceRecvContract.precondition.1] line 66 Check requires clause of contract contract::TransportInterfaceRecvContract for function TransportInterfaceRecvContract_wrapped_for_replacement_with_contract: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/proofs/HTTPClient_Send-contracts/HTTPClient_Send_harness.c function TransportInterfaceSendContract
+[TransportInterfaceSendContract.precondition.1] line 47 Check requires clause of contract contract::TransportInterfaceSendContract for function TransportInterfaceSendContract_wrapped_for_replacement_with_contract: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function allocateFindHeaderContext
+[allocateFindHeaderContext.assigns.1] line 274 Assignment to local symbol return_value_malloc (always allowed): SUCCESS
+[allocateFindHeaderContext.assigns.2] line 274 Assignment to local symbol pFindHeaderContext (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function allocateHttpReadHeaderParser
+[allocateHttpReadHeaderParser.assigns.1] line 260 Assignment to local symbol return_value_malloc (always allowed): SUCCESS
+[allocateHttpReadHeaderParser.assigns.2] line 260 Assignment to local symbol pHttpParser (always allowed): SUCCESS
+[allocateHttpReadHeaderParser.assigns.3] line 264 Assignment to local symbol return_value_allocateFindHeaderContext (always allowed): SUCCESS
+[allocateHttpReadHeaderParser.assigns.4] line 264 Assignment to local symbol pFindHeaderContext (always allowed): SUCCESS
+[allocateHttpReadHeaderParser.assigns.5] line 265 Check that pHttpParser->data is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function allocateHttpRequestHeaders
+[allocateHttpRequestHeaders.assigns.1] line 42 Assignment to local symbol return_value_mallocCanFail (always allowed): SUCCESS
+[allocateHttpRequestHeaders.assigns.2] line 42 Assignment to local symbol pRequestHeaders (always allowed): SUCCESS
+[allocateHttpRequestHeaders.assigns.3] line 48 Assignment to local symbol return_value_mallocCanFail$0 (always allowed): SUCCESS
+[allocateHttpRequestHeaders.assigns.4] line 48 Check that pRequestHeaders->pBuffer is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function allocateHttpRequestInfo
+[allocateHttpRequestInfo.assigns.1] line 71 Assignment to local symbol return_value_mallocCanFail (always allowed): SUCCESS
+[allocateHttpRequestInfo.assigns.2] line 71 Assignment to local symbol pRequestInfo (always allowed): SUCCESS
+[allocateHttpRequestInfo.assigns.3] line 77 Assignment to local symbol return_value_mallocCanFail$0 (always allowed): SUCCESS
+[allocateHttpRequestInfo.assigns.4] line 77 Check that pRequestInfo->pMethod is allowed by the assigns clause: SUCCESS
+[allocateHttpRequestInfo.assigns.5] line 80 Assignment to local symbol return_value_mallocCanFail$1 (always allowed): SUCCESS
+[allocateHttpRequestInfo.assigns.6] line 80 Check that pRequestInfo->pHost is allowed by the assigns clause: SUCCESS
+[allocateHttpRequestInfo.assigns.7] line 83 Assignment to local symbol return_value_mallocCanFail$2 (always allowed): SUCCESS
+[allocateHttpRequestInfo.assigns.8] line 83 Check that pRequestInfo->pPath is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function allocateHttpResponse
+[allocateHttpResponse.assigns.1] line 109 Assignment to local symbol return_value_mallocCanFail (always allowed): SUCCESS
+[allocateHttpResponse.assigns.2] line 109 Assignment to local symbol pResponse (always allowed): SUCCESS
+[allocateHttpResponse.assigns.3] line 115 Assignment to local symbol return_value_mallocCanFail$0 (always allowed): SUCCESS
+[allocateHttpResponse.assigns.4] line 115 Check that pResponse->pBuffer is allowed by the assigns clause: SUCCESS
+[allocateHttpResponse.assigns.5] line 123 Assignment to local symbol return_value_nondet_bool (always allowed): SUCCESS
+[allocateHttpResponse.assigns.6] line 123 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[allocateHttpResponse.assigns.7] line 123 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[allocateHttpResponse.assigns.8] line 123 Check that pResponse->pHeaders is allowed by the assigns clause: SUCCESS
+[allocateHttpResponse.assigns.9] line 136 Assignment to local symbol bodyOffset (always allowed): SUCCESS
+[allocateHttpResponse.assigns.10] line 145 Assignment to local symbol return_value_nondet_bool$0 (always allowed): SUCCESS
+[allocateHttpResponse.assigns.11] line 145 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[allocateHttpResponse.assigns.12] line 145 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[allocateHttpResponse.assigns.13] line 145 Check that pResponse->pBody is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function allocateHttpSendParser
+[allocateHttpSendParser.assigns.1] line 209 Assignment to local symbol return_value_malloc (always allowed): SUCCESS
+[allocateHttpSendParser.assigns.2] line 209 Assignment to local symbol pHttpParser (always allowed): SUCCESS
+[allocateHttpSendParser.assigns.3] line 213 Assignment to local symbol pHttpParsingContext (always allowed): SUCCESS
+[allocateHttpSendParser.assigns.4] line 214 Assignment to local symbol return_value_isValidHttpSendParsingContext (always allowed): SUCCESS
+[allocateHttpSendParser.assigns.5] line 215 Check that pHttpParser->data is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function allocateHttpSendParsingContext
+[allocateHttpSendParsingContext.assigns.1] line 227 Assignment to local symbol return_value_malloc (always allowed): SUCCESS
+[allocateHttpSendParsingContext.assigns.2] line 227 Assignment to local symbol pHttpParsingContext (always allowed): SUCCESS
+[allocateHttpSendParsingContext.assigns.3] line 230 Assignment to local symbol pResponse (always allowed): SUCCESS
+[allocateHttpSendParsingContext.assigns.4] line 231 Assignment to local symbol return_value_isValidHttpResponse (always allowed): SUCCESS
+[allocateHttpSendParsingContext.assigns.5] line 231 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[allocateHttpSendParsingContext.assigns.6] line 231 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[allocateHttpSendParsingContext.assigns.7] line 234 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[allocateHttpSendParsingContext.assigns.8] line 234 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[allocateHttpSendParsingContext.assigns.9] line 235 Check that pHttpParsingContext->pResponse is allowed by the assigns clause: SUCCESS
+[allocateHttpSendParsingContext.assigns.10] line 238 Check that pHttpParsingContext->pBufferCur is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function allocateTransportInterface
+[allocateTransportInterface.assigns.1] line 179 Assignment to local symbol return_value_mallocCanFail (always allowed): SUCCESS
+[allocateTransportInterface.assigns.2] line 179 Assignment to local symbol pTransport (always allowed): SUCCESS
+[allocateTransportInterface.assigns.3] line 184 Assignment to local symbol return_value_mallocCanFail$0 (always allowed): SUCCESS
+[allocateTransportInterface.assigns.4] line 184 Check that pTransport->pNetworkContext is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function isValidHttpRequestHeaders
+[isValidHttpRequestHeaders.assigns.1] line 56 Assignment to local symbol isValid (always allowed): SUCCESS
+[isValidHttpRequestHeaders.assigns.2] line 60 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[isValidHttpRequestHeaders.assigns.3] line 60 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[isValidHttpRequestHeaders.assigns.4] line 60 Assignment to local symbol isValid (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function isValidHttpRequestInfo
+[isValidHttpRequestInfo.assigns.1] line 91 Assignment to local symbol isValid (always allowed): SUCCESS
+[isValidHttpRequestInfo.assigns.2] line 95 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[isValidHttpRequestInfo.assigns.3] line 95 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[isValidHttpRequestInfo.assigns.6] line 95 Assignment to local symbol isValid (always allowed): SUCCESS
+[isValidHttpRequestInfo.assigns.4] line 97 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[isValidHttpRequestInfo.assigns.5] line 97 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function isValidHttpResponse
+[isValidHttpResponse.assigns.1] line 162 Assignment to local symbol isValid (always allowed): SUCCESS
+[isValidHttpResponse.assigns.2] line 166 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[isValidHttpResponse.assigns.3] line 166 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[isValidHttpResponse.assigns.6] line 166 Assignment to local symbol isValid (always allowed): SUCCESS
+[isValidHttpResponse.assigns.4] line 168 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[isValidHttpResponse.assigns.5] line 168 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[isValidHttpResponse.assigns.7] line 169 Assignment to local symbol tmp_if_expr$1 (always allowed): SUCCESS
+[isValidHttpResponse.assigns.8] line 169 Assignment to local symbol tmp_if_expr$1 (always allowed): SUCCESS
+[isValidHttpResponse.assigns.9] line 169 Assignment to local symbol isValid (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function isValidHttpSendParsingContext
+[isValidHttpSendParsingContext.assigns.1] line 246 Assignment to local symbol isValid (always allowed): SUCCESS
+[isValidHttpSendParsingContext.assigns.2] line 248 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[isValidHttpSendParsingContext.assigns.3] line 248 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[isValidHttpSendParsingContext.assigns.4] line 248 Assignment to local symbol isValid (always allowed): SUCCESS
+[isValidHttpSendParsingContext.assigns.5] line 249 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[isValidHttpSendParsingContext.assigns.6] line 249 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[isValidHttpSendParsingContext.assigns.7] line 249 Assignment to local symbol isValid (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function isValidTransportInterface
+[isValidTransportInterface.assigns.1] line 192 Assignment to local symbol isValid (always allowed): SUCCESS
+[isValidTransportInterface.assigns.2] line 196 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[isValidTransportInterface.assigns.3] line 196 Assignment to local symbol tmp_if_expr (always allowed): SUCCESS
+[isValidTransportInterface.assigns.4] line 196 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[isValidTransportInterface.assigns.5] line 196 Assignment to local symbol tmp_if_expr$0 (always allowed): SUCCESS
+[isValidTransportInterface.assigns.6] line 196 Assignment to local symbol isValid (always allowed): SUCCESS
+[isValidTransportInterface.assigns.7] line 198 Assignment to local symbol tmp_if_expr$1 (always allowed): SUCCESS
+[isValidTransportInterface.assigns.8] line 198 Assignment to local symbol tmp_if_expr$1 (always allowed): SUCCESS
+[isValidTransportInterface.assigns.9] line 198 Assignment to local symbol tmp_if_expr$2 (always allowed): SUCCESS
+[isValidTransportInterface.assigns.10] line 198 Assignment to local symbol tmp_if_expr$2 (always allowed): SUCCESS
+[isValidTransportInterface.assigns.11] line 198 Assignment to local symbol isValid (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/sources/http_cbmc_state.c function mallocCanFail
+[mallocCanFail.assertion.1] line 34 mallocCanFail size is too big: SUCCESS
+[mallocCanFail.assigns.1] line 35 Assignment to local symbol return_value_malloc (always allowed): SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/stubs/HTTPClient_Send_llhttp_execute.c function llhttp_execute
+[llhttp_execute.assertion.1] line 49 llhttp_execute parser is NULL: SUCCESS
+[llhttp_execute.assertion.2] line 51 llhttp_execute data is NULL: SUCCESS
+[llhttp_execute.assertion.3] line 53 llhttp_execute len >= CBMC_MAX_OBJECT_SIZE: SUCCESS
+[llhttp_execute.assigns.1] line 59 Check that parser->error is allowed by the assigns clause: SUCCESS
+[llhttp_execute.assigns.2] line 61 Assignment to local symbol pParsingContext (always allowed): SUCCESS
+[llhttp_execute.assigns.3] line 63 Assignment to local symbol return_value_malloc (always allowed): SUCCESS
+[llhttp_execute.assigns.4] line 63 Check that pParsingContext->pLastHeaderField is allowed by the assigns clause: SUCCESS
+[llhttp_execute.assigns.5] line 65 Check that pParsingContext->state is allowed by the assigns clause: SUCCESS
+[llhttp_execute.assigns.6] line 69 Check that pParsingContext->lastHeaderFieldLen is allowed by the assigns clause: SUCCESS
+[llhttp_execute.assigns.7] line 70 Assignment to local symbol return_value_malloc$0 (always allowed): SUCCESS
+[llhttp_execute.assigns.8] line 70 Check that pParsingContext->pLastHeaderValue is allowed by the assigns clause: SUCCESS
+[llhttp_execute.assigns.9] line 72 Check that pParsingContext->lastHeaderValueLen is allowed by the assigns clause: SUCCESS
+[llhttp_execute.assigns.10] line 76 Check that pParsingContext->lastHeaderFieldLen is allowed by the assigns clause: SUCCESS
+[llhttp_execute.assigns.11] line 77 Check that pParsingContext->pLastHeaderValue is allowed by the assigns clause: SUCCESS
+[llhttp_execute.assigns.12] line 78 Check that pParsingContext->lastHeaderValueLen is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/stubs/get_time_stub.c function GetCurrentTimeStub
+[GetCurrentTimeStub.assigns.1] line 43 Assignment to local symbol tmp_post_globalEntryTime (always allowed): SUCCESS
+[GetCurrentTimeStub.assigns.2] line 43 Check that globalEntryTime is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/stubs/httpHeaderStrncpy.c function httpHeaderStrncpy
+[httpHeaderStrncpy.assertion.1] line 40 write: SUCCESS
+[httpHeaderStrncpy.assertion.2] line 41 read: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/stubs/strncpy.c function __builtin___strncpy_chk
+[__builtin___strncpy_chk.assertion.1] line 44 write: SUCCESS
+[__builtin___strncpy_chk.assertion.2] line 45 read: SUCCESS
+[__builtin___strncpy_chk.assertion.3] line 46 assertion havoc_slice W_OK(dest, n): SUCCESS
+[__builtin___strncpy_chk.assigns.1] line 46 Check that array_replace(dest, ...) is allowed by the assigns clause: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/stubs/transport_interface_stubs.c function TransportInterfaceReceiveStub
+[TransportInterfaceReceiveStub.assertion.1] line 78 TransportInterfaceReceiveStub pBuffer is NULL: SUCCESS
+
+/Users/delmasrd/projects/coreHTTP/test/cbmc/stubs/transport_interface_stubs.c function TransportInterfaceSendStub
+[TransportInterfaceSendStub.assertion.1] line 34 TransportInterfaceSendStub pBuffer is NULL: SUCCESS
+[TransportInterfaceSendStub.assigns.1] line 56 Check that tries is allowed by the assigns clause: SUCCESS
+[TransportInterfaceSendStub.assigns.2] line 60 Check that tries is allowed by the assigns clause: SUCCESS
+[TransportInterfaceSendStub.assigns.3] line 65 Assignment to local symbol ret (always allowed): SUCCESS
+
+<built-in-additions> function __CPROVER_assignable
+[__CPROVER_assignable.sanity_check.1] Built-in __CPROVER_assignable should not be called after contracts transformation: SUCCESS
+
+<built-in-additions> function __CPROVER_freeable
+[__CPROVER_freeable.sanity_check.1] Built-in __CPROVER_freeable should not be called after contracts transformation: SUCCESS
+
+<built-in-additions> function __CPROVER_object_from
+[__CPROVER_object_from.sanity_check.1] Built-in __CPROVER_object_from should not be called after contracts transformation: SUCCESS
+
+<built-in-additions> function __CPROVER_object_upto
+[__CPROVER_object_upto.sanity_check.1] Built-in __CPROVER_object_upto should not be called after contracts transformation: SUCCESS
+
+<built-in-additions> function __CPROVER_whole_object
+[__CPROVER_whole_object.sanity_check.1] Built-in __CPROVER_whole_object should not be called after contracts transformation: SUCCESS
+
+<builtin-library-__CPROVER_contracts_car_create> function __CPROVER_contracts_car_create
+[__CPROVER_contracts_car_create.assertion.1] line 88 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_create.assertion.3] line 88 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_create.assertion.5] line 88 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_create.assertion.7] line 88 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_create.assertion.9] line 88 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_create.assertion.11] line 88 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_create.assertion.2] line 96 no offset bits overflow on ub: SUCCESS
+[__CPROVER_contracts_car_create.assertion.4] line 96 no offset bits overflow on ub: SUCCESS
+[__CPROVER_contracts_car_create.assertion.6] line 96 no offset bits overflow on ub: SUCCESS
+[__CPROVER_contracts_car_create.assertion.8] line 96 no offset bits overflow on ub: SUCCESS
+[__CPROVER_contracts_car_create.assertion.10] line 96 no offset bits overflow on ub: SUCCESS
+[__CPROVER_contracts_car_create.assertion.12] line 96 no offset bits overflow on ub: SUCCESS
+
+<builtin-library-__CPROVER_contracts_car_set_create> function __CPROVER_contracts_car_set_create
+[__CPROVER_contracts_car_set_create.assertion.1] line 86 set writable: SUCCESS
+[__CPROVER_contracts_car_set_create.assertion.2] line 86 set writable: SUCCESS
+
+<builtin-library-__CPROVER_contracts_car_set_insert> function __CPROVER_contracts_car_set_insert
+[__CPROVER_contracts_car_set_insert.assertion.1] line 84 no OOB access: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.4] line 84 no OOB access: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.7] line 84 no OOB access: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.10] line 84 no OOB access: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.13] line 84 no OOB access: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.2] line 92 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.5] line 92 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.8] line 92 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.11] line 92 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.14] line 92 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.3] line 100 no offset bits overflow on ub: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.6] line 100 no offset bits overflow on ub: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.9] line 100 no offset bits overflow on ub: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.12] line 100 no offset bits overflow on ub: SUCCESS
+[__CPROVER_contracts_car_set_insert.assertion.15] line 100 no offset bits overflow on ub: SUCCESS
+
+<builtin-library-__CPROVER_contracts_car_set_remove> function __CPROVER_contracts_car_set_remove
+[__CPROVER_contracts_car_set_remove.1] line 86 assertion: SUCCESS
+
+<builtin-library-__CPROVER_contracts_check_replace_ensures_is_freed_preconditions> function __CPROVER_contracts_check_replace_ensures_is_freed_preconditions
+[__CPROVER_contracts_check_replace_ensures_is_freed_preconditions.assertion.1] line 85 __CPROVER_is_freed is used only in ensures clauses: SUCCESS
+[__CPROVER_contracts_check_replace_ensures_is_freed_preconditions.assertion.2] line 91 assuming __CPROVER_is_freed(ptr) requires ptr to always exist in the contract's frees clause: SUCCESS
+
+<builtin-library-__CPROVER_contracts_is_freeable> function __CPROVER_contracts_is_freeable
+[__CPROVER_contracts_is_freeable.assertion.1] line 87 __CPROVER_is_freeable is used only in requires or ensures clauses: SUCCESS
+[__CPROVER_contracts_is_freeable.assertion.2] line 87 __CPROVER_is_freeable is used only in requires or ensures clauses: SUCCESS
+
+<builtin-library-__CPROVER_contracts_is_freed> function __CPROVER_contracts_is_freed
+[__CPROVER_contracts_is_freed.assertion.1] line 84 __CPROVER_is_freed is used only in ensures clauses: SUCCESS
+
+<builtin-library-__CPROVER_contracts_is_freshr> function __CPROVER_contracts_is_freshr
+[__CPROVER_contracts_is_freshr.assertion.1] line 94 set readable: SUCCESS
+[__CPROVER_contracts_is_freshr.assertion.2] line 106 only one context flag at a time: SUCCESS
+[__CPROVER_contracts_is_freshr.assertion.3] line 122 only one context flag at a time: SUCCESS
+[__CPROVER_contracts_is_freshr.assertion.4] line 138 only one context flag at a time: SUCCESS
+[__CPROVER_contracts_is_freshr.assertion.5] line 154 only one context flag at a time: SUCCESS
+[__CPROVER_contracts_is_freshr.assertion.6] line 166 __CPROVER_is_freshr called outside of requires or ensures clause: SUCCESS
+
+<builtin-library-__CPROVER_contracts_link_is_freshr_allocated> function __CPROVER_contracts_link_is_freshr_allocated
+[__CPROVER_contracts_link_is_freshr_allocated.assertion.1] line 82 write_set_postconditions not NULL: SUCCESS
+
+<builtin-library-__CPROVER_contracts_obj_set_add> function __CPROVER_contracts_obj_set_add
+[__CPROVER_contracts_obj_set_add.assertion.1] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_add.assertion.3] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_add.assertion.5] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_add.assertion.7] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_add.assertion.9] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_add.assertion.2] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_add.assertion.4] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_add.assertion.6] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_add.assertion.8] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_add.assertion.10] line 83 no OOB access: SUCCESS
+
+<builtin-library-__CPROVER_contracts_obj_set_append> function __CPROVER_contracts_obj_set_append
+[__CPROVER_contracts_obj_set_append.assertion.1] line 82 not indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_append.assertion.3] line 82 not indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_append.assertion.2] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_append.assertion.4] line 83 no OOB access: SUCCESS
+
+<builtin-library-__CPROVER_contracts_obj_set_contains> function __CPROVER_contracts_obj_set_contains
+[__CPROVER_contracts_obj_set_contains.assertion.1] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_contains.assertion.2] line 83 no OOB access: SUCCESS
+
+<builtin-library-__CPROVER_contracts_obj_set_contains_exact> function __CPROVER_contracts_obj_set_contains_exact
+[__CPROVER_contracts_obj_set_contains_exact.assertion.1] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_contains_exact.assertion.3] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_contains_exact.assertion.5] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_contains_exact.assertion.2] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_contains_exact.assertion.4] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_contains_exact.assertion.6] line 83 no OOB access: SUCCESS
+
+<builtin-library-__CPROVER_contracts_obj_set_create_append> function __CPROVER_contracts_obj_set_create_append
+[__CPROVER_contracts_obj_set_create_append.assertion.1] line 82 set writable: SUCCESS
+[__CPROVER_contracts_obj_set_create_append.assertion.2] line 82 set writable: SUCCESS
+
+<builtin-library-__CPROVER_contracts_obj_set_create_indexed_by_object_id> function __CPROVER_contracts_obj_set_create_indexed_by_object_id
+[__CPROVER_contracts_obj_set_create_indexed_by_object_id.assertion.1] line 83 set writable: SUCCESS
+[__CPROVER_contracts_obj_set_create_indexed_by_object_id.assertion.2] line 83 set writable: SUCCESS
+[__CPROVER_contracts_obj_set_create_indexed_by_object_id.assertion.3] line 83 set writable: SUCCESS
+[__CPROVER_contracts_obj_set_create_indexed_by_object_id.assertion.4] line 83 set writable: SUCCESS
+[__CPROVER_contracts_obj_set_create_indexed_by_object_id.assertion.5] line 83 set writable: SUCCESS
+
+<builtin-library-__CPROVER_contracts_obj_set_remove> function __CPROVER_contracts_obj_set_remove
+[__CPROVER_contracts_obj_set_remove.assertion.1] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.3] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.5] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.7] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.9] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.11] line 82 indexed by object id: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.2] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.4] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.6] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.8] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.10] line 83 no OOB access: SUCCESS
+[__CPROVER_contracts_obj_set_remove.assertion.12] line 83 no OOB access: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_check_assignment> function __CPROVER_contracts_write_set_check_assignment
+[__CPROVER_contracts_write_set_check_assignment.assertion.1] line 90 !replacement: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.4] line 90 !replacement: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.7] line 90 !replacement: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.10] line 90 !replacement: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.13] line 90 !replacement: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.2] line 91 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.5] line 91 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.8] line 91 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.11] line 91 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.14] line 91 ptr NULL or writable up to size: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.3] line 94 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.6] line 94 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.9] line 94 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.12] line 94 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.assertion.15] line 94 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.1] line 111 assertion: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.2] line 111 assertion: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.3] line 111 assertion: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.4] line 111 assertion: SUCCESS
+[__CPROVER_contracts_write_set_check_assignment.5] line 111 assertion: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_check_assigns_clause_inclusion> function __CPROVER_contracts_write_set_check_assigns_clause_inclusion
+[__CPROVER_contracts_write_set_check_assigns_clause_inclusion.assertion.1] line 83 reference set in !replacement: SUCCESS
+[__CPROVER_contracts_write_set_check_assigns_clause_inclusion.assertion.2] line 85 candidate set in replacement: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_check_deallocate> function __CPROVER_contracts_write_set_check_deallocate
+[__CPROVER_contracts_write_set_check_deallocate.assertion.1] line 89 !replacement: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_check_frees_clause_inclusion> function __CPROVER_contracts_write_set_check_frees_clause_inclusion
+[__CPROVER_contracts_write_set_check_frees_clause_inclusion.assertion.1] line 83 reference set in !replacement: SUCCESS
+[__CPROVER_contracts_write_set_check_frees_clause_inclusion.assertion.2] line 85 candidate set in replacement: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_create> function __CPROVER_contracts_write_set_create
+[__CPROVER_contracts_write_set_create.assertion.1] line 99 set writable: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_deallocate_freeable> function __CPROVER_contracts_write_set_deallocate_freeable
+[__CPROVER_contracts_write_set_deallocate_freeable.assertion.1] line 91 set is in replacement: SUCCESS
+[__CPROVER_contracts_write_set_deallocate_freeable.assertion.2] line 92 target is in !replacement: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_havoc_get_assignable_target> function __CPROVER_contracts_write_set_havoc_get_assignable_target
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.1] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.2] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.3] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.4] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.5] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.6] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.7] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.8] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.9] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.10] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.11] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.12] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.13] line 82 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_get_assignable_target.assertion.14] line 82 no OOB access: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_havoc_object_from> function __CPROVER_contracts_write_set_havoc_object_from
+[__CPROVER_contracts_write_set_havoc_object_from.assertion.1] line 86 no OOB access: SUCCESS
+[__CPROVER_contracts_write_set_havoc_object_from.assertion.2] line 86 no OOB access: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_havoc_object_upto> function __CPROVER_contracts_write_set_havoc_object_upto
+[__CPROVER_contracts_write_set_havoc_object_upto.assertion.1] line 86 no OOB access: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_havoc_whole_object> function __CPROVER_contracts_write_set_havoc_whole_object
+[__CPROVER_contracts_write_set_havoc_whole_object.assertion.1] line 82 no OOB access: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_release> function __CPROVER_contracts_write_set_release
+[__CPROVER_contracts_write_set_release.assertion.1] line 81 set readable: SUCCESS
+[__CPROVER_contracts_write_set_release.assertion.2] line 84 contract_assigns writable: SUCCESS
+[__CPROVER_contracts_write_set_release.assertion.3] line 87 contract_frees writable: SUCCESS
+[__CPROVER_contracts_write_set_release.assertion.4] line 90 contract_frees_replacement writable: SUCCESS
+[__CPROVER_contracts_write_set_release.assertion.5] line 94 allocated writable: SUCCESS
+[__CPROVER_contracts_write_set_release.assertion.6] line 96 deallocated writable: SUCCESS
+[__CPROVER_contracts_write_set_release.assertion.7] line 98 is_freshr_seen writable: SUCCESS
+
+<builtin-library-__CPROVER_contracts_write_set_remove_deallocated> function __CPROVER_contracts_write_set_remove_deallocated
+[__CPROVER_contracts_write_set_remove_deallocated.assertion.1] line 91 !replacement: SUCCESS
+[__CPROVER_contracts_write_set_remove_deallocated.assertion.2] line 91 !replacement: SUCCESS
+
+<builtin-library-__builtin___memcpy_chk> function __builtin___memcpy_chk
+[__builtin___memcpy_chk.assigns.1] line 39 Assignment to local symbol src_n$array_size (always allowed): SUCCESS
+[__builtin___memcpy_chk.assigns.2] line 40 Check that array_copy((const void *)src_n, ...) is allowed by the assigns clause: SUCCESS
+[__builtin___memcpy_chk.assigns.3] line 41 Check that array_replace((const void *)(char *)dst, ...) is allowed by the assigns clause: SUCCESS
+
+<builtin-library-free> function free
+[free.precondition.1] line 11 free argument must be NULL or valid pointer: SUCCESS
+[free.precondition.2] line 14 free argument must be dynamic object: SUCCESS
+[free.precondition.3] line 16 free argument has offset zero: SUCCESS
+[free.precondition.4] line 20 double free: SUCCESS
+[free.precondition.5] line 25 free called for new[] object: SUCCESS
+[free.precondition.6] line 30 free called for stack-allocated object: SUCCESS
+
+<builtin-library-malloc> function malloc
+[malloc.assigns.1] line 16 Assignment to local symbol return_value___VERIFIER_nondet___CPROVER_bool (always allowed): SUCCESS
+[malloc.assigns.2] line 16 Assignment to local symbol should_malloc_fail (always allowed): SUCCESS
+[malloc.assertion.1] line 28 max allocation size exceeded: SUCCESS
+[malloc.assigns.3] line 32 Assignment to local symbol return_value___VERIFIER_nondet___CPROVER_bool$0 (always allowed): SUCCESS
+[malloc.assigns.4] line 32 Assignment to local symbol should_malloc_fail (always allowed): SUCCESS
+[malloc.assertion.2] line 33 max allocation may fail: SUCCESS
+[malloc.assigns.5] line 40 Assignment to local symbol malloc_value (always allowed): SUCCESS
+[malloc.assigns.6] line 40 Assignment to local symbol malloc_res (always allowed): SUCCESS
+[malloc.assigns.7] line 43 Assignment to CPROVER symbol __CPROVER_deallocated (always allowed): SUCCESS
+[malloc.assigns.8] line 47 Assignment to local symbol return_value___VERIFIER_nondet___CPROVER_bool$1 (always allowed): SUCCESS
+[malloc.assigns.9] line 47 Assignment to local symbol record_malloc (always allowed): SUCCESS
+[malloc.assigns.10] line 48 Assignment to CPROVER symbol __CPROVER_malloc_is_new_array (always allowed): SUCCESS
+[malloc.assigns.11] line 52 Assignment to local symbol return_value___VERIFIER_nondet___CPROVER_bool$2 (always allowed): SUCCESS
+[malloc.assigns.12] line 52 Assignment to local symbol record_may_leak (always allowed): SUCCESS
+[malloc.assigns.13] line 53 Assignment to CPROVER symbol __CPROVER_memory_leak (always allowed): SUCCESS
+
+<builtin-library-strncmp> function strncmp
+[strncmp.assigns.1] line 20 Assignment to local symbol i (always allowed): SUCCESS
+[strncmp.assigns.2] line 28 Assignment to local symbol ch1 (always allowed): SUCCESS
+[strncmp.assigns.3] line 29 Assignment to local symbol ch2 (always allowed): SUCCESS
+[strncmp.assigns.4] line 40 Assignment to local symbol i (always allowed): SUCCESS
+
+** 0 of 685 failed (1 iterations)
+VERIFICATION SUCCESSFUL

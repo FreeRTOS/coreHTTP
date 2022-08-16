@@ -1,0 +1,10 @@
+Reading GOTO program from 'main.o'
+file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1785 function sendHttpData: replacing function pointer by 2 possible targets
+file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1790 function sendHttpData: replacing function pointer by 1 possible targets
+file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1810 function sendHttpData: replacing function pointer by 2 possible targets
+file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 1823 function sendHttpData: replacing function pointer by 2 possible targets
+file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2008 function receiveAndParseHttpResponse: replacing function pointer by 2 possible targets
+file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2013 function receiveAndParseHttpResponse: replacing function pointer by 1 possible targets
+file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2031 function receiveAndParseHttpResponse: replacing function pointer by 2 possible targets
+file /Users/delmasrd/projects/coreHTTP/source/core_http_client.c line 2041 function receiveAndParseHttpResponse: replacing function pointer by 2 possible targets
+Writing GOTO program to 'main-restricted.o'
