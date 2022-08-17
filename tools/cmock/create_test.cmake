@@ -102,10 +102,6 @@ function(create_mock_list mock_name
                                ${mock_file}
                                ABSOLUTE
                 )
-        get_filename_component(mock_file_name
-                               ${mock_file}
-                               NAME_WLE
-                )
         get_filename_component(mock_file_dir
                                ${mock_file}
                                DIRECTORY
