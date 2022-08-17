@@ -1420,9 +1420,9 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     /* Generate the value data for the Range Request header.*/
 
     /* Write the range value prefix in the buffer. */
-    ( void ) strncpy( rangeValueBuffer,
-                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
-                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
+    ( void ) memcpy( rangeValueBuffer,
+                     HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
+                     HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
     rangeValueLength += HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN;
 
     /* Write the range start value in the buffer. */
@@ -1503,7 +1503,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     if( returnStatus == HTTPSuccess )
     {
         /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. */
-        ( void ) strncpy( pBufferCur, pMethod, methodLen );
+        ( void ) memcpy( pBufferCur, pMethod, methodLen );
         pBufferCur += methodLen;
 
         *pBufferCur = SPACE_CHARACTER;
@@ -1512,23 +1512,23 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
         /* Use "/" as default value if <PATH> is NULL. */
         if( ( pPath == NULL ) || ( pathLen == 0U ) )
         {
-            ( void ) strncpy( pBufferCur,
-                              HTTP_EMPTY_PATH,
-                              HTTP_EMPTY_PATH_LEN );
+            ( void ) memcpy( pBufferCur,
+                             HTTP_EMPTY_PATH,
+                             HTTP_EMPTY_PATH_LEN );
             pBufferCur += HTTP_EMPTY_PATH_LEN;
         }
         else
         {
-            ( void ) strncpy( pBufferCur, pPath, pathLen );
+            ( void ) memcpy( pBufferCur, pPath, pathLen );
             pBufferCur += pathLen;
         }
 
         *pBufferCur = SPACE_CHARACTER;
         pBufferCur += SPACE_CHARACTER_LEN;
 
-        ( void ) strncpy( pBufferCur,
-                          HTTP_PROTOCOL_VERSION,
-                          HTTP_PROTOCOL_VERSION_LEN );
+        ( void ) memcpy( pBufferCur,
+                         HTTP_PROTOCOL_VERSION,
+                         HTTP_PROTOCOL_VERSION_LEN );
         pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
         ( void ) memcpy( pBufferCur,
                          pHeaderLineSeparator,
