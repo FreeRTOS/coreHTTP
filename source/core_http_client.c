@@ -24,7 +24,6 @@
  * @file core_http_client.c
  * @brief Implements the user-facing functions in core_http_client.h.
  */
-
 #include <assert.h>
 #include <string.h>
 #include <ctype.h>
@@ -556,8 +555,8 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser );
  * 0 if str1 is equal to str2
  * 1 if str1 is not equal to str2.
  */
-static int8_t caseInsensitiveStringCmp( const char * str1,
-                                        const char * str2,
+static int8_t caseInsensitiveStringCmp( const unsigned char * str1,
+                                        const unsigned char * str2,
                                         size_t n );
 
 /*-----------------------------------------------------------*/
@@ -569,15 +568,21 @@ static uint32_t getZeroTimestampMs( void )
 
 /*-----------------------------------------------------------*/
 
-static int8_t caseInsensitiveStringCmp( const char * str1,
-                                        const char * str2,
+static int8_t caseInsensitiveStringCmp( const unsigned char * str1,
+                                        const unsigned char * str2,
                                         size_t n )
 {
     size_t i = 0U;
+    /* Inclusion of inbetween variables for coverity rule 13.2 compliance */
+    int32_t firstChar;
+    int32_t secondChar;
 
     for( i = 0U; i < n; i++ )
     {
-        if( toupper( str1[ i ] ) != toupper( str2[ i ] ) )
+        firstChar = toupper( ( int32_t ) ( str1[ i ] ) );
+        secondChar = toupper( ( ( int32_t ) str2[ i ] ) );
+
+        if( ( firstChar ) != ( secondChar ) )
         {
             break;
         }
@@ -585,6 +590,7 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
 
     return ( i == n ) ? 0 : 1;
 }
+
 
 /*-----------------------------------------------------------*/
 
@@ -829,10 +835,8 @@ static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
         /* The start of the headers ALWAYS come before the the end of the headers. */
         assert( ( const char * ) ( pResponse->pHeaders ) < pParsingContext->pBufferCur );
 
-        /* MISRA Rule 10.8 flags the following line for casting from a signed
-         * pointer difference to a size_t. This rule is suppressed because in
-         * in the previous statement it is asserted that the pointer difference
-         * will never be negative. */
+        /* MISRA Ref 10.8.1 [Essential type casting] */
+        /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-108 */
         /* coverity[misra_c_2012_rule_10_8_violation] */
         pResponse->headersLen = ( size_t ) ( pParsingContext->pBufferCur - ( const char * ) ( pResponse->pHeaders ) );
     }
@@ -841,8 +845,9 @@ static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
         pResponse->headersLen = 0U;
     }
 
-    /* If the Content-Length header was found, then pHttpParser->content_length
-     * will not be equal to the maximum 64 bit integer. */
+    /* MISRA Ref 14.3.1 [Configuration dependent invariant] */
+    /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-143 */
+    /* coverity[misra_c_2012_rule_14_3_violation] */
     if( pHttpParser->content_length != UINT64_MAX )
     {
         pResponse->contentLength = ( size_t ) ( pHttpParser->content_length );
@@ -924,12 +929,8 @@ static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
 
     /* The next location to write. */
 
-    /* MISRA Rule 11.8 flags casting away the const qualifier in the pointer
-     * type. This rule is suppressed because when the body is of transfer
-     * encoding chunked, the body must be copied over the chunk headers that
-     * precede it. This is done to have a contiguous response body. This does
-     * affect future parsing as the changed segment will always be before the
-     * next place to parse. */
+    /* MISRA Ref 11.8.1 [Removal of const from pointer] */
+    /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-118 */
     /* coverity[misra_c_2012_rule_11_8_violation] */
     pNextWriteLoc = ( char * ) ( pResponse->pBody + pResponse->bodyLen );
 
@@ -938,9 +939,8 @@ static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
      * and must be moved up in the buffer. When pLoc is greater than the current
      * end of the body, that signals the parser found a chunk header. */
 
-    /* MISRA Rule 18.3 flags pLoc and pNextWriteLoc as pointing to two different
-     * objects. This rule is suppressed because both pNextWriteLoc and pLoc
-     * point to a location in the response buffer. */
+    /* MISRA Ref 18.3.1 [Pointer comparison] */
+    /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-183 */
     /* coverity[pointer_parameter] */
     /* coverity[misra_c_2012_rule_18_3_violation] */
     if( pLoc > pNextWriteLoc )
@@ -1314,6 +1314,10 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     size_t toAddLen = 0U;
     size_t backtrackHeaderLen = 0U;
 
+    /* These variables are here to pass into memcpy for MISRA compliance */
+    const char * pHeaderEndIndicator = HTTP_HEADER_END_INDICATOR;
+    const char * httpFieldSeparator = HTTP_HEADER_FIELD_SEPARATOR;
+
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
     assert( pField != NULL );
@@ -1358,7 +1362,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
             /* Copy the field separator, ": ", into the buffer. */
             ( void ) memcpy( pBufferCur,
-                             HTTP_HEADER_FIELD_SEPARATOR,
+                             httpFieldSeparator,
                              HTTP_HEADER_FIELD_SEPARATOR_LEN );
 
             pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
@@ -1376,7 +1380,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
             /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
             ( void ) memcpy( pBufferCur,
-                             HTTP_HEADER_END_INDICATOR,
+                             pHeaderEndIndicator,
                              HTTP_HEADER_END_INDICATOR_LEN );
 
             /* Update the headers length value only when everything is successful. */
@@ -1474,6 +1478,9 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     char * pBufferCur = NULL;
     size_t toAddLen = 0U;
 
+    /* This variable is here to pass into memcpy for MISRA compliance */
+    const char * pHeaderLineSeparator = HTTP_HEADER_LINE_SEPARATOR;
+
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
     assert( pMethod != NULL );
@@ -1523,9 +1530,8 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
                          HTTP_PROTOCOL_VERSION,
                          HTTP_PROTOCOL_VERSION_LEN );
         pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
-
         ( void ) memcpy( pBufferCur,
-                         HTTP_HEADER_LINE_SEPARATOR,
+                         pHeaderLineSeparator,
                          HTTP_HEADER_LINE_SEPARATOR_LEN );
         pRequestHeaders->headersLen = toAddLen;
     }
@@ -2034,7 +2040,10 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
              * Because we cannot know how large the HTTP response will be in
              * total, parsing will tell us if the end of the message is reached.*/
             shouldParse = 1U;
-            totalReceived += currentReceived;
+
+            /* MISRA compliance requires the cast to an unsigned type, since we have checked that
+             * the value of current received is greater than 0 we don't need to worry about int overflow. */
+            totalReceived += ( size_t ) currentReceived;
         }
         else
         {
@@ -2058,10 +2067,12 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
         {
             /* Data is received into the buffer is immediately parsed. Parsing
              * is invoked even with a length of zero. A length of zero indicates
-             * to the parser that there is no more data from the server (EOF). */
+             * to the parser that there is no more data from the server (EOF).
+             * Additionally MISRA compliance requires the cast to a larger type, but since we
+             * know that the value is greater than 0 we don't need to worry about int overflow. */
             returnStatus = parseHttpResponse( &parsingContext,
                                               pResponse,
-                                              currentReceived );
+                                              ( uint64_t ) currentReceived );
         }
 
         /* Reading should continue if there are no errors in the transport receive
@@ -2324,7 +2335,7 @@ static int findHeaderValueParserCallback( llhttp_t * pHttpParser,
 
         /* As we have found the value associated with the header, we don't need
          * to parse the response any further. */
-        retCode = LLHTTP_STOP_PARSING;
+        retCode = ( int ) LLHTTP_STOP_PARSING;
     }
     else
     {
@@ -2338,7 +2349,7 @@ static int findHeaderValueParserCallback( llhttp_t * pHttpParser,
 
 static int findHeaderOnHeaderCompleteCallback( llhttp_t * pHttpParser )
 {
-    findHeaderContext_t * pContext = NULL;
+    const findHeaderContext_t * pContext = NULL;
 
     /* Disable unused parameter warning. */
     ( void ) pHttpParser;
