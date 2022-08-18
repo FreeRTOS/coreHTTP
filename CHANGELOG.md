@@ -5,6 +5,7 @@
 
 ### Updates
 
+- [#138](https://github.com/FreeRTOS/coreHTTP/pull/138) Replace strncpy with memcpy to remove warnings
 - [#134](https://github.com/FreeRTOS/coreHTTP/pull/134) Replace strncpy with memcpy to remove warnings
 - [#129](https://github.com/FreeRTOS/coreHTTP/pull/129) Update http-parser to use llhttp
 - [#127](https://github.com/FreeRTOS/coreHTTP/pull/127) CBMC proof changes, and updates to use llhttp
