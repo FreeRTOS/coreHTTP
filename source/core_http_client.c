@@ -1314,7 +1314,8 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     size_t toAddLen = 0U;
     size_t backtrackHeaderLen = 0U;
 
-    /* These variables are here to pass into memcpy for MISRA compliance */
+    /* Directly passing in these strings to memcpy is a MISRA violation
+     * Due to this we allocate these pointers for MISRA compliance */
     const char * pHeaderEndIndicator = HTTP_HEADER_END_INDICATOR;
     const char * httpFieldSeparator = HTTP_HEADER_FIELD_SEPARATOR;
 
@@ -1410,6 +1411,11 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     char rangeValueBuffer[ HTTP_MAX_RANGE_REQUEST_VALUE_LEN ];
     size_t rangeValueLength = 0U;
 
+    /* Directly passing in these strings to memcpy is a MISRA violation
+     * Due to this we allocate these pointers for MISRA compliance */
+    const char * pHttpRangeRequestHeaderValuePrefix = HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX;
+    const char * pHttpRangeRequestHeaderField = HTTP_RANGE_REQUEST_HEADER_FIELD;
+
     assert( pRequestHeaders != NULL );
 
     /* This buffer uses a char type instead of the general purpose uint8_t
@@ -1421,7 +1427,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
     /* Write the range value prefix in the buffer. */
     ( void ) memcpy( rangeValueBuffer,
-                     HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX,
+                     pHttpRangeRequestHeaderValuePrefix,
                      HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN );
     rangeValueLength += HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX_LEN;
 
@@ -1458,7 +1464,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
     /* Add the Range Request header field and value to the buffer. */
     returnStatus = addHeader( pRequestHeaders,
-                              HTTP_RANGE_REQUEST_HEADER_FIELD,
+                              pHttpRangeRequestHeaderField,
                               HTTP_RANGE_REQUEST_HEADER_FIELD_LEN,
                               rangeValueBuffer,
                               rangeValueLength );
@@ -1478,8 +1484,11 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     char * pBufferCur = NULL;
     size_t toAddLen = 0U;
 
-    /* This variable is here to pass into memcpy for MISRA compliance */
+    /* Directly passing in these strings to memcpy is a MISRA violation
+     * Due to this we allocate these pointers for MISRA compliance */
     const char * pHeaderLineSeparator = HTTP_HEADER_LINE_SEPARATOR;
+    const char * pHttpProtocolVersion = HTTP_PROTOCOL_VERSION;
+    const char * pHttpEmptyPath = HTTP_EMPTY_PATH;
 
     assert( pRequestHeaders != NULL );
     assert( pRequestHeaders->pBuffer != NULL );
@@ -1513,7 +1522,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
         if( ( pPath == NULL ) || ( pathLen == 0U ) )
         {
             ( void ) memcpy( pBufferCur,
-                             HTTP_EMPTY_PATH,
+                             pHttpEmptyPath,
                              HTTP_EMPTY_PATH_LEN );
             pBufferCur += HTTP_EMPTY_PATH_LEN;
         }
@@ -1527,7 +1536,7 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
         pBufferCur += SPACE_CHARACTER_LEN;
 
         ( void ) memcpy( pBufferCur,
-                         HTTP_PROTOCOL_VERSION,
+                         pHttpProtocolVersion,
                          HTTP_PROTOCOL_VERSION_LEN );
         pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
         ( void ) memcpy( pBufferCur,
