@@ -1314,8 +1314,8 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     size_t toAddLen = 0U;
     size_t backtrackHeaderLen = 0U;
 
-    /* Directly passing in these strings to memcpy is a MISRA violation */
-    /* Due to this we allocate these pointers for MISRA compliance */
+    /* Directly passing in these strings to memcpy is a MISRA violation
+     * Due to this we allocate these pointers for MISRA compliance */
     const char * pHeaderEndIndicator = HTTP_HEADER_END_INDICATOR;
     const char * httpFieldSeparator = HTTP_HEADER_FIELD_SEPARATOR;
 
@@ -1411,8 +1411,8 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     char rangeValueBuffer[ HTTP_MAX_RANGE_REQUEST_VALUE_LEN ];
     size_t rangeValueLength = 0U;
 
-    /* Directly passing in these strings to memcpy is a MISRA violation */
-    /* Due to this we allocate these pointers for MISRA compliance */
+    /* Directly passing in these strings to memcpy is a MISRA violation
+     * Due to this we allocate these pointers for MISRA compliance */
     const char * pHttpRangeRequestHeaderValuePrefix = HTTP_RANGE_REQUEST_HEADER_VALUE_PREFIX;
     const char * pHttpRangeRequestHeaderField = HTTP_RANGE_REQUEST_HEADER_FIELD;
 
@@ -1484,8 +1484,8 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     char * pBufferCur = NULL;
     size_t toAddLen = 0U;
 
-    /* Directly passing in these strings to memcpy is a MISRA violation */
-    /* Due to this we allocate these pointers for MISRA compliance */
+    /* Directly passing in these strings to memcpy is a MISRA violation
+     * Due to this we allocate these pointers for MISRA compliance */
     const char * pHeaderLineSeparator = HTTP_HEADER_LINE_SEPARATOR;
     const char * pHttpProtocolVersion = HTTP_PROTOCOL_VERSION;
     const char * pHttpEmptyPath = HTTP_EMPTY_PATH;
