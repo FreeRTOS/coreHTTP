@@ -1,5 +1,17 @@
 # Changelog for coreHTTP Client Library
 
+
+## v3.0.0 (Aug 2022)
+
+### Updates
+
+- [#134](https://github.com/FreeRTOS/coreHTTP/pull/134), [#138](https://github.com/FreeRTOS/coreHTTP/pull/138) Replace strncpy with memcpy to remove warnings
+- [#132](https://github.com/FreeRTOS/coreHTTP/pull/132), [#142](https://github.com/FreeRTOS/coreHTTP/pull/142) MISRA C:2012 compliance update
+- [#129](https://github.com/FreeRTOS/coreHTTP/pull/129) Update http-parser to use llhttp
+- [#127](https://github.com/FreeRTOS/coreHTTP/pull/127) CBMC proof changes, and updates to use llhttp
+- [#126](https://github.com/FreeRTOS/coreHTTP/pull/126) Replace http-parser with llhttp
+- [#125](https://github.com/FreeRTOS/coreHTTP/pull/125) Add response buffer len check
+
 ## v2.1.0 (Nov 2021)
 
 ### Updates
