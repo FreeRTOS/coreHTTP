@@ -9,7 +9,7 @@
 - [#132](https://github.com/FreeRTOS/coreHTTP/pull/132), [#142](https://github.com/FreeRTOS/coreHTTP/pull/142) MISRA C:2012 compliance update
 - [#129](https://github.com/FreeRTOS/coreHTTP/pull/129) Update http-parser to use llhttp
 - [#127](https://github.com/FreeRTOS/coreHTTP/pull/127) CBMC proof changes, and updates to use llhttp
-- [#126](https://github.com/FreeRTOS/coreHTTP/pull/126) Replace http-parser with llhttp
+- [#126](https://github.com/FreeRTOS/coreHTTP/pull/126) Replace http-parser with llhttp. Using  llhttp requires C99, so this library will need to use C99 at minimum as well. This change also has the potential to cause users to update their code base in order to implement it. Due to this coreHTTP v3.0.0 is not backwards compatible under certain use cases.
 - [#125](https://github.com/FreeRTOS/coreHTTP/pull/125) Add response buffer len check
 
 ## v2.1.0 (Nov 2021)
