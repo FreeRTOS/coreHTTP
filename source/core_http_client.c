@@ -555,6 +555,7 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser );
  * 0 if str1 is equal to str2
  * 1 if str1 is not equal to str2.
  */
+#include <stdio.h>
 static int8_t caseInsensitiveStringCmp( const char * str1,
                                         const char * str2,
                                         size_t n );
@@ -582,15 +583,15 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
         firstChar = ( int8_t ) str1[ i ];
         secondChar = ( int8_t ) str2[ i ];
 
-        /* Add 32 to go from uppercase to lowercase ASCII character */
-        if( ( firstChar >= 65 ) && ( firstChar <= 90 ) )
+        /* Subtract 32 to go from uppercase to lowercase ASCII character */
+        if( ( firstChar >= 97 ) && ( firstChar <= 122 ) )
         {
-            firstChar = firstChar + 32;
+            firstChar = firstChar - 32;
         }
 
-        if( ( secondChar >= 65 ) && ( secondChar <= 90 ) )
+        if( ( secondChar >= 97 ) && ( secondChar <= 122 ) )
         {
-            secondChar = secondChar + 32;
+            secondChar = secondChar - 32;
         }
 
         if( ( firstChar ) != ( secondChar ) )
