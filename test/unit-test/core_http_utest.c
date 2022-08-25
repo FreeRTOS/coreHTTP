@@ -153,7 +153,7 @@ static const char * pTestResponseEmptyValue = "HTTP/1.1 200 OK\r\n"
 #define HEADER_INVALID_PARAMS        "Header"
 #define HEADER_INVALID_PARAMS_LEN    ( sizeof( HEADER_INVALID_PARAMS ) - 1 )
 
-#define HEADER_IN_BUFFER             "test-header1"
+#define HEADER_IN_BUFFER             "teSt-hEader1"
 #define HEADER_IN_BUFFER_LEN         ( sizeof( HEADER_IN_BUFFER ) - 1 )
 
 #define HEADER_NOT_IN_BUFFER         "header-not-in-buffer"

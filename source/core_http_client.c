@@ -555,7 +555,6 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser );
  * 0 if str1 is equal to str2
  * 1 if str1 is not equal to str2.
  */
-#include <stdio.h>
 static int8_t caseInsensitiveStringCmp( const char * str1,
                                         const char * str2,
                                         size_t n );
@@ -568,7 +567,6 @@ static uint32_t getZeroTimestampMs( void )
 }
 
 /*-----------------------------------------------------------*/
-
 static int8_t caseInsensitiveStringCmp( const char * str1,
                                         const char * str2,
                                         size_t n )
