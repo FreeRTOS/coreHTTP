@@ -213,12 +213,12 @@ typedef enum HTTPParsingState_t
  */
 typedef struct findHeaderContext
 {
-    const unsigned char * pField; /**< The field that is being searched for. */
-    size_t fieldLen;              /**< The length of pField. */
-    const char ** pValueLoc;      /**< The location of the value found in the buffer. */
-    size_t * pValueLen;           /**< the length of the value found. */
-    uint8_t fieldFound;           /**< Indicates that the header field was found during parsing. */
-    uint8_t valueFound;           /**< Indicates that the header value was found during parsing. */
+    const char * pField;     /**< The field that is being searched for. */
+    size_t fieldLen;         /**< The length of pField. */
+    const char ** pValueLoc; /**< The location of the value found in the buffer. */
+    size_t * pValueLen;      /**< the length of the value found. */
+    uint8_t fieldFound;      /**< Indicates that the header field was found during parsing. */
+    uint8_t valueFound;      /**< Indicates that the header value was found during parsing. */
 } findHeaderContext_t;
 
 /**

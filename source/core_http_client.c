@@ -555,8 +555,8 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser );
  * 0 if str1 is equal to str2
  * 1 if str1 is not equal to str2.
  */
-static int8_t caseInsensitiveStringCmp( const unsigned char * str1,
-                                        const unsigned char * str2,
+static int8_t caseInsensitiveStringCmp( const char * str1,
+                                        const char * str2,
                                         size_t n );
 
 /*-----------------------------------------------------------*/
@@ -568,19 +568,19 @@ static uint32_t getZeroTimestampMs( void )
 
 /*-----------------------------------------------------------*/
 
-static int8_t caseInsensitiveStringCmp( const unsigned char * str1,
-                                        const unsigned char * str2,
+static int8_t caseInsensitiveStringCmp( const char * str1,
+                                        const char * str2,
                                         size_t n )
 {
     size_t i = 0U;
-    /* Inclusion of inbetween variables for coverity rule 13.2 compliance */
+    /* Inclusion of inbetween variables for MISRA rule 13.2 compliance */
     int32_t firstChar;
     int32_t secondChar;
 
     for( i = 0U; i < n; i++ )
     {
-        firstChar = toupper( ( int32_t ) ( str1[ i ] ) );
-        secondChar = toupper( ( ( int32_t ) str2[ i ] ) );
+        firstChar = toupper( ( int32_t ) ( ( unsigned char ) str1[ i ] ) );
+        secondChar = toupper( ( int32_t ) ( ( unsigned char ) str2[ i ] ) );
 
         if( ( firstChar ) != ( secondChar ) )
         {
