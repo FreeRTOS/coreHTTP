@@ -1408,7 +1408,7 @@ void test_Http_ReadHeader_Invalid_Response_Only_Header_Field_Found()
 
 
 /**
- * @brief Test happy path with zero-iniestHeaders and requestInfo.
+ * @brief Test happy path with zero-initialized requestHeaders and requestInfo.
  * Use characters in the header with ASCII values higher than 'z'.
  */
 void test_caseInsensitiveStringCmp()
