@@ -582,12 +582,12 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
         secondChar = ( int8_t ) str2[ i ];
 
         /* Subtract 32 to go from uppercase to lowercase ASCII character */
-        if( firstChar >= 97 )
+        if( ( firstChar >= 97 ) && ( firstChar <= 122 ) )
         {
             firstChar = firstChar - 32;
         }
 
-        if( secondChar >= 97 )
+        if( ( secondChar >= 97 ) && ( secondChar <= 122 ) )
         {
             secondChar = secondChar - 32;
         }

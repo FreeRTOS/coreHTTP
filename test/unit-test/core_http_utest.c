@@ -149,15 +149,26 @@ static const char * pTestResponseEmptyValue = "HTTP/1.1 200 OK\r\n"
                                               "test-header2: test-value2\r\n"
                                               "\r\n";
 
+/* Template HTTP response for testing HTTPClient_ReadHeader API
+ * with special characters. */
+static const char * pTestResponseSpecialCharacter = "HTTP/1.1 200 OK\r\n"
+                                                    "test-header0: test-value0\r\n"
+                                                    "test-header1: test-value1\r\n"
+                                                    "test-header2: test|value2\r\n"
+                                                    "header{_not_in|buff}: test-value3\r\n"
+                                                    "\r\n";
 
-#define HEADER_INVALID_PARAMS        "Header"
-#define HEADER_INVALID_PARAMS_LEN    ( sizeof( HEADER_INVALID_PARAMS ) - 1 )
+#define HEADER_INVALID_PARAMS                 "Header"
+#define HEADER_INVALID_PARAMS_LEN             ( sizeof( HEADER_INVALID_PARAMS ) - 1 )
 
-#define HEADER_IN_BUFFER             "teSt-hEader1"
-#define HEADER_IN_BUFFER_LEN         ( sizeof( HEADER_IN_BUFFER ) - 1 )
+#define HEADER_IN_BUFFER                      "teSt-hEader1"
+#define HEADER_IN_BUFFER_LEN                  ( sizeof( HEADER_IN_BUFFER ) - 1 )
 
-#define HEADER_NOT_IN_BUFFER         "header-not-in-buffer"
-#define HEADER_NOT_IN_BUFFER_LEN     ( sizeof( HEADER_NOT_IN_BUFFER ) - 1 )
+#define HEADER_NOT_IN_BUFFER                  "header-not-in-buffer"
+#define HEADER_NOT_IN_BUFFER_LEN              ( sizeof( HEADER_NOT_IN_BUFFER ) - 1 )
+
+#define HEADER_WITH_SPECIAL_CHARACTERS        "header{_not-in|buff}"
+#define HEADER_WITH_SPECIAL_CHARACTERS_LEN    ( sizeof( HEADER_WITH_SPECIAL_CHARACTERS ) - 1 )
 
 /* File-scoped Global variables */
 static HTTPStatus_t retCode = HTTPSuccess;
@@ -1393,6 +1404,72 @@ void test_Http_ReadHeader_Invalid_Response_Only_Header_Field_Found()
                                      &pValueLoc,
                                      &valueLen );
     TEST_ASSERT_EQUAL( HTTPInvalidResponse, retCode );
+}
+
+
+/**
+ * @brief Test happy path with zero-iniestHeaders and requestInfo.
+ * Use characters in the header with ASCII values higher than 'z'.
+ */
+void test_caseInsensitiveStringCmp()
+{
+    /* Add expectations for llhttp dependencies. */
+    llhttp_settings_init_ExpectAnyArgs();
+    llhttp_init_ExpectAnyArgs();
+
+    /* Configure the llhttp_execute mock. */
+    invokeHeaderFieldCallback = 1U;
+    invokeHeaderValueCallback = 1U;
+    pFieldLocToReturn = &pTestResponseSpecialCharacter[ headerFieldInRespLoc ];
+    fieldLenToReturn = headerFieldInRespLen;
+    pValueLocToReturn = &pTestResponseSpecialCharacter[ headerValInRespLoc ];
+    valueLenToReturn = headerValInRespLen;
+    expectedValCbRetVal = LLHTTP_CONTINUE_PARSING;
+    invokeHeaderCompleteCallback = 1U;
+    parserErrNo = HPE_OK;
+    llhttp_execute_ExpectAnyArgsAndReturn( HPE_OK );
+
+    /* Call the function under test. */
+    testResponse.bufferLen = strlen( pTestResponseSpecialCharacter );
+    retCode = HTTPClient_ReadHeader( &testResponse,
+                                     HEADER_NOT_IN_BUFFER,
+                                     HEADER_NOT_IN_BUFFER_LEN,
+                                     &pValueLoc,
+                                     &valueLen );
+    TEST_ASSERT_EQUAL( HTTPHeaderNotFound, retCode );
+
+    /* Repeat the test above but with fieldLenToReturn == HEADER_NOT_IN_BUFFER_LEN.
+     * Doing this allows us to take the branch where the actual contents
+     * of the fields are compared rather than just the length. */
+    setUp();
+    /* Add expectations for llhttp dependencies. */
+    llhttp_settings_init_ExpectAnyArgs();
+    llhttp_init_ExpectAnyArgs();
+    /* Ensure that the header field does NOT match what we're searching. */
+    TEST_ASSERT_EQUAL( otherHeaderFieldInRespLen, HEADER_NOT_IN_BUFFER_LEN );
+    TEST_ASSERT_TRUE( memcmp( &pTestResponseSpecialCharacter[ otherHeaderFieldInRespLoc ],
+                              HEADER_WITH_SPECIAL_CHARACTERS,
+                              HEADER_WITH_SPECIAL_CHARACTERS_LEN ) != 0 );
+    /* Configure the llhttp_execute mock. */
+    invokeHeaderFieldCallback = 1U;
+    invokeHeaderValueCallback = 1U;
+    pFieldLocToReturn = &pTestResponseSpecialCharacter[ otherHeaderFieldInRespLoc ];
+    fieldLenToReturn = otherHeaderFieldInRespLen;
+    pValueLocToReturn = &pTestResponseSpecialCharacter[ headerValInRespLoc ];
+    valueLenToReturn = headerValInRespLen;
+    expectedValCbRetVal = LLHTTP_CONTINUE_PARSING;
+    invokeHeaderCompleteCallback = 1U;
+    parserErrNo = HPE_OK;
+    llhttp_execute_ExpectAnyArgsAndReturn( HPE_OK );
+
+    /* Call the function under test. */
+    testResponse.bufferLen = strlen( pTestResponseSpecialCharacter );
+    retCode = HTTPClient_ReadHeader( &testResponse,
+                                     HEADER_WITH_SPECIAL_CHARACTERS,
+                                     HEADER_WITH_SPECIAL_CHARACTERS_LEN,
+                                     &pValueLoc,
+                                     &valueLen );
+    TEST_ASSERT_EQUAL( HTTPHeaderNotFound, retCode );
 }
 
 /**
