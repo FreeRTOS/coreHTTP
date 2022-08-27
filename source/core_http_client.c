@@ -573,21 +573,21 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
 {
     size_t i = 0U;
     /* Inclusion of inbetween variables for MISRA rule 13.2 compliance */
-    int8_t firstChar;
-    int8_t secondChar;
+    char firstChar;
+    char secondChar;
 
     for( i = 0U; i < n; i++ )
     {
-        firstChar = ( int8_t ) str1[ i ];
-        secondChar = ( int8_t ) str2[ i ];
+        firstChar = str1[ i ];
+        secondChar = str2[ i ];
 
         /* Subtract 32 to go from uppercase to lowercase ASCII character */
-        if( ( firstChar >= 97 ) && ( firstChar <= 122 ) )
+        if( ( firstChar >= 'a' ) && ( firstChar <= 'z' ) )
         {
             firstChar = firstChar - 32;
         }
 
-        if( ( secondChar >= 97 ) && ( secondChar <= 122 ) )
+        if( ( secondChar >= 'a' ) && ( secondChar <= 'z' ) )
         {
             secondChar = secondChar - 32;
         }
