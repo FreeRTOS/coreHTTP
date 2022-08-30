@@ -575,6 +575,7 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
     /* Inclusion of inbetween variables for MISRA rule 13.2 compliance */
     char firstChar;
     char secondChar;
+    /* Get the offset from a lowercase to capital character in a MISRA compliant way */
     int8_t offset = 'a' - 'A';
 
     for( i = 0U; i < n; i++ )
@@ -582,7 +583,7 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
         firstChar = str1[ i ];
         secondChar = str2[ i ];
 
-        /* Subtract 32 to go from lowercase to uppercase ASCII character */
+        /* Subtract offset to go from lowercase to uppercase ASCII character */
         if( ( firstChar >= 'a' ) && ( firstChar <= 'z' ) )
         {
             firstChar = firstChar - offset;
