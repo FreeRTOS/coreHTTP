@@ -582,7 +582,7 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
         firstChar = str1[ i ];
         secondChar = str2[ i ];
 
-        /* Subtract 32 to go from uppercase to lowercase ASCII character */
+        /* Subtract 32 to go from lowercase to uppercase ASCII character */
         if( ( firstChar >= 'a' ) && ( firstChar <= 'z' ) )
         {
             firstChar = firstChar - offset;
