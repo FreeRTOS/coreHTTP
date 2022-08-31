@@ -7,7 +7,7 @@ The specific deviations, suppressed inline, are listed below.
 Additionally, [MISRA configuration file](https://github.com/FreeRTOS/coreHTTP/blob/main/tools/coverity/misra.config) contains the project wide deviations.
 
 ### Suppressed with Coverity Comments
-To find the violation references in the source files run grep on the source code
+To find the deviation references in the source files run grep on the source code
 with ( Assuming rule 5.4 violation; with justification in point 2 ):
 ```
 grep 'MISRA Ref 5.4.2' . -rI
