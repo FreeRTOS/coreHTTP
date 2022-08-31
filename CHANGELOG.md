@@ -6,7 +6,7 @@
 ### Updates
 
 - [#134](https://github.com/FreeRTOS/coreHTTP/pull/134), [#138](https://github.com/FreeRTOS/coreHTTP/pull/138) Replace strncpy with memcpy to remove warnings
-- [#132](https://github.com/FreeRTOS/coreHTTP/pull/132), [#142](https://github.com/FreeRTOS/coreHTTP/pull/142) MISRA C:2012 compliance update
+- [#132](https://github.com/FreeRTOS/coreHTTP/pull/132), [#142](https://github.com/FreeRTOS/coreHTTP/pull/142), [#144](https://github.com/FreeRTOS/coreHTTP/pull/144) MISRA C:2012 compliance update
 - [#129](https://github.com/FreeRTOS/coreHTTP/pull/129) Update http-parser to use llhttp
 - [#127](https://github.com/FreeRTOS/coreHTTP/pull/127) CBMC proof changes, and updates to use llhttp
 - [#126](https://github.com/FreeRTOS/coreHTTP/pull/126) Replace http-parser with llhttp. Using llhttp requires C99, so this library will need to use C99 at minimum as well. The swap to llhttp impacts the HTTPParsingContext_t struct, as well as many of the functions in coreHTTP. coreHTTP APIs preserve backwards compatibility by usage, however any use of the internal structures or dependency on http parser directly can cause compatibility issues.
