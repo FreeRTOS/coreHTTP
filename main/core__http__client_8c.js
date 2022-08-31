@@ -28,7 +28,7 @@ var core__http__client_8c =
     [ "httpParserOnMessageCompleteCallback", "core__http__client_8c.html#a0e49b695c98e39c3b5c62102371a236c", null ],
     [ "processCompleteHeader", "core__http__client_8c.html#a5b52dd3324e97b23af678200d7aa0489", null ],
     [ "processLlhttpError", "core__http__client_8c.html#a37308fd95d37932ee4111833c81fd387", null ],
-    [ "caseInsensitiveStringCmp", "core__http__client_8c.html#a7b5749c51d9cc15a87d5f04c358bf2d5", null ],
+    [ "caseInsensitiveStringCmp", "core__http__client_8c.html#a15e2e903453a26272e26e4d6f8678cb6", null ],
     [ "HTTPClient_InitializeRequestHeaders", "core__http__client_8c.html#ab523c4d4e3b756928d463bd864361a9c", null ],
     [ "HTTPClient_AddHeader", "core__http__client_8c.html#a451c30912fcdf48c71f9144788250916", null ],
     [ "HTTPClient_AddRangeHeader", "core__http__client_8c.html#af91c4a57452556db2be926743aa02b81", null ],
