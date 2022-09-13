@@ -1,5 +1,5 @@
 name : "coreHTTP"
-version: "v2.1.0"
+version: "v3.0.0"
 description: "Client implementation of the HTTP/1.1 specification for embedded devices."
 license: "MIT"
 dependencies:
