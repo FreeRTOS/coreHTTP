@@ -251,6 +251,7 @@ strchr
 strerror
 strncpy
 struct
+structs
 sublicense
 tcp
 tcpsocketcontext
