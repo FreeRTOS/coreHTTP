@@ -1,10 +1,11 @@
 # Changelog for coreHTTP Client Library
 
 
-## v3.0.0 (Aug 2022)
+## v3.0.0 (October 2022)
 
 ### Updates
 
+- [#145](https://github.com/FreeRTOS/coreHTTP/pull/145) +96
 - [#134](https://github.com/FreeRTOS/coreHTTP/pull/134), [#138](https://github.com/FreeRTOS/coreHTTP/pull/138) Replace strncpy with memcpy to remove warnings
 - [#132](https://github.com/FreeRTOS/coreHTTP/pull/132), [#142](https://github.com/FreeRTOS/coreHTTP/pull/142), [#144](https://github.com/FreeRTOS/coreHTTP/pull/144) MISRA C:2012 compliance update
 - [#129](https://github.com/FreeRTOS/coreHTTP/pull/129) Update http-parser to use llhttp
@@ -43,7 +44,7 @@
  - [#75](https://github.com/FreeRTOS/coreHTTP/pull/75) Small fix to cast logging arguments to types matching the format specifiers.
 
 ### Other
- - [#70](https://github.com/FreeRTOS/coreHTTP/pull/70), [#72](https://github.com/FreeRTOS/coreHTTP/pull/72), [#78](https://github.com/FreeRTOS/coreHTTP/pull/78) Github actions updates.
+ - [#70](https://github.com/FreeRTOS/coreHTTP/pull/70), [#72](https://github.com/FreeRTOS/coreHTTP/pull/72), [#78](https://github.com/FreeRTOS/coreH74+TTP/pull/78) Github actions updates.
  - [#73](https://github.com/FreeRTOS/coreHTTP/pull/73), [#76](https://github.com/FreeRTOS/coreHTTP/pull/76) Github repo chores.
  - [#71](https://github.com/FreeRTOS/coreHTTP/pull/71) CBMC automation chore.
  - [#81](https://github.com/FreeRTOS/coreHTTP/pull/81), [#84](https://github.com/FreeRTOS/coreHTTP/pull/84) Doxygen memory estimates table update.
