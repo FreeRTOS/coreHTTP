@@ -116,6 +116,8 @@ init
 initializerequestheaders
 int
 iot
+ioveccount
+ip
 isfield
 isheaderresponse
 isheadresponse
@@ -185,6 +187,7 @@ pheaders
 phost
 phttpparser
 phttpparsingcontext
+piovec
 plaintext
 plastheaderfield
 plastheadervalue
@@ -248,6 +251,7 @@ strchr
 strerror
 strncpy
 struct
+structs
 sublicense
 tcp
 tcpsocketcontext
@@ -278,4 +282,5 @@ url
 valuefound
 valuelen
 valueloc
+writev
 xxxx
