@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>coreHTTP: Data Structures</title>
+<title>coreHTTP: TransportOutVector_t Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,7 +74,7 @@ var searchBox = new SearchBox("searchBox", "search",'Search','.html');
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('annotated.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('struct_transport_out_vector__t.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -93,26 +93,39 @@ $(document).ready(function(){initNavTree('annotated.html',''); initResizable(); 
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Data Structures</div></div>
+  <div class="summary">
+<a href="#pub-attribs">Data Fields</a>  </div>
+  <div class="headertitle"><div class="title">TransportOutVector_t Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock">Here are the data structures with brief descriptions:</div><div class="directory">
-<table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="structfind_header_context__t.html" target="_self">findHeaderContext_t</a></td><td class="desc">An aggregator that represents the user-provided parameters to the <a class="el" href="core__http__client_8h.html#ac621a0756f290f1437e2c72a24e5b0f9" title="Read a header from a buffer containing a complete HTTP response. This will return the location of the...">HTTPClient_ReadHeader</a> API function. This will be used as context parameter for the parsing callbacks used by the API function </td></tr>
-<tr id="row_1_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="struct_h_t_t_p_client___response_header_parsing_callback__t.html" target="_self">HTTPClient_ResponseHeaderParsingCallback_t</a></td><td class="desc">Callback to intercept headers during the first parse through of the response as it is received from the network </td></tr>
-<tr id="row_2_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="struct_h_t_t_p_parsing_context__t.html" target="_self">HTTPParsingContext_t</a></td><td class="desc">The HTTP response parsing context for a response fresh from the server. This context is passed into the http-parser registered callbacks. The registered callbacks are private functions of the form httpParserXXXXCallbacks() </td></tr>
-<tr id="row_3_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="struct_h_t_t_p_request_headers__t.html" target="_self">HTTPRequestHeaders_t</a></td><td class="desc">Represents header data that will be sent in an HTTP request </td></tr>
-<tr id="row_4_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="struct_h_t_t_p_request_info__t.html" target="_self">HTTPRequestInfo_t</a></td><td class="desc">Configurations of the initial request headers </td></tr>
-<tr id="row_5_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="struct_h_t_t_p_response__t.html" target="_self">HTTPResponse_t</a></td><td class="desc">Represents an HTTP response </td></tr>
-<tr id="row_6_" class="even"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="struct_transport_interface__t.html" target="_self">TransportInterface_t</a></td><td class="desc">The transport layer interface </td></tr>
-<tr id="row_7_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">C</span></span><a class="el" href="struct_transport_out_vector__t.html" target="_self">TransportOutVector_t</a></td><td class="desc">Transport vector structure for sending multiple messages </td></tr>
+
+<p>Transport vector structure for sending multiple messages.  
+ <a href="struct_transport_out_vector__t.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="transport__interface_8h_source.html">transport_interface.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:a0ffa5c06bf00006cbafa8e244951038d"><td class="memItemLeft" align="right" valign="top"><a id="a0ffa5c06bf00006cbafa8e244951038d" name="a0ffa5c06bf00006cbafa8e244951038d"></a>
+const void *&#160;</td><td class="memItemRight" valign="bottom"><b>iov_base</b></td></tr>
+<tr class="memdesc:a0ffa5c06bf00006cbafa8e244951038d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base address of data. <br /></td></tr>
+<tr class="separator:a0ffa5c06bf00006cbafa8e244951038d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada73dafb2d34311f33fefad38603b35c"><td class="memItemLeft" align="right" valign="top"><a id="ada73dafb2d34311f33fefad38603b35c" name="ada73dafb2d34311f33fefad38603b35c"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>iov_len</b></td></tr>
+<tr class="memdesc:ada73dafb2d34311f33fefad38603b35c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of data in buffer. <br /></td></tr>
+<tr class="separator:ada73dafb2d34311f33fefad38603b35c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- directory -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >Transport vector structure for sending multiple messages. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="transport__interface_8h_source.html">transport_interface.h</a></li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="struct_transport_out_vector__t.html">TransportOutVector_t</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2 </li>
   </ul>
 </div>
