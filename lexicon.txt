@@ -142,6 +142,7 @@ memmove
 methodlen
 min
 misra
+mit
 mqtt
 msg
 mynetworkrecvimplementation
@@ -246,6 +247,7 @@ sendpartialcall
 sensitivity
 sizeof
 snprintf
+spdx
 statuscode
 strchr
 strerror

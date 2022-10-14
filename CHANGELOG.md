@@ -1,7 +1,7 @@
 # Changelog for coreHTTP Client Library
 
 
-## v3.0.0 (Aug 2022)
+## v3.0.0 (October 2022)
 
 ### Updates
 
