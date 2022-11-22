@@ -52,6 +52,7 @@ jobs:
         uses: FreeRTOS/CI-CD-Github-Actions/doxygen@main
         with:
           path: ./
+          doxygen_link: https://sourceforge.net/projects/doxygen/files/rel-1.9.4/doxygen-1.9.4.linux.bin.tar.gz
   spell-check:
     runs-on: ubuntu-latest
     steps:
