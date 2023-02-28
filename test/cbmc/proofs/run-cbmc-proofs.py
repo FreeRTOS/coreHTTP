@@ -223,7 +223,7 @@ def run_build(litani, jobs, fail_on_proof_failure, summarize):
         cmd.extend(["--out-file", str(out_file)])
 
     logging.debug(" ".join(cmd))
-    proc = subprocess.run(cmd, check=False)
+    proc = subprocess.run(cmd, check=False, timeout=360)
 
     if proc.returncode and not fail_on_proof_failure:
         logging.critical("Failed to run litani run-build")
@@ -313,11 +313,15 @@ async def configure_proof_dirs( # pylint: disable=too-many-arguments
         profiling = [
             "ENABLE_MEMORY_PROFILING=true"] if enable_memory_profiling else []
 
+        env = dict(os.environ)
+        env["EXTERNAL_SAT_SOLVER"] = "kissat"
+
         # Allow interactive tasks to preempt proof configuration
         proc = await asyncio.create_subprocess_exec(
-            "nice", "-n", "15", "make", *pools,
+            "nice", "-n", "15", "make", "EXTERNAL_SAT_SOLVER=kissat", *pools,
             *profiling, "-B", report_target, "" if debug else "--quiet", cwd=path,
-            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+            stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+            env=env)
         stdout, stderr = await proc.communicate()
         logging.debug("returncode: %s", str(proc.returncode))
         logging.debug("stdout:")
@@ -332,22 +336,6 @@ async def configure_proof_dirs( # pylint: disable=too-many-arguments
 
         print_counter(counter)
         queue.task_done()
-
-
-def add_tool_version_job():
-    cmd = [
-        "litani", "add-job",
-        "--command", "cbmc-starter-kit-print-tool-versions .",
-        "--description", "printing out tool versions",
-        "--phony-outputs", str(uuid.uuid4()),
-        "--pipeline-name", "print_tool_versions",
-        "--ci-stage", "report",
-        "--tags", "front-page-text",
-    ]
-    proc = subprocess.run(cmd)
-    if proc.returncode:
-        logging.critical("Could not add tool version printing job")
-        sys.exit(1)
 
 
 async def main(): # pylint: disable=too-many-locals
@@ -418,8 +406,6 @@ async def main(): # pylint: disable=too-many-locals
         tasks.append(task)
 
     await proof_queue.join()
-
-    add_tool_version_job()
 
     print_counter(counter)
     print("", file=sys.stderr)
