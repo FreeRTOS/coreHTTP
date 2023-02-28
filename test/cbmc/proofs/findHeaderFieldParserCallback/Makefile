@@ -20,4 +20,6 @@ PROOF_SOURCES += $(SRCDIR)/test/cbmc/sources/http_cbmc_state.c
 
 PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
+EXTERNAL_SAT_SOLVER := kissat
+
 include ../Makefile.common

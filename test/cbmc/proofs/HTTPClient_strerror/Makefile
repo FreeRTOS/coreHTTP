@@ -33,4 +33,6 @@ PROOF_SOURCES += $(PROOFDIR)/$(HARNESS_FILE).c
 
 PROJECT_SOURCES += $(SRCDIR)/source/core_http_client.c
 
+EXTERNAL_SAT_SOLVER := kissat
+
 include ../Makefile.common
