@@ -561,6 +561,25 @@ static llhttp_errno_t llhttp_execute_whole_response( llhttp_t * pParser,
     return HPE_OK;
 }
 
+/* Mocked llhttp_execute callback that expects upgrade header in HTTP response. */
+static llhttp_errno_t llhttp_execute_paused_upgrade( llhttp_t * pParser,
+                                                     const char * pData,
+                                                     size_t len,
+                                                     int cmock_num_calls )
+{
+    ( void ) cmock_num_calls;
+    llhttp_errno_t retVal = HPE_OK;
+
+    if( httpParserExecuteCallCount == 0 )
+    {
+        retVal = HPE_PAUSED_UPGRADE;
+    }
+
+    llhttp_execute_whole_response( pParser, pData, len, 0 );
+
+    return retVal;
+}
+
 /* Mocked llhttp_execute callback that will be called the first time on the
  * response message up to the middle of the first header field, then the second
  * time on the response message from the middle of the first header field to the
@@ -1370,6 +1389,26 @@ void test_HTTPClient_Send_less_bytes_request_body( void )
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_PUT_HEADER_COUNT, response.headerCount );
     TEST_ASSERT_BITS_LOW( HTTP_RESPONSE_CONNECTION_CLOSE_FLAG, response.respFlags );
     TEST_ASSERT_BITS_HIGH( HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG, response.respFlags );
+}
+
+/*-----------------------------------------------------------*/
+
+/* Test upgrade header in HTTP response. */
+void test_HTTPClient_Send_paused_upgrade( void )
+{
+    HTTPStatus_t returnStatus = HTTPSuccess;
+
+    llhttp_execute_Stub( llhttp_execute_paused_upgrade );
+    llhttp_resume_after_upgrade_ExpectAnyArgs();
+
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
 }
 
 /*-----------------------------------------------------------*/
