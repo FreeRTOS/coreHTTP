@@ -1159,6 +1159,7 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
 {
     HTTPStatus_t returnStatus;
     const char * parsingStartLoc = NULL;
+    llhttp_errno_t eReturn;
 
     assert( pParsingContext != NULL );
     assert( pResponse != NULL );
@@ -1203,11 +1204,16 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
 
     /* This will begin the parsing. Each of the callbacks set in
      * parserSettings will be invoked as parts of the HTTP response are
-     * reached. The return code is parsed in #processLlhttpError so is not needed. */
+     * reached. The return code is parsed in #processLlhttpError. */
+    eReturn = llhttp_execute( &( pParsingContext->llhttpParser ), parsingStartLoc, parseLen );
 
-    if( llhttp_execute( &( pParsingContext->llhttpParser ), parsingStartLoc, parseLen ) == HPE_PAUSED_UPGRADE )
+    if( eReturn == HPE_PAUSED_UPGRADE )
     {
         llhttp_resume_after_upgrade( &( pParsingContext->llhttpParser ) );
+    }
+    else
+    {
+        /* Empty else MISRA 15.7 */
     }
 
     /* The next location to parse will always be after what has already

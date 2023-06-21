@@ -568,16 +568,16 @@ static llhttp_errno_t llhttp_execute_paused_upgrade( llhttp_t * pParser,
                                                      int cmock_num_calls )
 {
     ( void ) cmock_num_calls;
-    llhttp_errno_t retVal = HPE_OK;
+    llhttp_errno_t eReturn = HPE_OK;
 
     if( httpParserExecuteCallCount == 0 )
     {
-        retVal = HPE_PAUSED_UPGRADE;
+        eReturn = HPE_PAUSED_UPGRADE;
     }
 
     llhttp_execute_whole_response( pParser, pData, len, 0 );
 
-    return retVal;
+    return eReturn;
 }
 
 /* Mocked llhttp_execute callback that will be called the first time on the
