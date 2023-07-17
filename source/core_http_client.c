@@ -1211,10 +1211,6 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
     {
         llhttp_resume_after_upgrade( &( pParsingContext->llhttpParser ) );
     }
-    else
-    {
-        /* Empty else MISRA 15.7 */
-    }
 
     /* The next location to parse will always be after what has already
      * been parsed. */
