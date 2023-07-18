@@ -1050,6 +1050,7 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser )
     switch( llhttp_get_errno( pHttpParser ) )
     {
         case HPE_OK:
+        case HPE_PAUSED_UPGRADE:
             /* There were no errors. */
             break;
 
@@ -1158,6 +1159,7 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
 {
     HTTPStatus_t returnStatus;
     const char * parsingStartLoc = NULL;
+    llhttp_errno_t eReturn;
 
     assert( pParsingContext != NULL );
     assert( pResponse != NULL );
@@ -1202,8 +1204,13 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
 
     /* This will begin the parsing. Each of the callbacks set in
      * parserSettings will be invoked as parts of the HTTP response are
-     * reached. The return code is parsed in #processLlhttpError so is not needed. */
-    ( void ) llhttp_execute( &( pParsingContext->llhttpParser ), parsingStartLoc, parseLen );
+     * reached. The return code is parsed in #processLlhttpError. */
+    eReturn = llhttp_execute( &( pParsingContext->llhttpParser ), parsingStartLoc, parseLen );
+
+    if( eReturn == HPE_PAUSED_UPGRADE )
+    {
+        llhttp_resume_after_upgrade( &( pParsingContext->llhttpParser ) );
+    }
 
     /* The next location to parse will always be after what has already
      * been parsed. */
