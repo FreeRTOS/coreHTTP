@@ -204,7 +204,7 @@
 typedef enum HTTPParsingState_t
 {
     HTTP_PARSING_NONE = 0,   /**< The parser has not started reading any response. */
-    HTTP_PARSING_INCOMPLETE, /**< The parser found a partial reponse. */
+    HTTP_PARSING_INCOMPLETE, /**< The parser found a partial response. */
     HTTP_PARSING_COMPLETE    /**< The parser found the entire response. */
 } HTTPParsingState_t;
 

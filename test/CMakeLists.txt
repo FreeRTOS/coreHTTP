@@ -49,7 +49,7 @@ target_include_directories( coverity_analysis PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS}
 target_compile_options(coverity_analysis PUBLIC -DNDEBUG )
 # ===================== Clone needed third-party libraries ======================
 
-# Define an llhttp paser resource path.
+# Define an llhttp parser resource path.
 set( LLHTTP_DIR ${MODULE_ROOT_DIR}/source/dependency/3rdparty/llhttp CACHE INTERNAL "llhttp library source directory." )
 
 include( llhttp_build.cmake )

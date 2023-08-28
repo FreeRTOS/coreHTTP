@@ -83,7 +83,7 @@ jobs:
       - name: Checkout coreMQTT
         uses: actions/checkout@v3
         with:
-          ref: main
+          ref: CI-CD-Updates
           repository: Skptak/coreMQTT
           path: ssot
       - name: Check transport_interface.h

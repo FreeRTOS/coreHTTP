@@ -574,7 +574,7 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
                                         size_t n )
 {
     size_t i = 0U;
-    /* Inclusion of inbetween variables for MISRA rule 13.2 compliance */
+    /* Inclusion of temporary variables for MISRA rule 13.2 compliance */
     char firstChar;
     char secondChar;
     /* Get the offset from a lowercase to capital character in a MISRA compliant way */
