@@ -92,4 +92,4 @@ _Ref 21.13.1_
 -  MISRA Rule 21.13 flags any value passed into a ctype.h function that isn't cast
         as an unsigned char. Thorough testing by use of our CBMC proofs shows that adding
         the cast to ( unsigned char ) inside of the toupper() call has potential to lead
-        to errors. Due to this we supress this warning for our use case.
+        to errors. Due to this we suppress this warning for our use case.
