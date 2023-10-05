@@ -114,6 +114,18 @@
 #define HTTP_REQUEST_KEEP_ALIVE_FLAG    0x1U
 
 /**
+ * @ingroup http_request_flags
+ * @brief Set this flag to indicate that the request is for a persistent
+ * connection.
+ *
+ * Setting this will cause a "Connection: Keep-Alive" to be written to the
+ * request headers.
+ *
+ * This flag is valid only for #HTTPRequestInfo_t reqFlags parameter.
+ */
+#define HTTP_REQUEST_NO_USER_AGENT_FLAG     0x2U
+
+/**
  * @defgroup http_response_flags HTTPResponse_t Flags
  * @brief Flags for #HTTPResponse_t.respFlags.
  * These flags are populated in #HTTPResponse_t.respFlags by the #HTTPClient_Send
