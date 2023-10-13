@@ -115,10 +115,9 @@
 
 /**
  * @ingroup http_request_flags
- * @brief Set this flag to indicate that the request is for a persistent
- * connection.
+ * @brief Set this flag to skip the User-Agent in the request headers.
  *
- * Setting this will cause a "Connection: Keep-Alive" to be written to the
+ * Setting this will cause the "User-Agent: <Value>" to be omitted in the
  * request headers.
  *
  * This flag is valid only for #HTTPRequestInfo_t reqFlags parameter.
