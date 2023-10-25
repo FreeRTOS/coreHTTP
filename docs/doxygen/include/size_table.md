@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td>core_http_client.c</td>
-        <td><center>3.1K</center></td>
+        <td><center>3.2K</center></td>
         <td><center>2.5K</center></td>
     </tr>
     <tr>
@@ -29,7 +29,7 @@
     </tr>
     <tr>
         <td><b>Total estimates</b></td>
-        <td><b><center>23.9K</center></b></td>
+        <td><b><center>24.0K</center></b></td>
         <td><b><center>20.7K</center></b></td>
     </tr>
 </table>

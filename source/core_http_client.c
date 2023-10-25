@@ -1632,12 +1632,15 @@ HTTPStatus_t HTTPClient_InitializeRequestHeaders( HTTPRequestHeaders_t * pReques
 
     if( returnStatus == HTTPSuccess )
     {
-        /* Write "User-Agent: <Value>". */
-        returnStatus = addHeader( pRequestHeaders,
-                                  HTTP_USER_AGENT_FIELD,
-                                  HTTP_USER_AGENT_FIELD_LEN,
-                                  HTTP_USER_AGENT_VALUE,
-                                  HTTP_USER_AGENT_VALUE_LEN );
+        if( ( HTTP_REQUEST_NO_USER_AGENT_FLAG & pRequestInfo->reqFlags ) == 0U )
+        {
+            /* Write "User-Agent: <Value>". */
+            returnStatus = addHeader( pRequestHeaders,
+                                      HTTP_USER_AGENT_FIELD,
+                                      HTTP_USER_AGENT_FIELD_LEN,
+                                      HTTP_USER_AGENT_VALUE,
+                                      HTTP_USER_AGENT_VALUE_LEN );
+        }
     }
 
     if( returnStatus == HTTPSuccess )

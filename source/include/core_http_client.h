@@ -111,7 +111,18 @@
  *
  * This flag is valid only for #HTTPRequestInfo_t reqFlags parameter.
  */
-#define HTTP_REQUEST_KEEP_ALIVE_FLAG    0x1U
+#define HTTP_REQUEST_KEEP_ALIVE_FLAG       0x1U
+
+/**
+ * @ingroup http_request_flags
+ * @brief Set this flag to skip the User-Agent in the request headers.
+ *
+ * Setting this will cause the "User-Agent: <Value>" to be omitted in the
+ * request headers.
+ *
+ * This flag is valid only for #HTTPRequestInfo_t reqFlags parameter.
+ */
+#define HTTP_REQUEST_NO_USER_AGENT_FLAG    0x2U
 
 /**
  * @defgroup http_response_flags HTTPResponse_t Flags
