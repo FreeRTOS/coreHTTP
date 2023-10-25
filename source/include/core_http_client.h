@@ -821,6 +821,19 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                               uint32_t sendFlags );
 /* @[declare_httpclient_send] */
 
+HTTPStatus_t HTTPClient_InternalReceiveAndParseHttpResponse( const TransportInterface_t* pTransport,^M
+                                                             HTTPResponse_t* pResponse,^M
+                                                             const HTTPRequestHeaders_t* pRequestHeaders);
+
+HTTPStatus_t HTTPClient_InternalSendHttpHeaders( const TransportInterface_t* pTransport,
+                                                 HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                                 HTTPRequestHeaders_t* pRequestHeaders, size_t reqBodyLen,
+                                                 uint32_t sendFlags);
+
+HTTPStatus_t HTTPClient_InternalSendHttpData( const TransportInterface_t* pTransport,
+                                              HTTPClient_GetCurrentTimeFunc_t getTimestampMs, const uint8_t* pData,
+                                              size_t dataLen);
+
 /**
  * @brief Read a header from a buffer containing a complete HTTP response.
  * This will return the location of the response header value in the

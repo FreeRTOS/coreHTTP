@@ -1941,6 +1941,15 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
     return returnStatus;
 }
 
+HTTPStatus_t HTTPClient_InternalSendHttpHeaders( const TransportInterface_t* pTransport,
+                                                 HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                                 HTTPRequestHeaders_t* pRequestHeaders,
+                                                 size_t reqBodyLen,
+                                                 uint32_t sendFlags)
+{
+    return sendHttpHeaders(pTransport, getTimestampMs, pRequestHeaders, reqBodyLen, sendFlags);
+}
+
 /*-----------------------------------------------------------*/
 
 static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
@@ -1960,6 +1969,14 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
     returnStatus = sendHttpData( pTransport, getTimestampMs, pRequestBodyBuf, reqBodyBufLen );
 
     return returnStatus;
+}
+
+HTTPStatus_t HTTPClient_InternalSendHttpData( const TransportInterface_t* pTransport,
+                                              HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                              const uint8_t* pData,
+                                              size_t dataLen)
+{
+    return sendHttpData(pTransport, getTimestampMs, pData, dataLen);
 }
 
 /*-----------------------------------------------------------*/
@@ -2126,6 +2143,13 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
     }
 
     return returnStatus;
+}
+
+HTTPStatus_t HTTPClient_InternalReceiveAndParseHttpResponse( const TransportInterface_t* pTransport,
+                                                             HTTPResponse_t* pResponse,
+                                                             const HTTPRequestHeaders_t* pRequestHeaders)
+{
+    return receiveAndParseHttpResponse(pTransport, pResponse, pRequestHeaders);
 }
 
 /*-----------------------------------------------------------*/
