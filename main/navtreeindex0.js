@@ -32,6 +32,7 @@ var NAVTREEINDEX0 =
 "group__http__enum__types.html#gga39fad9050063a355ffd95e95381e743faf6441d45e373b7686e45c2d9a0d12dd3":[6,0,0,6],
 "group__http__request__flags.html":[6,6],
 "group__http__request__flags.html#gadec54e27d2d24006b4c22a7f945282de":[6,6,0],
+"group__http__request__flags.html#gaf9c4b2a8cca192bdab55caa7414043d2":[6,6,1],
 "group__http__response__flags.html":[6,7],
 "group__http__response__flags.html#ga259404ed98011458fb1ad2e90fba1752":[6,7,1],
 "group__http__response__flags.html#ga362e461ad360ffb2ae6b986c688993c5":[6,7,0],
