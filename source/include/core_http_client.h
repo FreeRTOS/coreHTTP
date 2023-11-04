@@ -111,7 +111,18 @@
  *
  * This flag is valid only for #HTTPRequestInfo_t reqFlags parameter.
  */
-#define HTTP_REQUEST_KEEP_ALIVE_FLAG    0x1U
+#define HTTP_REQUEST_KEEP_ALIVE_FLAG       0x1U
+
+/**
+ * @ingroup http_request_flags
+ * @brief Set this flag to skip the User-Agent in the request headers.
+ *
+ * Setting this will cause the "User-Agent: <Value>" to be omitted in the
+ * request headers.
+ *
+ * This flag is valid only for #HTTPRequestInfo_t reqFlags parameter.
+ */
+#define HTTP_REQUEST_NO_USER_AGENT_FLAG    0x2U
 
 /**
  * @defgroup http_response_flags HTTPResponse_t Flags
@@ -518,6 +529,13 @@ typedef struct HTTPResponse
     size_t headerCount;
 
     /**
+     * @brief Indicates whether the HTTP response headers have been fully received.
+     *
+     * This variable is set to 1 after all headers have been received and processed by #HTTPClient_Send.
+     */
+    uint8_t areHeadersComplete;
+
+    /**
      * @brief Flags of useful headers found in the response.
      *
      * This is updated by #HTTPClient_Send. Please see @ref http_response_flags
@@ -719,6 +737,21 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
                                         int32_t rangeEnd );
 /* @[declare_httpclient_addrangeheader] */
 
+/* @[declare_httpclient_sendhttpheaders] */
+HTTPStatus_t HTTPClient_SendHttpHeaders( const TransportInterface_t * pTransport,
+                                         HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                         HTTPRequestHeaders_t * pRequestHeaders,
+                                         size_t reqBodyLen,
+                                         uint32_t sendFlags );
+/* @[declare_httpclient_sendhttpheaders] */
+
+/* @[declare_httpclient_sendhttpdata] */
+HTTPStatus_t HTTPClient_SendHttpData( const TransportInterface_t * pTransport,
+                                      HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                      const uint8_t * pData,
+                                      size_t dataLen );
+/* @[declare_httpclient_sendhttpdata] */
+
 /**
  * @brief Send the request headers in #HTTPRequestHeaders_t.pBuffer and request
  * body in @p pRequestBodyBuf over the transport. The response is received in
@@ -821,18 +854,11 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
                               uint32_t sendFlags );
 /* @[declare_httpclient_send] */
 
-HTTPStatus_t HTTPClient_InternalReceiveAndParseHttpResponse( const TransportInterface_t* pTransport,^M
-                                                             HTTPResponse_t* pResponse,^M
-                                                             const HTTPRequestHeaders_t* pRequestHeaders);
-
-HTTPStatus_t HTTPClient_InternalSendHttpHeaders( const TransportInterface_t* pTransport,
-                                                 HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
-                                                 HTTPRequestHeaders_t* pRequestHeaders, size_t reqBodyLen,
-                                                 uint32_t sendFlags);
-
-HTTPStatus_t HTTPClient_InternalSendHttpData( const TransportInterface_t* pTransport,
-                                              HTTPClient_GetCurrentTimeFunc_t getTimestampMs, const uint8_t* pData,
-                                              size_t dataLen);
+/* @[declare_httpclient_receiveandparsehttpresponse] */
+HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t * pTransport,
+                                                     HTTPResponse_t * pResponse,
+                                                     const HTTPRequestHeaders_t * pRequestHeaders );
+/* @[declare_httpclient_receiveandparsehttpresponse] */
 
 /**
  * @brief Read a header from a buffer containing a complete HTTP response.
