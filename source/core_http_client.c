@@ -43,38 +43,13 @@
  */
 static uint32_t getZeroTimestampMs( void );
 
-/**
- * @brief Send HTTP bytes over the transport send interface.
- *
- * @param[in] pTransport Transport interface.
- * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
- * @param[in] pData HTTP request data to send.
- * @param[in] dataLen HTTP request data length.
- *
- * @return #HTTPSuccess if successful. If there was a network error or less
- * bytes than what were specified were sent, then #HTTPNetworkError is
- * returned.
- */
+
 HTTPStatus_t HTTPClient_SendHttpData( const TransportInterface_t * pTransport,
                                       HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                       const uint8_t * pData,
                                       size_t dataLen );
 
-/**
- * @brief Send the HTTP headers over the transport send interface.
- *
- * @param[in] pTransport Transport interface.
- * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
- * @param[in] pRequestHeaders Request headers to send, it includes the buffer
- * and length.
- * @param[in] reqBodyLen The length of the request body to be sent. This is
- * used to generated a Content-Length header.
- * @param[in] sendFlags Application provided flags to #HTTPClient_Send.
- *
- * @return #HTTPSuccess if successful. If there was a network error or less
- * bytes than what were specified were sent, then #HTTPNetworkError is
- * returned.
- */
+
 HTTPStatus_t HTTPClient_SendHttpHeaders( const TransportInterface_t * pTransport,
                                          HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
                                          HTTPRequestHeaders_t * pRequestHeaders,
@@ -187,17 +162,7 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                                             size_t totalReceived,
                                             size_t responseBufferLen );
 
-/**
- * @brief Receive the HTTP response from the network and parse it.
- *
- * @param[in] pTransport Transport interface.
- * @param[in] pResponse Response message to receive data from the network.
- * @param[in] pRequestHeaders Request headers for the corresponding HTTP request.
- *
- * @return Returns #HTTPSuccess if successful. #HTTPNetworkError for a transport
- * receive error. Please see #parseHttpResponse and #getFinalResponseStatus for
- * other statuses returned.
- */
+
 HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t * pTransport,
                                                      HTTPResponse_t * pResponse,
                                                      const HTTPRequestHeaders_t * pRequestHeaders );
