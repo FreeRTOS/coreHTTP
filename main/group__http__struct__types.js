@@ -30,6 +30,7 @@ var group__http__struct__types =
       [ "statusCode", "struct_h_t_t_p_response__t.html#a2eaee249cd6a2bb4c86c4ea62362df1d", null ],
       [ "contentLength", "struct_h_t_t_p_response__t.html#ab3787660398f9bb866ee39a976106748", null ],
       [ "headerCount", "struct_h_t_t_p_response__t.html#a2cc9259ce7b23b3d11c126bde0b700da", null ],
+      [ "areHeadersComplete", "struct_h_t_t_p_response__t.html#a993c356540eebb9b0143fd643714f353", null ],
       [ "respFlags", "struct_h_t_t_p_response__t.html#a43d3cd31feebcd50ab2bd3078d1a77bc", null ]
     ] ],
     [ "TransportInterface_t", "struct_transport_interface__t.html", [
