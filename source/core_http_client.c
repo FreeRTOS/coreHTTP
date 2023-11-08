@@ -43,43 +43,18 @@
  */
 static uint32_t getZeroTimestampMs( void );
 
-/**
- * @brief Send HTTP bytes over the transport send interface.
- *
- * @param[in] pTransport Transport interface.
- * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
- * @param[in] pData HTTP request data to send.
- * @param[in] dataLen HTTP request data length.
- *
- * @return #HTTPSuccess if successful. If there was a network error or less
- * bytes than what were specified were sent, then #HTTPNetworkError is
- * returned.
- */
-static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
-                                  HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
-                                  const uint8_t * pData,
-                                  size_t dataLen );
 
-/**
- * @brief Send the HTTP headers over the transport send interface.
- *
- * @param[in] pTransport Transport interface.
- * @param[in] getTimestampMs Function to retrieve a timestamp in milliseconds.
- * @param[in] pRequestHeaders Request headers to send, it includes the buffer
- * and length.
- * @param[in] reqBodyLen The length of the request body to be sent. This is
- * used to generated a Content-Length header.
- * @param[in] sendFlags Application provided flags to #HTTPClient_Send.
- *
- * @return #HTTPSuccess if successful. If there was a network error or less
- * bytes than what were specified were sent, then #HTTPNetworkError is
- * returned.
- */
-static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
-                                     HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
-                                     HTTPRequestHeaders_t * pRequestHeaders,
-                                     size_t reqBodyLen,
-                                     uint32_t sendFlags );
+HTTPStatus_t HTTPClient_SendHttpData( const TransportInterface_t * pTransport,
+                                      HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                      const uint8_t * pData,
+                                      size_t dataLen );
+
+
+HTTPStatus_t HTTPClient_SendHttpHeaders( const TransportInterface_t * pTransport,
+                                         HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                         HTTPRequestHeaders_t * pRequestHeaders,
+                                         size_t reqBodyLen,
+                                         uint32_t sendFlags );
 
 /**
  * @brief Adds the Content-Length header field and value to the
@@ -187,20 +162,10 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                                             size_t totalReceived,
                                             size_t responseBufferLen );
 
-/**
- * @brief Receive the HTTP response from the network and parse it.
- *
- * @param[in] pTransport Transport interface.
- * @param[in] pResponse Response message to receive data from the network.
- * @param[in] pRequestHeaders Request headers for the corresponding HTTP request.
- *
- * @return Returns #HTTPSuccess if successful. #HTTPNetworkError for a transport
- * receive error. Please see #parseHttpResponse and #getFinalResponseStatus for
- * other statuses returned.
- */
-static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pTransport,
-                                                 HTTPResponse_t * pResponse,
-                                                 const HTTPRequestHeaders_t * pRequestHeaders );
+
+HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t * pTransport,
+                                                     HTTPResponse_t * pResponse,
+                                                     const HTTPRequestHeaders_t * pRequestHeaders );
 
 /**
  * @brief Send the HTTP request over the network.
@@ -212,7 +177,7 @@ static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pT
  * @param[in] reqBodyBufLen Length of the request body buffer.
  * @param[in] sendFlags Application provided flags to #HTTPClient_Send.
  *
- * @return Returns #HTTPSuccess if successful. Please see #sendHttpHeaders and
+ * @return Returns #HTTPSuccess if successful. Please see #HTTPClient_SendHttpHeaders and
  * #sendHttpBody for other statuses returned.
  */
 static HTTPStatus_t sendHttpRequest( const TransportInterface_t * pTransport,
@@ -832,6 +797,9 @@ static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
 
     assert( pResponse != NULL );
     assert( pParsingContext->pBufferCur != NULL );
+
+    /* Flag indicating that the headers have been completely signed - useful for libraries built on top of corehttp. */
+    pResponse->areHeadersComplete = 1;
 
     /* The current location to parse was updated in previous callbacks and MUST
      * always be within the response buffer. */
@@ -1796,10 +1764,10 @@ HTTPStatus_t HTTPClient_AddRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
 /*-----------------------------------------------------------*/
 
-static HTTPStatus_t sendHttpData( const TransportInterface_t * pTransport,
-                                  HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
-                                  const uint8_t * pData,
-                                  size_t dataLen )
+HTTPStatus_t HTTPClient_SendHttpData( const TransportInterface_t * pTransport,
+                                      HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                      const uint8_t * pData,
+                                      size_t dataLen )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     const uint8_t * pIndex = pData;
@@ -1908,11 +1876,11 @@ static HTTPStatus_t addContentLengthHeader( HTTPRequestHeaders_t * pRequestHeade
 
 /*-----------------------------------------------------------*/
 
-static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
-                                     HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
-                                     HTTPRequestHeaders_t * pRequestHeaders,
-                                     size_t reqBodyLen,
-                                     uint32_t sendFlags )
+HTTPStatus_t HTTPClient_SendHttpHeaders( const TransportInterface_t * pTransport,
+                                         HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                         HTTPRequestHeaders_t * pRequestHeaders,
+                                         size_t reqBodyLen,
+                                         uint32_t sendFlags )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     uint8_t shouldSendContentLength = 0U;
@@ -1935,10 +1903,10 @@ static HTTPStatus_t sendHttpHeaders( const TransportInterface_t * pTransport,
     {
         LogDebug( ( "Sending HTTP request headers: HeaderBytes=%lu",
                     ( unsigned long ) ( pRequestHeaders->headersLen ) ) );
-        returnStatus = sendHttpData( pTransport,
-                                     getTimestampMs,
-                                     pRequestHeaders->pBuffer,
-                                     pRequestHeaders->headersLen );
+        returnStatus = HTTPClient_SendHttpData( pTransport,
+                                                getTimestampMs,
+                                                pRequestHeaders->pBuffer,
+                                                pRequestHeaders->headersLen );
     }
 
     return returnStatus;
@@ -1960,7 +1928,7 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
     /* Send the request body. */
     LogDebug( ( "Sending the HTTP request body: BodyBytes=%lu",
                 ( unsigned long ) reqBodyBufLen ) );
-    returnStatus = sendHttpData( pTransport, getTimestampMs, pRequestBodyBuf, reqBodyBufLen );
+    returnStatus = HTTPClient_SendHttpData( pTransport, getTimestampMs, pRequestBodyBuf, reqBodyBufLen );
 
     return returnStatus;
 }
@@ -2014,9 +1982,9 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
 
 /*-----------------------------------------------------------*/
 
-static HTTPStatus_t receiveAndParseHttpResponse( const TransportInterface_t * pTransport,
-                                                 HTTPResponse_t * pResponse,
-                                                 const HTTPRequestHeaders_t * pRequestHeaders )
+HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t * pTransport,
+                                                     HTTPResponse_t * pResponse,
+                                                     const HTTPRequestHeaders_t * pRequestHeaders )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
     size_t totalReceived = 0U;
@@ -2149,11 +2117,11 @@ static HTTPStatus_t sendHttpRequest( const TransportInterface_t * pTransport,
     assert( getTimestampMs != NULL );
 
     /* Send the headers, which are at one location in memory. */
-    returnStatus = sendHttpHeaders( pTransport,
-                                    getTimestampMs,
-                                    pRequestHeaders,
-                                    reqBodyBufLen,
-                                    sendFlags );
+    returnStatus = HTTPClient_SendHttpHeaders( pTransport,
+                                               getTimestampMs,
+                                               pRequestHeaders,
+                                               reqBodyBufLen,
+                                               sendFlags );
 
     /* Send the body, which is at another location in memory. */
     if( returnStatus == HTTPSuccess )
@@ -2269,9 +2237,9 @@ HTTPStatus_t HTTPClient_Send( const TransportInterface_t * pTransport,
 
     if( returnStatus == HTTPSuccess )
     {
-        returnStatus = receiveAndParseHttpResponse( pTransport,
-                                                    pResponse,
-                                                    pRequestHeaders );
+        returnStatus = HTTPClient_ReceiveAndParseHttpResponse( pTransport,
+                                                               pResponse,
+                                                               pRequestHeaders );
     }
 
     return returnStatus;
