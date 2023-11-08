@@ -57,8 +57,8 @@ REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpHeaderStrncp
 # than the total possible iterations in the int32_t to ASCII converation.
 UNWINDSET += __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.0:11
 UNWINDSET += __CPROVER_file_local_core_http_client_c_convertInt32ToAscii.1:11
-UNWINDSET += __CPROVER_file_local_core_http_client_c_receiveAndParseHttpResponse.0:10
-UNWINDSET += __CPROVER_file_local_core_http_client_c_sendHttpData.0:10
+UNWINDSET += HTTPClient_ReceiveAndParseHttpResponse.0:10
+UNWINDSET += HTTPClient_SendHttpData.0:10
 
 # strncmp is used to find if there exists "\r\n\r\n" at the end of the header
 # buffer. Therefore, we need to unwind strncmp to the length of "\r\n\r\n" + 1.
