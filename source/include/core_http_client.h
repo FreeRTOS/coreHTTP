@@ -154,6 +154,26 @@
 #define HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG    0x2U
 
 /**
+ * @defgroup http_response_option_flags HTTPResponse_t Flags
+ * @brief Flags for #HTTPResponse_t.respOptionFlags.
+ * These flags control configurations of response parsing.
+ *
+ * Flags should be bitwise-ORed with each other to change the behavior of
+ * #HTTPClient_ReceiveAndParseHttpResponse and #HTTPClient_Send.
+ */
+
+/**
+ * @ingroup http_response_option_flags
+ * @brief Set this flag to indicate that the response body should not be parsed.
+ *
+ * Setting this will cause parser to stop after parsing the headers. Portion of raw body
+ * may be available in #HTTPResponse_t.pBody and #HTTPResponse_t.bodyLen.
+ *
+ * This flag is valid only for #HTTPResponse_t respOptionFlags parameter.
+ */
+#define HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG 0x1U
+
+/**
  * @ingroup http_constants
  * @brief Flag that represents End of File byte in the range specification of
  * a Range Request.
@@ -292,12 +312,22 @@ typedef enum HTTPStatus
     HTTPSecurityAlertInvalidContentLength,
 
     /**
-     * @brief An error occurred in the third-party parsing library.
+     * @brief Represents the state of the HTTP parser when it is paused.
      *
-     * Functions that may return this value:
-     * - #HTTPClient_Send
-     * - #HTTPClient_ReadHeader
+     * This state indicates that the parser has encountered a pause condition and is waiting for further input.
+     *
+     * @see HTTPClient_Send
+     * @see HTTPClient_ReceiveAndParseHttpResponse
      */
+    HTTPParserPaused,
+
+    /**
+    * @brief An error occurred in the third-party parsing library.
+    *
+    * Functions that may return this value:
+    * - #HTTPClient_Send
+    * - #HTTPClient_ReadHeader
+    */
     HTTPParserInternalError,
 
     /**
@@ -534,6 +564,13 @@ typedef struct HTTPResponse
      * This variable is set to 1 after all headers have been received and processed by #HTTPClient_Send.
      */
     uint8_t areHeadersComplete;
+
+    /**
+     * @brief Flags to activate other response configurations.
+     *
+     * Please see @ref http_response_option_flags for more information.
+     */
+    uint32_t respOptionFlags;
 
     /**
      * @brief Flags of useful headers found in the response.

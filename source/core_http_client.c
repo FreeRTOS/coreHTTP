@@ -870,6 +870,13 @@ static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
 
     LogDebug( ( "Response parsing: Found the end of the headers." ) );
 
+    /* If there is HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG opt-in we should stop
+     * parsing here. */
+    if ( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG ) {
+        shouldContinueParse = LLHTTP_PAUSE_PARSING;
+        pResponse->pBody = (const uint8_t*)pParsingContext->pBufferCur;
+    }
+
     return shouldContinueParse;
 }
 
@@ -1101,7 +1108,10 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser )
                         "found when it shouldn't have been." ) );
             returnStatus = HTTPSecurityAlertInvalidContentLength;
             break;
-
+        case HPE_PAUSED:
+            LogInfo(("User intervention: Parsing stopped by user."));
+            returnStatus = HTTPParserPaused;
+            break;
         /* All other error cases cannot be triggered and indicate an error in the
          * third-party parsing library if found. */
         default:
@@ -2086,6 +2096,12 @@ HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t 
                        ( totalReceived < pResponse->bufferLen ) ) ? 1U : 0U;
     }
 
+    if ( returnStatus == HTTPParserPaused && pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG) {
+        returnStatus = HTTPSuccess;
+        /* There may be dangling data if we parse with do not parse body flag. To let libraries built on top of corehttp we expose it through body.  */
+        pResponse->bodyLen = totalReceived - ((uint8_t *)pResponse->pBody - pResponse->pBuffer);
+    }
+
     if( returnStatus == HTTPSuccess )
     {
         /* If there are errors in receiving from the network or during parsing,
@@ -2605,6 +2621,10 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
 
         case HTTPSecurityAlertInvalidContentLength:
             str = "HTTPSecurityAlertInvalidContentLength";
+            break;
+
+        case HTTPParserPaused:
+            str = "HTTPParserPaused";
             break;
 
         case HTTPParserInternalError:
