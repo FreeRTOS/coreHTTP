@@ -171,7 +171,7 @@
  *
  * This flag is valid only for #HTTPResponse_t respOptionFlags parameter.
  */
-#define HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG 0x1U
+#define HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG    0x1U
 
 /**
  * @ingroup http_constants
@@ -185,7 +185,7 @@
  *  - When the requested range is for the last N bytes of the file.
  * In both cases, this value should be used for the "rangeEnd" parameter.
  */
-#define HTTP_RANGE_REQUEST_END_OF_FILE              -1
+#define HTTP_RANGE_REQUEST_END_OF_FILE          -1
 
 /**
  * @ingroup http_enum_types
@@ -322,12 +322,12 @@ typedef enum HTTPStatus
     HTTPParserPaused,
 
     /**
-    * @brief An error occurred in the third-party parsing library.
-    *
-    * Functions that may return this value:
-    * - #HTTPClient_Send
-    * - #HTTPClient_ReadHeader
-    */
+     * @brief An error occurred in the third-party parsing library.
+     *
+     * Functions that may return this value:
+     * - #HTTPClient_Send
+     * - #HTTPClient_ReadHeader
+     */
     HTTPParserInternalError,
 
     /**
