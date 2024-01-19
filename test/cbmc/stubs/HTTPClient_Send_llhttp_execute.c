@@ -95,6 +95,7 @@ llhttp_errno_t llhttp_execute( llhttp_t * parser,
         __CPROVER_assume( bodyOffset < pParsingContext->pResponse->bufferLen );
         __CPROVER_assume( bodyOffset < len );
     }
+
     pParsingContext->pResponse->pBody = pParsingContext->pBufferCur + bodyOffset;
 
     return parser->error;
