@@ -2099,11 +2099,11 @@ HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t 
                        ( totalReceived < pResponse->bufferLen ) ) ? 1U : 0U;
     }
 
-    if( ( returnStatus == HTTPParserPaused ) && pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG )
+    if( ( returnStatus == HTTPParserPaused ) && ( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG ) )
     {
         returnStatus = HTTPSuccess;
         /* There may be dangling data if we parse with do not parse body flag. To let libraries built on top of corehttp we expose it through body.  */
-        pResponse->bodyLen = totalReceived - ( ( uint8_t * ) pResponse->pBody - pResponse->pBuffer );
+        pResponse->bodyLen = totalReceived - ( size_t )( ( ( uintptr_t ) pResponse->pBody ) - ( ( uintptr_t ) pResponse->pBuffer ) );
     }
 
     if( returnStatus == HTTPSuccess )
