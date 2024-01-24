@@ -16,5 +16,6 @@ var searchData=
   ['httpparseronheadervaluecallback_13',['httpParserOnHeaderValueCallback',['../core__http__client_8c.html#af84a3a54b962a2fb729a1baed2855980',1,'core_http_client.c']]],
   ['httpparseronmessagebegincallback_14',['httpParserOnMessageBeginCallback',['../core__http__client_8c.html#a3b80abb861e4a3c932f7654965d048e2',1,'core_http_client.c']]],
   ['httpparseronmessagecompletecallback_15',['httpParserOnMessageCompleteCallback',['../core__http__client_8c.html#a0e49b695c98e39c3b5c62102371a236c',1,'core_http_client.c']]],
-  ['httpparseronstatuscallback_16',['httpParserOnStatusCallback',['../core__http__client_8c.html#af9969e1962576e00282f5c89d3c3f0c7',1,'core_http_client.c']]]
+  ['httpparseronstatuscallback_16',['httpParserOnStatusCallback',['../core__http__client_8c.html#af9969e1962576e00282f5c89d3c3f0c7',1,'core_http_client.c']]],
+  ['httpparseronstatuscompletecallback_17',['httpParserOnStatusCompleteCallback',['../core__http__client_8c.html#af5097235df0090238a45ad9f4c7697f7',1,'core_http_client.c']]]
 ];
