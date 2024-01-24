@@ -355,6 +355,16 @@ static int httpParserOnStatusCallback( llhttp_t * pHttpParser,
                                        size_t length );
 
 /**
+ * @brief Callback invoked during llhttp_execute() when the HTTP response
+ * status parsing is complete.
+ *
+ * @param[in] pHttpParser Parsing object containing state and callback context.
+ *
+ * @return #LLHTTP_CONTINUE_PARSING to continue parsing.
+ */
+static int httpParserOnStatusCompleteCallback( llhttp_t * pHttpParser );
+
+/**
  * @brief Callback invoked during llhttp_execute() when an HTTP response
  * header field is found.
  *
@@ -682,6 +692,38 @@ static int httpParserOnStatusCallback( llhttp_t * pHttpParser,
 
 /*-----------------------------------------------------------*/
 
+static int httpParserOnStatusCompleteCallback( llhttp_t * pHttpParser )
+{
+    HTTPParsingContext_t * pParsingContext = NULL;
+    HTTPResponse_t * pResponse = NULL;
+
+    assert( pHttpParser != NULL );
+    assert( pHttpParser->data != NULL );
+
+    pParsingContext = ( HTTPParsingContext_t * ) ( pHttpParser->data );
+    pResponse = pParsingContext->pResponse;
+
+    assert( pResponse != NULL );
+
+    /* Initialize the first header field and value to be passed to the user
+     * callback. */
+    pParsingContext->pLastHeaderField = NULL;
+    pParsingContext->lastHeaderFieldLen = 0U;
+    pParsingContext->pLastHeaderValue = NULL;
+    pParsingContext->lastHeaderValueLen = 0U;
+
+    /* httpParserOnStatusCompleteCallback() is reached because llhttp_execute()
+     * has successfully read the HTTP response status code. */
+    pResponse->statusCode = ( uint16_t ) ( pHttpParser->status_code );
+
+    LogDebug( ( "Response parsing: StatusCode=%u",
+                ( unsigned int ) pResponse->statusCode ) );
+
+    return LLHTTP_CONTINUE_PARSING;
+}
+
+/*-----------------------------------------------------------*/
+
 static int httpParserOnHeaderFieldCallback( llhttp_t * pHttpParser,
                                             const char * pLoc,
                                             size_t length )
@@ -977,6 +1019,7 @@ static void initializeParsingContextForFirstResponse( HTTPParsingContext_t * pPa
     llhttp_settings_init( &( pParsingContext->llhttpSettings ) );
     pParsingContext->llhttpSettings.on_message_begin = httpParserOnMessageBeginCallback;
     pParsingContext->llhttpSettings.on_status = httpParserOnStatusCallback;
+    pParsingContext->llhttpSettings.on_status_complete = httpParserOnStatusCompleteCallback;
     pParsingContext->llhttpSettings.on_header_field = httpParserOnHeaderFieldCallback;
     pParsingContext->llhttpSettings.on_header_value = httpParserOnHeaderValueCallback;
     pParsingContext->llhttpSettings.on_headers_complete = httpParserOnHeadersCompleteCallback;
