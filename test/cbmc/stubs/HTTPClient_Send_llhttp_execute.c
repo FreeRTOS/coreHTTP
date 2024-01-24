@@ -84,9 +84,9 @@ llhttp_errno_t llhttp_execute( llhttp_t * parser,
      * removing that from CBMC proof execution, the body has to be set here. */
     size_t bodyOffset;
 
-    if( pParsingContext->pResponse->bufferLen == 0 )
+    if( pParsingContext->pResponse->bufferLen == 0U )
     {
-        bodyOffset = 0;
+        bodyOffset = 0U;
     }
     else
     {
