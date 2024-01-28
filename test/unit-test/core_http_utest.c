@@ -1662,6 +1662,10 @@ void test_HTTPClient_strerror( void )
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPSecurityAlertInvalidContentLength", str );
 
+    status = HTTPParserPaused;
+    str = HTTPClient_strerror( status );
+    TEST_ASSERT_EQUAL_STRING( "HTTPParserPaused", str );
+
     status = HTTPParserInternalError;
     str = HTTPClient_strerror( status );
     TEST_ASSERT_EQUAL_STRING( "HTTPParserInternalError", str );

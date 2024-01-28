@@ -914,10 +914,9 @@ static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
 
     /* If there is HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG opt-in we should stop
      * parsing here. */
-    if( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG )
+    if( ( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG ) != 0U )
     {
         shouldContinueParse = LLHTTP_PAUSE_PARSING;
-        pResponse->pBody = ( const uint8_t * ) pParsingContext->pBufferCur;
     }
 
     return shouldContinueParse;
@@ -1236,9 +1235,17 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
         llhttp_resume_after_upgrade( &( pParsingContext->llhttpParser ) );
     }
 
-    /* The next location to parse will always be after what has already
-     * been parsed. */
-    pParsingContext->pBufferCur = parsingStartLoc + parseLen;
+    if( eReturn == HPE_PAUSED )
+    {
+        /* The next location to parse is where the parser was paused. */
+        pParsingContext->pBufferCur = pParsingContext->llhttpParser.error_pos;
+    }
+    else
+    {
+        /* The next location to parse is after what has already been parsed. */
+        pParsingContext->pBufferCur = parsingStartLoc + parseLen;
+    }
+
     returnStatus = processLlhttpError( &( pParsingContext->llhttpParser ) );
 
     return returnStatus;
@@ -2142,10 +2149,13 @@ HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t 
                        ( totalReceived < pResponse->bufferLen ) ) ? 1U : 0U;
     }
 
-    if( ( returnStatus == HTTPParserPaused ) && ( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG ) )
+    if( ( returnStatus == HTTPParserPaused ) &&
+        ( ( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG ) != 0U ) )
     {
         returnStatus = HTTPSuccess;
-        /* There may be dangling data if we parse with do not parse body flag. To let libraries built on top of corehttp we expose it through body.  */
+        /* There may be dangling data if we parse with do not parse body flag.
+         * We expose this data through body to let the applications access it. */
+        pResponse->pBody = ( const uint8_t * ) parsingContext.pBufferCur;
         pResponse->bodyLen = totalReceived - ( size_t ) ( ( ( uintptr_t ) pResponse->pBody ) - ( ( uintptr_t ) pResponse->pBuffer ) );
     }
 

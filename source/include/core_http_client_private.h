@@ -167,7 +167,8 @@
 #define LLHTTP_STOP_PARSING                 HPE_USER
 
 /**
- * @brief Return value for llhttp registered callback to signal pause
+ * @brief Return value for llhttp registered callback to signal to pause
+ * further execution.
  */
 #define LLHTTP_PAUSE_PARSING                HPE_PAUSED
 

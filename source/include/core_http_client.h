@@ -156,7 +156,7 @@
 /**
  * @defgroup http_response_option_flags HTTPResponse_t Flags
  * @brief Flags for #HTTPResponse_t.respOptionFlags.
- * These flags control configurations of response parsing.
+ * These flags control the behavior of response parsing.
  *
  * Flags should be bitwise-ORed with each other to change the behavior of
  * #HTTPClient_ReceiveAndParseHttpResponse and #HTTPClient_Send.
@@ -166,10 +166,11 @@
  * @ingroup http_response_option_flags
  * @brief Set this flag to indicate that the response body should not be parsed.
  *
- * Setting this will cause parser to stop after parsing the headers. Portion of raw body
- * may be available in #HTTPResponse_t.pBody and #HTTPResponse_t.bodyLen.
+ * Setting this will cause parser to stop after parsing the headers. Portion of
+ * the raw body may be available in #HTTPResponse_t.pBody and
+ * #HTTPResponse_t.bodyLen.
  *
- * This flag is valid only for #HTTPResponse_t respOptionFlags parameter.
+ * This flag is valid only for #HTTPResponse_t.respOptionFlags.
  */
 #define HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG    0x1U
 
@@ -312,9 +313,10 @@ typedef enum HTTPStatus
     HTTPSecurityAlertInvalidContentLength,
 
     /**
-     * @brief Represents the state of the HTTP parser when it is paused.
+     * @brief Represents the paused state of the HTTP parser.
      *
-     * This state indicates that the parser has encountered a pause condition and is waiting for further input.
+     * This state indicates that the parser has encountered a pause condition
+     * and is waiting for further input.
      *
      * @see HTTPClient_Send
      * @see HTTPClient_ReceiveAndParseHttpResponse
@@ -566,7 +568,7 @@ typedef struct HTTPResponse
     uint8_t areHeadersComplete;
 
     /**
-     * @brief Flags to activate other response configurations.
+     * @brief Flags to control the behavior of response parsing.
      *
      * Please see @ref http_response_option_flags for more information.
      */
