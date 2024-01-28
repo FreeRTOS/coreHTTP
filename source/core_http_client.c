@@ -2153,6 +2153,7 @@ HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t 
         ( ( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG ) != 0U ) )
     {
         returnStatus = HTTPSuccess;
+
         /* There may be dangling data if we parse with do not parse body flag.
          * We expose this data through body to let the applications access it. */
         pResponse->pBody = ( const uint8_t * ) parsingContext.pBufferCur;
