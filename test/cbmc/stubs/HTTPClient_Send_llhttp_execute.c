@@ -98,5 +98,17 @@ llhttp_errno_t llhttp_execute( llhttp_t * parser,
 
     pParsingContext->pResponse->pBody = pParsingContext->pBufferCur + bodyOffset;
 
+    if( parser->error == HPE_PAUSED )
+    {
+        /* When the parser is paused ensure that the error_pos member points to
+         * a valid location in the response buffer. */
+        size_t errorPosOffset;
+
+        __CPROVER_assume( errorPosOffset < pParsingContext->pResponse->bufferLen );
+        __CPROVER_assume( errorPosOffset < len );
+
+        parser->error_pos = pParsingContext->pResponse->pBuffer + errorPosOffset;
+    }
+
     return parser->error;
 }
