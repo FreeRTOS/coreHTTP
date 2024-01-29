@@ -912,6 +912,13 @@ static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
 
     LogDebug( ( "Response parsing: Found the end of the headers." ) );
 
+    /* If there is HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG opt-in we should stop
+     * parsing here. */
+    if( ( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG ) != 0U )
+    {
+        shouldContinueParse = LLHTTP_PAUSE_PARSING;
+    }
+
     return shouldContinueParse;
 }
 
@@ -1145,6 +1152,11 @@ static HTTPStatus_t processLlhttpError( const llhttp_t * pHttpParser )
             returnStatus = HTTPSecurityAlertInvalidContentLength;
             break;
 
+        case HPE_PAUSED:
+            LogInfo( ( "User intervention: Parsing stopped by user." ) );
+            returnStatus = HTTPParserPaused;
+            break;
+
         /* All other error cases cannot be triggered and indicate an error in the
          * third-party parsing library if found. */
         default:
@@ -1223,9 +1235,17 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
         llhttp_resume_after_upgrade( &( pParsingContext->llhttpParser ) );
     }
 
-    /* The next location to parse will always be after what has already
-     * been parsed. */
-    pParsingContext->pBufferCur = parsingStartLoc + parseLen;
+    if( eReturn == HPE_PAUSED )
+    {
+        /* The next location to parse is where the parser was paused. */
+        pParsingContext->pBufferCur = pParsingContext->llhttpParser.error_pos;
+    }
+    else
+    {
+        /* The next location to parse is after what has already been parsed. */
+        pParsingContext->pBufferCur = parsingStartLoc + parseLen;
+    }
+
     returnStatus = processLlhttpError( &( pParsingContext->llhttpParser ) );
 
     return returnStatus;
@@ -2129,6 +2149,17 @@ HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t 
                        ( totalReceived < pResponse->bufferLen ) ) ? 1U : 0U;
     }
 
+    if( ( returnStatus == HTTPParserPaused ) &&
+        ( ( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG ) != 0U ) )
+    {
+        returnStatus = HTTPSuccess;
+
+        /* There may be dangling data if we parse with do not parse body flag.
+         * We expose this data through body to let the applications access it. */
+        pResponse->pBody = ( const uint8_t * ) parsingContext.pBufferCur;
+        pResponse->bodyLen = totalReceived - ( size_t ) ( ( ( uintptr_t ) pResponse->pBody ) - ( ( uintptr_t ) pResponse->pBuffer ) );
+    }
+
     if( returnStatus == HTTPSuccess )
     {
         /* If there are errors in receiving from the network or during parsing,
@@ -2648,6 +2679,10 @@ const char * HTTPClient_strerror( HTTPStatus_t status )
 
         case HTTPSecurityAlertInvalidContentLength:
             str = "HTTPSecurityAlertInvalidContentLength";
+            break;
+
+        case HTTPParserPaused:
+            str = "HTTPParserPaused";
             break;
 
         case HTTPParserInternalError:

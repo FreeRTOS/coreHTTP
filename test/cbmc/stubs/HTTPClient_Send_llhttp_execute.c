@@ -80,5 +80,35 @@ llhttp_errno_t llhttp_execute( llhttp_t * parser,
         pParsingContext->lastHeaderValueLen = 0U;
     }
 
+    /* The body pointer is set by the httpParserOnBodyCallback. But since we are
+     * removing that from CBMC proof execution, the body has to be set here. */
+    size_t bodyOffset;
+
+    if( pParsingContext->pResponse->bufferLen == 0U )
+    {
+        bodyOffset = 0U;
+    }
+    else
+    {
+        /* Body offset can be anything as long as it doesn't exceed the buffer length
+         * and the length of the current data packet. */
+        __CPROVER_assume( bodyOffset < pParsingContext->pResponse->bufferLen );
+        __CPROVER_assume( bodyOffset < len );
+    }
+
+    pParsingContext->pResponse->pBody = pParsingContext->pBufferCur + bodyOffset;
+
+    if( parser->error == HPE_PAUSED )
+    {
+        /* When the parser is paused ensure that the error_pos member points to
+         * a valid location in the response buffer. */
+        size_t errorPosOffset;
+
+        __CPROVER_assume( errorPosOffset < pParsingContext->pResponse->bufferLen );
+        __CPROVER_assume( errorPosOffset < len );
+
+        parser->error_pos = pParsingContext->pResponse->pBuffer + errorPosOffset;
+    }
+
     return parser->error;
 }
