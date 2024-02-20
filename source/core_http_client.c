@@ -1389,7 +1389,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
                    HTTP_HEADER_END_INDICATOR, HTTP_HEADER_END_INDICATOR_LEN ) == 0 ) )
     {
         backtrackHeaderLen -= HTTP_HEADER_LINE_SEPARATOR_LEN;
-        pBufferCur = &pBufferCur[ HTTP_HEADER_LINE_SEPARATOR_LEN ];
+        pBufferCur = &pBufferCur[ 0U - HTTP_HEADER_LINE_SEPARATOR_LEN ];
     }
 
     /* Check if there is enough space in buffer for additional header. */
