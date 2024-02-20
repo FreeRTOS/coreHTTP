@@ -64,10 +64,17 @@ _Ref 10.8.1_
 _Ref 14.3.1_
 
 - MISRA Rule 14.3 The third-party http-parser library sets a uint64_t type field to
-       `ULLONG_MAX` or `( ( uint64_t ) -1 )`, during its internal parsing. Coverity MISRA does not detect
-       that this variable changes. This field is checked by the HTTP Client library.
-       If the Content-Length header was found, then pHttpParser->content_length
+       `ULLONG_MAX` or `( ( uint64_t ) -1 )`, during its internal parsing. Coverity MISRA
+       does not detect that this variable changes. This field is checked by the HTTP
+       Client library. If the Content-Length header was found, then pHttpParser->content_length
        will not be equal to the maximum 64 bit integer.
+
+#### Rule 11.4
+_Ref 11.4.1_
+
+- MISRA Rule 11.4 does not allow casting pointers to different data types as this may lead
+       to misaligned pointers. But in this case, the pointers are casted to different data
+       type to get the length of the header. It is not casted back to a pointer.
 
 #### Rule 11.8
 _Ref 11.8.1_
