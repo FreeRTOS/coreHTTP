@@ -43,6 +43,19 @@
  */
 static uint32_t getZeroTimestampMs( void );
 
+
+HTTPStatus_t HTTPClient_SendHttpData( const TransportInterface_t * pTransport,
+                                      HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                      const uint8_t * pData,
+                                      size_t dataLen );
+
+
+HTTPStatus_t HTTPClient_SendHttpHeaders( const TransportInterface_t * pTransport,
+                                         HTTPClient_GetCurrentTimeFunc_t getTimestampMs,
+                                         HTTPRequestHeaders_t * pRequestHeaders,
+                                         size_t reqBodyLen,
+                                         uint32_t sendFlags );
+
 /**
  * @brief Adds the Content-Length header field and value to the
  * @p pRequestHeaders.
@@ -148,6 +161,11 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                                             size_t totalReceived,
                                             size_t responseBufferLen );
+
+
+HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t * pTransport,
+                                                     HTTPResponse_t * pResponse,
+                                                     const HTTPRequestHeaders_t * pRequestHeaders );
 
 /**
  * @brief Send the HTTP request over the network.
@@ -650,7 +668,7 @@ static int httpParserOnStatusCallback( llhttp_t * pHttpParser,
     assert( pResponse != NULL );
 
     /* Set the location of what to parse next. */
-    pParsingContext->pBufferCur = &pLoc[ length ];
+    pParsingContext->pBufferCur = pLoc + length;
 
     /* Initialize the first header field and value to be passed to the user
      * callback. */
@@ -730,7 +748,7 @@ static int httpParserOnHeaderFieldCallback( llhttp_t * pHttpParser,
     }
 
     /* Set the location of what to parse next. */
-    pParsingContext->pBufferCur = &pLoc[ length ];
+    pParsingContext->pBufferCur = pLoc + length;
 
     /* The httpParserOnHeaderFieldCallback() always follows the
      * httpParserOnHeaderValueCallback() if there is another header field. When
@@ -776,7 +794,7 @@ static int httpParserOnHeaderValueCallback( llhttp_t * pHttpParser,
     pParsingContext = ( HTTPParsingContext_t * ) ( pHttpParser->data );
 
     /* Set the location of what to parse next. */
-    pParsingContext->pBufferCur = &pLoc[ length ];
+    pParsingContext->pBufferCur = pLoc + length;
 
     /* If httpParserOnHeaderValueCallback() is invoked in succession, then the
      * last time llhttp_execute() was called only part of the header field
@@ -898,7 +916,7 @@ static int httpParserOnHeadersCompleteCallback( llhttp_t * pHttpParser )
      * parsing here. */
     if( ( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG ) != 0U )
     {
-        shouldContinueParse = ( int ) LLHTTP_PAUSE_PARSING;
+        shouldContinueParse = LLHTTP_PAUSE_PARSING;
     }
 
     return shouldContinueParse;
@@ -945,7 +963,7 @@ static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
     /* MISRA Ref 11.8.1 [Removal of const from pointer] */
     /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-118 */
     /* coverity[misra_c_2012_rule_11_8_violation] */
-    pNextWriteLoc = ( char * ) ( &pResponse->pBody[ pResponse->bodyLen ] );
+    pNextWriteLoc = ( char * ) ( pResponse->pBody + pResponse->bodyLen );
 
     /* If the response is of type Transfer-Encoding: chunked, then actual body
      * will follow the the chunked header. This body data is in a later location
@@ -967,7 +985,7 @@ static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
     pResponse->bodyLen += length;
 
     /* Set the next location of parsing. */
-    pParsingContext->pBufferCur = &pLoc[ length ];
+    pParsingContext->pBufferCur = pLoc + length;
 
     LogDebug( ( "Response parsing: Found the response body: "
                 "BodyLength=%lu",
@@ -1225,7 +1243,7 @@ static HTTPStatus_t parseHttpResponse( HTTPParsingContext_t * pParsingContext,
     else
     {
         /* The next location to parse is after what has already been parsed. */
-        pParsingContext->pBufferCur = &parsingStartLoc[ parseLen ];
+        pParsingContext->pBufferCur = parsingStartLoc + parseLen;
     }
 
     returnStatus = processLlhttpError( &( pParsingContext->llhttpParser ) );
@@ -1360,18 +1378,18 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     assert( fieldLen != 0U );
     assert( valueLen != 0U );
 
-    pBufferCur = ( char * ) ( &( pRequestHeaders->pBuffer[ pRequestHeaders->headersLen ] ) );
+    pBufferCur = ( char * ) ( pRequestHeaders->pBuffer + pRequestHeaders->headersLen );
     backtrackHeaderLen = pRequestHeaders->headersLen;
 
     /* Backtrack before trailing "\r\n" (HTTP header end) if it's already written.
      * Note that this method also writes trailing "\r\n" before returning.
      * The first condition prevents reading before start of the header. */
     if( ( HTTP_HEADER_END_INDICATOR_LEN <= pRequestHeaders->headersLen ) &&
-        ( strncmp( ( char * ) &pBufferCur[ 0U - HTTP_HEADER_END_INDICATOR_LEN ],
+        ( strncmp( ( char * ) pBufferCur - HTTP_HEADER_END_INDICATOR_LEN,
                    HTTP_HEADER_END_INDICATOR, HTTP_HEADER_END_INDICATOR_LEN ) == 0 ) )
     {
         backtrackHeaderLen -= HTTP_HEADER_LINE_SEPARATOR_LEN;
-        pBufferCur = &pBufferCur[ 0U - HTTP_HEADER_LINE_SEPARATOR_LEN ];
+        pBufferCur -= HTTP_HEADER_LINE_SEPARATOR_LEN;
     }
 
     /* Check if there is enough space in buffer for additional header. */
@@ -1393,14 +1411,14 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
         if( returnStatus == HTTPSuccess )
         {
-            pBufferCur = &pBufferCur[ fieldLen ];
+            pBufferCur += fieldLen;
 
             /* Copy the field separator, ": ", into the buffer. */
             ( void ) memcpy( pBufferCur,
                              httpFieldSeparator,
                              HTTP_HEADER_FIELD_SEPARATOR_LEN );
 
-            pBufferCur = &pBufferCur[ HTTP_HEADER_FIELD_SEPARATOR_LEN ];
+            pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
 
             /* Copy the header value into the buffer. */
             if( httpHeaderStrncpy( pBufferCur, pValue, valueLen, HTTP_HEADER_STRNCPY_IS_VALUE ) == NULL )
@@ -1411,7 +1429,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
         if( returnStatus == HTTPSuccess )
         {
-            pBufferCur = &pBufferCur[ valueLen ];
+            pBufferCur += valueLen;
 
             /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
             ( void ) memcpy( pBufferCur,
@@ -1467,7 +1485,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
     /* Write the range start value in the buffer. */
     rangeValueLength += convertInt32ToAscii( rangeStartOrlastNbytes,
-                                             &rangeValueBuffer[ rangeValueLength ],
+                                             rangeValueBuffer + rangeValueLength,
                                              sizeof( rangeValueBuffer ) - rangeValueLength );
 
     /* Add remaining value data depending on the range specification type. */
@@ -1476,19 +1494,19 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
     if( rangeEnd != HTTP_RANGE_REQUEST_END_OF_FILE )
     {
         /* Write the "-" character to the buffer.*/
-        rangeValueBuffer[ rangeValueLength ] = DASH_CHARACTER;
+        *( rangeValueBuffer + rangeValueLength ) = DASH_CHARACTER;
         rangeValueLength += DASH_CHARACTER_LEN;
 
         /* Write the rangeEnd value of the request range to the buffer. */
         rangeValueLength += convertInt32ToAscii( rangeEnd,
-                                                 &rangeValueBuffer[ rangeValueLength ],
+                                                 rangeValueBuffer + rangeValueLength,
                                                  sizeof( rangeValueBuffer ) - rangeValueLength );
     }
     /* Case when request is for bytes in the range [rangeStart, EoF). */
     else if( rangeStartOrlastNbytes >= 0 )
     {
         /* Write the "-" character to the buffer.*/
-        rangeValueBuffer[ rangeValueLength ] = DASH_CHARACTER;
+        *( rangeValueBuffer + rangeValueLength ) = DASH_CHARACTER;
         rangeValueLength += DASH_CHARACTER_LEN;
     }
     else
@@ -1547,10 +1565,10 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     {
         /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. */
         ( void ) memcpy( pBufferCur, pMethod, methodLen );
-        pBufferCur = &pBufferCur[ methodLen ];
+        pBufferCur += methodLen;
 
         *pBufferCur = SPACE_CHARACTER;
-        pBufferCur = &pBufferCur[ SPACE_CHARACTER_LEN ];
+        pBufferCur += SPACE_CHARACTER_LEN;
 
         /* Use "/" as default value if <PATH> is NULL. */
         if( ( pPath == NULL ) || ( pathLen == 0U ) )
@@ -1558,21 +1576,21 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
             ( void ) memcpy( pBufferCur,
                              pHttpEmptyPath,
                              HTTP_EMPTY_PATH_LEN );
-            pBufferCur = &pBufferCur[ HTTP_EMPTY_PATH_LEN ];
+            pBufferCur += HTTP_EMPTY_PATH_LEN;
         }
         else
         {
             ( void ) memcpy( pBufferCur, pPath, pathLen );
-            pBufferCur = &pBufferCur[ pathLen ];
+            pBufferCur += pathLen;
         }
 
         *pBufferCur = SPACE_CHARACTER;
-        pBufferCur = &pBufferCur[ SPACE_CHARACTER_LEN ];
+        pBufferCur += SPACE_CHARACTER_LEN;
 
         ( void ) memcpy( pBufferCur,
                          pHttpProtocolVersion,
                          HTTP_PROTOCOL_VERSION_LEN );
-        pBufferCur = &pBufferCur[ HTTP_PROTOCOL_VERSION_LEN ];
+        pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
         ( void ) memcpy( pBufferCur,
                          pHeaderLineSeparator,
                          HTTP_HEADER_LINE_SEPARATOR_LEN );
@@ -1862,7 +1880,7 @@ HTTPStatus_t HTTPClient_SendHttpData( const TransportInterface_t * pTransport,
             lastSendTimeMs = getTimestampMs();
 
             bytesRemaining -= ( size_t ) bytesSent;
-            pIndex = &pIndex[ bytesSent ];
+            pIndex += bytesSent;
             LogDebug( ( "Sent data over the transport: "
                         "BytesSent=%ld, BytesRemaining=%lu, TotalBytesSent=%lu",
                         ( long int ) bytesSent,
@@ -2063,7 +2081,7 @@ HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t 
     {
         /* Receive the HTTP response data into the pResponse->pBuffer. */
         currentReceived = pTransport->recv( pTransport->pNetworkContext,
-                                            &pResponse->pBuffer[ totalReceived ],
+                                            pResponse->pBuffer + totalReceived,
                                             pResponse->bufferLen - totalReceived );
 
         /* Transport receive errors are negative. */
@@ -2139,10 +2157,6 @@ HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t 
         /* There may be dangling data if we parse with do not parse body flag.
          * We expose this data through body to let the applications access it. */
         pResponse->pBody = ( const uint8_t * ) parsingContext.pBufferCur;
-
-        /* MISRA Ref 11.4.1 [Casting pointer to int] */
-        /* More details at: https://github.com/FreeRTOS/coreHTTP/blob/main/MISRA.md#rule-114 */
-        /* coverity[misra_c_2012_rule_11_4_violation] */
         pResponse->bodyLen = totalReceived - ( size_t ) ( ( ( uintptr_t ) pResponse->pBody ) - ( ( uintptr_t ) pResponse->pBuffer ) );
     }
 
