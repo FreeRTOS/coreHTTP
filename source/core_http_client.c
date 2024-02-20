@@ -1360,7 +1360,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
     assert( fieldLen != 0U );
     assert( valueLen != 0U );
 
-    pBufferCur = ( char * ) ( &pRequestHeaders->pBuffer[ pRequestHeaders->headersLen ] );
+    pBufferCur = ( char * ) ( &( pRequestHeaders->pBuffer[ pRequestHeaders->headersLen ] ) );
     backtrackHeaderLen = pRequestHeaders->headersLen;
 
     /* Backtrack before trailing "\r\n" (HTTP header end) if it's already written.
