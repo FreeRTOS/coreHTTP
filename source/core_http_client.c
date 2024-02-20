@@ -650,7 +650,7 @@ static int httpParserOnStatusCallback( llhttp_t * pHttpParser,
     assert( pResponse != NULL );
 
     /* Set the location of what to parse next. */
-    pParsingContext->pBufferCur = &pLoc[ length ];;
+    pParsingContext->pBufferCur = &pLoc[ length ];
 
     /* Initialize the first header field and value to be passed to the user
      * callback. */
@@ -730,7 +730,7 @@ static int httpParserOnHeaderFieldCallback( llhttp_t * pHttpParser,
     }
 
     /* Set the location of what to parse next. */
-    pParsingContext->pBufferCur = &pLoc[ length ];;
+    pParsingContext->pBufferCur = &pLoc[ length ];
 
     /* The httpParserOnHeaderFieldCallback() always follows the
      * httpParserOnHeaderValueCallback() if there is another header field. When
@@ -776,7 +776,7 @@ static int httpParserOnHeaderValueCallback( llhttp_t * pHttpParser,
     pParsingContext = ( HTTPParsingContext_t * ) ( pHttpParser->data );
 
     /* Set the location of what to parse next. */
-    pParsingContext->pBufferCur = &pLoc[ length ];;
+    pParsingContext->pBufferCur = &pLoc[ length ];
 
     /* If httpParserOnHeaderValueCallback() is invoked in succession, then the
      * last time llhttp_execute() was called only part of the header field
@@ -967,7 +967,7 @@ static int httpParserOnBodyCallback( llhttp_t * pHttpParser,
     pResponse->bodyLen += length;
 
     /* Set the next location of parsing. */
-    pParsingContext->pBufferCur = &pLoc[ length ];;
+    pParsingContext->pBufferCur = &pLoc[ length ];
 
     LogDebug( ( "Response parsing: Found the response body: "
                 "BodyLength=%lu",
