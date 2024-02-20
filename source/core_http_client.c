@@ -1547,10 +1547,10 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
     {
         /* Write "<METHOD> <PATH> HTTP/1.1\r\n" to start the HTTP header. */
         ( void ) memcpy( pBufferCur, pMethod, methodLen );
-        pBufferCur += methodLen;
+        pBufferCur = &pBufferCur[ methodLen ];
 
         *pBufferCur = SPACE_CHARACTER;
-        pBufferCur += SPACE_CHARACTER_LEN;
+        pBufferCur = &pBufferCur[ SPACE_CHARACTER_LEN ];
 
         /* Use "/" as default value if <PATH> is NULL. */
         if( ( pPath == NULL ) || ( pathLen == 0U ) )
@@ -1558,21 +1558,21 @@ static HTTPStatus_t writeRequestLine( HTTPRequestHeaders_t * pRequestHeaders,
             ( void ) memcpy( pBufferCur,
                              pHttpEmptyPath,
                              HTTP_EMPTY_PATH_LEN );
-            pBufferCur += HTTP_EMPTY_PATH_LEN;
+            pBufferCur = &pBufferCur[ HTTP_EMPTY_PATH_LEN ];
         }
         else
         {
             ( void ) memcpy( pBufferCur, pPath, pathLen );
-            pBufferCur += pathLen;
+            pBufferCur = &pBufferCur[ pathLen ];
         }
 
         *pBufferCur = SPACE_CHARACTER;
-        pBufferCur += SPACE_CHARACTER_LEN;
+        pBufferCur = &pBufferCur[ SPACE_CHARACTER_LEN ];
 
         ( void ) memcpy( pBufferCur,
                          pHttpProtocolVersion,
                          HTTP_PROTOCOL_VERSION_LEN );
-        pBufferCur += HTTP_PROTOCOL_VERSION_LEN;
+        pBufferCur = &pBufferCur[ HTTP_PROTOCOL_VERSION_LEN ];
         ( void ) memcpy( pBufferCur,
                          pHeaderLineSeparator,
                          HTTP_HEADER_LINE_SEPARATOR_LEN );
