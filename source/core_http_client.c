@@ -1367,11 +1367,11 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
      * Note that this method also writes trailing "\r\n" before returning.
      * The first condition prevents reading before start of the header. */
     if( ( HTTP_HEADER_END_INDICATOR_LEN <= pRequestHeaders->headersLen ) &&
-        ( strncmp( ( char * ) &pBufferCur[ 0U - HTTP_HEADER_END_INDICATOR_LEN ],
+        ( strncmp( ( char * ) &pBufferCur[ 0 - ( ( int ) HTTP_HEADER_END_INDICATOR_LEN ) ],
                    HTTP_HEADER_END_INDICATOR, HTTP_HEADER_END_INDICATOR_LEN ) == 0 ) )
     {
         backtrackHeaderLen -= HTTP_HEADER_LINE_SEPARATOR_LEN;
-        pBufferCur = &pBufferCur[ 0U - HTTP_HEADER_LINE_SEPARATOR_LEN ];
+        pBufferCur = &pBufferCur[ 0 - ( ( int ) HTTP_HEADER_LINE_SEPARATOR_LEN ) ];
     }
 
     /* Check if there is enough space in buffer for additional header. */
@@ -1393,14 +1393,14 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
         if( returnStatus == HTTPSuccess )
         {
-            pBufferCur += fieldLen;
+            pBufferCur = &pBufferCur[ fieldLen ];
 
             /* Copy the field separator, ": ", into the buffer. */
             ( void ) memcpy( pBufferCur,
                              httpFieldSeparator,
                              HTTP_HEADER_FIELD_SEPARATOR_LEN );
 
-            pBufferCur += HTTP_HEADER_FIELD_SEPARATOR_LEN;
+            pBufferCur = &pBufferCur[ HTTP_HEADER_FIELD_SEPARATOR_LEN ];
 
             /* Copy the header value into the buffer. */
             if( httpHeaderStrncpy( pBufferCur, pValue, valueLen, HTTP_HEADER_STRNCPY_IS_VALUE ) == NULL )
@@ -1411,7 +1411,7 @@ static HTTPStatus_t addHeader( HTTPRequestHeaders_t * pRequestHeaders,
 
         if( returnStatus == HTTPSuccess )
         {
-            pBufferCur += valueLen;
+            pBufferCur = &pBufferCur[ valueLen ];
 
             /* Copy the header end indicator, "\r\n\r\n" into the buffer. */
             ( void ) memcpy( pBufferCur,
