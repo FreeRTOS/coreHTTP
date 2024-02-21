@@ -7,8 +7,8 @@ project ( "coreHTTP tests"
 # Allow the project to be organized into folders.
 set_property( GLOBAL PROPERTY USE_FOLDERS ON )
 
-# Use C90.
-set( CMAKE_C_STANDARD 90 )
+# Use C99 as lhttp requires C99.
+set( CMAKE_C_STANDARD 99 )
 set( CMAKE_C_STANDARD_REQUIRED ON )
 
 # If no configuration is defined, turn everything on.
