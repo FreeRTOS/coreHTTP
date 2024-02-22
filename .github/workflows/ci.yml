@@ -19,6 +19,7 @@ jobs:
           cmake -S test -B build/ \
           -G "Unix Makefiles" \
           -DCMAKE_BUILD_TYPE=Debug \
+          -DUNITTEST=1 \
           -DCMAKE_C_FLAGS='--coverage -Wall -Wextra -DNDEBUG'
           make -C build/ all
 
