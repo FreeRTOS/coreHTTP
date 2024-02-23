@@ -207,7 +207,7 @@
  * @brief The state of the response message parsed after function
  * #parseHttpResponse returns.
  */
-typedef enum HTTPParsingState_t
+typedef enum HTTPParsingState
 {
     HTTP_PARSING_NONE = 0,   /**< The parser has not started reading any response. */
     HTTP_PARSING_INCOMPLETE, /**< The parser found a partial response. */
