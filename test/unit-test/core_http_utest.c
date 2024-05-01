@@ -72,6 +72,10 @@ typedef struct _headers
     "%s: %s\r\n"                \
     "%s: %s\r\n\r\n"
 
+#define HTTP_TEST_HEADER_NO_USER_AGENT_FORMAT \
+    "%s %s %s\r\n"                            \
+    "%s: %s\r\n\r\n"
+
 #define HTTP_TEST_EXTRA_HEADER_FORMAT \
     "%s %s %s\r\n"                    \
     "%s: %s\r\n"                      \
@@ -90,6 +94,19 @@ typedef struct _headers
       HTTP_PROTOCOL_VERSION_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +  \
       HTTP_USER_AGENT_FIELD_LEN + HTTP_HEADER_FIELD_SEPARATOR_LEN + \
       HTTP_USER_AGENT_VALUE_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +  \
+      HTTP_HOST_FIELD_LEN + HTTP_HEADER_FIELD_SEPARATOR_LEN +       \
+      HTTP_TEST_HOST_VALUE_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +   \
+      HTTP_HEADER_LINE_SEPARATOR_LEN )
+
+/* Length of the following template HTTP header.
+ *   <HTTP_METHOD_GET> <HTTP_TEST_REQUEST_PATH> <HTTP_PROTOCOL_VERSION> \r\n
+ *   <HTTP_HOST_FIELD>: <HTTP_TEST_HOST_VALUE> \r\n
+ *   \r\n
+ * This is used to initialize the expectedHeader string. */
+#define HTTP_TEST_PREFIX_HEADER_NO_USER_AGENT_LEN                   \
+    ( HTTP_METHOD_GET_LEN + SPACE_CHARACTER_LEN +                   \
+      HTTP_TEST_REQUEST_PATH_LEN + SPACE_CHARACTER_LEN +            \
+      HTTP_PROTOCOL_VERSION_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +  \
       HTTP_HOST_FIELD_LEN + HTTP_HEADER_FIELD_SEPARATOR_LEN +       \
       HTTP_TEST_HOST_VALUE_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +   \
       HTTP_HEADER_LINE_SEPARATOR_LEN )
@@ -460,6 +477,39 @@ void test_Http_InitializeRequestHeaders_Happy_Path()
                          HTTP_METHOD_GET, HTTP_TEST_REQUEST_PATH,
                          HTTP_PROTOCOL_VERSION,
                          HTTP_USER_AGENT_FIELD, HTTP_USER_AGENT_VALUE,
+                         HTTP_HOST_FIELD, HTTP_TEST_HOST_VALUE );
+    /* Make sure that the entire pre-existing data was printed to the buffer. */
+    TEST_ASSERT_GREATER_THAN( 0, numBytes );
+    TEST_ASSERT_LESS_THAN( sizeof( expectedHeaders.buffer ), ( size_t ) numBytes );
+
+    httpStatus = HTTPClient_InitializeRequestHeaders( &requestHeaders, &requestInfo );
+    TEST_ASSERT_EQUAL( HTTPSuccess, httpStatus );
+    TEST_ASSERT_EQUAL( expectedHeaders.dataLen, requestHeaders.headersLen );
+    TEST_ASSERT_EQUAL_MEMORY( expectedHeaders.buffer, requestHeaders.pBuffer,
+                              expectedHeaders.dataLen );
+}
+
+/**
+ * @brief Test happy path with HTTP_REQUEST_NO_USER_AGENT_FLAG.
+ */
+void test_Http_InitializeRequestHeaders_no_user_agent_flag()
+{
+    HTTPStatus_t httpStatus = HTTPSuccess;
+    HTTPRequestHeaders_t requestHeaders = { 0 };
+    HTTPRequestInfo_t requestInfo = { 0 };
+    int numBytes = 0;
+
+    setupRequestInfo( &requestInfo );
+    requestInfo.reqFlags |= HTTP_REQUEST_NO_USER_AGENT_FLAG;
+
+    expectedHeaders.dataLen = HTTP_TEST_PREFIX_HEADER_NO_USER_AGENT_LEN;
+    setupBuffer( &requestHeaders );
+
+    /* Happy Path testing. */
+    numBytes = snprintf( ( char * ) expectedHeaders.buffer, sizeof( expectedHeaders.buffer ),
+                         HTTP_TEST_HEADER_NO_USER_AGENT_FORMAT,
+                         HTTP_METHOD_GET, HTTP_TEST_REQUEST_PATH,
+                         HTTP_PROTOCOL_VERSION,
                          HTTP_HOST_FIELD, HTTP_TEST_HOST_VALUE );
     /* Make sure that the entire pre-existing data was printed to the buffer. */
     TEST_ASSERT_GREATER_THAN( 0, numBytes );

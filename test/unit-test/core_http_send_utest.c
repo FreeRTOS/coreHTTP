@@ -887,6 +887,37 @@ void test_HTTPClient_Send_HEAD_request_parse_whole_response( void )
 /*-----------------------------------------------------------*/
 
 /* Test successfully parsing a response to a HEAD request. The full response
+ * message is present in the response buffer on the first network read. */
+void test_HTTPClient_Send_HEAD_request_no_parse_body( void )
+{
+    HTTPStatus_t returnStatus = HTTPSuccess;
+
+    llhttp_execute_Stub( llhttp_execute_whole_response );
+    
+    response.respOptionFlags |= HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG;
+
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
+    TEST_ASSERT_EQUAL( NULL, response.pBody );
+    TEST_ASSERT_EQUAL( 0U, response.bodyLen );
+    TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ), response.pHeaders );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - HTTP_HEADER_END_INDICATOR_LEN,
+                       response.headersLen );
+    TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH, response.contentLength );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_HEADER_COUNT, response.headerCount );
+    TEST_ASSERT_BITS_HIGH( HTTP_RESPONSE_CONNECTION_CLOSE_FLAG, response.respFlags );
+    TEST_ASSERT_BITS_LOW( HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG, response.respFlags );
+}
+
+/*-----------------------------------------------------------*/
+
+/* Test successfully parsing a response to a HEAD request. The full response
  * message is present in the response buffer on the first network read. The response
  * contains a status code but without a reason string. The on_status_complete is called
  * in this case. */
@@ -1831,6 +1862,25 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     &response,
                                     0 );
     TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidContentLength, returnStatus );
+
+    httpParsingErrno = HPE_PAUSED;
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+    TEST_ASSERT_EQUAL( HTTPParserPaused, returnStatus );
+    
+    httpParsingErrno = HPE_PAUSED;
+    response.respOptionFlags |= HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG;
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+    TEST_ASSERT_EQUAL( HTTPParserPaused, returnStatus );
 
     /* Use -1 to indicate an unknown error. */
     httpParsingErrno = -1;
