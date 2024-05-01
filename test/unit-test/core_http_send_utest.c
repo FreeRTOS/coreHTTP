@@ -104,11 +104,11 @@
     HTTP_TEST_VARY_HEADER_LINE             \
     HTTP_TEST_P3P_HEADER_LINE              \
     HTTP_TEST_XSERVER_HEADER_LINE HTTP_HEADER_LINE_SEPARATOR
-#define HTTP_TEST_RESPONSE_HEAD_LENGTH                         ( sizeof( HTTP_TEST_RESPONSE_HEAD ) - 1U )
-#define HTTP_TEST_RESPONSE_HEAD_HEADER_COUNT                   7
-#define HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH                 43
-#define HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_FIELD_LENGTH    ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_FIELD ) - 2U )
-#define HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_VALUE_LENGTH    ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_VALUE ) - 2U )
+#define HTTP_TEST_RESPONSE_HEAD_LENGTH                           ( sizeof( HTTP_TEST_RESPONSE_HEAD ) - 1U )
+#define HTTP_TEST_RESPONSE_HEAD_HEADER_COUNT                     7
+#define HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH                   43
+#define HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_FIELD_LENGTH      ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_FIELD ) - 2U )
+#define HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_VALUE_LENGTH      ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_VALUE ) - 2U )
 
 #define HTTP_TEST_RESPONSE_HEAD_2          \
     HTTP_STATUS_LINE_NO_REASON_PHRASE      \
@@ -460,36 +460,36 @@ static void helper_parse_status_line( const char ** pNext,
      * always string literals. strchr() should not be used in application code. */
     *pNext = strchr( *pNext, SPACE_CHARACTER ); /* Get the space before the status-code. */
     *pNext += SPACE_CHARACTER_LEN;
-	/* pNext points to the status code now. */
+    /* pNext points to the status code now. */
 
-	pReasonPhraseStart = strchr( *pNext, SPACE_CHARACTER );
-	pReasonPhraseStart = &( pReasonPhraseStart[ SPACE_CHARACTER_LEN ] );
+    pReasonPhraseStart = strchr( *pNext, SPACE_CHARACTER );
+    pReasonPhraseStart = &( pReasonPhraseStart[ SPACE_CHARACTER_LEN ] );
 
-	pNextLineStart = strstr( *pNext, HTTP_HEADER_LINE_SEPARATOR );
-	pNextLineStart = &( pNextLineStart[ HTTP_HEADER_LINE_SEPARATOR_LEN ] );
+    pNextLineStart = strstr( *pNext, HTTP_HEADER_LINE_SEPARATOR );
+    pNextLineStart = &( pNextLineStart[ HTTP_HEADER_LINE_SEPARATOR_LEN ] );
 
-	pParser->status_code = 200;
+    pParser->status_code = 200;
 
     /* Check if the reason phrase exist in the header and call the corresponding callback.
      * Reason phrase "OK" exists in the response "HTTP/1.1 200 OK\r\n". The callback
      * on_status is called.
      * Reason phrase doesn't exist in the response "HTTP/1.1 200\r\n". The callback
      * on_status_complete is called. */
-	if( pNextLineStart > pReasonPhraseStart )
-	{
-		reasonPhraseStartLen = ( size_t ) ( pNextLineStart - pReasonPhraseStart );
+    if( pNextLineStart > pReasonPhraseStart )
+    {
+        reasonPhraseStartLen = ( size_t ) ( pNextLineStart - pReasonPhraseStart );
         reasonPhraseStartLen = reasonPhraseStartLen - HTTP_HEADER_LINE_SEPARATOR_LEN;
-		pSettings->on_status( pParser,
-							  pReasonPhraseStart,
-							  reasonPhraseStartLen );
-		*pNext = pNextLineStart;
-	}
-	else
-	{
+        pSettings->on_status( pParser,
+                              pReasonPhraseStart,
+                              reasonPhraseStartLen );
+        *pNext = pNextLineStart;
+    }
+    else
+    {
         statuCompleteCallbackFlag = 1;
-		pSettings->on_status_complete( pParser );
-		*pNext = pNextLineStart;
-	}
+        pSettings->on_status_complete( pParser );
+        *pNext = pNextLineStart;
+    }
 }
 
 /* Mock helper that parses all of the headers starting from pNext. */
@@ -893,7 +893,7 @@ void test_HTTPClient_Send_HEAD_request_no_parse_body( void )
     HTTPStatus_t returnStatus = HTTPSuccess;
 
     llhttp_execute_Stub( llhttp_execute_whole_response );
-    
+
     response.respOptionFlags |= HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG;
 
     returnStatus = HTTPClient_Send( &transportInterface,
@@ -1871,7 +1871,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     &response,
                                     0 );
     TEST_ASSERT_EQUAL( HTTPParserPaused, returnStatus );
-    
+
     httpParsingErrno = HPE_PAUSED;
     response.respOptionFlags |= HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG;
     returnStatus = HTTPClient_Send( &transportInterface,

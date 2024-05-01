@@ -103,12 +103,12 @@ typedef struct _headers
  *   <HTTP_HOST_FIELD>: <HTTP_TEST_HOST_VALUE> \r\n
  *   \r\n
  * This is used to initialize the expectedHeader string. */
-#define HTTP_TEST_PREFIX_HEADER_NO_USER_AGENT_LEN                   \
-    ( HTTP_METHOD_GET_LEN + SPACE_CHARACTER_LEN +                   \
-      HTTP_TEST_REQUEST_PATH_LEN + SPACE_CHARACTER_LEN +            \
-      HTTP_PROTOCOL_VERSION_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +  \
-      HTTP_HOST_FIELD_LEN + HTTP_HEADER_FIELD_SEPARATOR_LEN +       \
-      HTTP_TEST_HOST_VALUE_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +   \
+#define HTTP_TEST_PREFIX_HEADER_NO_USER_AGENT_LEN                  \
+    ( HTTP_METHOD_GET_LEN + SPACE_CHARACTER_LEN +                  \
+      HTTP_TEST_REQUEST_PATH_LEN + SPACE_CHARACTER_LEN +           \
+      HTTP_PROTOCOL_VERSION_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN + \
+      HTTP_HOST_FIELD_LEN + HTTP_HEADER_FIELD_SEPARATOR_LEN +      \
+      HTTP_TEST_HOST_VALUE_LEN + HTTP_HEADER_LINE_SEPARATOR_LEN +  \
       HTTP_HEADER_LINE_SEPARATOR_LEN )
 
 /* Add 1 because snprintf(...) writes a null byte at the end. */
