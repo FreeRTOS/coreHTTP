@@ -10,26 +10,26 @@
     <tr>
         <td>core_http_client.c</td>
         <td><center>3.3K</center></td>
-        <td><center>2.6K</center></td>
+        <td><center>2.7K</center></td>
     </tr>
     <tr>
         <td>api.c (llhttp)</td>
-        <td><center>2.6K</center></td>
-        <td><center>2.0K</center></td>
+        <td><center>7.4K</center></td>
+        <td><center>6.5K</center></td>
     </tr>
     <tr>
         <td>http.c (llhttp)</td>
-        <td><center>0.3K</center></td>
+        <td><center>0.4K</center></td>
         <td><center>0.3K</center></td>
     </tr>
     <tr>
         <td>llhttp.c (llhttp)</td>
-        <td><center>17.9K</center></td>
-        <td><center>15.9K</center></td>
+        <td><center>25.5K</center></td>
+        <td><center>22.4K</center></td>
     </tr>
     <tr>
         <td><b>Total estimates</b></td>
-        <td><b><center>24.1K</center></b></td>
-        <td><b><center>20.8K</center></b></td>
+        <td><b><center>36.6K</center></b></td>
+        <td><b><center>31.9K</center></b></td>
     </tr>
 </table>
