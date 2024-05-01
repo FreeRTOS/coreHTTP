@@ -252,7 +252,7 @@ static HTTPRequestHeaders_t requestHeaders = { 0 };
 static HTTPClient_ResponseHeaderParsingCallback_t headerParsingCallback = { 0 };
 
 /* Flag to indicate this callback is called. */
-static int statuCompleteCallbackFlag = 0;
+static int statusCompleteCallbackFlag = 0;
 
 /* A mocked timer query function that increments on every call. */
 static uint32_t getTestTime( void )
@@ -486,7 +486,7 @@ static void helper_parse_status_line( const char ** pNext,
     }
     else
     {
-        statuCompleteCallbackFlag = 1;
+        statusCompleteCallbackFlag = 1;
         pSettings->on_status_complete( pParser );
         *pNext = pNextLineStart;
     }
@@ -844,7 +844,7 @@ void setUp( void )
     response.pBuffer = httpBuffer;
     response.bufferLen = sizeof( httpBuffer );
     response.pHeaderParsingCallback = &headerParsingCallback;
-    statuCompleteCallbackFlag = 0;
+    statusCompleteCallbackFlag = 0;
 
     /* Ignore third-party init functions that return void. */
     llhttp_init_Ignore();
@@ -947,7 +947,7 @@ void test_HTTPClient_Send_HEAD_request_parse_whole_response_no_reason_string( vo
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_2_HEADER_COUNT, response.headerCount );
     TEST_ASSERT_BITS_HIGH( HTTP_RESPONSE_CONNECTION_CLOSE_FLAG, response.respFlags );
     TEST_ASSERT_BITS_LOW( HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG, response.respFlags );
-    TEST_ASSERT_EQUAL( 1, statuCompleteCallbackFlag );
+    TEST_ASSERT_EQUAL( 1, statusCompleteCallbackFlag );
 }
 
 /*-----------------------------------------------------------*/
@@ -1880,7 +1880,7 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     0,
                                     &response,
                                     0 );
-    TEST_ASSERT_EQUAL( HTTPParserPaused, returnStatus );
+    TEST_ASSERT_EQUAL( HTTPNoResponse, returnStatus );
 
     /* Use -1 to indicate an unknown error. */
     httpParsingErrno = -1;
