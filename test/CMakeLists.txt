@@ -44,7 +44,7 @@ if( COV_ANALYSIS )
 
     # Target for Coverity analysis that builds the library.
     add_library( coverity_analysis
-                ${HTTP_SOURCES} )
+	             ${CMAKE_CURRENT_LIST_DIR}/../source/core_http_client.c )
 
     # Build HTTP library target without custom config dependency.
     target_compile_definitions( coverity_analysis PUBLIC HTTP_DO_NOT_USE_CUSTOM_CONFIG=1 )
@@ -52,8 +52,28 @@ if( COV_ANALYSIS )
     # HTTP public include path.
     target_include_directories( coverity_analysis PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
 
-    # Build HTTP library target without logging
-    target_compile_options(coverity_analysis PUBLIC -DNDEBUG )
+    target_compile_options( coverity_analysis PUBLIC
+        # Build HTTP library target without logging
+        -DNDEBUG
+
+        ### Gnu/Clang C Options
+        $<$<COMPILE_LANG_AND_ID:C,GNU>:-fdiagnostics-color=always>
+        $<$<COMPILE_LANG_AND_ID:C,Clang>:-fcolor-diagnostics>
+
+        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wall>
+        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wextra>
+        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wpedantic>
+        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Werror>
+        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wconversion>
+        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Weverything>
+
+        # Suppressions required to build clean with clang.
+        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-unused-macros>
+        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-padded>
+        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-missing-variable-declarations>
+        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-covered-switch-default>
+        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-cast-align>
+    )
 endif()
 # ===================== Clone needed third-party libraries ======================
 
