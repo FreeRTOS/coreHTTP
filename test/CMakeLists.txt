@@ -60,9 +60,8 @@ if( COV_ANALYSIS )
         -Wall
         -Wextra
         -Wpedantic
-        -Werror
         -Wconversion
-        -Weverything
+        -Werror
     )
 endif()
 # ===================== Clone needed third-party libraries ======================
