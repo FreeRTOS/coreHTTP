@@ -56,23 +56,13 @@ if( COV_ANALYSIS )
         # Build HTTP library target without logging
         -DNDEBUG
 
-        ### Gnu/Clang C Options
-        $<$<COMPILE_LANG_AND_ID:C,GNU>:-fdiagnostics-color=always>
-        $<$<COMPILE_LANG_AND_ID:C,Clang>:-fcolor-diagnostics>
-
-        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wall>
-        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wextra>
-        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wpedantic>
-        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Werror>
-        $<$<COMPILE_LANG_AND_ID:C,Clang,GNU>:-Wconversion>
-        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Weverything>
-
-        # Suppressions required to build clean with clang.
-        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-unused-macros>
-        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-padded>
-        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-missing-variable-declarations>
-        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-covered-switch-default>
-        $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-cast-align>
+        # GCC compiler option
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Werror
+        -Wconversion
+        -Weverything
     )
 endif()
 # ===================== Clone needed third-party libraries ======================
