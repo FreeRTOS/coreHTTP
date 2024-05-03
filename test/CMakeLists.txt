@@ -44,7 +44,7 @@ if( COV_ANALYSIS )
 
     # Target for Coverity analysis that builds the library.
     add_library( coverity_analysis
-	             ${CMAKE_CURRENT_LIST_DIR}/../source/core_http_client.c )
+                 ${CMAKE_CURRENT_LIST_DIR}/../source/core_http_client.c )
 
     # Build HTTP library target without custom config dependency.
     target_compile_definitions( coverity_analysis PUBLIC HTTP_DO_NOT_USE_CUSTOM_CONFIG=1 )
