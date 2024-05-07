@@ -16,10 +16,15 @@ jobs:
       - name: Build
         run: |
           sudo apt-get install -y lcov
+
+          # Build the coverity analysis project as well to check compiler warning.
+          # Coverity analysis project builds coreHTTP source file only. llhttp source
+          # files are not built in this target.
           cmake -S test -B build/ \
           -G "Unix Makefiles" \
           -DCMAKE_BUILD_TYPE=Debug \
           -DUNITTEST=1 \
+          -DCOV_ANALYSIS=1 \
           -DCMAKE_C_FLAGS='--coverage -Wall -Wextra -DNDEBUG'
           make -C build/ all
 

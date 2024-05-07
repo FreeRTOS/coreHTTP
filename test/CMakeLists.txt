@@ -44,7 +44,7 @@ if( COV_ANALYSIS )
 
     # Target for Coverity analysis that builds the library.
     add_library( coverity_analysis
-                ${HTTP_SOURCES} )
+                 ${CMAKE_CURRENT_LIST_DIR}/../source/core_http_client.c )
 
     # Build HTTP library target without custom config dependency.
     target_compile_definitions( coverity_analysis PUBLIC HTTP_DO_NOT_USE_CUSTOM_CONFIG=1 )
@@ -52,8 +52,17 @@ if( COV_ANALYSIS )
     # HTTP public include path.
     target_include_directories( coverity_analysis PUBLIC ${HTTP_INCLUDE_PUBLIC_DIRS} )
 
-    # Build HTTP library target without logging
-    target_compile_options(coverity_analysis PUBLIC -DNDEBUG )
+    target_compile_options( coverity_analysis PUBLIC
+        # Build HTTP library target without logging
+        -DNDEBUG
+
+        # GCC compiler option
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wconversion
+        -Werror
+    )
 endif()
 # ===================== Clone needed third-party libraries ======================
 

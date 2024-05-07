@@ -545,12 +545,12 @@ static int8_t caseInsensitiveStringCmp( const char * str1,
         /* Subtract offset to go from lowercase to uppercase ASCII character */
         if( ( firstChar >= 'a' ) && ( firstChar <= 'z' ) )
         {
-            firstChar = firstChar - offset;
+            firstChar = ( char ) ( firstChar - offset );
         }
 
         if( ( secondChar >= 'a' ) && ( secondChar <= 'z' ) )
         {
-            secondChar = secondChar - offset;
+            secondChar = ( char ) ( secondChar - offset );
         }
 
         if( ( firstChar ) != ( secondChar ) )
@@ -1249,6 +1249,7 @@ static uint8_t convertInt32ToAscii( int32_t value,
     uint8_t numOfDigits = 0U;
     uint8_t index = 0U;
     uint8_t isNegative = 0U;
+    int32_t bufferIndex;
     char temp = '\0';
 
     assert( pBuffer != NULL );
@@ -1263,7 +1264,7 @@ static uint8_t convertInt32ToAscii( int32_t value,
         *pBuffer = '-';
 
         /* Convert the value to its absolute representation. */
-        absoluteValue = value * -1;
+        absoluteValue = value * ( -1 );
     }
 
     /* Write the absolute integer value in reverse ASCII representation. */
@@ -1279,11 +1280,12 @@ static uint8_t convertInt32ToAscii( int32_t value,
     for( index = 0U; index < ( numOfDigits / 2U ); index++ )
     {
         temp = pBuffer[ isNegative + index ];
-        pBuffer[ isNegative + index ] = pBuffer[ isNegative + numOfDigits - index - 1U ];
-        pBuffer[ isNegative + numOfDigits - index - 1U ] = temp;
+        bufferIndex = ( int32_t ) isNegative + ( int32_t ) numOfDigits - ( int32_t ) index - 1;
+        pBuffer[ isNegative + index ] = pBuffer[ bufferIndex ];
+        pBuffer[ bufferIndex ] = temp;
     }
 
-    return( isNegative + numOfDigits );
+    return ( uint8_t ) ( isNegative + numOfDigits );
 }
 
 /*-----------------------------------------------------------*/
