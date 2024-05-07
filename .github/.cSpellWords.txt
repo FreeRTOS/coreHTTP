@@ -49,4 +49,9 @@ utest
 vect
 Vect
 VECT
+Wconversion
+Werror
+Weverything
+Wextra
+Wpedantic
 Wunused
