@@ -75,6 +75,7 @@
 
 /* HTTP OK Status-Line. */
 #define HTTP_STATUS_LINE_OK                                "HTTP/1.1 200 OK\r\n"
+#define HTTP_STATUS_LINE_NO_REASON_PHRASE                  "HTTP/1.1 200\r\n"
 #define HTTP_STATUS_CODE_OK                                200
 
 /* Various header lines for test response templates. */
@@ -103,11 +104,26 @@
     HTTP_TEST_VARY_HEADER_LINE             \
     HTTP_TEST_P3P_HEADER_LINE              \
     HTTP_TEST_XSERVER_HEADER_LINE HTTP_HEADER_LINE_SEPARATOR
-#define HTTP_TEST_RESPONSE_HEAD_LENGTH                         ( sizeof( HTTP_TEST_RESPONSE_HEAD ) - 1U )
-#define HTTP_TEST_RESPONSE_HEAD_HEADER_COUNT                   7
-#define HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH                 43
-#define HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_FIELD_LENGTH    ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_FIELD ) - 2U )
-#define HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_VALUE_LENGTH    ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_VALUE ) - 2U )
+#define HTTP_TEST_RESPONSE_HEAD_LENGTH                           ( sizeof( HTTP_TEST_RESPONSE_HEAD ) - 1U )
+#define HTTP_TEST_RESPONSE_HEAD_HEADER_COUNT                     7
+#define HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH                   43
+#define HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_FIELD_LENGTH      ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_FIELD ) - 2U )
+#define HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_VALUE_LENGTH      ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_VALUE ) - 2U )
+
+#define HTTP_TEST_RESPONSE_HEAD_2          \
+    HTTP_STATUS_LINE_NO_REASON_PHRASE      \
+    HTTP_TEST_CONTENT_LENGTH_HEADER_LINE   \
+    HTTP_TEST_CONNECTION_CLOSE_HEADER_LINE \
+    HTTP_TEST_DATE_HEADER_LINE             \
+    HTTP_TEST_ETAG_HEADER_LINE             \
+    HTTP_TEST_VARY_HEADER_LINE             \
+    HTTP_TEST_P3P_HEADER_LINE              \
+    HTTP_TEST_XSERVER_HEADER_LINE HTTP_HEADER_LINE_SEPARATOR
+#define HTTP_TEST_RESPONSE_HEAD_2_LENGTH                         ( sizeof( HTTP_TEST_RESPONSE_HEAD_2 ) - 1U )
+#define HTTP_TEST_RESPONSE_HEAD_2_HEADER_COUNT                   7
+#define HTTP_TEST_RESPONSE_HEAD_2_CONTENT_LENGTH                 43
+#define HTTP_TEST_RESPONSE_HEAD_2_PARTIAL_HEADER_FIELD_LENGTH    ( sizeof( HTTP_STATUS_LINE_NO_REASON_PHRASE ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_FIELD ) - 2U )
+#define HTTP_TEST_RESPONSE_HEAD_2_PARTIAL_HEADER_VALUE_LENGTH    ( sizeof( HTTP_STATUS_LINE_NO_REASON_PHRASE ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_VALUE ) - 2U )
 
 /* Template HTTP PUT response. This has no body. */
 #define HTTP_TEST_RESPONSE_PUT                  \
@@ -234,6 +250,9 @@ static TransportInterface_t transportInterface = { 0 };
 static HTTPRequestHeaders_t requestHeaders = { 0 };
 /* Header parsing callback shared among the tests. */
 static HTTPClient_ResponseHeaderParsingCallback_t headerParsingCallback = { 0 };
+
+/* Flag to indicate this callback is called. */
+static int statusCompleteCallbackFlag = 0;
 
 /* A mocked timer query function that increments on every call. */
 static uint32_t getTestTime( void )
@@ -432,6 +451,7 @@ static void helper_parse_status_line( const char ** pNext,
                                       const llhttp_settings_t * pSettings )
 {
     const char * pReasonPhraseStart = NULL;
+    const char * pNextLineStart = NULL;
     size_t reasonPhraseStartLen = 0;
 
     /* For purposes of unit testing the response is well formed in the non-error
@@ -440,17 +460,36 @@ static void helper_parse_status_line( const char ** pNext,
      * always string literals. strchr() should not be used in application code. */
     *pNext = strchr( *pNext, SPACE_CHARACTER ); /* Get the space before the status-code. */
     *pNext += SPACE_CHARACTER_LEN;
-    *pNext = strchr( *pNext, SPACE_CHARACTER ); /* Get the space before the reason-phrase. */
-    *pNext += SPACE_CHARACTER_LEN;
-    pReasonPhraseStart = *pNext;
-    *pNext = strstr( *pNext, HTTP_HEADER_LINE_SEPARATOR );
-    reasonPhraseStartLen = ( size_t ) ( *pNext - pReasonPhraseStart );
-    pParser->status_code = 200;
-    pSettings->on_status( pParser,
-                          pReasonPhraseStart,
-                          reasonPhraseStartLen );
+    /* pNext points to the status code now. */
 
-    *pNext += HTTP_HEADER_LINE_SEPARATOR_LEN;
+    pReasonPhraseStart = strchr( *pNext, SPACE_CHARACTER );
+    pReasonPhraseStart = &( pReasonPhraseStart[ SPACE_CHARACTER_LEN ] );
+
+    pNextLineStart = strstr( *pNext, HTTP_HEADER_LINE_SEPARATOR );
+    pNextLineStart = &( pNextLineStart[ HTTP_HEADER_LINE_SEPARATOR_LEN ] );
+
+    pParser->status_code = 200;
+
+    /* Check if the reason phrase exist in the header and call the corresponding callback.
+     * Reason phrase "OK" exists in the response "HTTP/1.1 200 OK\r\n". The callback
+     * on_status is called.
+     * Reason phrase doesn't exist in the response "HTTP/1.1 200\r\n". The callback
+     * on_status_complete is called. */
+    if( pNextLineStart > pReasonPhraseStart )
+    {
+        reasonPhraseStartLen = ( size_t ) ( pNextLineStart - pReasonPhraseStart );
+        reasonPhraseStartLen = reasonPhraseStartLen - HTTP_HEADER_LINE_SEPARATOR_LEN;
+        pSettings->on_status( pParser,
+                              pReasonPhraseStart,
+                              reasonPhraseStartLen );
+        *pNext = pNextLineStart;
+    }
+    else
+    {
+        statusCompleteCallbackFlag = 1;
+        pSettings->on_status_complete( pParser );
+        *pNext = pNextLineStart;
+    }
 }
 
 /* Mock helper that parses all of the headers starting from pNext. */
@@ -805,6 +844,7 @@ void setUp( void )
     response.pBuffer = httpBuffer;
     response.bufferLen = sizeof( httpBuffer );
     response.pHeaderParsingCallback = &headerParsingCallback;
+    statusCompleteCallbackFlag = 0;
 
     /* Ignore third-party init functions that return void. */
     llhttp_init_Ignore();
@@ -842,6 +882,72 @@ void test_HTTPClient_Send_HEAD_request_parse_whole_response( void )
     TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_HEADER_COUNT, response.headerCount );
     TEST_ASSERT_BITS_HIGH( HTTP_RESPONSE_CONNECTION_CLOSE_FLAG, response.respFlags );
     TEST_ASSERT_BITS_LOW( HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG, response.respFlags );
+}
+
+/*-----------------------------------------------------------*/
+
+/* Test successfully parsing a response to a HEAD request. The full response
+ * message is present in the response buffer on the first network read. */
+void test_HTTPClient_Send_HEAD_request_no_parse_body( void )
+{
+    HTTPStatus_t returnStatus = HTTPSuccess;
+
+    llhttp_execute_Stub( llhttp_execute_whole_response );
+
+    response.respOptionFlags |= HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG;
+
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
+    TEST_ASSERT_EQUAL( NULL, response.pBody );
+    TEST_ASSERT_EQUAL( 0U, response.bodyLen );
+    TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ), response.pHeaders );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - HTTP_HEADER_END_INDICATOR_LEN,
+                       response.headersLen );
+    TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH, response.contentLength );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_HEADER_COUNT, response.headerCount );
+    TEST_ASSERT_BITS_HIGH( HTTP_RESPONSE_CONNECTION_CLOSE_FLAG, response.respFlags );
+    TEST_ASSERT_BITS_LOW( HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG, response.respFlags );
+}
+
+/*-----------------------------------------------------------*/
+
+/* Test successfully parsing a response to a HEAD request. The full response
+ * message is present in the response buffer on the first network read. The response
+ * contains a status code but without a reason string. The on_status_complete is called
+ * in this case. */
+void test_HTTPClient_Send_HEAD_request_parse_whole_response_no_reason_string( void )
+{
+    HTTPStatus_t returnStatus = HTTPSuccess;
+
+    pNetworkData = ( uint8_t * ) HTTP_TEST_RESPONSE_HEAD_2;
+    networkDataLen = HTTP_TEST_RESPONSE_HEAD_2_LENGTH;
+
+    llhttp_execute_Stub( llhttp_execute_whole_response );
+
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
+    TEST_ASSERT_EQUAL( NULL, response.pBody );
+    TEST_ASSERT_EQUAL( 0U, response.bodyLen );
+    TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_NO_REASON_PHRASE ) - 1U ), response.pHeaders );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_2_LENGTH - ( sizeof( HTTP_STATUS_LINE_NO_REASON_PHRASE ) - 1U ) - HTTP_HEADER_END_INDICATOR_LEN,
+                       response.headersLen );
+    TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_2_CONTENT_LENGTH, response.contentLength );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_2_HEADER_COUNT, response.headerCount );
+    TEST_ASSERT_BITS_HIGH( HTTP_RESPONSE_CONNECTION_CLOSE_FLAG, response.respFlags );
+    TEST_ASSERT_BITS_LOW( HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG, response.respFlags );
+    TEST_ASSERT_EQUAL( 1, statusCompleteCallbackFlag );
 }
 
 /*-----------------------------------------------------------*/
@@ -1756,6 +1862,25 @@ void test_HTTPClient_Send_parsing_errors( void )
                                     &response,
                                     0 );
     TEST_ASSERT_EQUAL( HTTPSecurityAlertInvalidContentLength, returnStatus );
+
+    httpParsingErrno = HPE_PAUSED;
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+    TEST_ASSERT_EQUAL( HTTPParserPaused, returnStatus );
+
+    httpParsingErrno = HPE_PAUSED;
+    response.respOptionFlags |= HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG;
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+    TEST_ASSERT_EQUAL( HTTPNoResponse, returnStatus );
 
     /* Use -1 to indicate an unknown error. */
     httpParsingErrno = -1;

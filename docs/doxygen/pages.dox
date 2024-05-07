@@ -270,7 +270,10 @@ defined.
 @subpage httpclient_initializerequestheaders_function <br>
 @subpage httpclient_addheader_function <br>
 @subpage httpclient_addrangeheader_function <br>
+@subpage httpclient_sendhttpheaders_function <br>
+@subpage httpclient_sendhttpdata_function <br>
 @subpage httpclient_send_function <br>
+@subpage httpclient_receiveandparsehttpresponse_function <br>
 @subpage httpclient_readheader_function <br>
 @subpage httpclient_strerror_function <br>
 
@@ -286,9 +289,21 @@ defined.
 @snippet core_http_client.h declare_httpclient_addrangeheader
 @copydoc HTTPClient_AddRangeHeader
 
+@page httpclient_sendhttpheaders_function HTTPClient_SendHttpHeaders
+@snippet core_http_client.h declare_httpclient_sendhttpheaders
+@copydoc HTTPClient_SendHttpHeaders
+
+@page httpclient_sendhttpdata_function HTTPClient_SendHttpData
+@snippet core_http_client.h declare_httpclient_sendhttpdata
+@copydoc HTTPClient_SendHttpData
+
 @page httpclient_send_function HTTPClient_Send
 @snippet core_http_client.h declare_httpclient_send
 @copydoc HTTPClient_Send
+
+@page httpclient_receiveandparsehttpresponse_function HTTPClient_ReceiveAndParseHttpResponse
+@snippet core_http_client.h declare_httpclient_receiveandparsehttpresponse
+@copydoc HTTPClient_ReceiveAndParseHttpResponse
 
 @page httpclient_readheader_function HTTPClient_ReadHeader
 @snippet core_http_client.h declare_httpclient_readheader
