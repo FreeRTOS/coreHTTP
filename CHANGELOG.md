@@ -1,5 +1,13 @@
 # Changelog for coreHTTP Client Library
 
+## v3.1.0 (May 2023)
+- [#176](https://github.com/FreeRTOS/coreHTTP/pull/176) Update llhttp to v6.1.1. Update CMock to v2.5.3.
+- [#174](https://github.com/FreeRTOS/coreHTTP/pull/174) MISRA C:2012 compliance update
+- [#173](https://github.com/FreeRTOS/coreHTTP/pull/173) Add on_status_complete callback
+- [#167](https://github.com/FreeRTOS/coreHTTP/pull/167) Expose HTTPClient_SendHttpData, HTTPClient_SendHttpHeaders and HTTPClient_ReceiveAndParseHttpResponse for enhanced usability
+- [#164](https://github.com/FreeRTOS/coreHTTP/pull/164) Support http request without HTTP_USER_AGENT_FIELD
+- [#159](https://github.com/FreeRTOS/coreHTTP/pull/159) Handle upgrade header
+- [#151](https://github.com/FreeRTOS/coreHTTP/pull/151) Update doxygen to v1.9.6
 
 ## v3.0.0 (October 2022)
 

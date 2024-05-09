@@ -1,7 +1,7 @@
 # Project information.
 cmake_minimum_required ( VERSION 3.13.0 )
 project ( "coreHTTP tests"
-          VERSION 3.0.0
+          VERSION 3.1.0
           LANGUAGES C )
 
 # Allow the project to be organized into folders.
