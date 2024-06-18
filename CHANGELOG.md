@@ -1,5 +1,8 @@
 # Changelog for coreHTTP Client Library
 
+## v3.1.1 (June 2024)
+- Fix doxygen deployment on Github.
+
 ## v3.1.0 (May 2023)
 - [#176](https://github.com/FreeRTOS/coreHTTP/pull/176) Update llhttp to v6.1.1. Update CMock to v2.5.3.
 - [#174](https://github.com/FreeRTOS/coreHTTP/pull/174) MISRA C:2012 compliance update
