@@ -1,6 +1,6 @@
 # Changelog for coreHTTP Client Library
 
-## v3.2.0 (June 2024)
+## v3.1.1 (June 2024)
 Fix doxygen deployment on Github.
 
 ## v3.1.0 (May 2023)
