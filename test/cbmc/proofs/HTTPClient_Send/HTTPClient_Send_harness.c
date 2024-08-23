@@ -32,6 +32,40 @@
 #include "transport_interface_stubs.h"
 #include "get_time_stub.h"
 
+void llhttp_init( llhttp_t * parser,
+                  llhttp_type_t type,
+                  const llhttp_settings_t * settings )
+{
+}
+
+void llhttp_settings_init( llhttp_settings_t * settings )
+{
+}
+
+llhttp_errno_t llhttp_get_errno( const llhttp_t * parser )
+{
+    llhttp_errno_t result;
+
+    return result;
+}
+
+void llhttp_resume_after_upgrade( llhttp_t * parser )
+{
+}
+
+char * httpHeaderStrncpy( char * pDest,
+                          const char * pSrc,
+                          size_t len,
+                          uint8_t isField );
+
+char * __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy( char * pDest,
+                                                                  const char * pSrc,
+                                                                  size_t len,
+                                                                  uint8_t isField )
+{
+    return httpHeaderStrncpy( pDest, pSrc, len, isField );
+}
+
 void HTTPClient_Send_harness()
 {
     HTTPRequestHeaders_t * pRequestHeaders;

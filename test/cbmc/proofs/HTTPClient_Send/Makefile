@@ -51,7 +51,6 @@ REMOVE_FUNCTION_BODY += llhttp_settings_init
 # This decreases the run-time of the proof. This is safe to do for this proof
 # because all of the functions, in HTTPClient_Send, that would have used the
 # results of the copy are stubbed out to be proven separately.
-REMOVE_FUNCTION_BODY += strncpy
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy
 
 # There is a total of 10 digits in INT32_MAX. These loops are unwound once more

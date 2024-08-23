@@ -34,7 +34,7 @@
 #include <string.h>
 #include <stdint.h>
 
-void * httpHeaderStrncpy( char * pDest,
+char * httpHeaderStrncpy( char * pDest,
                           const char * pSrc,
                           size_t len,
                           uint8_t isField )

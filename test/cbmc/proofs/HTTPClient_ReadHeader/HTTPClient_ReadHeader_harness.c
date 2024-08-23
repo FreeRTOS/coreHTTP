@@ -31,6 +31,16 @@
 
 #include "http_cbmc_state.h"
 
+void llhttp_init( llhttp_t * parser,
+                  llhttp_type_t type,
+                  const llhttp_settings_t * settings )
+{
+}
+
+void llhttp_settings_init( llhttp_settings_t * settings )
+{
+}
+
 void HTTPClient_ReadHeader_harness()
 {
     HTTPResponse_t * pResponse;
