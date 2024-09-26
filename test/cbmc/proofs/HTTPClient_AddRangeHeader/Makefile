@@ -31,7 +31,6 @@ INCLUDES +=
 # This decreases the run-time of the proof. This is safe to do for this proof
 # because HTTPClient_AddRangeHeader does not use the results of the copy later
 # in the function.
-REMOVE_FUNCTION_BODY += strncpy
 REMOVE_FUNCTION_BODY += __CPROVER_file_local_core_http_client_c_httpHeaderStrncpy
 
 # strncmp is used to find if there exists "\r\n\r\n" at the end of the header
