@@ -31,10 +31,12 @@ jobs:
           repo_path: ./
           source_path: ./source
       - name: commit SBOM file
+        env:
+          VERSION_NUMBER: ${{ github.event.inputs.version_number }}
         run: |
           git add .
           git commit -m 'Update SBOM'
-          git push -u origin ${{ github.event.inputs.version_number }}
+          git push -u origin "$VERSION_NUMBER"
       - name: Tag Commit and Push to remote
         run: |
           git tag ${{ github.event.inputs.version_number }} -a -m "coreHTTP Library ${{ github.event.inputs.version_number }}"
@@ -63,8 +65,10 @@ jobs:
           cd coreHTTP
           git submodule update --init --checkout --recursive
       - name: Create ZIP
+        env:
+          VERSION_NUMBER: ${{ github.event.inputs.version_number }}
         run: |
-          zip -r coreHTTP-${{ github.event.inputs.version_number }}.zip coreHTTP -x "*.git*"
+          zip -r coreHTTP-"$VERSION_NUMBER".zip coreHTTP -x "*.git*"
           ls ./
       - name: Validate created ZIP
         run: |
@@ -76,8 +80,10 @@ jobs:
           diff -r -x "*.git*" coreHTTP-${{ github.event.inputs.version_number }}/coreHTTP/ ../coreHTTP/
           cd ../
       - name: Build
+        env:
+          VERSION_NUMBER: ${{ github.event.inputs.version_number }}
         run: |
-          cd zip-check/coreHTTP-${{ github.event.inputs.version_number }}/coreHTTP
+          cd zip-check/coreHTTP-"$VERSION_NUMBER"/coreHTTP
           sudo apt-get install -y lcov
           cmake -S test -B build/ \
           -G "Unix Makefiles" \
