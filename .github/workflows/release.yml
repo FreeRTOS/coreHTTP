@@ -24,7 +24,10 @@ jobs:
           git config --global user.name ${{ github.actor }}
           git config --global user.email ${{ github.actor }}@users.noreply.github.com
       - name: create a new branch that references commit id
-        run: git checkout -b ${{ github.event.inputs.version_number }} ${{ github.event.inputs.commit_id }}
+        env:
+          VERSION_NUMBER: ${{ github.event.inputs.version_number }}
+          COMMIT_ID: ${{ github.event.inputs.commit_id }}
+        run: git checkout -b "$VERSION_NUMBER" "$COMMIT_ID"
       - name: Generate SBOM
         uses: FreeRTOS/CI-CD-Github-Actions/sbom-generator@main
         with:
@@ -38,15 +41,20 @@ jobs:
           git commit -m 'Update SBOM'
           git push -u origin "$VERSION_NUMBER"
       - name: Tag Commit and Push to remote
+        env:
+          VERSION_NUMBER: ${{ github.event.inputs.version_number }}
         run: |
-          git tag ${{ github.event.inputs.version_number }} -a -m "coreHTTP Library ${{ github.event.inputs.version_number }}"
+          git tag "$VERSION_NUMBER" -a -m "coreHTTP Library $VERSION_NUMBER"
           git push origin --tags
       - name: Verify tag on remote
+        env:
+          VERSION_NUMBER: ${{ github.event.inputs.version_number }}
+          COMMIT_ID: ${{ github.event.inputs.commit_id }}
         run: |
-          git tag -d ${{ github.event.inputs.version_number }}
+          git tag -d "$VERSION_NUMBER"
           git remote update
-          git checkout tags/${{ github.event.inputs.version_number }}
-          git diff ${{ github.event.inputs.commit_id }} tags/${{ github.event.inputs.version_number }}
+          git checkout tags/"$VERSION_NUMBER"
+          git diff "$COMMIT_ID" tags/"$VERSION_NUMBER"
   create-zip:
     needs: tag-commit
     name: Create ZIP and verify package for release asset.
@@ -71,13 +79,15 @@ jobs:
           zip -r coreHTTP-"$VERSION_NUMBER".zip coreHTTP -x "*.git*"
           ls ./
       - name: Validate created ZIP
+        env:
+          VERSION_NUMBER: ${{ github.event.inputs.version_number }}
         run: |
           mkdir zip-check
-          mv coreHTTP-${{ github.event.inputs.version_number }}.zip zip-check
+          mv coreHTTP-"$VERSION_NUMBER".zip zip-check
           cd zip-check
-          unzip coreHTTP-${{ github.event.inputs.version_number }}.zip -d coreHTTP-${{ github.event.inputs.version_number }}
-          ls coreHTTP-${{ github.event.inputs.version_number }}
-          diff -r -x "*.git*" coreHTTP-${{ github.event.inputs.version_number }}/coreHTTP/ ../coreHTTP/
+          unzip coreHTTP-"$VERSION_NUMBER".zip -d coreHTTP-"$VERSION_NUMBER"
+          ls coreHTTP-"$VERSION_NUMBER"
+          diff -r -x "*.git*" coreHTTP-"$VERSION_NUMBER"/coreHTTP/ ../coreHTTP/
           cd ../
       - name: Build
         env:
@@ -91,8 +101,10 @@ jobs:
           -DCMAKE_C_FLAGS='--coverage -Wall -Wextra -DNDEBUG'
           make -C build/ all
       - name: Test
+        env:
+          VERSION_NUMBER: ${{ github.event.inputs.version_number }}
         run: |
-          cd zip-check/coreHTTP-${{ github.event.inputs.version_number }}/coreHTTP/build/
+          cd zip-check/coreHTTP-"$VERSION_NUMBER"/coreHTTP/build/
           ctest -E system --output-on-failure
           cd ..
       - name: Create artifact of ZIP
