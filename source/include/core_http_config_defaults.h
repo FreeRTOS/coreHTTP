@@ -59,18 +59,18 @@
 
 /**
  * @brief The maximum duration between non-empty network reads while receiving
- * an HTTP response via the #HTTPClient_Send API function.
+ * an HTTP response via the #HTTPClient_ReceiveAndParseHttpResponse API function.
  *
  * The transport receive function may be called multiple times until the end of
  * the response is detected by the parser. This timeout represents the maximum
  * duration that is allowed without any data reception from the network for the
  * incoming response.
  *
- * If the timeout expires, the #HTTPClient_Send function will return
+ * If the timeout expires, the #HTTPClient_ReceiveAndParseHttpResponse function will return
  * #HTTPNetworkError.
  *
  * If #HTTPResponse_t.getTime is set to NULL, then this HTTP_RECV_RETRY_TIMEOUT_MS
- * is unused. When this timeout is unused, #HTTPClient_Send will not retry the
+ * is unused. When this timeout is unused, #HTTPClient_ReceiveAndParseHttpResponse will not retry the
  * transport receive calls that return zero bytes read.
  *
  * <b>Possible values:</b> Any positive 32 bit integer. A small timeout value
