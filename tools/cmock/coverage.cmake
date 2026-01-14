@@ -45,7 +45,7 @@ execute_process(COMMAND ruby
 # capture data after running the tests
 execute_process(
             COMMAND lcov --capture
-                         --rc lcov_branch_coverage=1
+                         --rc branch_coverage=1
                          --base-directory ${CMAKE_BINARY_DIR}
                          --directory ${CMAKE_BINARY_DIR}
                          --output-file ${CMAKE_BINARY_DIR}/second_coverage.info
