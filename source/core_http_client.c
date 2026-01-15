@@ -137,7 +137,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  * @param[in] parsingState State of the parsing on the HTTP response.
  * @param[in] totalReceived The amount of network data received in the response
  * buffer.
- * @param[in] responseBufferLen The length of the response buffer.
+ * @param[in] pResponse  The response information.
  *
  * @return Returns #HTTPSuccess if the parsing state is complete. If
  * the parsing state denotes it never started, then return #HTTPNoResponse. If
@@ -147,7 +147,7 @@ static HTTPStatus_t addRangeHeader( HTTPRequestHeaders_t * pRequestHeaders,
  */
 static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                                             size_t totalReceived,
-                                            size_t responseBufferLen );
+                                            const HTTPResponse_t * pResponse );
 
 /**
  * @brief Send the HTTP request over the network.
@@ -1984,13 +1984,13 @@ static HTTPStatus_t sendHttpBody( const TransportInterface_t * pTransport,
 
 static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
                                             size_t totalReceived,
-                                            size_t responseBufferLen )
+                                            const HTTPResponse_t * pResponse )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
 
     assert( parsingState >= HTTP_PARSING_NONE &&
             parsingState <= HTTP_PARSING_COMPLETE );
-    assert( totalReceived <= responseBufferLen );
+    assert( totalReceived <= pResponse->bufferLen );
 
     /* If no parsing occurred, that means network data was never received. */
     if( parsingState == HTTP_PARSING_NONE )
@@ -2002,21 +2002,26 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
     }
     else if( parsingState == HTTP_PARSING_INCOMPLETE )
     {
-        if( totalReceived == responseBufferLen )
+        /* HTTP_PARSING_INCOMPLETE is okay when HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG is set
+         * as the body data may yet to be read from the transport. */
+        if( ( pResponse->respOptionFlags & HTTP_RESPONSE_DO_NOT_PARSE_BODY_FLAG ) == 0 )
         {
-            LogError( ( "Cannot receive complete response from transport"
-                        " interface: Response buffer has insufficient "
-                        "space: responseBufferLen=%lu",
-                        ( unsigned long ) responseBufferLen ) );
-            returnStatus = HTTPInsufficientMemory;
-        }
-        else
-        {
-            LogError( ( "Received partial response from transport "
-                        "receive(): ResponseSize=%lu, TotalBufferSize=%lu",
-                        ( unsigned long ) totalReceived,
-                        ( unsigned long ) ( responseBufferLen - totalReceived ) ) );
-            returnStatus = HTTPPartialResponse;
+            if( totalReceived == pResponse->bufferLen )
+            {
+                LogError( ( "Cannot receive complete response from transport"
+                            " interface: Response buffer has insufficient "
+                            "space: responseBufferLen=%lu",
+                            ( unsigned long ) pResponse->bufferLen ) );
+                returnStatus = HTTPInsufficientMemory;
+            }
+            else
+            {
+                LogError( ( "Received partial response from transport "
+                            "receive(): ResponseSize=%lu, TotalBufferSize=%lu",
+                            ( unsigned long ) totalReceived,
+                            ( unsigned long ) ( pResponse->bufferLen - totalReceived ) ) );
+                returnStatus = HTTPPartialResponse;
+            }
         }
     }
     else
@@ -2155,7 +2160,7 @@ HTTPStatus_t HTTPClient_ReceiveAndParseHttpResponse( const TransportInterface_t 
          * the parsing and how much data is in the buffer. */
         returnStatus = getFinalResponseStatus( parsingContext.state,
                                                totalReceived,
-                                               pResponse->bufferLen );
+                                               pResponse );
     }
 
     return returnStatus;
