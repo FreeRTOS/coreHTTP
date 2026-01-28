@@ -46,7 +46,7 @@
  * If HTTP_LIBRARY_VERSION ends with + it represents the version in development
  * after the numbered release.
  */
-#define HTTP_LIBRARY_VERSION    "v3.1.1+"
+#define HTTP_LIBRARY_VERSION    "v3.1.2"
 /** @endcond */
 
 /* HTTP_DO_NOT_USE_CUSTOM_CONFIG allows building the HTTP Client library
