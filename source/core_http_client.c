@@ -720,7 +720,7 @@ static int httpParserOnHeaderFieldCallback( llhttp_t * pHttpParser,
     if( length == 0U )
     {
         LogError( ( "Received zero-length header field name from parser." ) );
-        return LLHTTP_CONTINUE_PARSING;
+        return LLHTTP_STOP_PARSING;
     }
 
     pParsingContext = ( HTTPParsingContext_t * ) ( pHttpParser->data );
@@ -2333,7 +2333,7 @@ static int findHeaderFieldParserCallback( llhttp_t * pHttpParser,
     if( fieldLen == 0U )
     {
         LogError( ( "Received zero-length header field name from parser." ) );
-        return ( int ) LLHTTP_STOP_PARSING;
+        return LLHTTP_STOP_PARSING;
     }
 
     pContext = ( findHeaderContext_t * ) pHttpParser->data;
