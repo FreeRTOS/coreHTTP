@@ -307,6 +307,36 @@ llhttp_errno_t parserExecuteExpectationsCb( llhttp_t * parser,
 }
 
 /**
+ * @brief Callback variant for llhttp_execute() mock that expects the
+ * on_header_field callback to return LLHTTP_STOP_PARSING when invoked
+ * with a zero-length header field name.
+ */
+llhttp_errno_t parserExecuteZeroLenFieldCb( llhttp_t * parser,
+                                            const char * data,
+                                            size_t len,
+                                            int cmock_num_calls )
+{
+    ( void ) cmock_num_calls;
+
+    TEST_ASSERT_EQUAL( pCapturedParser, parser );
+    TEST_ASSERT_NOT_NULL( parser );
+    TEST_ASSERT_EQUAL( pCapturedSettings, parser->settings );
+    TEST_ASSERT_EQUAL( expectedBufferSize, len );
+    TEST_ASSERT_EQUAL( pExpectedBuffer, data );
+
+    if( invokeHeaderFieldCallback == 1U )
+    {
+        TEST_ASSERT_EQUAL( LLHTTP_STOP_PARSING,
+                           ( ( llhttp_settings_t * ) ( parser->settings ) )->on_header_field( parser,
+                                                                                              pFieldLocToReturn,
+                                                                                              fieldLenToReturn ) );
+    }
+
+    parser->error = parserErrNo;
+    return parserErrNo;
+}
+
+/**
  * @brief Fills the test input buffer and expectation buffers with pre-existing data
  * before calling the API function under test.
  */
@@ -1450,6 +1480,42 @@ void test_Http_ReadHeader_Invalid_Response_Only_Header_Field_Found()
     /* Call the function under test. */
     testResponse.pBuffer = ( uint8_t * ) &pResponseWithoutValue[ 0 ];
     testResponse.bufferLen = strlen( pResponseWithoutValue );
+    retCode = HTTPClient_ReadHeader( &testResponse,
+                                     HEADER_IN_BUFFER,
+                                     HEADER_IN_BUFFER_LEN,
+                                     &pValueLoc,
+                                     &valueLen );
+    TEST_ASSERT_EQUAL( HTTPInvalidResponse, retCode );
+}
+
+/**
+ * @brief Test that a zero-length header field name from the parser causes
+ * findHeaderFieldParserCallback to return LLHTTP_STOP_PARSING, resulting
+ * in HTTPInvalidResponse from HTTPClient_ReadHeader.
+ */
+void test_Http_ReadHeader_Zero_Length_Header_Field( void )
+{
+    /* Add expectations for llhttp init dependencies. */
+    llhttp_settings_init_ExpectAnyArgs();
+    llhttp_init_ExpectAnyArgs();
+
+    /* Override the default llhttp_execute mock callback to use the variant
+     * that expects LLHTTP_STOP_PARSING from on_header_field. */
+    llhttp_execute_AddCallback( parserExecuteZeroLenFieldCb );
+
+    /* Configure the llhttp_execute mock to invoke on_header_field with
+     * a zero-length field name. */
+    invokeHeaderFieldCallback = 1U;
+    pFieldLocToReturn = &pTestResponse[ headerFieldInRespLoc ];
+    fieldLenToReturn = 0U;
+
+    /* The callback returns LLHTTP_STOP_PARSING (HPE_USER) for the zero-length
+     * field. Since no header was found (fieldFound == 0) and parserErrno is
+     * not HPE_OK, findHeaderInResponse returns HTTPInvalidResponse. */
+    parserErrNo = HPE_USER;
+    llhttp_execute_ExpectAnyArgsAndReturn( HPE_USER );
+
+    /* Call the function under test. */
     retCode = HTTPClient_ReadHeader( &testResponse,
                                      HEADER_IN_BUFFER,
                                      HEADER_IN_BUFFER_LEN,
