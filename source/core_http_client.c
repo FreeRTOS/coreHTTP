@@ -1994,8 +1994,7 @@ static HTTPStatus_t getFinalResponseStatus( HTTPParsingState_t parsingState,
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
 
-    assert( parsingState >= HTTP_PARSING_NONE &&
-            parsingState <= HTTP_PARSING_COMPLETE );
+    assert( parsingState <= HTTP_PARSING_COMPLETE );
     assert( totalReceived <= pResponse->bufferLen );
 
     /* If no parsing occurred, that means network data was never received. */
