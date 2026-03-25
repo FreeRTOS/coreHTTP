@@ -445,33 +445,6 @@ static llhttp_errno_t llhttp_execute_error( llhttp_t * pParser,
     return httpParsingErrno;
 }
 
-/* Mocked llhttp_execute callback that parses the status line, then invokes
- * on_header_field with a zero-length field name to exercise the early return
- * guard in httpParserOnHeaderFieldCallback. */
-static llhttp_errno_t llhttp_execute_zero_length_header_field( llhttp_t * pParser,
-                                                               const char * pData,
-                                                               size_t len,
-                                                               int cmock_num_calls )
-{
-    ( void ) cmock_num_calls;
-    ( void ) len;
-    const char * pNext = pData;
-    llhttp_settings_t * pSettings = ( llhttp_settings_t * ) pParser->settings;
-    int cbReturnValue = 0;
-
-    pSettings->on_message_begin( pParser );
-    helper_parse_status_line( &pNext, pParser, pSettings );
-
-    /* Invoke on_header_field with length zero. The real callback should return
-     * LLHTTP_STOP_PARSING. */
-    cbReturnValue = pSettings->on_header_field( pParser, pNext, 0 );
-    TEST_ASSERT_EQUAL( LLHTTP_STOP_PARSING, cbReturnValue );
-
-    pParser->error = HPE_USER;
-    httpParserExecuteCallCount++;
-    return HPE_USER;
-}
-
 
 /* Mock helper that parses the status line starting from pNext. */
 static void helper_parse_status_line( const char ** pNext,
@@ -601,6 +574,33 @@ static void helper_parse_body( const char ** pNext,
             pSettings->on_body( pParser, pBody, bodyLen );
         }
     }
+}
+
+/* Mocked llhttp_execute callback that parses the status line, then invokes
+ * on_header_field with a zero-length field name to exercise the early return
+ * guard in httpParserOnHeaderFieldCallback. */
+static llhttp_errno_t llhttp_execute_zero_length_header_field( llhttp_t * pParser,
+                                                               const char * pData,
+                                                               size_t len,
+                                                               int cmock_num_calls )
+{
+    ( void ) cmock_num_calls;
+    ( void ) len;
+    const char * pNext = pData;
+    llhttp_settings_t * pSettings = ( llhttp_settings_t * ) pParser->settings;
+    int cbReturnValue = 0;
+
+    pSettings->on_message_begin( pParser );
+    helper_parse_status_line( &pNext, pParser, pSettings );
+
+    /* Invoke on_header_field with length zero. The real callback should return
+     * LLHTTP_STOP_PARSING. */
+    cbReturnValue = pSettings->on_header_field( pParser, pNext, 0 );
+    TEST_ASSERT_EQUAL( LLHTTP_STOP_PARSING, cbReturnValue );
+
+    pParser->error = HPE_USER;
+    httpParserExecuteCallCount++;
+    return HPE_USER;
 }
 
 /* Mocked llhttp_execute callback that expects a whole response to be in
@@ -2004,6 +2004,7 @@ void test_HTTPClient_Send_zero_length_header_field( void )
                                     0,
                                     &response,
                                     0 );
+
     /* HPE_USER falls through to the default case in processLlhttpError,
      * which maps to HTTPParserInternalError. */
     TEST_ASSERT_EQUAL( HTTPParserInternalError, returnStatus );
