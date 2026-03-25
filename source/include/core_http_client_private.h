@@ -30,15 +30,6 @@
 #ifndef CORE_HTTP_CLIENT_PRIVATE_H_
 #define CORE_HTTP_CLIENT_PRIVATE_H_
 
-/**
- * @cond DOXYGEN_IGNORE
- * http-parser defaults this to 1, llhttp to 0.
- */
-#ifndef LLHTTP_STRICT_MODE
-    #define LLHTTP_STRICT_MODE    0
-#endif
-/** @endcond */
-
 /* Third-party llhttp include. */
 #include "llhttp.h"
 
