@@ -1,5 +1,8 @@
 # Changelog for coreHTTP Client Library
 
+## v3.1.3 (March 2026)
+- [#204](https://github.com/FreeRTOS/coreHTTP/pull/204) Replace reachable assert with error return in header field callbacks and bump llhttp to v9.3.1.
+
 ## v3.1.2 (January 2026)
 - [#200](https://github.com/FreeRTOS/coreHTTP/pull/200) Add write permissions to doxygen generation workflow on main.
 - [#199](https://github.com/FreeRTOS/coreHTTP/pull/199) Fix MISRA violations.
