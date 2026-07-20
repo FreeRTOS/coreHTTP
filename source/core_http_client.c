@@ -1246,12 +1246,8 @@ static uint8_t convertInt32ToAscii( int32_t value,
                                     size_t bufferLength )
 {
     /* As input value may be altered and MISRA C 2012 rule 17.8 prevents
-     * modification of parameter, a local copy of the parameter is stored.
-     * absoluteValue stores the positive version of the input value. Its type
-     * remains the same type as the input value to avoid unnecessary casting on
-     * a privately used variable. This variable's size will always be less
-     * than INT32_MAX. */
-    int32_t absoluteValue = value;
+     * modification of parameter, a local copy of the parameter is stored. */
+    uint32_t absoluteValue;
     uint8_t numOfDigits = 0U;
     uint8_t index = 0U;
     uint8_t isNegative = 0U;
@@ -1265,21 +1261,32 @@ static uint8_t convertInt32ToAscii( int32_t value,
     /* If the value is negative, write the '-' (minus) character to the buffer. */
     if( value < 0 )
     {
+        /* INT32_MIN cannot be negated as a signed int32_t (overflow / UB).
+         * Handle it as an unsigned magnitude instead. */
         isNegative = 1U;
-
         *pBuffer = '-';
 
-        /* Convert the value to its absolute representation. */
-        absoluteValue = value * ( -1 );
+        if( value == INT32_MIN )
+        {
+            absoluteValue = ( ( uint32_t ) INT32_MAX ) + 1U;
+        }
+        else
+        {
+            absoluteValue = ( uint32_t ) ( -value );
+        }
+    }
+    else
+    {
+        absoluteValue = ( uint32_t ) value;
     }
 
     /* Write the absolute integer value in reverse ASCII representation. */
     do
     {
-        pBuffer[ isNegative + numOfDigits ] = ( char ) ( ( absoluteValue % 10 ) + '0' );
+        pBuffer[ isNegative + numOfDigits ] = ( char ) ( ( absoluteValue % 10U ) + '0' );
         numOfDigits++;
-        absoluteValue /= 10;
-    } while( absoluteValue != 0 );
+        absoluteValue /= 10U;
+    } while( absoluteValue != 0U );
 
     /* Reverse the digits in the buffer to store the correct ASCII representation
      * of the value. */
