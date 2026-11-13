@@ -93,6 +93,8 @@
  * handling in parser callback. */
 #define HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_FIELD      "Content-Len"
 #define HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_VALUE      "Content-Length: 4"
+/* Complete header field name, ending exactly before the ':' separator. */
+#define HTTP_TEST_CONTENT_LENGTH_COMPLETE_HEADER_FIELD     "Content-Length"
 
 /* Template HTTP HEAD response. */
 #define HTTP_TEST_RESPONSE_HEAD            \
@@ -109,6 +111,7 @@
 #define HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH                   43
 #define HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_FIELD_LENGTH      ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_FIELD ) - 2U )
 #define HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_VALUE_LENGTH      ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_PARTIAL_HEADER_VALUE ) - 2U )
+#define HTTP_TEST_RESPONSE_HEAD_COMPLETE_HEADER_FIELD_LENGTH     ( sizeof( HTTP_STATUS_LINE_OK ) + sizeof( HTTP_TEST_CONTENT_LENGTH_COMPLETE_HEADER_FIELD ) - 2U )
 
 #define HTTP_TEST_RESPONSE_HEAD_2          \
     HTTP_STATUS_LINE_NO_REASON_PHRASE      \
@@ -695,6 +698,61 @@ static llhttp_errno_t llhttp_execute_partial_header_field( llhttp_t * pParser,
 }
 
 /* Mocked llhttp_execute callback that will be called the first time on the
+ * response message up to the exact end of the first header field name, then
+ * the second time on the rest of the response starting at the ':' separator.
+ * This mirrors real llhttp, which closes the reopened field span at the start
+ * of the second buffer with a zero-length on_header_field callback. */
+static llhttp_errno_t llhttp_execute_complete_header_field( llhttp_t * pParser,
+                                                            const char * pData,
+                                                            size_t len,
+                                                            int cmock_num_calls )
+{
+    ( void ) cmock_num_calls;
+    const char * pNext = pData;
+    uint8_t isHeadResponse = 0;
+    const char * pHeaderValueStart = NULL;
+    size_t headerValueLen = 0;
+    int cbReturnValue = 0;
+    llhttp_settings_t * pSettings = ( llhttp_settings_t * ) pParser->settings;
+
+    if( httpParserExecuteCallCount == 0 )
+    {
+        pSettings->on_message_begin( pParser );
+
+        helper_parse_status_line( &pNext, pParser, pSettings );
+
+        /* pNext now points to the start of the complete header field name. */
+        cbReturnValue = pSettings->on_header_field( pParser,
+                                                    pNext,
+                                                    len - ( size_t ) ( pNext - pData ) );
+        TEST_ASSERT_EQUAL( LLHTTP_CONTINUE_PARSING, cbReturnValue );
+    }
+    else
+    {
+        /* The field span is closed at the ':' with a zero-length callback. The
+         * real callback must treat it as a continuation and keep parsing. */
+        cbReturnValue = pSettings->on_header_field( pParser, pNext, 0 );
+        TEST_ASSERT_EQUAL( LLHTTP_CONTINUE_PARSING, cbReturnValue );
+
+        /* Finish the first header's value, then parse the remaining headers. */
+        pNext += HTTP_HEADER_FIELD_SEPARATOR_LEN;
+        pHeaderValueStart = pNext;
+        pNext = strstr( pNext, HTTP_HEADER_LINE_SEPARATOR );
+        headerValueLen = ( size_t ) ( pNext - pHeaderValueStart );
+        pSettings->on_header_value( pParser, pHeaderValueStart, headerValueLen );
+        pNext += HTTP_HEADER_LINE_SEPARATOR_LEN;
+
+        helper_parse_headers( &pNext, pParser, pSettings );
+        helper_parse_headers_finish( &pNext, pParser, pSettings, &isHeadResponse );
+        helper_parse_body( &pNext, pParser, pSettings, isHeadResponse, pData, len );
+        pSettings->on_message_complete( pParser );
+    }
+
+    httpParserExecuteCallCount++;
+    return HPE_OK;
+}
+
+/* Mocked llhttp_execute callback that will be called the first time on the
  * response message up to the middle of the first header value, then the second
  * time on the response message from the middle of the first header value to the
  * end. */
@@ -1124,6 +1182,37 @@ void test_HTTPClient_Send_parse_partial_header_field( void )
     llhttp_execute_Stub( llhttp_execute_partial_header_field );
 
     firstPartBytes = HTTP_TEST_RESPONSE_HEAD_PARTIAL_HEADER_FIELD_LENGTH;
+    returnStatus = HTTPClient_Send( &transportInterface,
+                                    &requestHeaders,
+                                    NULL,
+                                    0,
+                                    &response,
+                                    0 );
+    TEST_ASSERT_EQUAL( HTTPSuccess, returnStatus );
+    TEST_ASSERT_EQUAL( NULL, response.pBody );
+    TEST_ASSERT_EQUAL( 0, response.bodyLen );
+    TEST_ASSERT_EQUAL( response.pBuffer + ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ), response.pHeaders );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_LENGTH - ( sizeof( HTTP_STATUS_LINE_OK ) - 1U ) - HTTP_HEADER_END_INDICATOR_LEN,
+                       response.headersLen );
+    TEST_ASSERT_EQUAL( HTTP_STATUS_CODE_OK, response.statusCode );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_CONTENT_LENGTH, response.contentLength );
+    TEST_ASSERT_EQUAL( HTTP_TEST_RESPONSE_HEAD_HEADER_COUNT, response.headerCount );
+    TEST_ASSERT_BITS_HIGH( HTTP_RESPONSE_CONNECTION_CLOSE_FLAG, response.respFlags );
+    TEST_ASSERT_BITS_LOW( HTTP_RESPONSE_CONNECTION_KEEP_ALIVE_FLAG, response.respFlags );
+}
+
+/*-----------------------------------------------------------*/
+
+/* Test successfully parsing a response where the first network read ends
+ * exactly at the end of a header field name, so the second read starts at the
+ * ':' separator and the parser reports a zero-length field continuation. */
+void test_HTTPClient_Send_parse_complete_header_field_at_read_boundary( void )
+{
+    HTTPStatus_t returnStatus = HTTPSuccess;
+
+    llhttp_execute_Stub( llhttp_execute_complete_header_field );
+
+    firstPartBytes = HTTP_TEST_RESPONSE_HEAD_COMPLETE_HEADER_FIELD_LENGTH;
     returnStatus = HTTPClient_Send( &transportInterface,
                                     &requestHeaders,
                                     NULL,
@@ -1990,8 +2079,8 @@ void test_HTTPClient_Send_parsing_errors( void )
 }
 
 /* Test that httpParserOnHeaderFieldCallback returns LLHTTP_STOP_PARSING when
- * the parser invokes it with a zero-length header field name (lines 720-724
- * of core_http_client.c). */
+ * the parser invokes it with a zero-length header field name and no header
+ * field is in progress. */
 void test_HTTPClient_Send_zero_length_header_field( void )
 {
     HTTPStatus_t returnStatus = HTTPSuccess;
