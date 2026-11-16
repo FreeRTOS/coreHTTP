@@ -720,10 +720,9 @@ static int httpParserOnHeaderFieldCallback( llhttp_t * pHttpParser,
     pParsingContext = ( HTTPParsingContext_t * ) ( pHttpParser->data );
     pResponse = pParsingContext->pResponse;
 
-    /* llhttp invokes this callback with a zero-length span when the previous
-     * llhttp_execute() call ended exactly at the end of a header field name;
-     * the span is reopened at the start of the next buffer and closed at the
-     * ':'. That is only valid as the continuation of an in-progress field. */
+    /* llhttp reports a zero-length field when the previous llhttp_execute()
+     * call ended exactly at the end of a header field name. That is valid
+     * only as the continuation of a field that is already in progress. */
     if( ( length == 0U ) && ( pParsingContext->pLastHeaderField == NULL ) )
     {
         LogError( ( "Received zero-length header field name from parser." ) );
